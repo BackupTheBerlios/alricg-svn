@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This file is part of the project ALRICG. -->
+<n:alricgXML xmlns:n="http://alricg.die3sphaere.de/lib/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://alricg.die3sphaere.de/lib/
+..\schema\library-schema.xsd">
+  <preamble version="v0.1" author="V.Strelow">
+    The german standard text-library for Alricg-Project. 
+    You can change the text, but DON'T CHANGE THE KEY-WORD!!
+    The text is identified by the key-word.
+    
+    library-element has 5 under-elements:
+      short - Text has only one word.
+      middle - Text has two or three words.
+      long - Text has more as three words.
+      errorMsg - Error Messeges
+      toolTip - Text for ToolTip messages
+  </preamble>
+  <library>
+    <short> 
+<!-- *********** Namen und Abkürzungen für Charakterwerte *********** -->
+      <entry key="MU">
+        <e lang="DE">MU</e>
+        <e lang="EN">COU</e>
+      </entry>
+      <entry key="KL">
+        <e lang="DE">KL</e>
+        <e lang="EN">CL</e>
+      </entry>
+      <entry key="IN">
+        <e lang="DE">IN</e>
+        <e lang="EN">INT</e>
+      </entry>
+      <entry key="CH">
+        <e lang="DE">CH</e>
+        <e lang="EN">CHA</e>
+      </entry>
+      <entry key="FF">
+        <e lang="DE">FF</e>
+        <e lang="EN">DEX</e>
+      </entry>
+      <entry key="GE">
+        <e lang="DE">GE</e>
+        <e lang="EN">AG</e>
+      </entry>
+      <entry key="KO">
+        <e lang="DE">KO</e>
+        <e lang="EN">CON</e>
+      </entry>
+      <entry key="KK">
+        <e lang="DE">KK</e>
+        <e lang="EN">STR</e>
+      </entry>
+      <entry key="GS">
+        <e lang="DE">GS</e>
+        <e lang="EN">SPD</e>
+      </entry>
+      <entry key="INI">
+        <e lang="DE">INI</e>
+        <e lang="EN">INIT</e>
+      </entry>
+      <entry key="MR">
+        <e lang="DE">MR</e>
+        <e lang="EN">MR</e>
+      </entry>
+      <entry key="LeP">
+        <e lang="DE">LeP</e>
+        <e lang="EN">AdP</e>
+      </entry>
+      <entry key="AsP">
+        <e lang="DE">AsP</e>
+        <e lang="EN">AsE</e>
+      </entry>
+      <entry key="AuP">
+        <e lang="DE">AuP</e>
+        <e lang="EN">END</e>
+      </entry>      
+      <entry key="KA">
+        <e lang="DE">KA</e>
+        <e lang="EN">APCred</e>
+      </entry>
+      <entry key="SO">
+        <e lang="DE">SO</e>
+        <e lang="EN">SS</e>
+      </entry>      
+      <entry key="AT">
+        <e lang="DE">AT</e>
+        <e lang="EN">BAV</e>
+      </entry>
+      <entry key="PA">
+        <e lang="DE">PA</e>
+        <e lang="EN">BPV</e>
+      </entry>    
+      <entry key="FK">
+        <e lang="DE">FK</e>
+        <e lang="EN">RBV</e>
+      </entry>  
+      
+      <entry key="Mut">
+        <e lang="DE">Mut</e>
+        <e lang="EN">Courage</e>
+      </entry>
+      <entry key="Klugheit">
+        <e lang="DE">Klugheit</e>
+        <e lang="EN">Cleverness</e>        
+      </entry>
+      <entry key="Intuition">
+        <e lang="DE">Intuition</e>
+        <e lang="EN">Intuition</e>
+      </entry>
+      <entry key="Charisma">
+        <e lang="DE">Charisma</e>
+        <e lang="EN">Charisma</e>        
+      </entry>
+      <entry key="Fingerfertigkeit">
+        <e lang="DE">Fingerfertigkeit</e>
+        <e lang="EN">Dexterity</e>
+      </entry>
+      <entry key="Gewandheit">
+        <e lang="DE">Gewandheit</e>
+        <e lang="EN">Agility</e>
+      </entry>
+      <entry key="Konstitution">
+        <e lang="DE">Konstitution</e>
+        <e lang="EN">Constitution</e>
+      </entry>
+      <entry key="Koerperkraft">
+        <e lang="DE">Körperkraft</e>
+        <e lang="EN">Strength</e>      
+      </entry>
+      <entry key="Geschwindigkeit">
+        <e lang="DE">Geschwindigkeit</e>
+        <e lang="EN">Speed</e>
+      </entry>
+      <entry key="Initiative">
+        <e lang="DE">Initiative</e>
+        <e lang="EN">Initiative</e>
+      </entry>
+      <entry key="Magieresistenz">
+        <e lang="DE">Magieresistenz</e>
+        <e lang="EN">Resistance to Magic</e>
+      </entry>
+      <entry key="Lebenspunkte">
+        <e lang="DE">Lebenspunkte</e>
+        <e lang="EN">Adventure Points</e>
+      </entry>
+      <entry key="Astralpunkte">
+        <e lang="DE">Astralpunkte</e>
+        <e lang="EN">Astral Energy</e>
+      </entry>
+      <entry key="Ausdauerpunkt">
+        <e lang="DE">Ausdauerpunkt</e>
+        <e lang="EN">Endurance</e>
+      </entry>      
+      <entry key="Karmaernergie">
+        <e lang="DE">Karmaernergie</e>
+        <e lang="EN">AP Credit</e>
+      </entry>
+      <entry key="Sozialstatus">
+        <e lang="DE">Sozialstatus</e>
+        <e lang="EN">Social Standing</e>
+      </entry>      
+      <entry key="AttackeBasis">
+        <e lang="DE">Attacke-Basis</e>
+        <e lang="EN">Base Attack Value</e>
+      </entry>
+      <entry key="ParadeBasis">
+        <e lang="DE">Parade-Basis</e>
+        <e lang="EN">Base Parry Value</e>
+      </entry>
+      <entry key="FernkampfBasis">
+        <e lang="DE">Fernkampf-Basis</e>
+        <e lang="EN">Base Ranged Value</e>
+      </entry>
+
+<!-- *************** Werte für CharKomponenten ********************************** --> 		
+      <entry key="RAS">
+        <e lang="DE">Rasse</e>
+	  </entry>
+      <entry key="KUL">
+        <e lang="DE">Kultur</e>
+      </entry>
+      <entry key="PRO">
+        <e lang="DE">Profession</e>
+      </entry>
+	  <entry key="RAV">
+        <e lang="DE">Rassen Variante</e>
+      </entry>
+      <entry key="KUV">
+        <e lang="DE">Kultur Variante</e>
+	  </entry>
+      <entry key="PRV">
+        <e lang="DE">Profession Variante</e>
+      </entry>	
+      <entry key="ZPR">
+        <e lang="DE">Zusatzprofession</e>
+      </entry>
+	  <entry key="VOR">
+        <e lang="DE">Vorteil</e>
+      </entry>
+      <entry key="GAB">
+        <e lang="DE">Gabe</e>
+	  </entry>
+      <entry key="NAC">
+        <e lang="DE">Nachteil</e>
+      </entry>
+      <entry key="SF">
+        <e lang="DE">Sonderfertigkeit</e>
+      </entry>
+	  <entry key="LRK">
+        <e lang="DE">RitualKenntnise</e>
+      </entry>
+      <entry key="TAL">
+        <e lang="DE">Talent</e>
+      </entry>
+	  <entry key="SPR">
+        <e lang="DE">Sprache</e>
+      </entry>
+      <entry key="SFT">
+        <e lang="DE">Schrift</e>
+	  </entry>
+      <entry key="ZAU">
+        <e lang="DE">Zauber</e>
+      </entry>
+      <entry key="LIT">
+        <e lang="DE">Liturgie</e>
+      </entry>
+	  <entry key="RIT">
+        <e lang="DE">Ritual</e>
+      </entry>				
+      <entry key="AUS">
+        <e lang="DE">Ausrüstung</e>
+      </entry>
+      <entry key="FAH">
+        <e lang="DE">Fahrzeug</e>
+      </entry>
+	  <entry key="NKW">
+        <e lang="DE">Nahkampfwaffe</e>
+      </entry>
+      <entry key="FKW">
+        <e lang="DE">Fernkampfwaffe</e>
+      </entry>
+      <entry key="RUE">
+        <e lang="DE">Rüstung</e>
+      </entry>
+	  <entry key="SLD">
+        <e lang="DE">Schild</e>
+      </entry>
+      <entry key="DAE">
+        <e lang="DE">Dämonenpakt</e>
+      </entry>
+      <entry key="SGA">
+        <e lang="DE">Schwarze Gabe</e>
+      </entry>
+	  <entry key="TIE">
+        <e lang="DE">Tier</e>
+      </entry>
+	  <entry key="REG">
+        <e lang="DE">Region</e>
+      </entry>
+      <entry key="GOT">
+        <e lang="DE">Gottheit</e>
+      </entry>
+      <entry key="REP">
+        <e lang="DE">Repräsentation</e>
+      </entry>
+	  <entry key="EIG">
+        <e lang="DE">Eigenschaft</e>
+      </entry>
+	  <entry key="SR">
+        <e lang="DE">Sonderregel</e>
+      </entry>
+		
+<!-- *************** Werte für Talent Enums **********************************  -->
+      <entry key="kampf">
+        <e lang="DE">Kampf</e>
+        <e lang="EN">Combat Abilities</e>
+      </entry>
+      <entry key="koerper">
+        <e lang="DE">Körper</e>
+        <e lang="EN">Physical Abilities</e>
+      </entry>
+      <entry key="gesellschaft">
+        <e lang="DE">Gesellschaft</e>
+        <e lang="EN">Social Abilities</e>
+      </entry>
+      <entry key="natur">
+        <e lang="DE">Natur</e>
+        <e lang="EN">Nature Abilitiles</e>
+      </entry>
+      <entry key="wissen">
+        <e lang="DE">Wissen</e>
+        <e lang="EN">Lore Abilities</e>
+      </entry>
+      <entry key="handwerk">
+        <e lang="DE">Handwerk</e>
+        <e lang="EN">Artisan Abilities</e>
+      </entry>
+      <entry key="basis">
+        <e lang="DE">Basis</e>
+        <e lang="EN">Base</e>
+      </entry>
+      <entry key="spezial">
+        <e lang="DE">Spezial</e>
+        <e lang="EN">Special</e>
+      </entry>
+      <entry key="beruf">
+        <e lang="DE">Beruf</e>
+        <e lang="EN">Professional</e>
+      </entry>
+
+<!-- *************** Enums für Zaubermerkmale*********************************  --> 
+      <entry key="antimagie">
+        <e lang="DE">Antimagie</e>
+        <e lang="EN">Resistance to Magic</e>
+      </entry>
+      <entry key="beschwoerung">
+        <e lang="DE">Beschwörung</e>
+        <e lang="EN">Conjuration</e>
+      </entry>
+      <entry key="daemonisch">
+        <e lang="DE">Dämonisch</e>
+        <e lang="EN">Demonic</e>
+      </entry>
+      <entry key="eigenschaften">
+        <e lang="DE">Eigenschaften</e>
+        <e lang="EN">Properties</e>
+      </entry>
+      <entry key="einfluss">
+        <e lang="DE">Einfluss</e>
+        <e lang="EN">Influence</e>
+      </entry>
+      <entry key="elementar">
+        <e lang="DE">Elementar</e>
+        <e lang="EN">Elementray</e>
+      </entry>
+      <entry key="elementar (feuer)">
+        <e lang="DE">Elementar (Feuer)</e>
+        <e lang="EN">Elementaty (Fire)</e>
+      </entry>
+      <entry key="elementar (wasser)">
+        <e lang="DE">Elementar (Wasser)</e>
+        <e lang="EN">Elementary (Water)</e>
+      </entry>
+      <entry key="elementar (luft)">
+        <e lang="DE">Elementar (Luft)</e>
+        <e lang="EN">Elementary (Air)</e>
+      </entry>
+      <entry key="elementar (erz)">
+        <e lang="DE">Elementar (Erz)</e>
+        <e lang="EN">Elementary (Earth: mineral)</e>
+      </entry>
+      <entry key="elementar (humus)">
+        <e lang="DE">Elementar (Humus)</e>
+        <e lang="EN">Elementary (Earth: soil)</e>
+      </entry>
+      <entry key="elementar (eis)">
+        <e lang="DE">Elementar (Eis)</e>
+        <e lang="EN">Elementary (Ice)</e>
+      </entry>
+      <entry key="form">
+        <e lang="DE">Form</e>
+        <e lang="EN">Form</e>
+      </entry>
+      <entry key="geisterwesen">
+        <e lang="DE">Geisterwesen</e>
+        <e lang="EN">Spirits</e>
+      </entry>
+      <entry key="heilung">
+        <e lang="DE">Heilung</e>
+        <e lang="EN">Healing</e>
+      </entry>
+      <entry key="hellsicht">
+        <e lang="DE">Hellsicht</e>
+        <e lang="EN">Clairvoyance</e>
+      </entry>
+      <entry key="herbeirufung">
+        <e lang="DE">Herbeirufung</e>
+        <e lang="EN">Summoning</e>
+      </entry>
+      <entry key="herrschaft">
+        <e lang="DE">Herrschaft</e>
+        <e lang="EN">Command</e>
+      </entry>
+      <entry key="illusion">
+        <e lang="DE">Illusion</e>
+        <e lang="EN">Illusion</e>
+      </entry>
+      <entry key="kraft">
+        <e lang="DE">Kraft</e>
+        <e lang="EN">Power</e>
+      </entry>            
+      <entry key="limbus">
+        <e lang="DE">Limbus</e>
+        <e lang="EN">Limbo</e>
+      </entry>
+      <entry key="metamagie">
+        <e lang="DE">Metamagie</e>
+        <e lang="EN">Metamagic</e>
+      </entry>
+      <entry key="objekt">
+        <e lang="DE">Objekt</e>
+        <e lang="EN">Object</e>
+      </entry>
+      <entry key="schaden">
+        <e lang="DE">Schaden</e>
+        <e lang="EN">Damage</e>
+      </entry>
+      <entry key="telekinese">
+        <e lang="DE">Telekinese</e>
+        <e lang="EN">Telekenesis</e>
+      </entry>
+      <entry key="temporal">
+        <e lang="DE">Temporal</e>
+        <e lang="EN">Temporal</e>
+      </entry>
+      <entry key="umwelt">
+        <e lang="DE">Umwelt</e>
+        <e lang="EN">Environment</e>
+      </entry>
+      <entry key="verstaendigung">
+        <e lang="DE">Verständigung</e>
+        <e lang="EN">Compromise</e>
+      </entry>
+            
+<!-- *************** Überschriften für Tabellen **********************************  --> 
+      <entry key="Sorte">
+        <e lang="DE">Sorte</e>
+        <e lang="EN">Variety</e>
+      </entry>
+      <entry key="Art">
+        <e lang="DE">Art</e>
+        <e lang="EN">Type</e>
+      </entry>
+      <entry key="SKT">
+        <e lang="DE">SKT</e>
+        <e lang="EN">Cost</e>
+      </entry>
+      <entry key="Probe">
+        <e lang="DE">Probe</e>
+        <e lang="EN">Test</e>
+      </entry>
+      <entry key="Plus">
+        <e lang="DE">Plus</e>
+        <e lang="EN">Plus</e>
+      </entry>
+      <entry key="Merkmale">
+        <e lang="DE">Merkmale</e>
+        <e lang="EN">Distinguishing Marks</e>
+      </entry>
+      <entry key="Repraesentation">
+        <e lang="DE">Repr.</e>
+        <e lang="EN">Representation</e>
+      </entry>
+      <entry key="Spez.">
+      	<!-- Abkürzung für Für Spezialisierung -->
+        <e lang="DE">Spez.</e>
+      </entry>
+      <entry key="Auswahl">
+        <e lang="DE">Auswahl</e>
+      </entry>
+      <entry key="L.T.">
+        <e lang="DE">L.T.</e>
+      </entry>
+      
+
+<!-- *************** Allgemeine Begriffe ********************************** -->     
+      <entry key="Name">
+        <e lang="DE">Name</e>
+        <e lang="EN">Name</e>
+      </entry>
+	  <entry key="Selbststudium">
+        <e lang="DE">Selbststudium</e>
+      </entry>
+	  <entry key="Stufe">
+        <e lang="DE">Stufe</e>
+      </entry>
+ 	  <entry key="ab Stufe">
+        <e lang="DE">ab Stufe</e>
+      </entry>
+      <entry key="Modis">
+        <e lang="DE">Modis</e>
+      </entry>
+      <entry key="Kosten">
+        <e lang="DE">Kosten</e>
+      </entry>
+      
+      
+<!-- *************** Label für Panel ********************************** -->
+      <entry key="Beschreibung">
+        <e lang="DE">Beschreibung</e>
+        <e lang="EN">Description</e>
+      </entry>
+      <entry key="Sonderregel">
+        <e lang="DE">Sonderregel</e>
+        <e lang="EN">Special Rules</e>
+      </entry>
+      <entry key="Sammelbegriff">
+        <e lang="DE">Sammelbegriff</e>
+        <e lang="EN">Collective Term</e>
+      </entry>
+      <entry key="Regelzusatz">
+        <e lang="DE">Regelzusatz</e>
+        <e lang="EN">Addition to Rule</e>
+      </entry>
+      <entry key="id">
+        <e lang="DE">id</e>
+        <e lang="EN">id</e>
+      </entry>
+      <entry key="Anzeigen">
+        <e lang="DE">Anzeigen</e>
+        <e lang="EN">Notices</e>
+      </entry>
+      <entry key="Neu">
+        <e lang="DE">Neu</e>
+        <e lang="EN">New</e>
+      </entry>
+      <entry key="x">
+        <e lang="DE">x</e>
+        <e lang="EN">x</e>
+      </entry>
+      <entry key="x">
+        <e lang="DE">x</e>
+        <e lang="EN">x</e>
+      </entry>
+    </short>
+    
+    <middle>
+      <entry key="Library Datei geladen">
+        <e lang="DE">Library Datei geladen...</e>
+        <e lang="EN">Library file loaded</e>
+	  </entry>
+		
+<!-- ************************ Nachrichten für Transparenz *************************** -->		
+	  <entry key="Kosten-Kategorie">
+        <e lang="DE">Kosten-Kategorie: </e>
+      </entry>
+	  <entry key="GP-Kosten">
+        <e lang="DE">GP-Kosten: </e>
+      </entry>
+	  <entry key="Talent-GP-Kosten">
+        <e lang="DE">Talent-GP-Kosten: </e>
+      </entry>
+	  <entry key="Spezielle Erfahrung">
+        <e lang="DE">Spezielle Erfahrung</e>
+      </entry>
+	  <entry key="Sehr guter Lehrmeister">
+        <e lang="DE">Sehr guter Lehrmeister</e>
+      </entry>
+
+		
+      <entry key="X">
+        <e lang="DE">X</e>
+        <e lang="EN">X</e>
+      </entry>
+    </middle>
+    
+    <long>      
+      <entry key="Regel-Dateien werden geladen">
+        <e lang="DE">Regel-Dateien werden geladen...</e>
+        <e lang="EN">Protocol files are being loaded...</e>
+      </entry>
+      <entry key="Beschreibung EIG-MU">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.15</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.15</e>
+      </entry>
+      <entry key="Beschreibung EIG-KL">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.15</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.15</e>
+      </entry>
+      <entry key="Beschreibung EIG-IN">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.15</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.15</e>
+      </entry>
+      <entry key="Beschreibung EIG-CH">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.15</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.15</e>
+      </entry>
+      <entry key="Beschreibung EIG-FF">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.15</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.15</e>
+      </entry>
+      <entry key="Beschreibung EIG-GE">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.15</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.15</e>
+      </entry>
+      <entry key="Beschreibung EIG-KO">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.16</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.16</e>
+      </entry>
+      <entry key="Beschreibung EIG-KK">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.16</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.16</e>
+      </entry>
+      <entry key="Beschreibung EIG-SO">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.17</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.17</e>
+      </entry>
+      <entry key="Beschreibung EIG-MR">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.18</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.18</e>
+      </entry>
+      <entry key="Beschreibung EIG-Lep">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.19</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.19</e>
+      </entry>
+      <entry key="Beschreibung EIG-AuP">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.19</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.19</e>
+      </entry>
+      <entry key="Beschreibung EIG-AsP">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.19</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.19</e>
+      </entry>
+      <entry key="Beschreibung EIG-KA">
+        <e lang="DE">Siehe Buch "Aventurische Götterdiener" S.24</e>
+        <e lang="EN">See manual "Adventuring Servants to God" p.24</e>
+      </entry>
+      <entry key="Beschreibung EIG-GS">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.20</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.20</e>
+      </entry>
+      <entry key="Beschreibung EIG-INI">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.19</e
+        ><e lang="EN">See manual "The Dark Eye Basics" p.19</e>
+      </entry>
+      <entry key="Beschreibung EIG-AT">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.19</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.19</e>
+      </entry>
+      <entry key="Beschreibung EIG-PA">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.19</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.19</e>
+      </entry>
+      <entry key="Beschreibung EIG-FK">
+        <e lang="DE">Siehe Buch "DSA-Basis" S.19</e>
+        <e lang="EN">See manual "The Dark Eye Basics" p.19</e>
+      </entry>
+      
+      <entry key="X">
+        <e lang="DE">X</e>
+        <e lang="EN">X</e>
+      </entry>
+    </long>
+    
+    
+    <toolTip>
+    
+<!-- **************************** Allgemeine ToolTips ******************************* -->
+      <entry key="KeinWert">
+        <e lang="DE">Kein Wert vorhanden</e>
+        <e lang="EN">No value given</e>
+      </entry>
+      <entry key="TblOrdner">
+        <e lang="DE">Verzeichnis zur besseren Ordnung der Elemente</e>
+        <e lang="EN">Directory for ordering the elements</e>
+      </entry>
+	  <entry key="TblTalentModisKeine">
+        <e lang="DE">Kein Modifikationen vorhanden</e>
+      </entry>
+      
+<!-- **************************** ToolTips für Talente******************************* -->
+      
+      <entry key="TblTalentArtBasis">
+        <e lang="DE">Basistalente sind bei allen Helden automatisch vorhanden</e>
+        <e lang="EN">Base abilities are automatically given for all heroes</e>
+      </entry>
+      <entry key="TblTalentArtBeruf">
+        <e lang="DE">Berufstalente müssen bei einem Lehrmeister gelernt werden</e>
+        <e lang="EN">Professional abilities must be learnt with a master</e>
+      </entry>
+      <entry key="TblTalentArtSpezial">
+        <e lang="DE">Spezialtalente können durch intensive Beschäftigung gelernt werden</e>
+        <e lang="EN">Special abilities can be learnt through intensive experience</e>
+      </entry>
+	  <entry key="TblTalentLeitwertTrue">
+        <e lang="DE">Dieses Talent ist ein Leittalent (nur für "Elfische Weltsicht" wichtig)</e>
+      </entry>
+	  <entry key="TblTalentLeitwertFalse">
+        <e lang="DE">Dieses Talent ist KEIN Leittalent (nur für "Elfische Weltsicht" wichtig)</e>
+      </entry>		
+      <entry key="TblTalentSpeziKeine">
+        <e lang="DE">Keine Spezialisierungen vorhanden für dieses Talent</e>
+      </entry>		
+      <entry key="TblTalentSpezi">
+        <e lang="DE">Zeigt die Spezialisierungen für dieses Talent an</e>
+      </entry>			
+		
+    
+<!-- **************************** Tabellen-Überschriften ******************************* -->
+      <entry key="TblHeaderName">
+        <e lang="DE">Der Bezeichner dieses Elements</e>
+        <e lang="EN">The identifier of this element</e>
+      </entry>
+      <entry key="TblHeaderTalentSorte">
+        <e lang="DE">Eine Einordnung in welchen Bereich das Talent gehört</e>
+        <e lang="EN">An index of which category an ability belongs to</e>       
+      </entry>
+      <entry key="TblHeaderTalentArt">
+        <e lang="DE">Eine Einordnung ob es ein Basis-, Spezial- oder Berufstalent ist.</e>
+        <e lang="EN">An index of the ability's nature (Base, Special or Professional)</e>
+      </entry>
+      <entry key="TblHeaderKostenklasse">
+        <e lang="DE">Gibt die Spalte in der Steigerungskosten-Tabelle(SKT) an</e>
+        <e lang="EN">Indicates the column in the table of cost increments (Cost)</e>
+      </entry>
+      <entry key="TblHeaderProbe">
+        <e lang="DE">Auf diese Eigenschaften wird die Probe abgelegt</e>
+        <e lang="EN">The test will be carried out on this Characteristic</e>
+      </entry>
+      <entry key="TblHeaderPlusButton">
+        <e lang="DE">Fügt ein Element zur Auswahl hinzu</e>
+        <e lang="EN">Adds an available element</e>
+      </entry>
+      <entry key="TblHeaderMinusButton">
+        <e lang="DE">Entfernt ein Element aus der Tabelle</e>
+        <e lang="EN">Removes an element from the table</e>
+      </entry>
+      <entry key="TblHeaderStern">
+        <e lang="DE">??</e>
+      </entry>
+      <entry key="TblHeaderStufe">
+        <e lang="DE">Die Gesamt-Stufe des Elements</e>
+      </entry>
+      <entry key="TblHeaderModis">
+        <e lang="DE">Modifikationen auf dieses Element durch Rasse, Kultur, Profession oder Sonderregeln</e>
+      </entry>
+      <entry key="TblHeaderKosten">
+        <e lang="DE">Die GP-Kosten die das Elemenet verursacht.</e>
+      </entry>
+      <entry key="TblHeaderSpezi">
+        <e lang="DE">Die Spezialisierungen zu dem Talent</e>
+      </entry>
+      <entry key="TblHeaderAuswahl">
+        <e lang="DE">Welche Auswahl durch Rasse, Kultur oder Profession dieses Element verändern kann</e>
+      </entry>  
+      <entry key="TblHeaderLeittalent">
+        <e lang="DE">(Nur für Elfen) Ein Hacken bedeutet das dieses Talent Leittalent ist</e>
+      </entry>  
+      <entry key="x">
+        <e lang="DE"></e>
+      </entry>  
+    </toolTip>
+    
+    
+    <errorMsg>
+<!-- **************************** Fehlermeldungen / Anzeige ******************************* -->
+      <entry key="Fehlerhafte Datei">
+        <e lang="DE">Diese Datei ist Fehlerhaft und konnte nicht geladen werden: </e>
+        <e lang="EN">The file has an error and could not be loaded:</e>
+      </entry>
+      <entry key="XML Validierungsfehler">
+        <e lang="DE">Die Validierung der Datei ist fehlgeschlagen, wahrscheinlich ist
+          diese Datei verändert worden und keine Original-Datei.
+          Bitte ersetzen sie diese Datei durch die Original-Datei.
+          
+          Das Programm könnte nun Fehlerhaft sein!!
+        </e>
+        <e lang="EN">The file could not be validated.  It is likely that the file has
+        been changed and is not an original file.
+        Plese replace this file with the original.
+        
+        The programme may now be defective!!
+        </e>
+      </entry>
+      <entry key="XML Parsingfehler">
+        <e lang="DE">Die Datei liegt in einer fehlerhaften XML-Syntax vor, wahrscheinlich 
+          ist diese Datei verändert worden und keine Original-Datei.
+          Bitte ersetzen sie diese Datei durch die Original-Datei.
+          
+          Das Programm könnte nun Fehlerhaft sein!!</e>
+          <e lang="EN">The file contains an error in XML syntax.  It is likely that the
+          file has been changed and is not an original file.
+          Please replace this file with the original.
+          
+          The programme may now be defective!!
+          </e>
+      </entry>
+      <entry key="Datei existiert nicht Fehler">
+        <e lang="DE">Diese Datei konnte nicht gefunden werden!
+          Bitte überprüfen sie ob die Datei vorhanden ist oder verschoben wurde
+          und korrigieren sie den Fehler. 
+          
+          Das Programm könnte nun Fehlerhaft sein!!</e>
+          <e lang="EN">The file could not be be found!
+          Please check that the file exists and has not been moved, and correct the error.
+          
+          The programme may now be defective!!
+          </e>
+      </entry>
+      <entry key="Datei nicht lesbar Fehler">
+        <e lang="DE">Diese Datei konnte nicht zum lesen geöffnet werden!
+          Evtl. wird die Datei gerade von einem anderen Programm benutzt
+          oder sie haben nicht die Benutzerrechte um auf diese Datei zu zugreifen.
+          
+          Das Programm könnte nun Fehlerhaft sein!!</e>
+          <e lang="EN">The file could not be opened.  It is possibile that it is currently
+          in use by another programme or you are not authorised to access this file.
+          
+          The programme may now be defective!!
+          </e>
+      </entry>
+      <entry key="Datei nicht lesbar/unbekannt Fehler">
+        <e lang="DE">Diese Datei konnte nicht zum lesen geöffnet werden!
+          Der Grund dafür ist unbekannt, für mehr Informationen schauen sie 
+          bitte in die Log-Files. 
+        
+          Das Programm könnte nun Fehlerhaft sein!!</e>
+          <e lang="EN">The file could not be opened.  The reason is unknown: please check
+          your log files for more information.
+          </e>
+      </entry>
+      
+<!-- **************************** Fehlermeldungen / KeineAnzeige ******************************* -->
+      <entry key="CharKomponente ID doppelt">
+        <e lang="DE">Die ID eines Regel-Elements ist doppelt aufgetreten! Anscheinend sind die
+          verwendeten Dateien inkompatibel!
+          
+          Das Programm könnte nun Fehlerhaft sein!!</e>
+          <e lang="EN">The ID of a protocol element has appeared twice!  The files in use do
+          appear to be compatible.
+          
+          The programme may now be defective!!
+          </e>
+      </entry>
+      
+      <entry key="X">
+        <e lang="DE">X</e>
+        <e lang="EN">X</e>
+      </entry>
+    </errorMsg>
+    
+  </library>
+</n:alricgXML>

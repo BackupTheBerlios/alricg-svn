@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="US-ASCII" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0//EN" "http://www.w3.org/TR/xhtml111/DTD/xhtml111.dtd">
+<html>
+<head>
+	<!-- 
+		Created 01.10.2005 / 09:09:09	
+		This file is part of the project ALRICG. The file is copyright
+		protected and under the GNU General Public License.
+		For more information see "http://alricg.die3sphaere.de/".
+	-->
+</head>
+<body>
+ 	Stellt Klassen und Schnittstellen zur Verfügung, die den Zugriff auf die Persistenzschicht ermöglichen.
+ 	<p>
+ 	Die wichtigste Klasse in diesem Paket ist der <tt>FactoryFinder</tt>. <br/>
+ 	Mit seiner Hilfe wird:
+ 	<ol> 
+ 	<li>eine konkrete Factory initialisiert (<tt>FactoryFinder.init()</tt>) und </li>
+ 	<li>eine existierende Factory zurückgegeben (<tt>FactoryFinder.find()</tt>)</li>.
+ 	</ol>
+ 	
+ 	Verbraucher sollten Klassen in packages unterhalb <tt>org.d3s.alricg.store</tt> <b>niemlas</b> direkt aufrufen, sondern ausschlie&szlig;lich den <tt>FactoryFinder</tt> benutzen.
+ 	
+ 	Welche Factoryimplementierung verwendet werden soll, ist in einer Konfig-Datei zu konfigurieren. In der Defaulteinstellung wird die <tt>org.d3s.alricg.store.xom.XOMFactory</tt> verwendet
+ 	
+ 	</p>
+ 
+<!-- Wird z.Zt. nicht beutzt  
+<h2>Package Spezifikation</h2>
+
+	//REPLACEME Spezifikation des Packages<br/>
+	<ul>
+		<li><a href="">//REPLACEME Link zu Spezifikationsdokument</a></li>
+	</ul>
+	
+<h2>Weitere Dokumentation</h2>
+	
+	Für weiteren Überblick, Tutorials, Beispiele, Anleitungen, siehe:
+	<ul>
+		<li><a href="">//REPLACEME Link zu weiterer, non-spek. Doku</a></li>
+	</ul>
+ -->
+<br/> 	
+<!-- Ab hier die package-tags einfügen -->
+<!-- @see, @since, @serial, @author, @version --> 
+@since 1.0
+@author <a href="mailto:msturzen@mac.com">St. Martin</a>
+
+</body>
+</html>

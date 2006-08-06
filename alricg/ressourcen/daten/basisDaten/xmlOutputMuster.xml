@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<alricgXML>
+	<preamble name="String" language="String" version="String">
+		<kommentar>String</kommentar>
+		<autor>String</autor>
+		<beschreibung>String</beschreibung>
+	</preamble>
+    <rassen>
+        <rasse id="RAS-String" name="String">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">Text zu der SR</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gp>1</gp>
+            <varianteVon>RAS-String</varianteVon>
+            <geschlecht>M</geschlecht>
+            <eigenschaftModi>
+                <fest id="EIG-MU" linkId="VOR-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="2" anzahl="2" modus="LISTE">
+                    <option id="TAL-String" linkId="NAC-String" text="String" wert="0"/>
+                </auswahl>
+            </eigenschaftModi>
+            <soGrenzen soMin="1" soMax="1"/>
+            <vorteile>
+                <fest id="EIG-MU" linkId="VOR-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="3" anzahl="2" modus="LISTE">
+                    <option id="TAL-String" linkId="NAC-String" text="String" wert="0"/>
+                </auswahl>
+            </vorteile>
+            <nachteile>
+                <fest id="VOR-String" linkId="EIG-MU" text="String" wert="0"/>
+                <auswahl werte="4" anzahl="2" modus="LISTE">
+                    <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                </auswahl>
+            </nachteile>
+            <sonderf>
+                <fest id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                <auswahl werte="5" anzahl="2" modus="LISTE">
+                    <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                </auswahl>
+            </sonderf>
+            <liturgien>
+                <fest id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                <auswahl werte="6" anzahl="2" modus="LISTE">
+                    <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                </auswahl>
+            </liturgien>
+            <goetterRituale>
+                <fest id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                <auswahl werte="7" anzahl="2" modus="LISTE">
+                    <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                </auswahl>
+            </goetterRituale>
+            <empfVorteile ids="SF-String SF-String">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </empfVorteile>
+            <empfNachteile ids="LIT-String EIG-MU">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </empfNachteile>
+            <ungeVorteile ids="LIT-String EIG-MU">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </ungeVorteile>
+            <ungeNachteile ids="LIT-String EIG-MU">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </ungeNachteile>
+            <verbilligteSonderf ids="LIT-String EIG-MU">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </verbilligteSonderf>
+            <verbilligteLiturgien ids="LIT-String EIG-MU">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </verbilligteLiturgien>
+            <verbilligteRituale ids="LIT-String EIG-MU">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </verbilligteRituale>
+            <talente>
+                <fest id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                <auswahl werte="5" anzahl="2" modus="LISTE">
+                    <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                </auswahl>
+            </talente>
+            <magie>
+                <hauszauber>
+                    <auswahl werte="2" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String" linkId="SF-String" text="DingDong die Hex ist Tod" wert="3"/>
+                        <option id="ZAU-String" linkId="SF-String" wert="0"/>
+                    </auswahl>
+                     <auswahl werte="7" anzahl="2" modus="ANZAHL">
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </hauszauber>
+                <zauber>
+                    <fest id="ZAU-String" linkId="SF-String" text="String" wert="0"/>
+                    <fest id="ZAU-String" linkId="ZAU-String" wert="4"/>
+                    <auswahl werte="8" anzahl="2" modus="VERTEILUNG">
+                        <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                    </auswahl>
+                    <auswahl werte="7" anzahl="2" modus="LISTE">
+                        <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                    </auswahl>
+                    <auswahl werte="7" anzahl="2" modus="LISTE">
+                        <option id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                    </auswahl>
+                </zauber>
+                <aktivierbareZauber>
+                    <fest id="ZAU-String" linkId="SF-String" text="String23" wert="10"/>
+                    <fest id="ZAU-String" linkId="SF-String" wert="0"/>
+                    <fest id="ZAU-String" linkId="SF-String" text="String45"/>
+                </aktivierbareZauber>
+                <zauberNichtZuBegin ids="LIT-String EIG-MU">
+                    <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+                </zauberNichtZuBegin>
+            </magie>
+            <kulturUeblich ids="LIT-String EIG-MU">
+                <linkId id="LIT-String" linkId="SF-String" text="String" wert="0"/>
+            </kulturUeblich>
+            <kulturMoeglich ids="KUL-String KUL-String KUL-String">
+                <linkId id="KUL-String" linkId="SF-String" text="Lalalala" wert="0"/>
+                <linkId id="KUL-String" linkId="LIT-String" text="Lolololo" wert="1"/>
+                <linkId id="RAS-String" linkId="SF-String" text="String" wert="2"/>
+            </kulturMoeglich>
+            <geschwindigkeit>8</geschwindigkeit>
+            <alter wert="2">
+                <wuerfel anzWuerfel="2" augenWuerfel="6"/>
+                <wuerfel anzWuerfel="1" augenWuerfel="20"/>
+            </alter>
+            <groesse wert="2">
+                <wuerfel anzWuerfel="2" augenWuerfel="20"/>
+                <wuerfel anzWuerfel="1" augenWuerfel="6"/>
+            </groesse>
+            <gewichtModi wert="-20"/>
+            <haarfarbe>
+                <farbe farbe="Rot" anteil="5"/>
+                <farbe farbe="Weiß" anteil="5"/>
+                <farbe farbe="Goldbraun mit Lila Tüpfel" anteil="10"/>
+            </haarfarbe>
+            <augenfarbe>
+                <farbe farbe="Gelb" anteil="5"/>
+                <farbe farbe="Grün" anteil="10"/>
+                <farbe farbe="Blau" anteil="5"/>
+            </augenfarbe>
+        </rasse>
+    </rassen>
+    <kulturen>
+        <kultur id="KUL-String" name="String">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">lalala</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gp>1</gp>
+            <varianteVon>KUL-String</varianteVon>
+            <geschlecht>M</geschlecht>
+            <eigenschaftModi>
+                <fest id="EIG-MU" linkId="EIG-MU" text="String" wert="0"/>
+                <auswahl werte="9" anzahl="2" modus="LISTE">
+                    <option id="EIG-MU" linkId="EIG-MU" text="String" wert="0"/>
+                </auswahl>
+            </eigenschaftModi>
+            <soGrenzen soMin="1" soMax="1"/>
+            <voraussetzung>
+                <fest id="VOR-String" linkId="NAC-String" text="String" wert="0"/>
+                <auswahl>
+                    <option id="LIT-String" linkId="RIT-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </voraussetzung>
+            <vorteile>
+                <fest id="VOR-String" linkId="FAH-String" text="String" wert="0"/>
+                <auswahl werte="7" anzahl="2" modus="ANZAHL">
+                    <option id="VOR-String" linkId="FKW-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </vorteile>
+            <nachteile>
+                <fest id="NAC-String" linkId="GAB-String" text="String" wert="0"/>
+                <auswahl werte="6" anzahl="2" modus="VERTEILUNG">
+                    <option id="NAC-String" linkId="NKW-String" text="String" wert="0"/>
+                </auswahl>
+            </nachteile>
+            <sonderf>
+                <fest id="SF-String" linkId="AUS-String" text="String" wert="0"/>
+                <auswahl werte="5" anzahl="2" modus="LISTE">
+                    <option id="SF-String" linkId="SLD-String" text="String" wert="0"/>
+                </auswahl>
+            </sonderf>
+            <liturgien>
+                <fest id="LIT-String" linkId="RUE-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="3" anzahl="2" modus="VERTEILUNG">
+                    <option id="LIT-String" linkId="DAE-String" text="String" wert="0"/>
+                </auswahl>
+            </liturgien>
+            <goetterRituale>
+                <fest id="RIT-String" linkId="SGA-String" text="String" wert="0"/>
+                <auswahl werte="3 5" anzahl="2" modus="ANZAHL">
+                    <option id="RIT-String" text="String" wert="0"/>
+                </auswahl>
+            </goetterRituale>
+            <empfVorteile ids="VOR-String VOR-String">
+                <linkId id="VOR-String" linkId="ZPR-String" text="String" wert="0"/>
+            </empfVorteile>
+            <empfNachteile ids="NAC-String">
+                <linkId id="NAC-String" linkId="GAB-String" text="String" wert="0"/>
+            </empfNachteile>
+            <ungeVorteile ids="VOR-String VOR-String">
+                <linkId id="GAB-String" text="String" wert="0"/>
+            </ungeVorteile>
+            <ungeNachteile ids="VOR-String VOR-String SFT-String"/>
+            <verbilligteVorteile ids="VOR-String VOR-String">
+                <linkId id="SPR-String" text="String" wert="0"/>
+            </verbilligteVorteile>
+            <verbilligteNachteile ids="VOR-String VOR-String">
+                <linkId id="FAH-String" text="String"/>
+            </verbilligteNachteile>
+            <verbilligteSonderf ids="VOR-String VOR-String">
+                <linkId id="AUS-String" wert="0"/>
+            </verbilligteSonderf>
+            <verbilligteLiturgien ids="VOR-String VOR-String">
+                <linkId id="LIT-String" text="String" wert="0"/>
+            </verbilligteLiturgien>
+            <verbilligteRituale ids="VOR-String VOR-String">
+                <linkId id="RIT-String" linkId="GOT-String" wert="0"/>
+            </verbilligteRituale>
+            <talente>
+                <fest id="TAL-String" linkId="TAL-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="3 2" anzahl="2" modus="LISTE">
+                    <option id="TAL-String" linkId="TAL-String" text="String" wert="0"/>
+                </auswahl>
+            </talente>
+            <magie>
+                <hauszauber>
+                    <fest id="ZAU-String" linkId="ZAU-String" wert="3"/>
+                    <auswahl werte="3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </hauszauber>
+                <zauber>
+                    <fest id="ZAU-String" wert="3"/>
+                    <fest id="ZAU-String" wert="4"/>
+                    <fest id="ZAU-String" wert="5"/>
+                    <auswahl werte="2 3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </zauber>
+                <aktivierbareZauber>
+                    <fest id="ZAU-String" wert="3"/>
+                    <fest id="ZAU-String" wert="4"/>
+                    <fest id="ZAU-String" wert="5"/>
+                    <auswahl werte="2 3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </aktivierbareZauber>
+                <zauberNichtZuBegin ids="ZAU-String ZAU-String"/>
+            </magie>
+            <region>REG-String</region>
+            <professionUeblich ids="PRO-String PRO-String PRO-String"/>
+            <professionMoeglich ids="PRO-String PRO-String PRO-String"/>
+            <muttersprache>
+                <fest id="SPR-String" text="String" wert="7"/>
+                <auswahl werte="5" anzahl="2" modus="LISTE">
+                    <option id="SPR-String"/>
+                    <option id="SPR-String"/>
+                </auswahl>
+            </muttersprache>
+            <zweitsprache>
+                <fest id="SPR-String" text="String" wert="7"/>
+                <auswahl werte="5" anzahl="2" modus="LISTE">
+                    <option id="SPR-String"/>
+                    <option id="SPR-String"/>
+                </auswahl>
+            </zweitsprache>
+            <sprachen>
+                <fest id="SPR-String" text="String" wert="7"/>
+                <auswahl werte="5" anzahl="2" modus="LISTE">
+                    <option id="SPR-String"/>
+                    <option id="SPR-String"/>
+                    <optionsGruppe>
+                        <option id="SPR-String"/>
+                        <option id="SPR-String"/>
+                    </optionsGruppe>
+                </auswahl>
+            </sprachen>
+            <schriften>
+                <fest id="SFT-String" wert="0"/>
+                <auswahl werte="5" anzahl="2" modus="ANZAHL">
+                    <option id="SFT-String" wert="0"/>
+                    <option id="SFT-String" wert="0"/>
+                    <option id="SFT-String" wert="0"/>
+                </auswahl>
+            </schriften>
+            <ausruestung>
+                <fest>
+                    <ausruestungLink id="NKW-String" text="String" wert="3"/>
+                    <ausruestungLink id="SLD-String" text="String" wert="3"/>
+                    <ausruestungNeu id="SIM-temp" name="String" anzahl="2" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>100</gewicht>
+                        <wert>78</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </fest>
+                <auswahl anzahl="2">
+                    <ausruestungLink id="NKW-String" text="String" wert="3"/>
+                    <ausruestungLink id="SLD-String" text="String" wert="3"/>
+                    <ausruestungNeu id="SIM-temp" name="String" anzahl="2" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>100</gewicht>
+                        <wert>78</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </auswahl>
+            </ausruestung>
+        </kultur>
+    </kulturen>
+    <professionen>
+        <profession id="PRO-String" name="String" aufwand="zeitaufwendig">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gp>1</gp>
+            <varianteVon>PRO-String</varianteVon>
+            <geschlecht>M</geschlecht>
+            <eigenschaftModi>
+                <fest id="EIG-MU" wert="2"/>
+                <auswahl werte="1 2" anzahl="1" modus="LISTE">
+                    <option id="EIG-MU" wert="1"/>
+                    <option id="EIG-MU" wert="2"/>
+                </auswahl>
+            </eigenschaftModi>
+            <soGrenzen soMin="1" soMax="10"/>
+            <voraussetzung>
+                <fest id="EIG-MU" wert="14"/>
+                <auswahl>
+                    <option id="SF-String" linkId="VOR-String" text="String" wert="3"/>
+                    <option id="SF-String" linkId="NAC-String" text="String" wertGrenze="max"/>
+                </auswahl>
+            </voraussetzung>
+            <vorteile>
+                <fest id="VOR-String" text="String" wert="0"/>
+                <auswahl werte="3 5" anzahl="2" modus="LISTE">
+                    <option id="VOR-String" linkId="NAC-String" text="String" wert="0"/>
+                    <option id="VOR-String"/>
+                    <optionsGruppe>
+                        <option id="VOR-String"/>
+                        <option id="VOR-String"/>
+                    </optionsGruppe>
+                </auswahl>
+            </vorteile>
+            <nachteile>
+                <fest id="NAC-String" linkId="NAC-String" text="String" wert="0"/>
+                <auswahl werte="3" anzahl="2" modus="LISTE">
+                    <option id="NAC-String" linkId="NAC-String" text="String" wert="0"/>
+                </auswahl>
+            </nachteile>
+            <sonderf>
+                <fest id="SF-String" text="String" wert="0"/>
+                <auswahl werte="3 4" anzahl="2" modus="LISTE">
+                    <option id="SF-String" text="String" wert="0"/>
+                </auswahl>
+            </sonderf>
+            <liturgien>
+                <fest id="LIT-String"/>
+                <auswahl werte="3 4" anzahl="2" modus="LISTE">
+                    <option id="LIT-String" wert="0"/>
+                </auswahl>
+            </liturgien>
+            <goetterRituale>
+                <fest id="RIT-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="1" anzahl="2" modus="LISTE">
+                    <option id="RIT-String" text="String" wert="0"/>
+                </auswahl>
+            </goetterRituale>
+            <empfVorteile ids="VOR-String VOR-String">
+                <linkId id="VOR-String" linkId="VOR-String" text="String" wert="0"/>
+            </empfVorteile>
+            <empfNachteile ids="NAC-String">
+                <linkId id="NAC-String" linkId="VOR-String" text="String" wert="0"/>
+            </empfNachteile>
+            <ungeVorteile ids="VOR-String">
+                <linkId id="VOR-String" linkId="NAC-String" text="String" wert="0"/>
+            </ungeVorteile>
+            <ungeNachteile ids="NAC-String NAC-String">
+                <linkId id="NAC-String" text="String" wert="0"/>
+            </ungeNachteile>
+            <verbilligteVorteile ids="VOR-String">
+                <linkId id="VOR-String" text="String" wert="0"/>
+            </verbilligteVorteile>
+            <verbilligteNachteile ids="NAC-String NAC-String NAC-String NAC-String">
+                <linkId id="NAC-String" linkId="NAC-String" text="String" wert="0"/>
+            </verbilligteNachteile>
+            <verbilligteSonderf ids="SF-String SF-String">
+                <linkId id="SF-String" linkId="SF-String" text="String" wert="0"/>
+            </verbilligteSonderf>
+            <verbilligteLiturgien ids="LIT-String LIT-String">
+                <linkId id="LIT-String" linkId="LIT-String" text="String" wert="0"/>
+            </verbilligteLiturgien>
+            <verbilligteRituale ids="RIT-String">
+                <linkId id="RIT-String" linkId="RIT-String" text="String" wert="0"/>
+            </verbilligteRituale>
+            <talente>
+                <fest id="TAL-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="1 2" anzahl="2" modus="LISTE">
+                    <option id="TAL-String" text="String" wert="0"/>
+                </auswahl>
+            </talente>
+            <magie repraesentId="REP-String">
+                <hauszauber>
+                    <fest id="ZAU-String" linkId="ZAU-String" wert="3"/>
+                    <auswahl werte="3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </hauszauber>
+                <zauber>
+                    <fest id="ZAU-String" wert="3"/>
+                    <fest id="ZAU-String" wert="4"/>
+                    <fest id="ZAU-String" wert="5"/>
+                    <auswahl werte="2 3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </zauber>
+                <aktivierbareZauber>
+                    <fest id="ZAU-String" wert="3"/>
+                    <fest id="ZAU-String" wert="4"/>
+                    <fest id="ZAU-String" wert="5"/>
+                    <auswahl werte="2 3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </aktivierbareZauber>
+                <zauberNichtZuBegin ids="ZAU-String ZAU-String"/>
+            </magie>
+            <art>handwerklich</art>
+            <magierAkademie>
+                <gilde>weiss</gilde>
+                <merkmale>antimagie</merkmale>
+                <zweitStudiumMoeglich>false</zweitStudiumMoeglich>
+                <drittStudiumMoeglich>true</drittStudiumMoeglich>
+                <anmerkung>String</anmerkung>
+            </magierAkademie>
+            <geweiht gottheitId="GOT-String">
+                <modis>
+                    <fest id="LRK-String" text="String" wert="0"/>
+                    <auswahl werte="2 4" anzahl="2" modus="LISTE">
+                        <option id="LRK-String" linkId="LRK-String" text="String" wert="0" leitwert="true"/>
+                    </auswahl>
+                </modis>
+            </geweiht>
+            <verboteVT ids="VOR-String VOR-String">
+                <linkId id="VOR-String" linkId="VOR-String" text="String" wert="0"/>
+            </verboteVT>
+            <verboteNT ids="NAC-String NAC-String">
+                <linkId id="NAC-String" linkId="VOR-String" text="String" wert="0"/>
+            </verboteNT>
+            <verboteSF ids="SF-String SF-String">
+                <linkId id="SF-String" linkId="SF-String" text="String" wert="0"/>
+            </verboteSF>
+            <sprachen>
+                <fest id="SPR-String" text="String" wert="0"/>
+                <auswahl werte="5 6" anzahl="2" modus="LISTE">
+                    <option id="SPR-String" linkId="SPR-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </sprachen>
+            <schriften>
+                <fest id="SFT-String" linkId="SFT-String" text="String" wert="0"/>
+                <auswahl werte="7 8" anzahl="2" modus="LISTE">
+                    <option id="SFT-String" linkId="SFT-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </schriften>
+            <ausruestung>
+                <fest>
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>1</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </fest>
+                <auswahl anzahl="2">
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" anzahl="3" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>2</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </auswahl>
+            </ausruestung>
+            <besondererBesitz>
+                <fest>
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" anzahl="3" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>3</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </fest>
+                <auswahl anzahl="2">
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" anzahl="4" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>5</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </auswahl>
+            </besondererBesitz>
+        </profession>
+    </professionen>
+    <zusatzProfessionen>
+        <zusatzProfession id="ZPR-String" name="String" aufwand="zeitaufwendig" apKosten="10" zusatzArt="spaeteProf">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gp>1</gp>
+            <varianteVon>PRO-String</varianteVon>
+            <geschlecht>M</geschlecht>
+            <eigenschaftModi>
+                <fest id="EIG-MU" wert="2"/>
+                <auswahl werte="1 2" anzahl="1" modus="LISTE">
+                    <option id="EIG-MU" wert="1"/>
+                    <option id="EIG-MU" wert="2"/>
+                </auswahl>
+            </eigenschaftModi>
+            <soGrenzen soMin="1" soMax="10"/>
+            <voraussetzung>
+                <fest id="EIG-MU" wert="14"/>
+                <auswahl>
+                    <option id="SF-String" linkId="VOR-String" text="String" wert="3"/>
+                    <option id="SF-String" linkId="NAC-String" text="String" wertGrenze="max"/>
+                </auswahl>
+            </voraussetzung>
+            <vorteile>
+                <fest id="VOR-String" text="String" wert="0"/>
+                <auswahl werte="3 5" anzahl="2" modus="LISTE">
+                    <option id="VOR-String" linkId="NAC-String" text="String" wert="0"/>
+                </auswahl>
+            </vorteile>
+            <nachteile>
+                <fest id="NAC-String" linkId="NAC-String" text="String" wert="0"/>
+                <auswahl werte="3" anzahl="2" modus="LISTE">
+                    <option id="NAC-String" linkId="NAC-String" text="String" wert="0"/>
+                </auswahl>
+            </nachteile>
+            <sonderf>
+                <fest id="SF-String" text="String" wert="0"/>
+                <auswahl werte="3 4" anzahl="2" modus="LISTE">
+                    <option id="SF-String" text="String" wert="0"/>
+                </auswahl>
+            </sonderf>
+            <liturgien>
+                <fest id="LIT-String"/>
+                <auswahl werte="3 4" anzahl="2" modus="LISTE">
+                    <option id="LIT-String" wert="0"/>
+                </auswahl>
+            </liturgien>
+            <goetterRituale>
+                <fest id="RIT-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="1" anzahl="2" modus="LISTE">
+                    <option id="RIT-String" text="String" wert="0"/>
+                </auswahl>
+            </goetterRituale>
+            <empfVorteile ids="VOR-String VOR-String">
+                <linkId id="VOR-String" linkId="VOR-String" text="String" wert="0"/>
+            </empfVorteile>
+            <empfNachteile ids="NAC-String">
+                <linkId id="NAC-String" linkId="VOR-String" text="String" wert="0"/>
+            </empfNachteile>
+            <ungeVorteile ids="VOR-String">
+                <linkId id="VOR-String" linkId="NAC-String" text="String" wert="0"/>
+            </ungeVorteile>
+            <ungeNachteile ids="NAC-String NAC-String">
+                <linkId id="NAC-String" text="String" wert="0"/>
+            </ungeNachteile>
+            <verbilligteVorteile ids="VOR-String">
+                <linkId id="VOR-String" text="String" wert="0"/>
+            </verbilligteVorteile>
+            <verbilligteNachteile ids="NAC-String NAC-String NAC-String NAC-String">
+                <linkId id="NAC-String" linkId="NAC-String" text="String" wert="0"/>
+            </verbilligteNachteile>
+            <verbilligteSonderf ids="SF-String SF-String">
+                <linkId id="SF-String" linkId="SF-String" text="String" wert="0"/>
+            </verbilligteSonderf>
+            <verbilligteLiturgien ids="LIT-String LIT-String">
+                <linkId id="LIT-String" linkId="LIT-String" text="String" wert="0"/>
+            </verbilligteLiturgien>
+            <verbilligteRituale ids="RIT-String">
+                <linkId id="RIT-String" linkId="RIT-String" text="String" wert="0"/>
+            </verbilligteRituale>
+            <talente>
+                <fest id="TAL-String" text="String" wert="0" leitwert="true"/>
+                <auswahl werte="1 2" anzahl="2" modus="LISTE">
+                    <option id="TAL-String" text="String" wert="0"/>
+                </auswahl>
+            </talente>
+            <magie>
+                <hauszauber>
+                    <fest id="ZAU-String" linkId="ZAU-String" wert="3"/>
+                    <auswahl werte="3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </hauszauber>
+                <zauber>
+                    <fest id="ZAU-String" wert="3"/>
+                    <fest id="ZAU-String" wert="4"/>
+                    <fest id="ZAU-String" wert="5"/>
+                    <auswahl werte="2 3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </zauber>
+                <aktivierbareZauber>
+                    <fest id="ZAU-String" wert="3"/>
+                    <fest id="ZAU-String" wert="4"/>
+                    <fest id="ZAU-String" wert="5"/>
+                    <auswahl werte="2 3" anzahl="2" modus="LISTE">
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                        <option id="ZAU-String"/>
+                    </auswahl>
+                </aktivierbareZauber>
+                <zauberNichtZuBegin ids="ZAU-String ZAU-String"/>
+            </magie>
+            <art>handwerklich</art>
+            <magierAkademie>
+                <gilde>weiss</gilde>
+                <merkmale>antimagie</merkmale>
+                <anmerkung>String</anmerkung>
+            </magierAkademie>
+            <verboteVT ids="VOR-String VOR-String">
+                <linkId id="VOR-String" linkId="VOR-String" text="String" wert="0"/>
+            </verboteVT>
+            <verboteNT ids="NAC-String NAC-String">
+                <linkId id="NAC-String" linkId="VOR-String" text="String" wert="0"/>
+            </verboteNT>
+            <verboteSF ids="SF-String SF-String">
+                <linkId id="SF-String" linkId="SF-String" text="String" wert="0"/>
+            </verboteSF>
+            <sprachen>
+                <fest id="SPR-String" text="String" wert="0"/>
+                <auswahl werte="5 6" anzahl="2" modus="LISTE">
+                    <option id="SPR-String" linkId="SPR-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </sprachen>
+            <schriften>
+                <fest id="SFT-String" linkId="SFT-String" text="String" wert="0"/>
+                <auswahl werte="2 5" anzahl="2" modus="LISTE">
+                    <option id="SFT-String" linkId="SFT-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </schriften>
+            <ausruestung>
+                <fest>
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>7</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </fest>
+                <auswahl anzahl="2">
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" anzahl="3" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>9</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </auswahl>
+            </ausruestung>
+            <besondererBesitz>
+                <fest>
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" anzahl="3" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>3</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </fest>
+                <auswahl anzahl="2">
+                    <ausruestungLink id="AUS-String" linkId="AUS-String" text="String" wert="0"/>
+                    <ausruestungNeu id="SIM-temp" name="AUS-String" einordnung="String" anzahl="4" art="AUS">
+                        <beschreibung>String</beschreibung>
+                        <sonderregel id="SR-String">String</sonderregel>
+                        <regelAnmerkungen>
+                            <regel modus="regel">String</regel>
+                        </regelAnmerkungen>
+                        <sammelbegriff>String</sammelbegriff>
+                        <gewicht>1</gewicht>
+                        <wert>2</wert>
+                        <erhaeltlichBei>REG-String</erhaeltlichBei>
+                    </ausruestungNeu>
+                </auswahl>
+            </besondererBesitz>
+            <professionUeblich ids="PRO-String PRO-String PRO-String"/>
+            <professionMoeglich ids="PRO-String PRO-String PRO-String"/>
+        </zusatzProfession>
+    </zusatzProfessionen>
+    <vorteile>
+        <vorteil id="VOR-String" name="String" gp="0">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <sammelbegriff>String</sammelbegriff>
+            <addition id="VOR-String" wertigkeit="1"/>
+            <hatText>true</hatText>
+            <fuerWelcheChars>alle</fuerWelcheChars>
+            <voraussetzungen>
+                <fest id="SF-String" linkId="SF-String" text="String" wert="0"/>
+                <auswahl>
+                    <option id="SF-String" linkId="VOR-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </voraussetzungen>
+            <istMehrfachWaehlbar>2</istMehrfachWaehlbar>
+            <stufenGrenzen minStufe="5" maxStufe="10"/>
+            <verbietetVorteil ids="VOR-String VOR-String">
+                <linkId id="VOR-String" text="String"/>
+            </verbietetVorteil>
+            <verbietetNachteil ids="NAC-String NAC-String">
+                <linkId id="NAC-String" linkId="NAC-String" text="String"/>
+            </verbietetNachteil>
+            <aendertApSf>
+                <linkId id="SF-String" text="String" wert="230"/>
+            </aendertApSf>
+            <aendertGpVorteil>
+                <linkId id="VOR-String" text="String" wert="5"/>
+            </aendertGpVorteil>
+            <aendertGpNachteil>
+                <linkId id="NAC-String" text="String" wert="60"/>
+            </aendertGpNachteil>
+        </vorteil>
+    </vorteile>
+    <vorteileGaben>
+        <gabe id="GAB-String" name="String" kostenKlasse="A">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <probenWurf eigen1="EIG-MU" eigen2="EIG-KL" eigen3="EIG-FF"/>
+        </gabe>
+    </vorteileGaben>
+    <nachteile>
+        <nachteil id="NAC-String" name="String" gp="0">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <addition id="NAC-String" wertigkeit="1"/>
+            <hatText>true</hatText>
+            <fuerWelcheChars>alle</fuerWelcheChars>
+            <voraussetzungen>
+                <fest id="TAL-String" linkId="TAL-String" text="String" wert="0"/>
+                <auswahl>
+                    <option id="NAC-String" linkId="SF-String" text="String" wert="0" leitwert="true"/>
+                </auswahl>
+            </voraussetzungen>
+            <stufenGrenzen maxStufe="3"/>
+            <verbietetVorteil ids="VOR-String VOR-String"/>
+            <verbietetNachteil ids="NAC-String NAC-String">
+                <linkId id="NAC-String" linkId="NAC-String" text="String"/>
+            </verbietetNachteil>
+            <aendertApSf>
+                <linkId id="SF-String" text="String" wert="230"/>
+            </aendertApSf>
+            <aendertGpVorteil>
+                <linkId id="VOR-String" text="String" wert="5"/>
+            </aendertGpVorteil>
+            <aendertGpNachteil>
+                <linkId id="NAC-String" text="String" wert="60"/>
+            </aendertGpNachteil>
+            <istSchlechteEigen>true</istSchlechteEigen>
+        </nachteil>
+    </nachteile>
+    <sonderfertigkeiten>
+        <sonderf id="SF-String" name="String" gp="0" ap="1">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <addition id="SR-String" wertigkeit="1"/>
+            <fuerWelcheChars>alle</fuerWelcheChars>
+            <voraussetzungen>
+                <fest id="VOR-String" wert="0"/>
+                <auswahl>
+                    <option id="NAC-String" text="String" wert="0"/>
+                </auswahl>
+            </voraussetzungen>
+            <permAsP>1</permAsP>
+            <permKa>2</permKa>
+            <permLeP>3</permLeP>
+            <art>allgemein</art>
+        </sonderf>
+    </sonderfertigkeiten>
+    <liturgieRitualKenntnise>
+        <liRiKenntnis id="LRK-String" name="String" kostenKlasse="A">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <probenWurf eigen1="EIG-MU" eigen2="EIG-MU" eigen3="EIG-MU"/>
+            <istLiturgieKenntnis>false</istLiturgieKenntnis>
+        </liRiKenntnis>
+    </liturgieRitualKenntnise>
+    <talente>
+        <talent id="TAL-String" name="String" kostenKlasse="A">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <probenWurf eigen1="EIG-MU" eigen2="EIG-MU" eigen3="EIG-MU"/>
+            <einordnung art="basis" sorte="kampf"/>
+            <spezialisierungen>
+                <name>String1</name>
+                <name>String2</name>
+                <name>String3</name>
+            </spezialisierungen>
+            <voraussetzungTalent abWert="2">
+                <fest id="TAL-String" linkId="TAL-String" text="String" wert="0"/>
+                <fest id="TAL-String" text="String2" wert="10"/>
+                <auswahl>
+                    <option id="TAL-String" text="String" wert="10"/>
+                    <option id="TAL-String" text="String" wert="1"/>
+                </auswahl>
+            </voraussetzungTalent>
+        </talent>
+    </talente>
+    <sprachen>
+        <sprache id="SPR-String" name="String">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <daten kostenKlasse="A" komplexitaet="2"/>
+            <nichtMuttersprache kostenKlasse="A" komplexitaet="2"/>
+            <schriften ids="SFT-String SFT-String">
+                <linkId id="SFT-String" linkId="SFT-String" text="String"/>
+            </schriften>
+        </sprache>
+    </sprachen>
+    <schriften>
+        <schrift id="SFT-String" name="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <daten kostenKlasse="A" komplexitaet="2"/>
+        </schrift>
+    </schriften>
+    <zauber>
+        <zauber id="ZAU-String" name="String" kostenKlasse="C">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <probenWurf eigen1="EIG-MU" eigen2="EIG-MU" eigen3="EIG-MU"/>
+            <merkmale>beschwoerung</merkmale>
+            <merkmale>herrschaft</merkmale>
+            <verbreitung repraesentation="REP-String" wert="2"/>
+            <zauberdauer>String</zauberdauer>
+            <aspKosten>String</aspKosten>
+            <ziel>String</ziel>
+            <reichweite>String</reichweite>
+            <wirkungsdauer>String</wirkungsdauer>
+        </zauber>
+    </zauber>
+    <liturgien>
+        <liturgie id="LIT-String" name="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <grad>1</grad>
+            <additionsId>LIT-String</additionsId>
+            <gottheit>GOT-String</gottheit>
+        </liturgie>
+    </liturgien>
+    <rituale>
+        <ritual id="RIT-String" name="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <grad>1</grad>
+            <additionsId>String</additionsId>
+            <gottheit>GOT-String</gottheit>
+        </ritual>
+    </rituale>
+    <ausruestung>
+        <gegenstand id="AUS-String" name="String" einordnung="String">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gewicht>1</gewicht>
+            <wert>1</wert>
+            <erhaeltlichBei>REG-String</erhaeltlichBei>
+            <istBehaelter>false</istBehaelter>
+            <haltbarkeit>String</haltbarkeit>
+        </gegenstand>
+    </ausruestung>
+    <fahrzeuge>
+        <fahrzeug id="FAH-String" name="String" einordnung="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gewicht>1</gewicht>
+            <wert>1</wert>
+            <erhaeltlichBei>REG-String</erhaeltlichBei>
+        </fahrzeug>
+    </fahrzeuge>
+    <nkWaffen>
+        <nkWaffe id="NKW-String" name="String" einordnung="String">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gewicht>1</gewicht>
+            <wert>1</wert>
+            <erhaeltlichBei>REG-String</erhaeltlichBei>
+            <tp W6="1" W20="1" plus="0" kk-ab="1" kk-stufe="1"/>
+            <eigenschaften laenge="1" ini="0" bf="0" dk="String"/>
+            <talentId>TAL-String</talentId>
+            <wm at="0" pa="0"/>
+        </nkWaffe>
+    </nkWaffen>
+    <fkWaffen>
+        <fkWaffe id="FKW-String" name="String" einordnung="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gewicht>1</gewicht>
+            <wert>1</wert>
+            <erhaeltlichBei>REG-String</erhaeltlichBei>
+            <tp W6="1" W20="1" plus="1" plus-reichweite="String"/>
+            <eigenschaften laenge="1" ini="0" laden="1" reichweite="1"/>
+            <talentId>TAL-String</talentId>
+        </fkWaffe>
+    </fkWaffen>
+    <ruestungen>
+        <ruestung id="RUE-String" name="String" einordnung="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gewicht>1</gewicht>
+            <wert>1</wert>
+            <erhaeltlichBei>REG-String</erhaeltlichBei>
+            <zonen ko="1" br="1" rue="1" ba="1" la="1" ra="1" lb="1" rb="1" ges="1"/>
+            <gRs>1</gRs>
+            <gBe>1</gBe>
+        </ruestung>
+    </ruestungen>
+    <schilde>
+        <schild id="SLD-String" name="String" einordnung="String">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <gewicht>1</gewicht>
+            <wert>1</wert>
+            <erhaeltlichBei>REG-String</erhaeltlichBei>
+            <typ>String</typ>
+            <eigenschaften bf="0" ini="0"/>
+            <wm at="0" pa="0"/>
+        </schild>
+    </schilde>
+    <daemonenPakte>
+        <pakt id="DAE-String" name="String">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <daemon name="String" paktzuschlag="1" kosten="1"/>
+            <verbilligteEigenschaften ids="EIG-MU EIG-MU">
+                <linkId id="EIG-MU" linkId="SGA-String" text="String" wert="0"/>
+            </verbilligteEigenschaften>
+            <verbilligteVorteile ids="VOR-String VOR-String VOR-String">
+                <linkId id="VOR-String" linkId="VOR-String" text="String" wert="0"/>
+            </verbilligteVorteile>
+            <verbilligteSonderf ids="SF-String SF-String SF-String">
+                <linkId id="SF-String" linkId="SF-String" text="String" wert="0"/>
+            </verbilligteSonderf>
+            <verbilligteTalente ids="TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String TAL-String">
+                <linkId id="TAL-String" linkId="TAL-String" text="String" wert="0"/>
+            </verbilligteTalente>
+            <verbilligteZauber ids="ZAU-String ZAU-String ZAU-String ZAU-String">
+                <linkId id="ZAU-String" linkId="ZAU-String" text="String" wert="0"/>
+            </verbilligteZauber>
+            <zauberMerkmal ids="REP-String REP-String REP-String">
+                <linkId id="REP-String" linkId="REP-String" text="String" wert="0"/>
+            </zauberMerkmal>
+            <schlechteEigenschaften ids="NAC-String">
+                <linkId id="NAC-String" linkId="NAC-String" text="String String String String String String String String String String" wert="0"/>
+            </schlechteEigenschaften>
+            <schwarzeGaben ids="SGA-String SGA-String">
+                <linkId id="SGA-String" linkId="SGA-String" text="String" wert="0"/>
+            </schwarzeGaben>
+        </pakt>
+    </daemonenPakte>
+    <schwarzeGaben>
+        <gabe id="SGA-String" name="String" kosten="1">
+            <beschreibung>String</beschreibung>
+            <anzeigen anzeigen="false">String</anzeigen>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+        </gabe>
+    </schwarzeGaben>
+    <regionen>
+        <region id="REG-String" name="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <bindeWort mann="String" frau="String"/>
+            <vornamenMann>
+                <name>String</name>
+            </vornamenMann>
+            <vornamenFrau>
+                <name>String</name>
+            </vornamenFrau>
+            <nachnamen>
+                <name>String</name>
+            </nachnamen>
+            <nachnamenEndung>
+                <endung>String</endung>
+            </nachnamenEndung>
+        </region>
+    </regionen>
+    <gottheiten>
+        <gottheit id="GOT-String" name="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <kenntnisArt>liturgie</kenntnisArt>
+            <gottheitArt>nichtAlveranisch</gottheitArt>
+        </gottheit>
+    </gottheiten>
+    <repraesentationen>
+        <repraesentation id="REP-String" name="String">
+            <beschreibung>String</beschreibung>
+            <sonderregel id="SR-String">String</sonderregel>
+            <regelAnmerkungen>
+                <regel modus="regel">String</regel>
+            </regelAnmerkungen>
+            <sammelbegriff>String</sammelbegriff>
+            <istEchteRep>false</istEchteRep>
+        </repraesentation>
+    </repraesentationen>
+</alricgXML>

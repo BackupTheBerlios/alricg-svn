@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ * Created on 23.01.2005
+ *
+ * This file is part of the project ALRICG. The file is copyright
+ * protected and under the GNU General Public License.
+ * For more information see "http://alricg.die3sphaere.de/".
+ *
+-->
+<xsd:schema targetNamespace="http://alricg.die3sphaere.de/lib/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://alricg.die3sphaere.de/lib/">
+	<xsd:element name="alricgXML">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="preamble">
+					<xsd:complexType>
+						<xsd:simpleContent>
+							<xsd:extension base="xsd:string">
+								<xsd:attribute name="version" type="xsd:string" use="required"/>
+								<xsd:attribute name="author" type="xsd:string" use="optional"/>
+							</xsd:extension>
+						</xsd:simpleContent>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="library">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="short" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="entry" type="entry" minOccurs="0" maxOccurs="unbounded"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="middle" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="entry" type="entry" minOccurs="0" maxOccurs="unbounded"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="long" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="entry" type="entry" minOccurs="0" maxOccurs="unbounded"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="errorMsg" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="entry" type="entry" minOccurs="0" maxOccurs="unbounded"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="toolTip" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="entry" type="entry" minOccurs="0" maxOccurs="unbounded"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="entry">
+		<xsd:sequence>
+			<xsd:element name="e" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="lang" type="xsd:string" use="required"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="key" type="xsd:string" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This file is part of the project ALRICG. -->
+<config>
+	<schemas basis="basis-schema.xsd" held="held-schema.xsd" 
+			library="library-schema.xsd"/>
+	<library file="library.xml" lang="DE"/>
+	<xmlRuleFilesD3S>
+		<readFile>test-kompletterDatensatz.xml</readFile>
+		<!-- <readFile>xmlOutputMuster.xml</readFile> -->
+	</xmlRuleFilesD3S>
+	<xmlRuleFilesUser readUserFiles="false"> 
+		<readFile>test.xml</readFile>
+	</xmlRuleFilesUser>
+
+	<regelConfig>
+		<!--
+			startGp	- Wieviele GP insgesamt zur Verfügung stehen
+			maxSchlechteEingenschaftGp - Maximale GP die durch schlechte Eigenschaften gewonnen werden können 
+			maxNachteilGp - Maximale GP die durch Nachteile gewonnen werden
+			maxGpEigenschaften - Maximale GP die auf Eigenschaften (MU, KL, usw) verteilt werdem dürfen
+			maxEigenchafWert - Maximaler Wert von Eigenschaften ohne Modis (Z.B. durch Herkunft, Vorteile)
+			minEigenchafWert- Minimaler Wert von Eigenschaften ohne Modis (Z.B. durch Herkunft, Nachteile)
+			maxSozialstatus - Maximaler Wert des Sozialstatus ohne Modis (Z.B. durch Herkunft, Vorteile)
+			faktorTalentGp - Faktor für berechnung der TalentGP; (KL+IN) * faktorTalentGp = TalentGP
+			maxTalentAktivierung- Maximale Anzahl an Talenten die aktiviert werden können
+			maxZauberAktivierungVZ- Maximale Anzahl an Zaubern für VOLLzauberer die aktiviert werden können
+			maxZauberAktivierungHZ - Maximale Anzahl an Zaubern für HALBzauberer die aktiviert werden können
+			diffKlugheitMuttersprache - Abhängigkeit der Muttersprache von der Klugheit (KL - diffKlugheitMuttersprache = Talentwert)
+			diffKlugheitZweitsprache - Abhängigkeit der Zweitsprache von der Klugheit (KL - diffKlugheitZweitsprache = Talentwert)
+			maxDiffAT-PA - Maximale Differenz unterschied bei der Verteilung der Talentpunkte auf AT und PA	
+			
+			skt - Wenn das Attribut "useOriginal" auf "false" steht, wird kann hier eine SKT angegeben werden.
+				Die SKT MUSS im selben format wie "originalSkt" vorliegen, also von z0 - z31 und 
+				jeweils von A - H.
+			
+			Noch nicht vollständig! Nur Generierung bisher berücksichtigt!
+		-->
+		
+		<benutztesPackage id="original"/>
+		<originalSkt>
+			<z0  A="1"   B="2"   C="3"   D="4"   E="5"   F="8"   G="10"  H="20"/>
+			<z1  A="1"   B="2"   C="2"   D="3"   E="4"   F="6"   G="8"   H="16"/>
+			<z2  A="2"   B="4"   C="6"   D="7"   E="9"   F="14"  G="18"  H="35"/>
+			<z3  A="3"   B="6"   C="9"   D="12"  E="15"  F="22"  G="30"  H="60"/>
+			<z4  A="4"   B="8"   C="13"  D="17"  E="21"  F="32"  G="42"  H="85"/>
+			<z5  A="6"   B="11"  C="17"  D="22"  E="28"  F="41"  G="55"  H="110"/>
+			<z6  A="7"   B="14"  C="21"  D="27"  E="34"  F="50"  G="70"  H="140"/>
+			<z7  A="8"   B="17"  C="25"  D="33"  E="41"  F="60"  G="85"  H="165"/>
+			<z8  A="10"  B="19"  C="29"  D="39"  E="48"  F="75"  G="95"  H="195"/>
+			<z9  A="11"  B="22"  C="34"  D="45"  E="55"  F="85"  G="110" H="220"/>
+			<z10 A="13"  B="25"  C="38"  D="50"  E="65"  F="95"  G="125" H="250"/>
+			<z11 A="14"  B="28"  C="43"  D="55"  E="70"  F="105" G="140" H="280"/>
+			<z12 A="16"  B="32"  C="47"  D="65"  E="80"  F="120" G="160" H="320"/>
+			<z13 A="17"  B="35"  C="51"  D="70"  E="85"  F="130" G="175" H="350"/>
+			<z14 A="19"  B="38"  C="55"  D="75"  E="95"  F="140" G="190" H="380"/>
+			<z15 A="21"  B="41"  C="60"  D="85"  E="105" F="155" G="210" H="410"/>
+			<z16 A="22"  B="45"  C="65"  D="90"  E="110" F="165" G="220" H="450"/>
+			<z17 A="24"  B="48"  C="70"  D="95"  E="120" F="180" G="240" H="480"/>
+			<z18 A="26"  B="51"  C="75"  D="105" E="130" F="195" G="260" H="510"/>
+			<z19 A="27"  B="55"  C="80"  D="110" E="135" F="210" G="270" H="550"/>
+			<z20 A="29"  B="58"  C="85"  D="115" E="145" F="220" G="290" H="580"/>
+			<z21 A="31"  B="62"  C="95"  D="125" E="155" F="230" G="310" H="620"/>
+			<z22 A="33"  B="65"  C="100" D="130" E="165" F="250" G="330" H="650"/>
+			<z23 A="34"  B="69"  C="105" D="140" E="170" F="260" G="340" H="690"/>
+			<z24 A="36"  B="73"  C="110" D="145" E="180" F="270" G="360" H="720"/>
+			<z25 A="38"  B="76"  C="115" D="150" E="190" F="290" G="380" H="760"/>
+			<z26 A="40"  B="80"  C="120" D="160" E="200" F="300" G="400" H="800"/>
+			<z27 A="42"  B="84"  C="125" D="165" E="210" F="310" G="420" H="830"/>
+			<z28 A="44"  B="87"  C="130" D="170" E="220" F="330" G="440" H="870"/>
+			<z29 A="45"  B="91"  C="135" D="180" E="230" F="340" G="460" H="910"/>
+			<z30 A="47"  B="95"  C="140" D="190" E="240" F="350" G="480" H="950"/>
+			<z31 A="50"  B="100" C="150" D="200" E="250" F="375" G="500" H="1000"/>			
+		</originalSkt>
+		
+		<package id="original">
+			<startGp wert="110"/>
+			<maxSchlechteEingenschaftGp wert="30"/>
+			<maxNachteilGp wert="50"/>
+			<maxGpEigenschaften wert="100"/>
+			<maxEigenschafWert wert="14"/>
+			<minEigenschafWert wert="8"/>
+			<maxSozialstatus wert="12"/>
+			<faktorTalentGp wert="20"/>
+			<maxTalentAktivierung wert="5"/>
+			<maxZauberAktivierungVZ wert="10"/>
+			<maxZauberAktivierungHZ wert="5"/>
+			<maxSchlechtEigenchafWert wert="12"/>
+			<minSchelchtEigenchafWert wert="5"/>
+			<diffKlugheitMuttersprache wert="-2"/>
+			<diffKlugheitZweitsprache wert="-4"/>
+			<maxDiffAT-PA wert="5"/>		
+			<skt useOriginal="true"/>
+		</package>
+		<package id="Ullis-Hausregeln">
+			<startGp wert="95"/>
+			<maxSchlechteEingenschaftGp wert="40"/>
+			<maxNachteilGp wert="60"/>
+			<maxGpEigenschaften wert="110"/>
+			<maxEigenschafWert wert="15"/>
+			<minEigenschafWert wert="8"/>
+			<maxSozialstatus wert="15"/>
+			<faktorTalentGp wert="25"/>
+			<maxTalentAktivierung wert="10"/>
+			<maxZauberAktivierungVZ wert="15"/>
+			<maxZauberAktivierungHZ wert="10"/>
+			<maxSchlechtEigenchafWert wert="15"/>
+			<minSchelchtEigenchafWert wert="1"/>
+			<diffKlugheitMuttersprache wert="0"/>
+			<diffKlugheitZweitsprache wert="-2"/>
+			<maxDiffAT-PA wert="10"/>	
+			<skt useOriginal="false">
+			</skt>
+		</package>
+	</regelConfig>
+	
+</config>

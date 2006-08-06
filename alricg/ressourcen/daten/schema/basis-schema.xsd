@@ -1,0 +1,1821 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ * Created on 17.12.2004
+ *
+ * This file is part of the project ALRICG. The file is copyright
+ * protected and under the GNU General Public License.
+ * For more information see "http://alricg.die3sphaere.de/".
+ *
+-->
+<xsd:schema targetNamespace="http://alricg.die3sphaere.de/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://alricg.die3sphaere.de/">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="DE">
+			Schema-file für ALRICG. Gibt die Strucktur der Charakter-Elemente vor.
+						
+			kommentar - Anmerkungen, die nur für Entwickler gedacht sind
+			beschreibung - Text der für Benutzer gedacht ist
+			benoetigtDateien - Namen von Dateien, auf die DIESE Datei zugreift
+				ordner - Gibt an, ob die Datei im User-Ordner oder 
+						 im "original" D3S-Ordner zu finden ist.
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- Einbinden der Basis Typen -->
+	<xsd:include schemaLocation="varTypen-schema.xsd"/>
+	<xsd:element name="alricgXML">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="preamble">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="kommentar" type="xsd:string" minOccurs="0"/>
+							<xsd:element name="autor" type="xsd:string" minOccurs="0"/>
+							<xsd:element name="benoetigtDateien" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="datei" minOccurs="0" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string">
+														<xsd:attribute name="ordner" use="required">
+															<xsd:simpleType>
+																<xsd:restriction base="xsd:string">
+																	<xsd:enumeration value="d3s"/>
+																	<xsd:enumeration value="user"/>
+																</xsd:restriction>
+															</xsd:simpleType>
+														</xsd:attribute>
+													</xsd:extension>
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="beschreibung" type="xsd:string" minOccurs="0"/>
+						</xsd:sequence>
+						<xsd:attribute name="name" type="xsd:string" use="required"/>
+						<xsd:attribute name="language" type="xsd:string" use="required"/>
+						<xsd:attribute name="version" type="xsd:string" use="required"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="rassen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="rasse" type="rasseTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="kulturen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="kultur" type="kulturTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="professionen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="profession" type="professionTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="zusatzProfessionen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="zusatzProfession" type="zusatzProfessionTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="vorteile" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="vorteil" type="vorteilTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="vorteileGaben" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="gabe" type="vorteilGabeTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="nachteile" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="nachteil" type="nachteilTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="sonderfertigkeiten" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="sonderf" type="sondefTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="liturgieRitualKenntnise" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="liRiKenntnis" type="sondefLiturgieRitualTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="talente" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="talent" type="talentTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="sprachen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="sprache" type="sprachTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="schriften" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="schrift" type="schriftTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="zauber" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="zauber" type="zauberTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="liturgien" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="liturgie" type="liturgieTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="rituale" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="ritual" type="ritualTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="ausruestung" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="gegenstand" type="ausruestungTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="fahrzeuge" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="fahrzeug" type="fahrzeugTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="nkWaffen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="nkWaffe" type="waffenTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="fkWaffen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="fkWaffe" type="fkWaffenTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="ruestungen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="ruestung" type="ruestungTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="schilde" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="schild" type="schildTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="daemonenPakte" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="pakt" type="daemonenPaktTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="schwarzeGaben" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="gabe" type="schwarzeGabeTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="tiere" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="tier" type="tierTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="regionen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="region" type="namensRegionTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="gottheiten" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="gottheit" type="gottheitTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="repraesentationen" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="repraesentation" type="repraesentationTyp" maxOccurs="unbounded"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- <xsd:element name="datenBasis" type="datenBasisTyp" minOccurs="0"/> -->
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ############################################ RASSE ########################################### -->
+	<xsd:complexType name="rasseTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				haarfarbe/anteil - Der Anteil an der W20 Wurf. Aufaddiert sollten die Anteile 20 ergeben 
+				geschwindigkeit - Die Geschwindigkeit dieser Rasse. DEFAULT: 8
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="herkunftTyp">
+				<xsd:sequence>
+					<xsd:element name="kulturUeblich" type="idListe" minOccurs="0"/>
+					<xsd:element name="kulturMoeglich" type="idListe" minOccurs="0"/>
+					<xsd:element name="geschwindigkeit" type="xsd:positiveInteger" minOccurs="0"/>
+					<xsd:element name="alter">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="wuerfel" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:attribute name="anzWuerfel" type="xsd:positiveInteger" use="required"/>
+										<xsd:attribute name="augenWuerfel" type="xsd:positiveInteger" use="required"/>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:attribute name="wert" type="xsd:positiveInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="groesse">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="wuerfel" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:attribute name="anzWuerfel" type="xsd:positiveInteger" use="required"/>
+										<xsd:attribute name="augenWuerfel" type="xsd:positiveInteger" use="required"/>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:attribute name="wert" type="xsd:positiveInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="gewichtModi">
+						<xsd:complexType>
+							<xsd:attribute name="wert" type="xsd:negativeInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="haarfarbe">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="farbe" maxOccurs="20">
+									<xsd:complexType>
+										<xsd:attribute name="farbe" type="xsd:string" use="required"/>
+										<xsd:attribute name="anteil" type="xsd:positiveInteger" use="required"/>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="augenfarbe">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="farbe" maxOccurs="20">
+									<xsd:complexType>
+										<xsd:attribute name="farbe" type="xsd:string" use="required"/>
+										<xsd:attribute name="anteil" type="xsd:positiveInteger" use="required"/>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="varianten" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="variante" type="rasseVarianteTyp" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ######################################## -->
+	<xsd:complexType name="rasseVarianteTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE"> 
+				entferneElement - Gibt die ID von einem Element an, das von der 
+					original-Herkunft entfernd werden soll dieses Element darf in 
+					KEINER Auswahl stehen.
+				entferneXmlTag - Entfernd einen kompletten XML-Tag von der Original-Herkunft
+				isMultibel - true - Diese Variante darf zusätzlich zu anderen Varianten gewählt
+					werden (also mehrere Varianten möglich), ansonsten false. 
+					DEFAULT: false
+				isAdditionsVariante - true - Diese Variante wird zum original "hinzuaddiert",
+						false - Diese Variante enthält alle Angaben der Herkunft und hat keinen
+						bezug zur original Herkunft
+						DEFAULT: true
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="rasseTyp">
+				<xsd:sequence>
+					<xsd:element name="entferneElement" type="idListe" minOccurs="0"/>
+					<xsd:element name="entferneXmlTag" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="isMultibel" type="xsd:boolean" use="optional"/>
+				<xsd:attribute name="isAdditionsVariante" type="xsd:boolean" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ KULTUR ########################################### -->
+	<xsd:complexType name="kulturTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				region - Die ID einer NamensRegion, aus dem der Name (Typischer Weise) stammt.
+				sprachen / schriften - Hier ist als ID auch erlaubt "SPR-mutterspr" /
+								 "SFT-muttersprache" und "SPR-zweitspr" / "SFT-zweitspr"
+				ausruestung - Nicht nur bei Profession (haben die Elfen)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="herkunftTyp">
+				<xsd:sequence>
+					<xsd:element name="region" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="professionUeblich" type="idListe" minOccurs="0"/>
+					<xsd:element name="professionMoeglich" type="idListe" minOccurs="0"/>
+					<xsd:element name="muttersprache" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="zweitsprache" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="lehrsprache" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="sprachen" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="schriften" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="ausruestung" type="auswahlGegenstandTyp" minOccurs="0"/>
+					<xsd:element name="varianten" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="variante" type="kulturVarianteTyp" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<!-- Bei Sprachen und schriften sind als ID auch erlaubt: "SPR-mutterspr" und "SFT-muttersprache" -->
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ######################################## -->
+	<xsd:complexType name="kulturVarianteTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				siehe bei Rasse
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="kulturTyp">
+				<xsd:sequence>
+					<xsd:element name="entferneElement" type="idListe" minOccurs="0"/>
+					<xsd:element name="entferneXmlTag" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="isMultibel" type="xsd:boolean" use="optional"/>
+				<xsd:attribute name="isAdditionsVariante" type="xsd:boolean" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ########################################## PROFESSION ######################################### -->
+	<xsd:complexType name="professionTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				geweiht - Falls die Profession geweiht ist
+					modi - Enthält eine von 5 IDs (LiturgieKenntnis, GeisterBannen, 
+						Geister Rufen, usw.) und die Mosifikation.
+						Zu welchem Ritus die weiligen SF (Liturgiekenntnis usw.) gehören
+						kann an dem attribut "ritus" abgelesen werden!
+				zweitStudiumMoeglich - Default: true		
+				drittStudiumMoeglich - Default: false
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="herkunftTyp">
+				<xsd:sequence>
+					<xsd:element name="art" minOccurs="0">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="handwerklich"/>
+								<xsd:enumeration value="kriegerisch"/>
+								<xsd:enumeration value="gesellschaftlich"/>
+								<xsd:enumeration value="wildnis"/>
+								<xsd:enumeration value="magisch"/>
+								<xsd:enumeration value="geweiht"/>
+								<xsd:enumeration value="schamanisch"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+						<!-- in erster Line für eine bessere Anordnung der Elemenet -->
+					</xsd:element>
+					<xsd:element name="magierAkademie" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="gilde" type="magierGildeTyp"/>
+								<xsd:element name="merkmale" type="magieMerkmaleTyp" minOccurs="0" maxOccurs="unbounded"/>
+								<xsd:element name="zweitStudiumMoeglich" type="xsd:boolean" minOccurs="0"/>
+								<xsd:element name="drittStudiumMoeglich" type="xsd:boolean" minOccurs="0"/>
+								<xsd:element name="anmerkung" type="xsd:string" minOccurs="0"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="geweiht" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="modis" type="auswahlTyp" minOccurs="0"/>
+							</xsd:sequence>
+							<xsd:attribute name="gottheitId" type="xsd:string" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="sprachen" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="schriften" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="ausruestung" type="auswahlGegenstandTyp" minOccurs="0"/>
+					<xsd:element name="besondererBesitz" type="auswahlGegenstandTyp" minOccurs="0"/>
+					<xsd:element name="varianten" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="variante" type="professionVarianteTyp" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="aufwand" use="optional">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="zeitaufwendig"/>
+							<xsd:enumeration value="erstprofession"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ######################################## -->
+	<xsd:complexType name="professionVarianteTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				siehe bei Rasse
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="professionTyp">
+				<xsd:sequence>
+					<xsd:element name="entferneElement" type="idListe" minOccurs="0"/>
+					<xsd:element name="entferneXmlTag" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="isMultibel" type="xsd:boolean" use="optional"/>
+				<xsd:attribute name="isAdditionsVariante" type="xsd:boolean" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ########################################## Zusatz PROFESSION ######################################### -->
+	<xsd:complexType name="zusatzProfessionTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				professionUeblich/Moeglich - Ist hier nichts angegeben, so sind ALLE Professionen möglich
+				zusatzArt - 
+					* spaeteProf - Späte Professionen können erst nach Char-Erschaffung gewählt werden! 
+									Z.B. der KOR-Geweihte
+					* zusatzProf - z.B. der Elfische Wanderer oder der Ferkina-Bessesene
+					"spaeteProfession" und "zusatzProfession" schließen sich aus! (Auch wenn der Korgeweihte
+					 als eine Art Zusatzprofession gewählt werden kann)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="professionTyp">
+				<xsd:sequence>
+					<xsd:element name="professionUeblich" type="idListe" minOccurs="0"/>
+					<xsd:element name="professionMoeglich" type="idListe" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="apKosten" type="xsd:nonNegativeInteger" use="optional"/>
+				<xsd:attribute name="zusatzArt" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="spaeteProf"/>
+							<xsd:enumeration value="zusatzProf"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Sonderfertigkeit ########################################### -->
+	<!-- sammelbegriffe: Repräsentation, Ritualkenntnis -->
+	<xsd:complexType name="sondefTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				ap - Kosten in Abenteuerpunkten -> AP = (GP / 50). Falls die AP nicht 
+					nach der Formel aus den GP errechnet werden können, werde sie hier 
+					etxra angegeben! 
+				permX - Kosten die beim erlernen permanent abgezogen werden!
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="fertigkeitTyp">
+				<xsd:sequence>
+					<xsd:element name="permAsP" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="permKa" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="permLeP" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="art">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="allgemein"/>
+								<xsd:enumeration value="waffenlosKampf"/>
+								<xsd:enumeration value="bewaffnetKampf"/>
+								<xsd:enumeration value="magisch"/>
+								<xsd:enumeration value="geweiht"/>
+								<xsd:enumeration value="schamanisch"/>
+								<xsd:enumeration value="sonstige"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="ap" type="xsd:nonNegativeInteger" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="sondefLiturgieRitualTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Für die Sonderfertigkeiten Liturgiekenntnis und Ritualkenntnis.
+				istLiturgie - true = Es handelt sich um Liturgiekenntnis / false = Es ist Ritualkenntnis
+						DEFAULT: true
+				//ritusId - Für welchen Gott / Volk / Kult steht diese Kenntnis
+				//kostenKlasseSpaet- Die Kostenklasse, die NACH der Generierung benutzt wird / 
+				//		ist dies Leer, so ist es dieselbe KostenK wie bei der Generierung
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="faehigkeitTyp">
+				<xsd:sequence>
+					<xsd:element name="istLiturgieKenntnis" type="xsd:boolean" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Vorteil ########################################### -->
+	<xsd:complexType name="vorteilTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				stufenGrenzen - Default: min 1/ max 1
+				kostenProSchritt - Wieviele GP pro Stufe gezahlt werden müssen (Default: 1)
+					Dies gilt ZUSÄTZLICH zu den festen Kosten
+				stufenSchritt - In welchen Schritten kann die Stufe angehoben werden
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="fertigkeitTyp">
+				<xsd:sequence>
+					<xsd:element name="stufenGrenzen" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="minStufe" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="maxStufe" type="xsd:nonNegativeInteger" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="aendertApSf" type="idListe" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="aendertGpVorteil" type="idListe" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="aendertGpNachteil" type="idListe" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="kostenProSchritt" type="xsd:nonNegativeInteger" use="optional"/>
+				<xsd:attribute name="stufenSchritt" type="xsd:nonNegativeInteger" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="vorteilGabeTyp">
+		<xsd:complexContent>
+			<xsd:extension base="faehigkeitTyp"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Nachteil ########################################### -->
+	<xsd:complexType name="nachteilTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Siehe bei Vorteile!
+				istSchlechteEigen - Default: false
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="fertigkeitTyp">
+				<xsd:sequence>
+					<xsd:element name="stufenGrenzen" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="minStufe" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="maxStufe" type="xsd:nonNegativeInteger" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="aendertApSf" type="idListe" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="aendertGpVorteil" type="idListe" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="aendertGpNachteil" type="idListe" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="istSchlechteEigen" type="xsd:boolean" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="kostenProSchritt" type="xsd:nonNegativeInteger" use="optional"/>
+				<xsd:attribute name="stufenSchritt" type="xsd:nonNegativeInteger" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Talent ########################################### -->
+	<xsd:complexType name="talentTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				spezialisierungen - mögliche Spezialisierungen
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="faehigkeitTyp">
+				<xsd:sequence>
+					<xsd:element name="einordnung">
+						<xsd:complexType>
+							<xsd:attribute name="art" use="required">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="basis"/>
+										<xsd:enumeration value="spezial"/>
+										<xsd:enumeration value="beruf"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="sorte" use="required">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="kampf"/>
+										<xsd:enumeration value="koerper"/>
+										<xsd:enumeration value="gesellschaft"/>
+										<xsd:enumeration value="natur"/>
+										<xsd:enumeration value="wissen"/>
+										<xsd:enumeration value="handwerk"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="spezialisierungen" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="name" type="xsd:string" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Sprache ########################################### -->
+	<xsd:complexType name="sprachTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				niichtMutterspr - Die Komplexität, die maximal erreicht werden kann, wenn die Sprache
+					NICHT Muttersprache ist.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="daten">
+						<xsd:complexType>
+							<xsd:attribute name="kostenKlasse" type="kostenKlasseTyp" use="required"/>
+							<xsd:attribute name="komplexitaet" type="xsd:positiveInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="nichtMuttersprache" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="kostenKlasse" type="kostenKlasseTyp" use="required"/>
+							<xsd:attribute name="komplexitaet" type="xsd:positiveInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="schriften" type="idListe" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Schrift ########################################### -->
+	<xsd:complexType name="schriftTyp">
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="daten">
+						<xsd:complexType>
+							<xsd:attribute name="kostenKlasse" type="kostenKlasseTyp" use="required"/>
+							<xsd:attribute name="komplexitaet" type="xsd:positiveInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Zauber ########################################### -->
+	<xsd:complexType name="zauberTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				bekanntBei - Welcher Repräsentation dieser Zauber bekannt ist, falls abweichend
+						von "repraesentation" (siehe unten)
+				repraesentation - IN welcher Repräsentation der Zauber bekannt ist
+				wert - mit welchem Wert 
+				
+				So kann z.N. "Hex(Mag)2" nachgebildet werden - Hexen bekannt in der Repräsentation
+				der Magier mit dem Wert 2 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="faehigkeitTyp">
+				<xsd:sequence>
+					<xsd:element name="merkmale" type="magieMerkmaleTyp" maxOccurs="unbounded"/>
+					<xsd:element name="verbreitung" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:attribute name="bekanntBei" type="xsd:string" use="optional"/>
+							<xsd:attribute name="repraesentation" type="xsd:string" use="required"/>
+							<xsd:attribute name="wert" use="required">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:positiveInteger">
+										<xsd:maxInclusive value="7"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="probenModi" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="zauberdauer" type="xsd:string"/>
+					<xsd:element name="aspKosten" type="xsd:string"/>
+					<xsd:element name="ziel" type="xsd:string"/>
+					<xsd:element name="reichweite" type="xsd:string"/>
+					<xsd:element name="wirkungsdauer" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Liturgien  ########################################### -->
+	<xsd:complexType name="liturgieTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				additionsId - Id von gleichartigen Liturgien, diese ist wichtig da
+					bei zusammengehörigen Liturgien kosten anderes berechnet werden
+				permanenteKaKosten - Es kann (evtl.) permanente KA kosten, wenn
+					eine Liturgie gelernt wird (NICHT Ausführung)
+				herkunft - 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="grad" type="xsd:nonNegativeInteger"/>
+					<xsd:element name="additionsId" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="gottheit" type="xsd:string" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Rituale ########################################### -->
+	<xsd:complexType name="ritualTyp">
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="grad" type="xsd:nonNegativeInteger"/>
+					<xsd:element name="additionsId" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="gottheit" type="xsd:string" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Tiere ########################################### -->
+	<xsd:complexType name="tierTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Für tierische Begeleiter und "Vertraute".
+				ausruestung.gegenstaende - Für Dinge die am Pferd sind
+				ausruestung.ruestung - Rüstung die das Pferd Trägt
+				aussehen - textuelle Beschreibung
+				aussehen.groesse - In Finger
+				aussehen.gewicht - In Unzen
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tier" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="eigenschaften" minOccurs="0">
+							<xsd:complexType>
+								<xsd:attribute name="MU" type="xsd:nonNegativeInteger" use="optional"/>
+								<xsd:attribute name="KL" type="xsd:nonNegativeInteger" use="optional"/>
+								<xsd:attribute name="IN" type="xsd:nonNegativeInteger" use="optional"/>
+								<xsd:attribute name="CH" type="xsd:nonNegativeInteger" use="optional"/>
+								<xsd:attribute name="FF" type="xsd:nonNegativeInteger" use="optional"/>
+								<xsd:attribute name="GE" type="xsd:nonNegativeInteger" use="optional"/>
+								<xsd:attribute name="KO" type="xsd:nonNegativeInteger" use="optional"/>
+								<xsd:attribute name="KK" type="xsd:nonNegativeInteger" use="optional"/>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="erweiterteEigenschaften">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="erEig1">
+										<xsd:complexType>
+											<xsd:attribute name="LeP" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="AsP" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="AuP" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="MR" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="INI" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="PA" type="xsd:nonNegativeInteger" use="required"/>
+										</xsd:complexType>
+									</xsd:element>
+									<xsd:element name="erEig2">
+										<xsd:complexType>
+											<xsd:attribute name="natRS" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="LO" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="GS" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="GW" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="TK" type="xsd:nonNegativeInteger" use="required"/>
+											<xsd:attribute name="ZK" type="xsd:nonNegativeInteger" use="required"/>
+										</xsd:complexType>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="angriff" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="DK" type="xsd:string" use="required"/>
+								<xsd:attribute name="TP" type="xsd:string" use="required"/>
+								<xsd:attribute name="AT" type="xsd:string" use="required"/>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="vorteile">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="vorteil" type="xsd:string"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="nachteile">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="nachteile" type="xsd:string"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="sonderfertigkeiten">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="sonderf" type="xsd:string"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="aussehen">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="gewicht" type="xsd:string" use="optional"/>
+										<xsd:attribute name="groesse" type="xsd:string" use="optional"/>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="anmerkung" type="xsd:string" minOccurs="0"/>
+					</xsd:sequence>
+					<xsd:attribute name="tierart" type="xsd:string" use="required"/>
+					<xsd:attribute name="namen" type="xsd:string" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ############################################ Ausrüstung ########################################### -->
+	<xsd:complexType name="ausruestungTyp">
+		<xsd:complexContent>
+			<xsd:extension base="gegenstandTyp">
+				<xsd:sequence>
+					<xsd:element name="istBehaelter" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="haltbarkeit" type="xsd:string" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Fahrzeuge ########################################### -->
+	<xsd:complexType name="fahrzeugTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Für Wagen und karren.
+				fahrzeugArt - z.B. Ruderboot, Kastenwagen
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="gegenstandTyp">
+				<xsd:sequence>
+					<xsd:element name="fahrzeug" minOccurs="0" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="aussehen" type="xsd:string"/>
+							</xsd:sequence>
+							<xsd:attribute name="fahrzeugArt" type="xsd:string" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Waffen ########################################### -->
+	<xsd:complexType name="waffenTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				tp-W6 - Anzahl an W6
+				tp-W20 - Anzahl an W20
+				tp-plus - Hinzuaddierte Trefferpunkte
+				tp-kk-ab - Ab wann es einen +1 Trefferpunkte-Bonus gibt
+				tp-kk-stufe - Ab wann es weiter (ja +1) TP-Boni gibt
+				wm-at - WM auf AT
+				wm-pa - WM auf PA
+				talentId - Mit welchen Talent(en) diese Waffe angewendet werden kann.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="gegenstandTyp">
+				<xsd:sequence>
+					<xsd:element name="tp" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="W6" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="W20" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="plus" type="xsd:int" use="required"/>
+							<xsd:attribute name="kk-ab" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="kk-stufe" type="xsd:nonNegativeInteger" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="eigenschaften" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="laenge" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="ini" type="xsd:int" use="optional"/>
+							<xsd:attribute name="bf" type="xsd:int" use="optional"/>
+							<xsd:attribute name="dk" type="xsd:string" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="talentId" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="wm" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="at" type="xsd:int" use="required"/>
+							<xsd:attribute name="pa" type="xsd:int" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ FK-Waffen ########################################### -->
+	<xsd:complexType name="fkWaffenTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				tp-W6 - Anzahl an W6
+				tp-W20 - Anzahl an W20
+				tp-plus - Hinzuaddierte Trefferpunkte
+				talentId - Mit welchen Talent(en) diese Waffe angewendet werden kann.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="gegenstandTyp">
+				<xsd:sequence>
+					<xsd:element name="tp" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="W6" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="W20" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="plus" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="plus-reichweite" type="xsd:string" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="eigenschaften" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="laenge" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="ini" type="xsd:int" use="optional"/>
+							<xsd:attribute name="laden" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="reichweite" type="xsd:nonNegativeInteger" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="talentId" type="xsd:string" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="geschossTyp">
+		<xsd:complexContent>
+			<xsd:extension base="gegenstandTyp">
+				<xsd:sequence>
+					<xsd:element name="fuerWaffe" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Schilder ########################################### -->
+	<xsd:complexType name="schildTyp">
+		<xsd:complexContent>
+			<xsd:extension base="gegenstandTyp">
+				<xsd:sequence>
+					<xsd:element name="typ" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="eigenschaften" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="bf" type="xsd:int" use="optional"/>
+							<xsd:attribute name="ini" type="xsd:int" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="wm" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="at" type="xsd:int" use="required"/>
+							<xsd:attribute name="pa" type="xsd:int" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Rüstungen ########################################### -->
+	<xsd:complexType name="ruestungTyp">
+		<xsd:complexContent>
+			<xsd:extension base="gegenstandTyp">
+				<xsd:sequence>
+					<xsd:element name="zonen" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="ko" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="br" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="rue" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="ba" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="la" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="ra" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="lb" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="rb" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="ges" type="xsd:nonNegativeInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="gRs" type="xsd:nonNegativeInteger"/>
+					<xsd:element name="gBe" type="xsd:nonNegativeInteger"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Namensregionen ########################################### -->
+	<xsd:complexType name="namensRegionTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Steht für eine Region/ Volk mit ihren typischen Namen.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="bindeWort" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="mann" type="xsd:string" use="required"/>
+							<xsd:attribute name="frau" type="xsd:string" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="vornamenMann" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="name" type="xsd:string" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="vornamenFrau" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="name" type="xsd:string" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="nachnamen" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="name" type="xsd:string" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="nachnamenEndung" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="endung" type="xsd:string" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ DÄMONEN PAKT ########################################### -->
+	<xsd:complexType name="daemonenPaktTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Ein Pakt mit einen Erzdämon!
+				verbilligteZauber.zauberMerkmal - Alle Zauber dieses Merkmals sind verbilligt
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="daemon">
+						<xsd:complexType>
+							<xsd:attribute name="name" type="xsd:string" use="required"/>
+							<xsd:attribute name="paktzuschlag" type="xsd:nonNegativeInteger" use="required"/>
+							<xsd:attribute name="kosten" type="xsd:nonNegativeInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="verbilligteEigenschaften" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteVorteile" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteSonderf" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteTalente" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteZauber" type="idListe" minOccurs="0"/>
+					<xsd:element name="zauberMerkmal" type="idListe" minOccurs="0"/>
+					<xsd:element name="schlechteEigenschaften" type="idListe" minOccurs="0"/>
+					<xsd:element name="schwarzeGaben" type="idListe" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Schwarze Gabe ########################################### -->
+	<xsd:complexType name="schwarzeGabeTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				"Sonderfertigkeiten" die nur von Paktierern gewählt werden kann.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="stufenGrenzen" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="minStufe" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="maxStufe" type="xsd:nonNegativeInteger" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="kosten" type="xsd:nonNegativeInteger" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Magische Repräsentation ########################################### -->
+	<xsd:complexType name="repraesentationTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Repräsentaion von Zaubern. Jeder Zauber und jede Magische Profession
+				ist einer Repräsentation zugeordnet.
+				istEchteRep - "Echte" Repräsentationen sind solche, die im Liber stehen.
+					Die anderen dienen dem besseren Handling in Java.
+					DEFAULT: true
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="istEchteRep" type="xsd:boolean" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="abkuerzung" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ############################################ Gottheit ########################################### -->
+	<xsd:complexType name="gottheitTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Gibt einen Ritus an, sowie welche eigenschaften dieser Ritus hat
+				liturgie - Steigerung bei Generierung nach E / im Spiel nach G
+							Es gibt einen "LiturgieKenntnis" Wert
+				ritual - Steigerung bei Generierung immer nach E
+							Es gibt 4 Schamische Fähigkieten ("Geister rufen", 
+							Geister Bannen, usw.)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="kenntnisArt" minOccurs="0">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="liturgie"/>
+								<xsd:enumeration value="ritual"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="gottheitArt" minOccurs="0">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="nichtAlveranisch"/>
+								<xsd:enumeration value="zwoelfGoettlich"/>
+								<xsd:enumeration value="animistisch"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ***************************************************************************************************************-->
+	<!-- ***********************************                    VererbungsTypen              *************************** -->
+	<!--**************************************************************************************************************** -->
+	<xsd:complexType name="gegenstandTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Grundtype für alle Gegenstände wie Waffen, Rüstungen und normaler Ausrüstung!
+				erhältlichBei - Zeigt an wie es diesen Gegenstand typischer weise gibt.
+				einordnung - Zur besseren Sortierung. Hier kann etwas wie "Pflanze", "Trank", "Kleidung" o.ä. angegeben werden.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="gewicht" type="xsd:nonNegativeInteger" minOccurs="0"/>
+					<xsd:element name="wert" type="xsd:nonNegativeInteger" minOccurs="0"/>
+					<xsd:element name="erhaeltlichBei" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="einordnung" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--**************************************************************************************************************** -->
+	<xsd:complexType name="charElementTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Grundtype fuer alle Faehigkeiten (alles was ein Char wählen kann)
+				- Beschreibung: Allgemeine Beschreibung der Fähigkeit
+				- regelAnmerkung: Eine Sammlung von Anmerkungen zu den Reglen,
+					die das Programm nicht automatisch erledigen kann
+				- sammelbegriff: Oberbegriffe (z.B. Zwerge) zur besseren Sortierung
+				- sonderregel: Id zu einer Sonderregel
+				- anzeigen: Soll dieses Element normal angezeigt werden, oder steht es an 
+						anderer Stelle im Programm zur Auswahl. Das Element wird grau dargestellt,
+						will man es wählen erscheint der Text ("Kann nur bei ... gewählt werden.")
+						Default: true
+				- regelAnmerkung/modus: 
+					"regel" - Etwas das der User beachten muß
+					"toDo" - Etwas was der Benutzer noch tun sollte (z.B. bei "Adliger Abstammung" 
+							einen Titel Eintragen, bei "Vorurteile gegen ... " etwas eintragen o.ä.) 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="beschreibung" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="anzeigen" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="anzeigen" type="xsd:boolean" use="required"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="sonderregel" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="id" type="xsd:string"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="regelAnmerkungen" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="regel" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="modus">
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:enumeration value="regel"/>
+													<xsd:enumeration value="toDo"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="sammelbegriff" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="voraussetzungen" type="voraussetzungTyp" minOccurs="0"/>
+			<!-- Z.B. "Rituale" Zur besseren Ordnung gleichartiger Elemente -->
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+		<!-- Fuer handling in Java -->
+	</xsd:complexType>
+	<!--***************************************************************************************************** -->
+	<xsd:complexType name="faehigkeitTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Grundtype fuer Talente, Zauber, Gaben, LiturgieRitulaKenntnis
+				probenWurf - Aufwelche Eigenschaften wird die Probe gewürfelt
+				kostenKlasse - Nach welcher KK wird gesteigert
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="probenWurf" type="dreiEigenschaftenTyp"/>
+				</xsd:sequence>
+				<xsd:attribute name="kostenKlasse" type="kostenKlasseTyp" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--***************************************************************************************************** -->
+	<xsd:complexType name="fertigkeitTyp">
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="DE">
+						Grundtype fuer alle Vor-/ Nachteil und SF
+						Falls eine Fertigkeit mehrfach erlangt wird (durch Rasse, Kultur und Prof.):
+						- addition.id: Eine "Familie" von Fertigkeiten, die zueinander 
+							aufaddiert werden z.B. Rüstungsgewöhnung I und RG II
+						- addition.wertigkeit: z.B. Rüstungsgewöhnung I = 1 und RG II = 2. Somit ergibt zwei mal
+							RG I --> ein mal RG II (sieht AH S.10)
+						- hatText: Benötigt diese Fertigkeit noch die angabe eines Textes?
+							Default: false
+						- hatElement: Benötigt diese Fertigkeit noch die angabe eines Textes?
+							Default: false
+						- istWaehlbar: Kann die Fertigkeit normal gewählt werden? Ansonsten kann sie nur über 
+							die Herkunft ODER Dämonenpakte erworben werden.
+							Default: true
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="addition" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="id" type="xsd:string" use="required"/>
+							<xsd:attribute name="wertigkeit" type="xsd:nonNegativeInteger" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="hatText" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="hatElement" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="textVorschlaege" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="text" type="xsd:string" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="istWaehlbar" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="fuerWelcheChars" type="charArtenTyp" maxOccurs="6"/>
+				</xsd:sequence>
+				<xsd:attribute name="gp" type="xsd:int" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--***************************************************************************************************** -->
+	<xsd:complexType name="herkunftTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				Grundtype für Rasse, Kultur, Profession
+				kannGewaehltWerden - Kann die Herkunft nicht gewählt werden,
+					so handelt es sich um einen "Varianten Rumpf", also einen
+					"Vater" von Varianten, der aber selbst nicht w_bar ist.
+					Default: true
+				geschlecht - Diese Herkunft ist nur für bestimmtes Geschlecht
+					möglich
+					Default: MW (Also beide Geschlechter)
+				zauberNichtZuBegin - Diese Zauber kann diese Profession zwar Prinzipiell
+					Erlernen, aber nicht zu spielbegin.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="charElementTyp">
+				<xsd:sequence>
+					<xsd:element name="gp" type="xsd:nonNegativeInteger"/>
+					<xsd:element name="kannGewaehltWerden" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="geschlecht" minOccurs="0">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="M"/>
+								<xsd:enumeration value="W"/>
+								<xsd:enumeration value="MW"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="eigenschaftModi" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="soGrenzen" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="soMin" type="xsd:nonNegativeInteger" use="optional"/>
+							<xsd:attribute name="soMax" type="xsd:nonNegativeInteger" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="vorteile" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="nachteile" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="sonderf" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="liturgien" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="goetterRituale" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="empfVorteile" type="idListe" minOccurs="0"/>
+					<xsd:element name="empfNachteile" type="idListe" minOccurs="0"/>
+					<xsd:element name="ungeVorteile" type="idListe" minOccurs="0"/>
+					<xsd:element name="ungeNachteile" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteVorteile" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteNachteile" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteSonderf" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteLiturgien" type="idListe" minOccurs="0"/>
+					<xsd:element name="verbilligteRituale" type="idListe" minOccurs="0"/>
+					<xsd:element name="talente" type="auswahlTyp" minOccurs="0"/>
+					<xsd:element name="magie" minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="hauszauber" type="auswahlTyp" minOccurs="0"/>
+								<xsd:element name="zauber" type="auswahlTyp" minOccurs="0"/>
+								<xsd:element name="aktivierbareZauber" type="auswahlTyp" minOccurs="0"/>
+								<xsd:element name="zauberNichtZuBegin" type="idListe" minOccurs="0"/>
+							</xsd:sequence>
+							<xsd:attribute name="repraesentId" type="xsd:string" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					
+					<!-- <xsd:element name="varianteVon" type="xsd:string" minOccurs="0"/> -->
+					<!--
+					( ist bei EigenschaftModi nun auch Möglich)
+					<xsd:element name="erweiterteEigenschaftModi" minOccurs="0">
+						<xsd:complexType>
+							<xsd:attribute name="lepModi" type="xsd:int" use="optional"/>
+							<xsd:attribute name="aupModi" type="xsd:int" use="optional"/>
+							<xsd:attribute name="aspModi" type="xsd:int" use="optional"/>
+							<xsd:attribute name="kaModi" type="xsd:int" use="optional"/>
+							<xsd:attribute name="mrModi" type="xsd:int" use="optional"/>
+							<xsd:attribute name="soModi" type="xsd:int" use="optional"/>
+						</xsd:complexType>
+					</xsd:element>
+					-->
+					<!-- <xsd:element name="eigenschaftVoraussetzung" type="auswahlEigenschaftTyp" minOccurs="0" maxOccurs="unbounded"/> -->
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ************************************************************************************************************* -->
+	<!-- ***********************************                  BasisTypen           *********************************** -->
+	<!--************************************************************************************************************** -->
+	<xsd:complexType name="dreiEigenschaftenTyp">
+		<xsd:attribute name="eigen1" type="eigenschaftTyp" use="required"/>
+		<xsd:attribute name="eigen2" type="eigenschaftTyp" use="required"/>
+		<xsd:attribute name="eigen3" type="eigenschaftTyp" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="eigenschaftModiTyp">
+		<xsd:attribute name="eigenschaft" type="eigenschaftTyp" use="required"/>
+		<xsd:attribute name="wert" type="xsd:int" use="required"/>
+		<xsd:attribute name="maximum" type="xsd:boolean" use="optional"/>
+		<!-- Bei voraussetzungen wichtig: Ist der Wert ein Minimum (default) oder maximum!-->
+	</xsd:complexType>
+	<!--********************************************************************************************************* -->
+	<xsd:complexType name="auswahlTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				optionsGruppe - Falls es eine Auswahl gibt wie "Entweder X oder (Y und Z)".
+					in diesem Fall können Y und Z zusammen in eine optionsgruppe gesteckt 
+					werden. (Siehe Akademie in Tuzak)
+					 - Wird evtl. doch nicht benötigt, Akademie in Tuzak benötigt dies NICHT
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fest" type="idLinkTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="auswahl" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="option" type="idLinkTyp" minOccurs="0" maxOccurs="unbounded"/>
+						<xsd:element name="optionsGruppe" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="option" type="idLinkTyp" minOccurs="2" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="werte" type="xsd:NMTOKENS" use="optional"/>
+					<xsd:attribute name="anzahl" type="xsd:positiveInteger" use="optional"/>
+					<xsd:attribute name="max" type="xsd:positiveInteger" use="optional"/>
+					<xsd:attribute name="modus" use="required">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="DE">
+								LISTE - In "wert" steht eine Liste von Werten, wobei jeder Wert einer "option" zugewiesen werden
+									muß. Es werden soviele optionen gewählt, wie es werte gibt. (Das attribut "anzahl" und "max" 
+									wird nicht benutzt)
+								ANZAHL - In "anzahl" steht eine Zahl, die angibt wieviele der "optionen" gewählt werden müssen.
+									Jede option kann einen Wert haben (über den "idLinkTyp"). (Das attribut "wert" und "max" wird
+									nicht benutzt)
+								VERTEILUNG - Der Wert in "wert" kann auf soviele der Optionen verteilt werden, wie im Attribut 
+									"anzahl" angegeben. D.h. erst werden die Optionen ausgewählt, dann der "wert" beliebig auf 
+									die gewählten optionen verteilt. (Siehe "Elfische Siedlung" S. 37 im AZ)
+									In "max" steht wie hoch die Stufe jeder gewählten option sein darf 
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="LISTE"/>
+								<xsd:enumeration value="ANZAHL"/>
+								<xsd:enumeration value="VERTEILUNG"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ****************************************************************** -->
+	<xsd:complexType name="auswahlGegenstandTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				fest - Alle Gegenstände innerhalb hat der Char ohne Wahlmöglichkeit
+					ausruestungLinks - Hier werden nur die IDs von vorhandenen Gegenständen
+						angegeben.
+					ausruestungNeu - Ein Gegenstand, der neu Definiert wird, da er nicht
+						über eine ID gelinkt werden kann.
+				auswahl - Pro auswahl können so viele Element gewählt werden, wie bei
+					"anzahl" angegeben (default ist "1")
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fest" type="auswahlGegenstandHilfsTyp" minOccurs="0"/>
+			<xsd:element name="auswahl" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="auswahlGegenstandHilfsTyp">
+							<xsd:attribute name="anzahl" type="xsd:string" use="optional"/>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="auswahlGegenstandHilfsTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				ausruestungLink - Die Ausrüstung ist in der Datenbasis vorhanden, es 
+					wird ein normaler Link hergestellt. Dabei haben die Felder von
+					IdLink folgende bedeutung:
+						* id - (normal) Die Id der Ausrüstung
+						* text - Weitere Anmerkungen zu dem Gegenstand (z.b. schäbig)
+						* wert - Die Anzahl der Gegenstände, DEFAULT: 1
+				ausruestungNeu - Die Ausrüstung ist NICHT in der Datenbasis vorhanden und
+					wird quasi hier definiert. 
+					anzahl - Wieviele Gegenstände, DEFAULT: 1
+					art - Um den Gegenstand auf dem Charbogen richtig einorden zu können, 
+						hier sind die Abkürzungen der CharKomponenten zulässig!
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ausruestungLink" type="idLinkTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="ausruestungNeu" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="gegenstandTyp">
+							<xsd:attribute name="anzahl" type="xsd:positiveInteger" use="optional"/>
+							<xsd:attribute name="art" use="required">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="AUS"/>
+										<xsd:enumeration value="NKW"/>
+										<xsd:enumeration value="FKW"/>
+										<xsd:enumeration value="FAH"/>
+										<xsd:enumeration value="RUE"/>
+										<xsd:enumeration value="SLD"/>
+										<xsd:enumeration value="TIE"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--************************************************************************************************************** -->
+	<xsd:complexType name="voraussetzungTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				wertGrenze - Ist der Wert ein gefordertes Minimun, oder Maximum
+					(Default: Minimun)
+				auswahl - Es sind mehrere "auswahl"-Tags möglich. Die Voraussetzung ist 
+					dann erfüllt, wenn von jeder "auswahl" mindestens eine Option erfüllt
+					wird.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fest" type="voraussetzungHilfsTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="nichtErlaubt" type="idListe" minOccurs="0"/>
+			<xsd:element name="auswahl" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="option" type="voraussetzungHilfsTyp" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="abWert" type="xsd:positiveInteger" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="voraussetzungHilfsTyp">
+		<xsd:complexContent>
+			<xsd:extension base="idLinkTyp">
+				<xsd:attribute name="wertGrenze" use="optional">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="min"/>
+							<xsd:enumeration value="max"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+	<xsd:complexType name="voraussetzungTyp">
+		<xsd:sequence>
+			<xsd:element name="sonderf" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="vorteil" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="eigenschaft" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="talent" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="zauber" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="liRiKenntnis" type="idLinkTyp" minOccurs="0"/>
+			<xsd:element name="PA" type="xsd:positiveInteger" minOccurs="0"/>
+			<xsd:element name="AT" type="xsd:positiveInteger" minOccurs="0"/>
+			<xsd:element name="INI" type="xsd:positiveInteger" minOccurs="0"/>
+			<!- liRiKenntnis ist Liturgie/ Ritualkenntnis (eine SF), Gaben sind VORTEILE! ->
+		</xsd:sequence>
+	</xsd:complexType> -->
+	
+	<!--****************************************************************************************************************** -->
+	<xsd:complexType name="veraenderteKostenListeTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				neuKosten - Die neuen Kosten des CharElements
+				modus - Ob die neuen Kosten absolut oder Prozentual angegeben sind
+						DEFAULT: "absolut"
+				
+				Z.B. bedeutet neuKosten="75" und modus="prozent" das die neuen Kosten 
+						75% der alten Kosten betragen.
+						
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="link" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="idLinkTyp">
+							<xsd:attribute name="neuKosten" type="xsd:int" use="required"/>
+							<xsd:attribute name="modus" use="optional">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="absolut"/>
+										<xsd:enumeration value="prozent"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<!--****************************************************************************************************************** -->
+	<xsd:complexType name="idLinkTyp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="DE">
+				text - z.B. Verpflichtet der "Praios-Kirche", Vorurteile gegen "Orks" 
+				wert - z.B. Eitelkeit Stufe "5"
+				leitwert - Für elfische Weltsicht
+				linkId - z.B. Unbegabt für "schwerter"
+				id - Das normale Ziel des links Vorteil = "Gutaussehend"
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+		<xsd:attribute name="linkId" type="xsd:string" use="optional"/>
+		<xsd:attribute name="text" type="xsd:string" use="optional"/>
+		<xsd:attribute name="wert" type="xsd:int" use="optional"/>
+		<xsd:attribute name="leitwert" type="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="idListe">
+		<xsd:sequence>
+			<xsd:element name="linkId" type="idLinkTyp" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="ids" type="xsd:NMTOKENS" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="idUndWert">
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+		<xsd:attribute name="wert" type="xsd:int" use="required"/>
+	</xsd:complexType>
+	<!-- ************************************************************************************************************************** -->
+	<!-- ***********************************                         Simple BasisTypen             ****************************** -->
+	<!--**************************************************************************************************************************** -->
+	<xsd:simpleType name="eigenschaftTyp">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="EIG-MU"/>
+			<xsd:enumeration value="EIG-KL"/>
+			<xsd:enumeration value="EIG-IN"/>
+			<xsd:enumeration value="EIG-CH"/>
+			<xsd:enumeration value="EIG-FF"/>
+			<xsd:enumeration value="EIG-GE"/>
+			<xsd:enumeration value="EIG-KO"/>
+			<xsd:enumeration value="EIG-KK"/>
+			<xsd:enumeration value="EIG-SO"/>
+			<xsd:enumeration value="EIG-MR"/>
+			<xsd:enumeration value="EIG-LeP"/>
+			<xsd:enumeration value="EIG-AsP"/>
+			<xsd:enumeration value="EIG-AuP"/>
+			<xsd:enumeration value="EIG-KA"/>
+			<xsd:enumeration value="EIG-AT"/>
+			<xsd:enumeration value="EIG-PA"/>
+			<xsd:enumeration value="EIG-INI"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="kostenKlasseTyp">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/>
+			<xsd:enumeration value="B"/>
+			<xsd:enumeration value="C"/>
+			<xsd:enumeration value="D"/>
+			<xsd:enumeration value="E"/>
+			<xsd:enumeration value="F"/>
+			<xsd:enumeration value="G"/>
+			<xsd:enumeration value="H"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="charArtenTyp">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="alle"/>
+			<xsd:enumeration value="nichtMagisch"/>
+			<xsd:enumeration value="vollZauberer"/>
+			<xsd:enumeration value="halbZauberer"/>
+			<xsd:enumeration value="viertelZauberer"/>
+			<xsd:enumeration value="geweiht"/>
+			<xsd:enumeration value="borbaradianer"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="magierGildeTyp">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="weiss"/>
+			<xsd:enumeration value="grau"/>
+			<xsd:enumeration value="schwarz"/>
+			<xsd:enumeration value="unbekannt"/>
+			<xsd:enumeration value="keine"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="magieMerkmaleTyp">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="antimagie"/>
+			<xsd:enumeration value="beschwoerung"/>
+			<xsd:enumeration value="daemonisch"/>
+			<xsd:enumeration value="daemonisch (blakharaz)"/>
+			<xsd:enumeration value="daemonisch (belhalhar)"/>
+			<xsd:enumeration value="daemonisch (charyptoroth)"/>
+			<xsd:enumeration value="daemonisch (lolgramoth)"/>
+			<xsd:enumeration value="daemonisch (thargunitoth)"/>
+			<xsd:enumeration value="daemonisch (amazeroth)"/>
+			<xsd:enumeration value="daemonisch (belshirash)"/>
+			<xsd:enumeration value="daemonisch (asfaloth)"/>
+			<xsd:enumeration value="daemonisch (tasfarelel)"/>
+			<xsd:enumeration value="daemonisch (belzhorash)"/>
+			<xsd:enumeration value="daemonisch (agrimoth)"/>
+			<xsd:enumeration value="daemonisch (belkelel)"/>
+			<xsd:enumeration value="eigenschaften"/>
+			<xsd:enumeration value="einfluss"/>
+			<xsd:enumeration value="elementar (feuer)"/>
+			<xsd:enumeration value="elementar (wasser)"/>
+			<xsd:enumeration value="elementar (luft)"/>
+			<xsd:enumeration value="elementar (erz)"/>
+			<xsd:enumeration value="elementar (humus)"/>
+			<xsd:enumeration value="elementar (eis)"/>
+			<xsd:enumeration value="form"/>
+			<xsd:enumeration value="geisterwesen"/>
+			<xsd:enumeration value="heilung"/>
+			<xsd:enumeration value="hellsicht"/>
+			<xsd:enumeration value="herbeirufung"/>
+			<xsd:enumeration value="herrschaft"/>
+			<xsd:enumeration value="illusion"/>
+			<xsd:enumeration value="kraft"/>
+			<xsd:enumeration value="limbus"/>
+			<xsd:enumeration value="metamagie"/>
+			<xsd:enumeration value="objekt"/>
+			<xsd:enumeration value="schaden"/>
+			<xsd:enumeration value="telekinese"/>
+			<xsd:enumeration value="temporal"/>
+			<xsd:enumeration value="umwelt"/>
+			<xsd:enumeration value="verstaendigung"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
