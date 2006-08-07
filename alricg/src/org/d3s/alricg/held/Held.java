@@ -14,6 +14,7 @@ import org.d3s.alricg.charKomponenten.EigenschaftEnum;
 import org.d3s.alricg.charKomponenten.Kultur;
 import org.d3s.alricg.charKomponenten.Profession;
 import org.d3s.alricg.charKomponenten.Rasse;
+import org.d3s.alricg.charKomponenten.Repraesentation;
 import org.d3s.alricg.charKomponenten.Sprache;
 import org.d3s.alricg.charKomponenten.Talent;
 import org.d3s.alricg.charKomponenten.Zauber;
@@ -62,6 +63,10 @@ public class Held {
 	private Sprache[] muttersprache;  // kann mehrere geben, siehe "Golbin Festumer G"
 	private Sprache[] zweitsprache; 
 	private Sprache[] lehrsprache; 
+	
+	// TODO Evtl. wird die Repräsentation später anders (über den Prozesser) angegeben
+	// zum besseren Testen jedoch ersteinmal als Attribut
+	private Repraesentation[] repraesentation;
 	
 	private int abenteuerPunkte;
 	private LogBuch lnkLogBuch;
@@ -440,6 +445,25 @@ public class Held {
 	 */
 	public boolean isNormaloChar() {
 		return !(isVollzauberer || isHalbzauberer || isViertelzauberer || isGeweiht);
+	}
+	
+	/**
+	 * Setzt die Repräsentationen. 
+	 * VORICHT: Diese Methode sollte vorerst nur für Tests benutzt werden! Später werden
+	 * die Repräsentationen über einen Prozesser zum Held hinzugehügt!
+	 * @param repraesentation
+	 */
+	public void setRepraesentationen(Repraesentation[] repraesentation) {
+		this.repraesentation = repraesentation;
+	}
+	
+	/**
+	 * Liefert die Repräsentationen die ein Held beherrscht. Ist der Held kein Zauberer, so 
+	 * wird entweder "null" zurückgeliefert, oder ein leeres Array (noch zu klären)
+	 * @return Repräsentationen die ein Held beherrscht
+	 */
+	public Repraesentation[] getRepraesentationen() {
+		return repraesentation;
 	}
 	
 	/**
