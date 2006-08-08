@@ -19,10 +19,10 @@ import java.util.Set;
 import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.Eigenschaft;
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
+import org.d3s.alricg.charKomponenten.Repraesentation;
 import org.d3s.alricg.charKomponenten.Zauber;
 import org.d3s.alricg.charKomponenten.links.IdLink;
 import org.d3s.alricg.charKomponenten.links.Link;
-import org.d3s.alricg.controller.CharKomponente;
 import org.d3s.alricg.controller.Notepad;
 import org.d3s.alricg.held.Held;
 import org.d3s.alricg.prozessor.BaseProzessorElementBox;
@@ -45,7 +45,8 @@ import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLink> 
 							 implements LinkProzessor<Zauber, GeneratorLink>, ExtendedProzessorZauber
 {
-	private static final String TEXT_AKTIVIEREN = "muss aktiviert werden"; 
+	private static final String TEXT_AKTIVIEREN = "muss aktiviert werden";
+	private static final String TEXT_FREMDE_REPRAESENTATION = "Der Zauber geh\u00F6rt einer fremden Repr\u00E4sentation an.";
 	private static final String TEXT_GESAMTKOSTEN = "Gesamtkosten: ";
 	private static final String TEXT_KEINE_AKTIVIERUNG = "Keine Zauber-Aktivierungen mehr möglich";
 	private static final String TEXT_MODIS = "Modis auf Stufe: ";
@@ -149,8 +150,6 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 */
 	public boolean canUpdateZweitZiel(GeneratorLink link, CharElement zweitZiel) {
 		// Zweitziel ist bei Zaubern die Repraesentation.
-		// TODO Kann die Repraesentation nur geaendert werden wenn der link 
-		// keinen Modifikator hat?
 		return ( 0 != link.getWertModis() );
 	}
 
@@ -191,10 +190,13 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			maxEigenschaft = Math.max( maxEigenschaft, eigenschaftWert );
 		}
 		
-		// Hoechste Eigenschaft +3 oder hoechste Eigenschaft / Siehe MWW S. 12
-		// TODO +3 nur fuer Zauber der eigenen Repraesentation, sonst maxEigenschaft.
-		// Wie kann man abfragen welche Repraesentation ein Held beherrscht?
-		return (maxEigenschaft + 3);
+		// Hoechste Eigenschaft +3 fuer Zauber der eigenen Repraesentation
+		// oder hoechste Eigenschaft / Siehe MWW S. 12
+		if ( istEigeneRepraesentation( (Repraesentation) link.getZweitZiel() ) ) {
+			return ( maxEigenschaft + 3 );
+		} else {
+			return maxEigenschaft;
+		}
 	}
 
 	/* (non-Javadoc) Methode überschrieben
@@ -242,7 +244,11 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		KostenKlasse kKlasse = zauber.getKostenKlasse();
 		notepad.writeMessage( TEXT_SKT_SPALTE_ORIGINAL + kKlasse.getValue() );
 		
-		// TODO Zauber einer fremden Repraesentation sind 2 Spalten teurer zu steigern.
+		// Zauber einer fremden Repraesentation sind 2 Spalten teurer zu steigern.
+		if ( ! istEigeneRepraesentation( (Repraesentation) link.getZweitZiel() ) ) {
+			kKlasse = kKlasse.plusEineKk().plusEineKk();
+			notepad.writeMessage( TEXT_FREMDE_REPRAESENTATION );
+		}
 		
 		// Geanderte Kostenklasse wird in changeKostenKlasse ins Notepad eingetragen.
 		kKlasse = sonderregelAdmin.changeKostenKlasse( kKlasse, link );
@@ -277,8 +283,6 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			link.setUserGesamtWert( wert );
 		}
 		
-		//TODO Ist der folgende Aufruf ueberhaupt noetig?
-		// Wie kann sich der Aktivierungsstatus durch aendern des Wertes aendern?
 		pruefeZauberAktivierung( link );
 		
 		updateKosten( link );
@@ -294,8 +298,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		
 		// Der Maximalwert fuer Zauber eigener Repraesentation ist anders
 		// als fuer Zauber einer fremden Repraesentation.
-		// TODO Waere folgender Aufruf hier richtig?
-		// ProzessorUtilities.inspectWert( link, this );
+		ProzessorUtilities.inspectWert( link, this );
 		
 		// Die Kosten koennen sich geaendert haben.
 		// Zauber fremder Repraesentation sind um 2 Spalten schwerer zu 
@@ -408,5 +411,22 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			aktivierteZauber.add( zauber );
 			
 		}
+	}
+	
+	/**
+	 * Prueft ob der Held die uebergebene Repraesentationen beherrscht.
+	 * 
+	 * @param zauberRepraesentation
+	 * @return {@code true} wenn der Held die uebergebene Repraesentation besitzt,
+	 * 	 		sonst {@code false}.
+	 */
+	private boolean istEigeneRepraesentation( Repraesentation zauberRepraesentation ) {
+		for ( Repraesentation r : held.getRepraesentationen() ) {
+			if ( r.equals( zauberRepraesentation ) ) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
