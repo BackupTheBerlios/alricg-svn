@@ -8,6 +8,7 @@
  */
 package org.d3s.alricg.prozessor.generierung;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -441,9 +442,21 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
 
     }
     
-    // Extendet Methoden
+	/*
+	 * (non-Javadoc)
+	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateAllKosten()
+	 */
+    public void updateAllKosten() {
+    	Iterator<GeneratorLink> ite = elementBox.getUnmodifiableIterator();
+    	
+    	while (ite.hasNext()) {
+    		this.updateKosten(ite.next());
+    	}
+	}
     
-    /**
+    // Extendet Methoden
+
+	/**
      * Die Kosten für die Talent-GP
      * 
      * @return Die Kosten die mit Talent GP bezahlt werden (ASP, LEP, AUP)
@@ -542,9 +555,6 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
         // Siehe S. 26 im Aventurische Götterdiener
         return elementBox.getObjectById(EigenschaftEnum.IN.getId()).getWert();
     }
-    
-    
-    
     
     /**
      * Berechnet den Maximalwert für die Eigenschaft Lebensenergie

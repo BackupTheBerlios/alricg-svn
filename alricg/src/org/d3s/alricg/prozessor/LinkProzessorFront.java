@@ -273,6 +273,15 @@ public class LinkProzessorFront<ZIEL extends CharElement, EXTENDED, LINK extends
 		// KEINE Sonderregel, da diese bei der Berechnung ausgeführt wird
 	}
 
+	/*
+	 * (non-Javadoc) Methode überschrieben
+	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateAllKosten()
+	 */
+	public void updateAllKosten() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#getGesamtKosten()
 	 */
@@ -294,6 +303,12 @@ public class LinkProzessorFront<ZIEL extends CharElement, EXTENDED, LINK extends
 		return prozessor.getUnmodifiableList();
 	}
 
+	/**
+	 * Liefert das Interface zu erweiterten Funktionen des Prozessors. 
+	 * Dies dient dazu, durch den LinkProzessorFront hindurch spezielle Funktionen nach 
+	 * außen hin nutzen zu können
+	 * @return Erweiterte Funktionen nur für diesen Prozessor
+	 */
 	public EXTENDED getExtendedFunctions() {
 		return (EXTENDED) prozessor;
 	}

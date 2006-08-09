@@ -112,6 +112,14 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateAllKosten()
+	 */
+	public void updateAllKosten() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateText(LINK, java.lang.String)

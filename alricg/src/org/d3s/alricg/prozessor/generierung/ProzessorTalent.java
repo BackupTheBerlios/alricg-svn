@@ -11,6 +11,7 @@ package org.d3s.alricg.prozessor.generierung;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -409,7 +410,19 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 		talentGpKosten += kosten;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateAllKosten()
+	 */
+	public void updateAllKosten() {
+    	Iterator<GeneratorLink> ite = elementBox.getUnmodifiableIterator();
+    	
+    	while (ite.hasNext()) {
+    		this.updateKosten(ite.next());
+    	}
+	}
+	
 // -------------- Extended Methoden -------------
+
 
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.ExtendedProzessorTalent#getAktivierteTalente()

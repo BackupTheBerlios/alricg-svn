@@ -155,5 +155,11 @@ public interface LinkProzessor<ZIEL extends CharElement, LINK extends HeldenLink
 	 * @param link Der Link zu dem Element, für das die Kosten berechnet werden
 	 */
 	public abstract void updateKosten(LINK Link);
+	
+	/**
+	 * Alle Kosten des Prozessors müssen neu berechnet werden, da sich die Grundlage der 
+	 * Berechnung geändert haben könne (z.B. durch eine Sonderregel)
+	 */
+	public abstract void updateAllKosten();
 
 }
