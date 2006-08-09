@@ -8,9 +8,12 @@
  */
 package org.d3s.alricg.prozessor.generierung.extended;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
+import org.d3s.alricg.charKomponenten.Zauber;
+import org.d3s.alricg.charKomponenten.links.Link;
 import org.d3s.alricg.prozessor.common.HeldenLink;
 
 /**
@@ -22,6 +25,7 @@ import org.d3s.alricg.prozessor.common.HeldenLink;
  * @author V. Strelow
  */
 public interface ExtendedProzessorZauber {
+
 	/**
 	 * Liefert alle Links zu Zaubern, die in der Probe auf mindesten einmal die 
 	 * gesuchte Eigenschaft geprüft werden. D.h.: In den 3 Eigenschaften der Probe
@@ -31,4 +35,34 @@ public interface ExtendedProzessorZauber {
 	 * @return Alle Zauber, die auf die Eigenschaft "eigEnum" geprobt werden
 	 */
 	public List<? extends HeldenLink> getZauberList(EigenschaftEnum eigEnum);
+	
+	/**
+	 * @return Die Hauszauber eines Helden.
+	 */
+	public Collection< Link > getHauszauber();
+
+	/**
+	 * Bestimmt die Hauszauber fuer einen Helden.
+	 * 
+	 * @param zauber Alle Hauszauber eines Helden.
+	 */
+	public void setHauszauber( Collection< Link > zauber );
+	
+	/**
+	 * @return alle Zauber die ein Held bei der Erschaffung mittels Talent-GP aktivieren kann. 
+	 * 			Das sind meist alle Zauber mit eine Verbreitung von 4 und mehr besitzen.
+	 * 			Eine Liste aller moeglichen Zauber ist bei jeder Profession angegeben.
+	 * 			Siehe "Aventurische Zauberer" S 21.  
+	 */
+	public Collection< Link > getMoeglicheZauber();
+	
+	/**
+	 * Bestimmt die Zauber die bei der Erschaffung mittels Talent-GP aktiviert werden koennen. 
+	 * 			Das sind meist alle Zauber mit eine Verbreitung von 4 und mehr besitzen.
+	 * 			Eine Liste aller moeglichen Zauber ist bei jeder Profession angegeben.
+	 * 			Siehe "Aventurische Zauberer" S 21.  
+	 *  
+	 * @param zauber Alle Zauber die mittels Talent-GP aktiviert werden duerfen.
+	 */
+	public void setMoeglicheZauber( Collection< Link > zauber );
 }

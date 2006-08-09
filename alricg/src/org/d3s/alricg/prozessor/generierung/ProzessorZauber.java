@@ -9,6 +9,7 @@
 package org.d3s.alricg.prozessor.generierung;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ import org.d3s.alricg.charKomponenten.Eigenschaft;
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
 import org.d3s.alricg.charKomponenten.Repraesentation;
 import org.d3s.alricg.charKomponenten.Zauber;
+import org.d3s.alricg.charKomponenten.Werte.MagieMerkmal;
 import org.d3s.alricg.charKomponenten.links.IdLink;
 import org.d3s.alricg.charKomponenten.links.Link;
 import org.d3s.alricg.controller.Notepad;
@@ -46,9 +48,11 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 							 implements LinkProzessor<Zauber, GeneratorLink>, ExtendedProzessorZauber
 {
 	private static final String TEXT_AKTIVIEREN = "muss aktiviert werden";
-	private static final String TEXT_FREMDE_REPRAESENTATION = "Der Zauber geh\u00F6rt einer fremden Repr\u00E4sentation an.";
+	private static final String TEXT_FREMDE_REPRAESENTATION = "Zauber einer fremden Repr\u00E4sentation";
 	private static final String TEXT_GESAMTKOSTEN = "Gesamtkosten: ";
+	private static final String TEXT_HAUSZAUBER =  "Zauber ist Hauszauber";
 	private static final String TEXT_KEINE_AKTIVIERUNG = "Keine Zauber-Aktivierungen mehr möglich";
+	private static final String TEXT_MERKMAL = "Held beherrscht Merkmal ";
 	private static final String TEXT_MODIS = "Modis auf Stufe: ";
 	private static final String TEXT_SKT_SPALTE_ORIGINAL = "Original SKT-Spalte: ";
 	private static final String TEXT_BESITZT_MODIS = "Zauber besitzt Modifikationen";
@@ -72,6 +76,10 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	private int talentGpKosten;
 	
 	private final Set< Zauber > aktivierteZauber;
+
+	private final Collection< Link > hauszauber;
+
+	private final Collection< Link > moeglicheZauber;
 	
 	public ProzessorZauber(	Held held, Notepad notepade ) {
 		
@@ -84,17 +92,21 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		this.talentGpKosten = 0;
 		
 		this.aktivierteZauber = new HashSet< Zauber >();
-		
-		hashMapNachEigensch = new HashMap< EigenschaftEnum, Set<GeneratorLink> >();
 
-		hashMapNachEigensch.put( EigenschaftEnum.MU, new HashSet<GeneratorLink>() );
-		hashMapNachEigensch.put( EigenschaftEnum.KL, new HashSet<GeneratorLink>() );
-		hashMapNachEigensch.put( EigenschaftEnum.IN, new HashSet<GeneratorLink>() );
-		hashMapNachEigensch.put( EigenschaftEnum.CH, new HashSet<GeneratorLink>() );
-		hashMapNachEigensch.put( EigenschaftEnum.FF, new HashSet<GeneratorLink>() );
-		hashMapNachEigensch.put( EigenschaftEnum.GE, new HashSet<GeneratorLink>() );
-		hashMapNachEigensch.put( EigenschaftEnum.KO, new HashSet<GeneratorLink>() );
-		hashMapNachEigensch.put( EigenschaftEnum.KK, new HashSet<GeneratorLink>() );
+		this.hauszauber = new HashSet< Link >();
+
+		this.moeglicheZauber = new HashSet< Link >();
+		
+		this.hashMapNachEigensch = new HashMap< EigenschaftEnum, Set<GeneratorLink> >();
+
+		this.hashMapNachEigensch.put( EigenschaftEnum.MU, new HashSet<GeneratorLink>() );
+		this.hashMapNachEigensch.put( EigenschaftEnum.KL, new HashSet<GeneratorLink>() );
+		this.hashMapNachEigensch.put( EigenschaftEnum.IN, new HashSet<GeneratorLink>() );
+		this.hashMapNachEigensch.put( EigenschaftEnum.CH, new HashSet<GeneratorLink>() );
+		this.hashMapNachEigensch.put( EigenschaftEnum.FF, new HashSet<GeneratorLink>() );
+		this.hashMapNachEigensch.put( EigenschaftEnum.GE, new HashSet<GeneratorLink>() );
+		this.hashMapNachEigensch.put( EigenschaftEnum.KO, new HashSet<GeneratorLink>() );
+		this.hashMapNachEigensch.put( EigenschaftEnum.KK, new HashSet<GeneratorLink>() );
 	}
 	
 	/* (non-Javadoc) Methode überschrieben
@@ -248,6 +260,20 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		if ( ! istEigeneRepraesentation( (Repraesentation) link.getZweitZiel() ) ) {
 			kKlasse = kKlasse.plusEineKk().plusEineKk();
 			notepad.writeMessage( TEXT_FREMDE_REPRAESENTATION );
+		}
+		
+		// Zauber sind pro bekanntem Merkmal eine Kostenklasse guenstiger zu steigern.
+		for ( MagieMerkmal m : zauber.getMerkmale() ) {
+			if ( beherrschtMerkmal( held, m ) ) {
+				kKlasse = kKlasse.minusEineKk();
+				notepad.writeMessage( TEXT_MERKMAL + m );
+			}
+		}
+		
+		// Hauszauber sind eine Kostenklasse guenstiger zu steigern.
+		if ( istHauszauber( zauber, (Repraesentation) link.getZweitZiel() ) ) {
+			kKlasse = kKlasse.minusEineKk();
+			notepad.writeMessage( TEXT_HAUSZAUBER );
 		}
 		
 		// Geanderte Kostenklasse wird in changeKostenKlasse ins Notepad eingetragen.
@@ -413,6 +439,34 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		}
 	}
 	
+	public Collection<Link> getHauszauber() {
+		return new HashSet< Link >( hauszauber );
+	}
+
+	public void setHauszauber(Collection<Link> zauber) {
+		
+		hauszauber.clear();
+		
+		hauszauber.addAll( zauber );
+		
+		//TODO Was passiert mit Zaubern die keine Hauszauber und auch 
+		// keine moeglichen Zauber mehr sind. 
+	}
+
+	public Collection<Link> getMoeglicheZauber() {
+		return new HashSet< Link >( moeglicheZauber );
+	}
+
+	public void setMoeglicheZauber(Collection<Link> zauber) {
+		 
+		moeglicheZauber.clear();
+		
+		moeglicheZauber.addAll( zauber );
+		
+		// TODO was passiert mit Zaubern die nach der Aenderung 
+		// keine moeglichen Zauber mehr sind.
+	}
+
 	/**
 	 * Prueft ob der Held die uebergebene Repraesentationen beherrscht.
 	 * 
@@ -423,6 +477,22 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	private boolean istEigeneRepraesentation( Repraesentation zauberRepraesentation ) {
 		for ( Repraesentation r : held.getRepraesentationen() ) {
 			if ( r.equals( zauberRepraesentation ) ) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean beherrschtMerkmal( Held held, MagieMerkmal merkmal ) {
+		// TODO Implementierung
+		return false;
+	}
+	
+	private boolean istHauszauber( Zauber zauber, Repraesentation repraesentation ) {
+		for ( Link h : hauszauber ) {
+			if ( h.getZiel().equals( zauber ) 
+	          && h.getZweitZiel().equals( repraesentation ) ) {
 				return true;
 			}
 		}
