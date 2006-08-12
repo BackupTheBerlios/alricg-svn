@@ -22,7 +22,6 @@ import org.d3s.alricg.charKomponenten.Eigenschaft;
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
 import org.d3s.alricg.charKomponenten.Repraesentation;
 import org.d3s.alricg.charKomponenten.Zauber;
-import org.d3s.alricg.charKomponenten.Werte.MagieMerkmal;
 import org.d3s.alricg.charKomponenten.links.IdLink;
 import org.d3s.alricg.charKomponenten.links.Link;
 import org.d3s.alricg.controller.Notepad;
@@ -48,14 +47,16 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 							 implements LinkProzessor<Zauber, GeneratorLink>, ExtendedProzessorZauber
 {
 	private static final String TEXT_AKTIVIEREN = "muss aktiviert werden";
+	private static final String TEXT_BESITZT_MODIS = "Zauber besitzt Modifikationen";
 	private static final String TEXT_FREMDE_REPRAESENTATION = "Zauber einer fremden Repr\u00E4sentation";
 	private static final String TEXT_GESAMTKOSTEN = "Gesamtkosten: ";
 	private static final String TEXT_HAUSZAUBER =  "Zauber ist Hauszauber";
 	private static final String TEXT_KEINE_AKTIVIERUNG = "Keine Zauber-Aktivierungen mehr möglich";
-	private static final String TEXT_MERKMAL = "Held beherrscht Merkmal ";
 	private static final String TEXT_MODIS = "Modis auf Stufe: ";
+	private static final String TEXT_REPRAESENTATION_GEAENDERT = "Rep\u00E4sentation von Zauber %1$s zu %2$s ge\u00E4ndert.";
+	private static final String TEXT_REPRAESENTATION_UNBESTIMMT = "Die Repraesentation fuer %1$s konnte nicht ermittelt werden.";
 	private static final String TEXT_SKT_SPALTE_ORIGINAL = "Original SKT-Spalte: ";
-	private static final String TEXT_BESITZT_MODIS = "Zauber besitzt Modifikationen";
+	private static final String TEXT_ZAUBER_ENTFERNT = "Zauber entfernt: ";
 	
 	protected static final boolean STUFE_ERHALTEN = true;
 	
@@ -79,7 +80,11 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 
 	private final Collection< Link > hauszauber;
 
+	private final HashMap< Zauber, Repraesentation > hauszauberMap;
+
 	private final Collection< Link > moeglicheZauber;
+
+	private final HashMap< Zauber, Repraesentation > moeglicheZauberMap;
 	
 	public ProzessorZauber(	Held held, Notepad notepade ) {
 		
@@ -94,8 +99,10 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		this.aktivierteZauber = new HashSet< Zauber >();
 
 		this.hauszauber = new HashSet< Link >();
+		this.hauszauberMap = new HashMap< Zauber, Repraesentation >();
 
 		this.moeglicheZauber = new HashSet< Link >();
+		this.moeglicheZauberMap = new HashMap< Zauber, Repraesentation >();
 		
 		this.hashMapNachEigensch = new HashMap< EigenschaftEnum, Set<GeneratorLink> >();
 
@@ -262,16 +269,8 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			notepad.writeMessage( TEXT_FREMDE_REPRAESENTATION );
 		}
 		
-		// Zauber sind pro bekanntem Merkmal eine Kostenklasse guenstiger zu steigern.
-		for ( MagieMerkmal m : zauber.getMerkmale() ) {
-			if ( beherrschtMerkmal( held, m ) ) {
-				kKlasse = kKlasse.minusEineKk();
-				notepad.writeMessage( TEXT_MERKMAL + m );
-			}
-		}
-		
 		// Hauszauber sind eine Kostenklasse guenstiger zu steigern.
-		if ( istHauszauber( zauber, (Repraesentation) link.getZweitZiel() ) ) {
+		if ( istHauszauber( zauber ) ) {
 			kKlasse = kKlasse.minusEineKk();
 			notepad.writeMessage( TEXT_HAUSZAUBER );
 		}
@@ -291,6 +290,12 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		
 	}
 
+	public void updateAllKosten() {
+		for ( GeneratorLink zauber : elementBox ) {
+			updateKosten( zauber );
+		}
+	}
+	
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateText(E, java.lang.String)
 	 */
@@ -337,7 +342,17 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 */
 	public GeneratorLink addNewElement(Zauber ziel) {
 		
-		GeneratorLink link = new GeneratorLink( ziel, null, null, 0 );
+		Repraesentation repraesentation;
+		if ( istMoeglicherZauber( ziel ) ) {
+			repraesentation = moeglicheZauberMap.get( ziel );
+		} else if ( istHauszauber( ziel ) ) {
+			repraesentation = hauszauberMap.get( ziel );
+		} else {
+			repraesentation = null;
+			notepad.writeMessage( String.format( TEXT_REPRAESENTATION_UNBESTIMMT, ziel ) );
+		}
+		
+		GeneratorLink link = new GeneratorLink( ziel, null, repraesentation, 0 );
 		
 		elementBox.add( link );
 		
@@ -371,7 +386,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			return false;
 		}
 		
-		return true;
+		return istMoeglicherZauber( ziel );
 	}
 
 	/* (non-Javadoc) Methode überschrieben
@@ -427,9 +442,9 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		
 		Zauber zauber = (Zauber) link.getZiel();
 		
-		if( 0 == link.getLinkModiList().size() ) {
+		if( besitztModifikator( link ) ) {
 			
-			// Der Zauber besitzt einen Modifikator durch
+			// Der Zauber besitzt einen Modifikator
 			aktivierteZauber.remove( zauber );
 			
 		} else { // Zauber wurde aktiviert
@@ -443,30 +458,117 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		return new HashSet< Link >( hauszauber );
 	}
 
-	public void setHauszauber(Collection<Link> zauber) {
+	public void setHauszauber(Collection<Link> neueHauszauber) {
 		
 		hauszauber.clear();
+		hauszauber.addAll( neueHauszauber );
 		
-		hauszauber.addAll( zauber );
+		hauszauberMap.clear();
+		for ( Link zauber : neueHauszauber ) {
+			hauszauberMap.put( (Zauber) zauber.getZiel() , (Repraesentation) zauber.getZweitZiel() );
+		}
 		
-		//TODO Was passiert mit Zaubern die keine Hauszauber und auch 
-		// keine moeglichen Zauber mehr sind. 
+		for ( GeneratorLink zauberLink : elementBox ) {
+			
+			Zauber zauber = (Zauber) zauberLink.getZiel();
+			if ( istHauszauber( zauber ) ) {
+			
+				Repraesentation repraesentation = (Repraesentation) zauberLink.getZweitZiel();
+					
+				Repraesentation hauszauberRepraesentation = moeglicheZauberMap.get( zauber );
+				
+				if ( ! hauszauberRepraesentation.equals( repraesentation ) ) {
+				
+					updateZweitZiel( zauberLink, hauszauberRepraesentation );
+					notepad.writeMessage( String.format( TEXT_REPRAESENTATION_GEAENDERT, zauber, hauszauberRepraesentation ) );
+					
+				}	
+			}
+		}
+		
 	}
 
 	public Collection<Link> getMoeglicheZauber() {
 		return new HashSet< Link >( moeglicheZauber );
 	}
 
-	public void setMoeglicheZauber(Collection<Link> zauber) {
+	public void setMoeglicheZauber( Collection<Link> neueMoeglicheZauber ) {
 		 
 		moeglicheZauber.clear();
+		moeglicheZauber.addAll( neueMoeglicheZauber );
 		
-		moeglicheZauber.addAll( zauber );
+		moeglicheZauberMap.clear();
+		for ( Link zauber : neueMoeglicheZauber ) {
+			moeglicheZauberMap.put( (Zauber) zauber.getZiel() , (Repraesentation) zauber.getZweitZiel() );
+		}
 		
-		// TODO was passiert mit Zaubern die nach der Aenderung 
-		// keine moeglichen Zauber mehr sind.
+		// Alle Zauber aussortieren die nicht moeglich sind. 
+		for ( GeneratorLink zauberLink : elementBox  ) {
+			
+			Zauber zauber = (Zauber) zauberLink.getZiel();
+			
+			if ( istKeinMoeglicherZauber( zauber )
+			  && besitztKeinenModifikator( zauberLink ) ) {
+				
+				removeElement( zauberLink );
+				notepad.writeMessage( TEXT_ZAUBER_ENTFERNT + zauber );
+				
+			} else {
+				// Es handelt sich um einen moeglichen Zauber. 
+				// Der Zauber kann also in der ElementBox bleiben.
+				// Jetzt muss evtl. noch die Repraesentation angepasst werden.
+				
+				Repraesentation repraesentation = (Repraesentation) zauberLink.getZweitZiel();
+					
+				Repraesentation moeglicheRepraesentation = moeglicheZauberMap.get( zauber );
+				
+				if ( ! moeglicheRepraesentation.equals( repraesentation ) ) {
+				
+					updateZweitZiel( zauberLink, moeglicheRepraesentation );
+					notepad.writeMessage( String.format( TEXT_REPRAESENTATION_GEAENDERT, zauber, moeglicheRepraesentation ) );
+					
+				}
+			}
+		}
+		
 	}
 
+	/**
+	 * Prueft ob ein Zauber fuer einen Helden zur Menge der moeglichen Zauber gehoert.
+	 * Siehe "Aventurische Zauberer" S21.
+	 *  
+	 * @param zauber der zu ueberpruefen ist.
+	 * @return {@code true}, wenn der Zauber nicht zu der Menge der moeglichen Zauber gehoert,
+	 * 			sonst {@code false}. Siehe AZ S21.
+	 */
+	private boolean istMoeglicherZauber( Zauber zauber ) {
+		
+		return moeglicheZauberMap.containsKey( zauber );
+	}
+
+	/**
+	 * Prueft ob ein Zauber von einem Helden NICHT gewaehlt werden kann.
+	 *  
+	 * @param zauber der zu ueberpruefen ist.
+	 * @return {@code true}, wenn der Zauber nicht zu der Menge der moeglichen Zauber gehoert,
+	 * 			sonst {@code false}. Siehe AZ S21.
+	 */
+	private boolean istKeinMoeglicherZauber( Zauber zauber ) {
+		
+		return ! istMoeglicherZauber( zauber );
+	}
+
+	/**
+	 * Prueft ob ein Zauber ein Hauszauber ist.
+	 *  
+	 * @param zauber der zu ueberpruefen ist.
+	 * @return {@code true} wenn der Zauber ein Hauszauber ist, sonst {@code false}.
+	 */
+	private boolean istHauszauber( Zauber zauber ) {
+		
+		return hauszauberMap.containsKey( zauber );
+	}
+	
 	/**
 	 * Prueft ob der Held die uebergebene Repraesentationen beherrscht.
 	 * 
@@ -484,19 +586,12 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		return false;
 	}
 
-	private boolean beherrschtMerkmal( Held held, MagieMerkmal merkmal ) {
-		// TODO Implementierung
-		return false;
+	private boolean besitztModifikator( GeneratorLink link ) {
+		return 0 == link.getLinkModiList().size();
 	}
-	
-	private boolean istHauszauber( Zauber zauber, Repraesentation repraesentation ) {
-		for ( Link h : hauszauber ) {
-			if ( h.getZiel().equals( zauber ) 
-	          && h.getZweitZiel().equals( repraesentation ) ) {
-				return true;
-			}
-		}
-		
-		return false;
+
+	private boolean besitztKeinenModifikator( GeneratorLink link ) {
+		return ! besitztModifikator( link );
 	}
+
 }

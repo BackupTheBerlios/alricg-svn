@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
-import org.d3s.alricg.charKomponenten.Zauber;
 import org.d3s.alricg.charKomponenten.links.Link;
 import org.d3s.alricg.prozessor.common.HeldenLink;
 
