@@ -36,10 +36,24 @@ public interface ExtendedProzessorZauber {
 	public List<? extends HeldenLink> getZauberList(EigenschaftEnum eigEnum);
 	
 	/**
+	 * Fuegt einen Zauber in die Liste der Hauszauber ein.
+	 * 
+	 * @param hauszauber der neu zur Liste hinzukommen soll.
+	 */
+	public void addHauszauber( Link hauszauber );
+	
+	/**
+	 * Entfernt einen Hauszauber aus der Liste der Hauszauber.
+	 * 
+	 * @param hauszauber der enfernt werden soll.
+	 */
+	public void removeHauszauber( Link hauszauber );
+	
+	/**
 	 * @return Die Hauszauber eines Helden.
 	 */
 	public Collection< Link > getHauszauber();
-
+	
 	/**
 	 * Bestimmt die Hauszauber fuer einen Helden.
 	 * 

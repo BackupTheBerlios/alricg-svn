@@ -453,11 +453,42 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			
 		}
 	}
+
+	public void addHauszauber( Link neuerHauszauber ) {
+
+		hauszauber.add( neuerHauszauber );
+		
+		Zauber zauber = (Zauber) neuerHauszauber.getZiel();
+		
+		hauszauberMap.put( zauber, (Repraesentation) neuerHauszauber.getZweitZiel() );
+		
+		GeneratorLink zauberLink = elementBox.getObjectById( zauber );
+		
+		if ( null != zauberLink ) {
+
+			ueberpruefeRepraesentation( zauberLink, hauszauberMap.get( zauber ) );
+		
+		}
+	}
+	
+	public void removeHauszauber( Link alterHauszauber ) {
+		
+		hauszauber.remove( alterHauszauber );
+		
+		Zauber hauszauberZiel = (Zauber) alterHauszauber.getZiel();
+		
+		for ( GeneratorLink zauberLink : elementBox ) {
+			if ( zauberLink.getZiel().equals( hauszauberZiel ) ) {
+				updateKosten( zauberLink );
+				break;
+			}
+		}
+	}
 	
 	public Collection<Link> getHauszauber() {
 		return new HashSet< Link >( hauszauber );
 	}
-
+	
 	public void setHauszauber(Collection<Link> neueHauszauber) {
 		
 		hauszauber.clear();
@@ -468,21 +499,17 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			hauszauberMap.put( (Zauber) zauber.getZiel() , (Repraesentation) zauber.getZweitZiel() );
 		}
 		
+		// Die Repraesentationen der Zauber die der Benutzer schon gewaehlt hat
+		// auf die Repraesentationen umstellen, die bei den Hauszaubern genannt
+		// sind.
 		for ( GeneratorLink zauberLink : elementBox ) {
 			
 			Zauber zauber = (Zauber) zauberLink.getZiel();
+			
 			if ( istHauszauber( zauber ) ) {
 			
-				Repraesentation repraesentation = (Repraesentation) zauberLink.getZweitZiel();
+				ueberpruefeRepraesentation( zauberLink, hauszauberMap.get( zauber ) );
 					
-				Repraesentation hauszauberRepraesentation = moeglicheZauberMap.get( zauber );
-				
-				if ( ! hauszauberRepraesentation.equals( repraesentation ) ) {
-				
-					updateZweitZiel( zauberLink, hauszauberRepraesentation );
-					notepad.writeMessage( String.format( TEXT_REPRAESENTATION_GEAENDERT, zauber, hauszauberRepraesentation ) );
-					
-				}	
 			}
 		}
 		
@@ -514,20 +541,13 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 				notepad.writeMessage( TEXT_ZAUBER_ENTFERNT + zauber );
 				
 			} else {
-				// Es handelt sich um einen moeglichen Zauber. 
+				// Es handelt sich (wahrscheinlich) um einen moeglichen Zauber. 
 				// Der Zauber kann also in der ElementBox bleiben.
 				// Jetzt muss evtl. noch die Repraesentation angepasst werden.
-				
-				Repraesentation repraesentation = (Repraesentation) zauberLink.getZweitZiel();
-					
-				Repraesentation moeglicheRepraesentation = moeglicheZauberMap.get( zauber );
-				
-				if ( ! moeglicheRepraesentation.equals( repraesentation ) ) {
-				
-					updateZweitZiel( zauberLink, moeglicheRepraesentation );
-					notepad.writeMessage( String.format( TEXT_REPRAESENTATION_GEAENDERT, zauber, moeglicheRepraesentation ) );
-					
+				if ( moeglicheZauberMap.containsKey( zauber ) ) {
+					ueberpruefeRepraesentation( zauberLink, moeglicheZauberMap.get( zauber ) );
 				}
+				
 			}
 		}
 		
@@ -592,6 +612,30 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 
 	private boolean besitztKeinenModifikator( GeneratorLink link ) {
 		return ! besitztModifikator( link );
+	}
+	
+	/**
+	 * Prueft ob ein Zauber eine bestimmte Repraesentation besitzt und aendert 
+	 * die Repraesentation ggf.
+	 * Bei einer Aenderung der Repraesentation wird eine Nachricht ins notepad 
+	 * eingetragen. Weiter werden die Kosten neu berechnet.
+	 * 
+	 * @param zauberLink Der zu ueberpruefende Zauber.
+	 * @param zuPruefendeRepraesentation Die Repraesentation die der Zauber 
+	 * 			besitzen soll.
+	 */
+	private void ueberpruefeRepraesentation( GeneratorLink zauberLink, Repraesentation zuPruefendeRepraesentation ) {
+
+		Repraesentation repraesentation = (Repraesentation) zauberLink.getZweitZiel();
+			
+		if ( ! zuPruefendeRepraesentation.equals( repraesentation ) ) {
+		
+			updateZweitZiel( zauberLink, zuPruefendeRepraesentation );
+			notepad.writeMessage( String.format( TEXT_REPRAESENTATION_GEAENDERT, zauberLink.getZiel(), zuPruefendeRepraesentation ) );
+			updateKosten( zauberLink );
+
+		}	
+	
 	}
 
 }
