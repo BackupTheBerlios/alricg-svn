@@ -55,10 +55,13 @@ public class LinkProzessorFront<ZIEL extends CharElement, EXTENDED, LINK extends
 	public LINK addNewElement(ZIEL ziel) {
 		LINK link;
 		
-		link = prozessor.addNewElement(ziel);
+		// Sonderregeln aufrufen
+		if (ziel.hasSonderregel()) {
+			ziel.createSonderregel().processBeforAddAsNewElement(ziel);
+		}
 		
-		// Sonderregeln und Voraussetzungen
-		prozessAddNewElement(link);
+		link = prozessor.addNewElement(ziel);
+		addNewSonderregelUndVoraussetzung(link);
 		
 		// Observer zum Schluss, wenn alle Werte geändert sind!
 		this.notifyObserverAddElement(link);
@@ -75,8 +78,14 @@ public class LinkProzessorFront<ZIEL extends CharElement, EXTENDED, LINK extends
 		if (!prozessor.containsLink(link)) {
 			// Element ist noch nicht vorhanden, und muss erst erzeugt werden
 
+			// Sonderregeln aufrufen
+			if (link.getZiel().hasSonderregel()) {
+				link.getZiel().createSonderregel().processBeforAddAsNewElement(link.getZiel());
+			}
+			
 			prozessor.addNewElement((ZIEL) link.getZiel());
-			prozessAddNewElement(link); // Sonderregeln und Voraussetzungen
+			addNewSonderregelUndVoraussetzung(link); // Sonderregeln und Voraussetzungen
+			
 			heldLink = prozessor.addModi(link); // Modis setzen
 			
 			// Observer zum Schluss, wenn alle Werte geändert sind!
@@ -315,25 +324,23 @@ public class LinkProzessorFront<ZIEL extends CharElement, EXTENDED, LINK extends
 	
 // ----------------------- private Methoden ----------------------	
 	
+
 	/**
-	 * Fügt den Link zum SonderregelAmdin und VoraussetzungsAdmin hinzu und
-	 * ruft die entsprechenden Methoden auf.
-	 * 
-	 * @param link Link der hinzugefügt wird
+	 * Fügt die Sonderregel und Voraussetzung zum jeweiligen Admin hinzu 
+	 * und ruft die Sonderregel auf.
 	 */
-	private void prozessAddNewElement(Link link) {
-		CharElement ziel = link.getZiel();
-		
-		// Sonderregel hinzufügen, falls vorhanden
-		if (ziel.hasSonderregel()) {
-			sonderregelAdmin.addSonderregel(link);
-		}
+	private void addNewSonderregelUndVoraussetzung(Link link) {
 		
 		// Voraussetzungen hinzufügen, falls vorhanden
-		if (ziel.getVoraussetzung() != null) {
+		if (link.getZiel().getVoraussetzung() != null) {
 			voraussetzungenAdmin.addVoraussetzung(
-					ziel.getVoraussetzung()
+					link.getZiel().getVoraussetzung()
 				);
+		}
+		
+		// Sonderregel hinzufügen, falls vorhanden
+		if (link.getZiel().hasSonderregel()) {
+			sonderregelAdmin.addSonderregel(link);
 		}
 		
 		// Sonderregeln aufrufen

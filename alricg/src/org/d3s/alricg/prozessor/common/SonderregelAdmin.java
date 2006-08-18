@@ -61,8 +61,11 @@ public class SonderregelAdmin implements BasisSonderregelInterface  {
 			LOG.warning("Dieser Link ist bereits im SonderregelAmdin registriert!");
 		}
 		
-		sonderRegelMap.put(link, link.getZiel().createSonderregel() ); // SR zum Admin hinzufügen
-		sonderRegelMap.get(link).initSonderregel(held, link); // SR initialisieren
+		if (link.getZiel().hasSonderregel()) {
+			Sonderregel sr = link.getZiel().createSonderregel();
+			sonderRegelMap.put(link, sr ); // SR zum Admin hinzufügen
+			sr.initSonderregel(held, link); // SR initialisieren
+		}
 	}
 	
 	/**
@@ -150,6 +153,17 @@ public class SonderregelAdmin implements BasisSonderregelInterface  {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.charKomponenten.sonderregeln.principle.BasisSonderregelInterface#processBeforAddAsNewElement(org.d3s.alricg.charKomponenten.links.Link)
+	 */
+	public void processBeforAddAsNewElement(CharElement element) {
+		iterator = sonderRegelMap.values().iterator();
+		
+		// Alle Sonderregeln durchlaufen und entsprechend aufrufen
+		while (iterator.hasNext()) {
+			iterator.next().processBeforAddAsNewElement(element);
+		}	}
+
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.charKomponenten.sonderregeln.SonderregelInterface#processRemoveElement(org.d3s.alricg.charKomponenten.links.Link)
 	 */

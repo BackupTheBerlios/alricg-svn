@@ -127,13 +127,19 @@ public abstract class SonderregelAdapter extends CharElement implements Sonderre
 		return minStufe;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.charKomponenten.sonderregeln.principle.BasisSonderregelInterface#processBeforAddAsNewElement(org.d3s.alricg.charKomponenten.links.Link)
+	 */
+	public void processBeforAddAsNewElement(CharElement element) {
+		// Noop!
+	}
+
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.sonderregeln.SonderregelInterface#processAddAsNewElement(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public void processAddAsNewElement(Link link) {
 		// Noop!
 	}
-	
 	
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.sonderregeln.SonderregelInterface#processRemoveElement(org.d3s.alricg.charKomponenten.links.Link)

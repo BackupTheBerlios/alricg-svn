@@ -23,8 +23,16 @@ import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
  */
 public interface BasisSonderregelInterface {
 	
+	
 	/**
-	 * Wird immer aufgerufen, wenn ein neues Element (Link) zum Helden hinzugefügt wird.
+	 * Wird immer aufgerufen, bevor ein neues Element (Link) zum Helden hinzugefügt wird.
+	 * @param link Der Link der neu hinzugefügt wurde
+	 */
+	public void processBeforAddAsNewElement(CharElement element);
+
+	
+	/**
+	 * Wird immer aufgerufen, wenn ein neues Element (Link) zum Helden hinzugefügt wurde.
 	 * @param link Der Link der neu hinzugefügt wurde
 	 */
 	public void processAddAsNewElement(Link link);
