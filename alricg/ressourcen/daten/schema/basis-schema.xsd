@@ -1353,7 +1353,7 @@
 							aufaddiert werden z.B. Rüstungsgewöhnung I und RG II
 						- addition.wertigkeit: z.B. Rüstungsgewöhnung I = 1 und RG II = 2. Somit ergibt zwei mal
 							RG I --> ein mal RG II (sieht AH S.10)
-						- hatText: Benötigt diese Fertigkeit noch die angabe eines Textes?
+						- hatText: Kann bei dieser Fertigkeit ein freier Text angegeben werden?
 							Default: false
 						- hatElement: Benötigt diese Fertigkeit noch die angabe eines Textes?
 							Default: false
@@ -1608,55 +1608,29 @@
 	<xsd:complexType name="voraussetzungTyp">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="DE">
-				wertGrenze - Ist der Wert ein gefordertes Minimun, oder Maximum
-					(Default: Minimun)
-				auswahl - Es sind mehrere "auswahl"-Tags möglich. Die Voraussetzung ist 
-					dann erfüllt, wenn von jeder "auswahl" mindestens eine Option erfüllt
-					wird.
+				(wertGrenze - Ist der Wert ein gefordertes Minimun, oder Maximum
+					(Default: Minimun))
+				voraussetzungen - Jeder Voraussetzung muss erfüllt sein 
+				nichtErlaubt - Eine Liste von Links, die NICHT erlaubt sind. Besitzt der Held einen solchen Link,
+						so ist die Voraussetzung nicht erfüllt.
+				voraussetzungHilfsTyp
+					Es muss mindestens eine alternative erfüllt sein, damit die Voraussetzung erfüllt ist
+					abWert - Erst ab diesem Wert gilt die Voraussetzung, davor ist sie "erfüllt"
+					alternative - Aus jeder Alternative müssen alle Links erfüllt sein, damit die 
+							alternative als erfüllt gilt
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="fest" type="voraussetzungHilfsTyp" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="nichtErlaubt" type="idListe" minOccurs="0"/>
-			<xsd:element name="auswahl" minOccurs="0" maxOccurs="unbounded">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="option" type="voraussetzungHilfsTyp" minOccurs="0" maxOccurs="unbounded"/>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
+			<xsd:element maxOccurs="unbounded" minOccurs="0" name="voraussetzungsAltervativen" type="voraussetzungHilfsTyp"/>
+			<xsd:element minOccurs="0" name="nichtErlaubt" type="idListe"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="voraussetzungHilfsTyp">
+		<xsd:sequence>
+			<xsd:element name="alternative" maxOccurs="unbounded" minOccurs="1" type="IdLinkList"/>
 		</xsd:sequence>
 		<xsd:attribute name="abWert" type="xsd:positiveInteger" use="optional"/>
 	</xsd:complexType>
-	<xsd:complexType name="voraussetzungHilfsTyp">
-		<xsd:complexContent>
-			<xsd:extension base="idLinkTyp">
-				<xsd:attribute name="wertGrenze" use="optional">
-					<xsd:simpleType>
-						<xsd:restriction base="xsd:string">
-							<xsd:enumeration value="min"/>
-							<xsd:enumeration value="max"/>
-						</xsd:restriction>
-					</xsd:simpleType>
-				</xsd:attribute>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	<!--
-	<xsd:complexType name="voraussetzungTyp">
-		<xsd:sequence>
-			<xsd:element name="sonderf" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="vorteil" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="eigenschaft" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="talent" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="zauber" type="auswahlTyp" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="liRiKenntnis" type="idLinkTyp" minOccurs="0"/>
-			<xsd:element name="PA" type="xsd:positiveInteger" minOccurs="0"/>
-			<xsd:element name="AT" type="xsd:positiveInteger" minOccurs="0"/>
-			<xsd:element name="INI" type="xsd:positiveInteger" minOccurs="0"/>
-			<!- liRiKenntnis ist Liturgie/ Ritualkenntnis (eine SF), Gaben sind VORTEILE! ->
-		</xsd:sequence>
-	</xsd:complexType> -->
 	
 	<!--****************************************************************************************************************** -->
 	<xsd:complexType name="veraenderteKostenListeTyp">
@@ -1819,3 +1793,4 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>
+

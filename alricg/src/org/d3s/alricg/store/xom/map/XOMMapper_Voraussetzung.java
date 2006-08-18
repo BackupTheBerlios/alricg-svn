@@ -13,32 +13,15 @@ import nu.xom.Elements;
 
 import org.d3s.alricg.charKomponenten.links.IdLinkList;
 import org.d3s.alricg.charKomponenten.links.Voraussetzung;
-import org.d3s.alricg.charKomponenten.links.Voraussetzung.IdLinkVoraussetzung;
+import org.d3s.alricg.charKomponenten.links.Voraussetzung.VoraussetzungsAlternative;
 
 class XOMMapper_Voraussetzung implements XOMMapper<Voraussetzung> {
 
-	private final XOMMapper<IdLinkVoraussetzung> idLinkVMapper = new XOMMapper_IdLinkVoraussetzung();
+	private final XOMMapper<VoraussetzungsAlternative> vaMapper = new XOMMapper_VoraussetzungsAlternative();
 	private final XOMMapper<IdLinkList> idLinkListMapper = new XOMMapper_IdLinkList();
 	
 	public void map(Element from, Voraussetzung to) {
 		
-		// Auslesen des "abWert" -Wertes
-		if (from.getAttributeValue("abWert") != null) {
-			to.setAbWert(
-				Integer.parseInt(from.getAttributeValue("abWert"))
-			);
-		}
-		
-		// Auslesen der "festen" Elemente
-		Elements children = from.getChildElements("fest");
-		IdLinkVoraussetzung[] festeVoraussetzung = new IdLinkVoraussetzung[children
-				.size()];
-		for (int i = 0; i < children.size(); i++) {
-			festeVoraussetzung[i] = to.new IdLinkVoraussetzung(to.getQuelle());
-			idLinkVMapper.map(children.get(i), festeVoraussetzung[i]);
-		}
-		to.setFesteVoraussetzung(festeVoraussetzung);
-
 		// Auslesen der "nichtErlaubt" Elemente
 		Element current = from.getFirstChildElement("nichtErlaubt");
 		if (current != null) {
@@ -46,6 +29,28 @@ class XOMMapper_Voraussetzung implements XOMMapper<Voraussetzung> {
 			idLinkListMapper.map(current, nichtErlaubt);
 			to.setNichtErlaubt(nichtErlaubt);
 		}
+		
+		Elements children = from.getChildElements("voraussetzungsAltervativen");
+		final VoraussetzungsAlternative[] voraussetzungsAlternative = new VoraussetzungsAlternative[children.size()];
+		for (int i = 0; i < children.size(); i++) {
+			voraussetzungsAlternative[i] = to.new VoraussetzungsAlternative();
+			vaMapper.map(children.get(i), voraussetzungsAlternative[i]);
+		}
+		to.setVoraussetzungsAltervativen(voraussetzungsAlternative);
+		
+		/*
+		
+		// Auslesen der "festen" Elemente
+		Elements children = from.getChildElements("fest");
+		IdLinkVoraussetzung[] festeVoraussetzung = new IdLinkVoraussetzung[children
+				.size()];
+		for (int i = 0; i < children.size(); i++) {
+			festeVoraussetzung[i] = to.new IdLinkVoraussetzung(to.getQuelle());
+			vaMapper.map(children.get(i), festeVoraussetzung[i]);
+		}
+		to.setFesteVoraussetzung(festeVoraussetzung);
+
+
 
 		// Aulesen der "Auswahl", also wo nur eines aus einer Gruppe erfüllt
 		// sein muß
@@ -58,24 +63,40 @@ class XOMMapper_Voraussetzung implements XOMMapper<Voraussetzung> {
 			for (int ii = 0; ii < options.size(); ii++) {
 				auswahlVoraussetzung[i][ii] = to.new IdLinkVoraussetzung(to
 						.getQuelle());
-				idLinkVMapper.map(options.get(ii),
+				vaMapper.map(options.get(ii),
 						auswahlVoraussetzung[i][ii]);
 			}
 		}
 		to.setAuswahlVoraussetzung(auswahlVoraussetzung);
 
-		
+		*/
 	}
 
 	public void map(Voraussetzung from, Element to) {
 		
-		// Alle "festen" Elemente hinzufügen
+        // Hinzufügen der "nichtErlaubt" Elemente
+        final IdLinkList nichtErlaubt = from.getNichtErlaubt();
+        if (nichtErlaubt != null) {
+            final Element e = new Element("nichtErlaubt");
+            idLinkListMapper.map(nichtErlaubt, e);
+            to.appendChild(e);
+        }
+
+        // Alle Elemente der "Auswahl" hinzufügen
+        final VoraussetzungsAlternative[] vorAlternative = from.getVoraussetzungsAltervativen();
+        for (int i = 0; i < vorAlternative.length; i++) {
+            final Element e = new Element("voraussetzungsAltervativen");
+            vaMapper.map(vorAlternative[i], e);
+            to.appendChild(e);
+        }
+        
+		/*
         final IdLinkVoraussetzung[] festeVoraussetzung = from.getFesteVoraussetzung();
         for (int i = 0; i < festeVoraussetzung.length; i++) {
             final Element e = new Element("fest");
-            idLinkVMapper.map(festeVoraussetzung[i], e);
+            vaMapper.map(festeVoraussetzung[i], e);
             to.appendChild(e);
-        }
+        }*
 
         // Hinzufügen der "nichtErlaubt" Elemente
         final IdLinkList nichtErlaubt = from.getNichtErlaubt();
@@ -91,16 +112,13 @@ class XOMMapper_Voraussetzung implements XOMMapper<Voraussetzung> {
             final Element e = new Element("auswahl");
             for (int ii = 0; ii < auswahlVoraussetzung[i].length; ii++) {
                 final Element ee = new Element("option");
-                idLinkVMapper.map(auswahlVoraussetzung[i][ii], ee);
+                vaMapper.map(auswahlVoraussetzung[i][ii], ee);
                 e.appendChild(ee);
             }
             to.appendChild(e);
-        }
+        }*/
         
-        // Schreiben ab wann die Voraussetzung gilt
-        if (from.getAbWert() != 0) {
-        	to.addAttribute(new Attribute("abWert", Integer.toString(from.getAbWert())));
-        }
+
 	}
 
 }

@@ -121,8 +121,8 @@ public class XM_Talent_Test extends TestCase {
 			assertNull("Spezialisierungen falsch", t.getSpezialisierungen());
 			assertNull("Voraussetzungen falsch", t.getVoraussetzung());
 			
-			Attribute ab = new Attribute("abWert", "n/a");
-			e.addAttribute(ab);
+			//Attribute ab = new Attribute("abWert", "n/a");
+			//e.addAttribute(ab);
 			t = new Talent(name);
 			mappy.map(xom, t);
 			assertNull("Art falsch", t.getArt());
@@ -130,14 +130,13 @@ public class XM_Talent_Test extends TestCase {
 			assertNull("Spezialisierungen falsch", t.getSpezialisierungen());
 			assertNull("Voraussetzungen falsch", t.getVoraussetzung());
 			
-			int abW = 10;
-			ab.setValue("" + abW);
+			//int abW = 10;
+			//ab.setValue("" + abW);
 			t = new Talent(name);
 			mappy.map(xom, t);
 			assertNotNull("Voraussetzungen falsch (1)", t.getVoraussetzung());
-			assertEquals("Voraussetzung (ab) falsch", abW, t.getVoraussetzung().getAbWert());
-			assertEquals("Voraussetzungen falsch (2)", 0, t.getVoraussetzung().getFesteVoraussetzung().length);
-			assertEquals("Voraussetzungen falsch (3)", 0, t.getVoraussetzung().getAuswahlVoraussetzung().length);
+			assertEquals("Voraussetzungen falsch (2)", 0, t.getVoraussetzung().getVoraussetzungsAltervativen().length);
+			assertEquals("Voraussetzungen falsch (3)", 0, t.getVoraussetzung().getNichtErlaubt().getLinks().length);
 			assertNull("Art falsch", t.getArt());
 			assertNull("Sorte falsch", t.getSorte());
 			assertNull("Spezialisierungen falsch", t.getSpezialisierungen());			

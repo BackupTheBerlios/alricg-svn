@@ -167,8 +167,8 @@ public class XM_Fertigkeit_Test extends TestCase {
 		mappy.map(xom, f);
 		assertNotNull("Voraussetzung falsch", f.getVoraussetzung());
 		assertEquals("Voraussetzung falsch", f, f.getVoraussetzung().getQuelle());
-		assertEquals("Voraussetzung falsch", 0, f.getVoraussetzung().getFesteVoraussetzung().length);
-		assertEquals("Voraussetzung falsch", 0, f.getVoraussetzung().getAuswahlVoraussetzung().length);
+		assertEquals("Voraussetzung falsch", 0, f.getVoraussetzung().getVoraussetzungsAltervativen().length);
+		assertEquals("Voraussetzung falsch", null, f.getVoraussetzung().getNichtErlaubt());
 
 	}
 

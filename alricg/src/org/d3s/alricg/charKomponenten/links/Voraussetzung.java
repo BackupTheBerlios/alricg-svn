@@ -18,14 +18,52 @@ import org.d3s.alricg.charKomponenten.CharElement;
  * @author V.Strelow
  */
 public class Voraussetzung {
-    private IdLinkVoraussetzung[] festeVoraussetzung; // Die unveränderlichen Werte
-    private IdLinkList nichtErlaubt; // Diese Elemente sind NICHT erlaubt
-    private CharElement quelle; // Das CharElement, das diese Voraussetzung besitzt
-    private int abWert; // Ab welchem Wert diese Voraussetzung gilt (0 = immer)
-    
-    // Pro Array muß mindesten eine LinkVoraussetzung erfüllt sein
-    private IdLinkVoraussetzung[][] auswahlVoraussetzung;
+	private IdLinkList nichtErlaubt; // Diese Elemente sind NICHT erlaubt
+	private VoraussetzungsAlternative[] voraussetzungsAltervativen; // Die Voraussetzungen Werte
+	private CharElement quelle; // Das CharElement, das diese Voraussetzung besitzt
+	
+	// Pro "VoraussetzungsAlternative" muß mindesten eine auswahlVoraussetzung erfüllt sein
+	public class VoraussetzungsAlternative {
+		private IdLinkList[] voraussetzungsAlternativen;
+		private int abWert; // Ab welchem Wert diese Voraussetzung gilt (0 = immer)
 
+		/**
+		 * @return the abWert
+		 */
+		public int getAbWert() {
+			return abWert;
+		}
+
+		/**
+		 * @param abWert the abWert to set
+		 */
+		public void setAbWert(int abWert) {
+			this.abWert = abWert;
+		}
+
+		/**
+		 * @return the auswahlVoraussetzung
+		 */
+		public IdLinkList[] getVoraussetzungsAlternativen() {
+			return voraussetzungsAlternativen;
+		}
+
+		/**
+		 * @param auswahlVoraussetzung the auswahlVoraussetzung to set
+		 */
+		public void setVoraussetzungsAlternativen(IdLinkList[] alternativen) {
+			this.voraussetzungsAlternativen = alternativen;
+		}
+		
+		/**
+		 * @return Liefert das Objekt Voraussetzung, welches diese VoraussetzungsAlternative "besitzt"
+		 */
+		public Voraussetzung getParentVoraussetzung() {
+			return Voraussetzung.this;
+		}
+	}
+	
+	
     /**
      * Konstruktor
      * 
@@ -38,15 +76,15 @@ public class Voraussetzung {
     /**
      * @return Liefert das Attribut festeVoraussetzung.
      */
-    public IdLinkVoraussetzung[] getFesteVoraussetzung() {
-        return festeVoraussetzung;
+    public VoraussetzungsAlternative[] getVoraussetzungsAltervativen() {
+        return voraussetzungsAltervativen;
     }
 
     /**
      * @param festeVoraussetzung Setzt das Attribut festeVoraussetzung.
      */
-    public void setFesteVoraussetzung(IdLinkVoraussetzung[] festeVoraussetzung) {
-        this.festeVoraussetzung = festeVoraussetzung;
+    public void setVoraussetzungsAltervativen(VoraussetzungsAlternative[] voraussetzungen) {
+        this.voraussetzungsAltervativen = voraussetzungen;
     }
 
     /**
@@ -61,24 +99,6 @@ public class Voraussetzung {
      */
     public void setQuelle(CharElement quelle) {
         this.quelle = quelle;
-    }
-
-    /**
-     * Liefert alle Voraussetzungen, die Alternativen besitzen
-     * Pro 1 Dimension des Arrays muß mindestens eine Voraussetzung erfüllt sein.
-     * @return Alle Voraussetzungen mit Alternativen.
-     */
-    public IdLinkVoraussetzung[][] getAuswahlVoraussetzung() {
-        return auswahlVoraussetzung;
-    }
-
-    /**
-     * Setzt alle Voraussetzungen, die Alternativen besitzen.
-     * Pro 1 Dimension des Arrays muß mindestens eine Voraussetzung erfüllt sein.
-     * @param auswahlVoraussetzung Alle Voraussetzungen mit Alternativen.
-     */
-    public void setAuswahlVoraussetzung(IdLinkVoraussetzung[][] auswahlVoraussetzung) {
-        this.auswahlVoraussetzung = auswahlVoraussetzung;
     }
 
     /**
@@ -97,43 +117,6 @@ public class Voraussetzung {
      */
     public void setNichtErlaubt(IdLinkList nichtErlaubt) {
         this.nichtErlaubt = nichtErlaubt;
-    }
-    
-    public void setAbWert(int wert) {
-    	this.abWert = wert;
-    }
-    
-    public int getAbWert() {
-    	return abWert;
-    }
-    
-    /**
-     * <u>Beschreibung:</u><br>
-     * Beschreib eine Verbindung zwischen einer Voraussetzung und den Elementen, die vorausgesetzt werden. IdLink wird
-     * hierbei erweitert um ein flag, ob ein Grenzwert ein Minimum ist, oder ein Maximum.
-     * 
-     * @author V. Strelow
-     */
-    public class IdLinkVoraussetzung extends IdLink {
-        private boolean isMinimum = true; // Ob der Grenzwert ein Minimum oder maximum ist
-
-        public IdLinkVoraussetzung(CharElement quelle) {
-            super(quelle, null);
-        }
-
-        /**
-         * @return Liefert das Attribut isMinimum.
-         */
-        public boolean isMinimum() {
-            return isMinimum;
-        }
-
-        /**
-         * @param isMinimum Setzt das Attribut isMinimum.
-         */
-        public void setMinimum(boolean isMinimum) {
-            this.isMinimum = isMinimum;
-        }
     }
 
 }
