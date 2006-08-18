@@ -75,28 +75,6 @@ public interface TypSchema {
 	public String getToolTip(Object object, Object column);
 	
 	/**
-	 * Liefert die Elemente nach denen die TreeTable geordnet werden kann 
-	 * (also nach denen die Elemente der TreeTable in Ordner angeordnet werden).
-	 * Das Element "Keine" gibt es immer, wird jedoch durch das Panel hinzugefügt,
-	 * taucht hier also NICHT auf!
-	 * Beispiel: "Sorte" bei Talenten
-	 * @return Die Elemente zum Ordnen der TreeTable (ohne "Keine")
-	 *
-	public Enum[] getOrdnungElem();
-	*/
-	
-	/**
-	 * Liefert die Elemente nach denen die TreeTable gefiltert werden kann. 
-	 * Bestimmte Elementen sollen je nach Filter nicht angezeigt werden.
-	 * Das Elemente "Keiner" gibt es immer, es gehört mit zu dem Elementen 
-	 * die hier zurückgeliefert werden!
-	 * Beispiel: "Nur Wählbare"
-	 * @return Die Elemente zum Filtern der TreeTable (mit "Keiner")
-	 *
-	public Enum[] getFilterElem();
-	*/
-	
-	/**
 	 * Liefert zu einer Ordnung (die aus der Methode "getOrdnungElem()" stammt)
 	 * die Enums(=Ordner), nach dem die Elemente geordnet werden können.
 	 * Nach diesen Enums wird eine TreeTable also geordnet, wenn die "ordnung"

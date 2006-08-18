@@ -337,26 +337,10 @@ public class TalentLinkSchema implements TypSchema {
 		case stufe: return ComparatorCollection.compLinkWert;
 		case kosten: return ComparatorCollection.compLinkKosten;
 		case spezialisierungen: return ComparatorCollection.compLinkText;
-		case leitTalent: return compLeittalent;
+		case leitTalent: return ComparatorCollection.compLeittalent;
 		}
 		
 		// Erstellung eines Wrappers für Links, mit den "standard" Comparatoren
 		return new ComparatorCollection.ComparatorWrapper( direktSchema.getComparator(column) );
 	}
-
-	/**
-	 * Um zwei Links zu vergleichen. Vergelichen wird der Leitwert
-	 */
-	public static Comparator compLeittalent = 	
-		new Comparator<Link>() {
-			public int compare(Link arg0, Link arg1) {
-				if (arg0.isLeitwert() ==  arg1.isLeitwert()) {
-					return 0;
-				} else if (arg0.isLeitwert()) {
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-		};
 }

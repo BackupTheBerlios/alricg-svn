@@ -121,6 +121,21 @@ public interface ComparatorCollection {
 				return arg0.getText().compareTo( arg0.getText() );
 			}
 		};
-		
+	
+	/**
+	 * Um zwei Links zu vergleichen. Vergelichen wird der Leitwert
+	 */
+	public static Comparator compLeittalent = 	
+		new Comparator<Link>() {
+			public int compare(Link arg0, Link arg1) {
+				if (arg0.isLeitwert() ==  arg1.isLeitwert()) {
+					return 0;
+				} else if (arg0.isLeitwert()) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+		};
 		
 }

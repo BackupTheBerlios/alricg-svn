@@ -108,7 +108,7 @@ public class TalentSpalten implements SpaltenSchema {
 		nurSpezialTalente("Nur Spezial-Talente"),
 		nurBerufTalente("Nur Berufs-Talente"),
 
-//		 Nur für Generierung
+		// Nur für Generierung
 		nurAktivierte("Nur Aktivierte"), 
 		nurModifizierte("Nur Modifizierte");
 		
@@ -173,6 +173,7 @@ public class TalentSpalten implements SpaltenSchema {
 		case editorGewaehlt:
 			return new Spalten[] {
 				Spalten.name, 
+				Spalten.stufe, 
 				Spalten.sorte, 
 				Spalten.art, 
 				Spalten.kostenKlasse, 
@@ -195,7 +196,7 @@ public class TalentSpalten implements SpaltenSchema {
 		case objektDirekt:
 			table.setColumnMultiImage(Spalten.stern.toString());
 			table.setColumnTextImage(Spalten.kostenKlasse.toString(), false);
-			table.setColumnButton(Spalten.plus.toString(), "+");
+			table.setColumnButton(Spalten.plus.toString(), Spalten.plus.toString());
 			break;
 		
 		case objektLinkHel:
@@ -206,14 +207,16 @@ public class TalentSpalten implements SpaltenSchema {
 			table.getColumn(Spalten.spezialisierungen.toString()).setCellEditor(new TalentSpezialisierungCellEditor());
 			table.getColumn(Spalten.stufe.toString()).setCellEditor(new WertComboboxCellEditor((LinkProzessor) prozessor));
 			table.setColumnButton(Spalten.minus.toString(), Spalten.minus.toString());
-			setCellEditor(table, Spalten.stufe);
 			break;
 			
 		case editorAuswahl:
+			table.setColumnTextImage(Spalten.kostenKlasse.toString(), false);
 			table.setColumnButton(Spalten.plus.toString(), Spalten.plus.toString());
 			break;
 			
 		case editorGewaehlt:
+			table.getColumn(Spalten.stufe.toString()).setCellEditor(new WertComboboxCellEditor((LinkProzessor) prozessor));
+			table.setColumnTextImage(Spalten.kostenKlasse.toString(), false);
 			table.setColumnButton(Spalten.minus.toString(), Spalten.minus.toString());
 			break;
 			
@@ -237,29 +240,6 @@ public class TalentSpalten implements SpaltenSchema {
 		}
 		
 		return true;
-	}
-	
-	private void setCellEditor(SortableTable table, Spalten spalte) {
-		
-		
-		
-		switch (spalte) {
-		case stufe:
-			
-		}
-
-		/*
-		TableColumn sportColumn = sTree.getColumnModel().getColumn(2);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.addItem("Snowboarding");
-		comboBox.addItem("Rowing");
-		comboBox.addItem("Chasing toddlers");
-		comboBox.addItem("Speed reading");
-		comboBox.addItem("Teaching high school");
-		comboBox.addItem("None");
-		sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
-		*/
 	}
 	
 	/* (non-Javadoc)

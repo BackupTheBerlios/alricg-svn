@@ -48,13 +48,12 @@ public class TalentDirektSchema implements TypSchema {
 	private Prozessor prozessor;
 	private ElementBox<Talent> elementBox;
     
-	///private static TalentSchema self; // Statischer selbst verweis
+	private final Held held;
 	
-	// Arbeitsobjekte, um Parameter zu übergeben. Aus performancegründen 
-	// als Attribute
+	// Arbeitsobjekte, um Parameter zu übergeben. Aus performancegründen als Attribute
 	private final ImageTextObject tmpImageObj = new ImageTextObject();
 	private final Link tmpLink = new IdLink(null, null);
-	private Held held;
+
 
 	public TalentDirektSchema(Held held) {
 		this.held = held;
@@ -71,7 +70,6 @@ public class TalentDirektSchema implements TypSchema {
 	 * @see org.d3s.alricg.gui.views.TypSchema#getCellValue(java.lang.Object, java.lang.Enum)
 	 */
 	public Object getCellValue(Object object, Object column) {
-		KostenKlasse tmpKK;
 		
 		switch ((TalentSpalten.Spalten) column) {
 			case name: 	return ((Talent) object).getName();
@@ -80,7 +78,7 @@ public class TalentDirektSchema implements TypSchema {
 			case art: 	return ((Talent) object).getArt();
 			case kostenKlasse: 
 				tmpLink.setZiel((Talent) object);
-				tmpKK = held.getSonderregelAdmin().changeKostenKlasse(
+				KostenKlasse tmpKK = held.getSonderregelAdmin().changeKostenKlasse(
 												((Talent) object).getKostenKlasse(), tmpLink
 											);
 											
