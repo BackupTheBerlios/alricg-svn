@@ -48,8 +48,8 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
     private static final Logger LOG = Logger.getLogger(ProzessorEigenschaften.class.getName());
     private static final boolean STUFE_ERHALTEN = true;
     
-	private static final String TEXT_SKT_SPALTE = "Original SKT-Spalte: ";
-	private static final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
+	private final String TEXT_SKT_SPALTE = "Original SKT-Spalte: ";
+	private final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
 	
     private int eigenschaftGpKosten = 0;
     private int eigenschaftTalentGpKosten = 0;

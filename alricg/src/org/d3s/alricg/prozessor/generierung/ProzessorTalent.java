@@ -48,16 +48,16 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	private static final Logger LOG = Logger.getLogger(ProzessorTalent.class.getName());
 	
 	// Texte für Notepade-Meldungen
-	private static final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
-	private static final String TEXT_MODIS = "Modis auf Stufe: ";
-	private static final String TEXT_AKTIVIEREN = "muss aktiviert werden";
-	private static final String TEXT_SKT_SPALTE = "Original SKT-Spalte: ";
-	private static final String TEXT_KEINE_AKTIVIERUNG = "Keine Talent-aktivierungen mehr möglich";
-	private static final String TEXT_BESITZT_MODIS = "Talent besitzt Modifikationen";
-	private static final String TEXT_BASIS_TALENT = "Talent ist Basis-Talent.";
+	private final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
+	private final String TEXT_MODIS = "Modis auf Stufe: ";
+	private final String TEXT_AKTIVIEREN = "muss aktiviert werden";
+	private final String TEXT_SKT_SPALTE = "Original SKT-Spalte: ";
+	private final String TEXT_KEINE_AKTIVIERUNG = "Keine Talent-aktivierungen mehr möglich";
+	private final String TEXT_BESITZT_MODIS = "Talent besitzt Modifikationen";
+	private final String TEXT_BASIS_TALENT = "Talent ist Basis-Talent.";
 	
-	protected static boolean STUFE_ERHALTEN = true;
-	protected static int MAX_TALENT_AKTIVIERUNG = 5;
+	protected boolean STUFE_ERHALTEN = true;
+	protected int MAX_TALENT_AKTIVIERUNG = 5;
 	
 	private final SonderregelAdmin sonderregelAdmin;
 	private final VerbilligteFertigkeitAdmin verbFertigkeitenAdmin;
