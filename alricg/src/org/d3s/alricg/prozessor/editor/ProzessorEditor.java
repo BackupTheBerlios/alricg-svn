@@ -27,81 +27,21 @@ import org.d3s.alricg.prozessor.elementBox.ElementBox;
  * 
  * @author V. Strelow
  */
-public abstract class ProzessorEditor<E extends CharElement> 
-								extends BaseProzessorObserver<E>
-								implements Prozessor<E, E>
-{
-	protected BaseElementBox<E> elementBox;
-//	protected ArrayList<ProzessorObserver> observerList;
-	protected E prozessorZiel;
+public abstract class ProzessorEditor<ZIEL extends CharElement, ELEM> extends BaseProzessorObserver<ZIEL> implements Prozessor<ZIEL, ELEM> {
+	protected BaseElementBox<ELEM> elementBox;
 	
 	/* (non-Javadoc) Methode überschrieben
-	 * @see org.d3s.alricg.prozessorNEW.Prozessor#getElementBox()
+	 * @see org.d3s.alricg.prozessor.Prozessor#getElementBox()
 	 */
-	public ElementBox<E> getElementBox() {
+	public ElementBox<ELEM> getElementBox() {
 		return elementBox;
 	}
 
 	/* (non-Javadoc) Methode überschrieben
-	 * @see org.d3s.alricg.prozessorNEW.Prozessor#getUnmodifiableList()
+	 * @see org.d3s.alricg.prozessor.Prozessor#getUnmodifiableList()
 	 */
-	public List<E> getUnmodifiableList() {
+	public List<ELEM> getUnmodifiableList() {
 		return elementBox.getUnmodifiableList();
 	}
 	
-	// ---------- Zu sätzliche Methodes für den Editor -----------
-
-	/**
-	 * Überprüft ob dieses CharElement so in Ordnung ist und übernommen werden kann
-	 * @param element
-	 */
-	public void checkCharElement(E element) {
-
-	}
-	
-	/**
-	 * Erzeugt einen neues Element mit Initialen Werten, fügt dieses
-	 * zur Datenbasis hinzu und Informiert die Observer.
-	 * @return Das neu erzeugte Element
-	 */
-	public abstract E createNewElement();
-	
-	/**
-	 * Löscht ein Element aus der Datenbasis. 
-	 * @param element Das zu Löschende Element
-	 */
-	public abstract void deleteElement(E element);
-	
-	/**
-	 * Prüft, ob ein Element benutzt wird. Dies ist der Fall, wenn das Element
-	 * in einer Beziehung zu einem anderen Element steht.
-	 * @return
-	 */
-	public abstract boolean isElementUsed();
-	
-	/**
-	 * Alle Operationen die mit Hilfe des Editor ausgeführt werden können, können 
-	 * natürlich für verschiedene CharElemente durchgeführt werden. 
-	 * Wird z.B. mit einer "addElement" Methode Talent-Modi zu einer Rasse 
-	 * hinzugefügt, so muß auch die genaue Rasse angegeben werden. Dies geschieht
-	 * mit dieser Methode
-	 * 
-	 * Dem entsprechend ist das setzen des Ziels ist nur beim EditorProzessor nötig, 
-	 * da das Ziel ansonsten klar ist: Nämlich der Held!
-	 * 
-	 * @param element Das Element das bearbeitet werden soll.
-	 */
-	public void setProzessorZiel(E element) {
-		prozessorZiel = element;
-	}
-	
-	/**
-	 * Liefert das momentane Ziel des Editors, also das Element welches 
-	 * berabeitet wird.
-	 * @return
-	 * @see setProzessorZiel(Object)
-	 */
-	public E getProzessorZiel() {
-		return prozessorZiel;
-	}
 }

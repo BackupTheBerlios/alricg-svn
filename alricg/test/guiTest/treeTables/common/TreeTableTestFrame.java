@@ -1,5 +1,9 @@
-/**
- * 
+/*
+ * Created on 13.08.2006
+ *
+ * This file is part of the project ALRICG. The file is copyright
+ * protected and under the GNU General Public License.
+ * For more information see "http://www.alricg.de/".*
  */
 package guiTest.treeTables.common;
 

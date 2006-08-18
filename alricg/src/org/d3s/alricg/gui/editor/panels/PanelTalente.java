@@ -21,7 +21,7 @@ import org.d3s.alricg.charKomponenten.Talent;
  *
  * @author V. Strelow
  */
-public class panTalente extends JPanel 
+public class PanelTalente extends JPanel 
 						implements EditorPaneInterface<Talent> {
 
 	private JLabel lblSorte = null;
@@ -37,7 +37,7 @@ public class panTalente extends JPanel
 	/**
 	 * This is the default constructor
 	 */
-	public panTalente() {
+	public PanelTalente() {
 		super();
 		initialize();
 	}

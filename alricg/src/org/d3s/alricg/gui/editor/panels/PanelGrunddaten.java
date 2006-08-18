@@ -32,7 +32,7 @@ import org.d3s.alricg.store.TextStore;
  *
  * @author V. Strelow
  */
-public class panGrunddaten<CharElement> extends JPanel 
+public class PanelGrunddaten<CharElement> extends JPanel 
 						implements EditorPaneInterface<CharElement> {
 
 	private JLabel lblName = null;
@@ -71,7 +71,7 @@ public class panGrunddaten<CharElement> extends JPanel
 	/**
 	 * This is the default constructor
 	 */
-	public panGrunddaten() {
+	public PanelGrunddaten() {
 		super();
 		initialize();
 		initLabelTexte();
