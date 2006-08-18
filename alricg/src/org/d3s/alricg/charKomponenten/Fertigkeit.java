@@ -17,12 +17,13 @@ package org.d3s.alricg.charKomponenten;
 public abstract class Fertigkeit extends CharElement {
     private Werte.CharArten[] fuerWelcheChars; // Welche Chars diese Fertigkeit wählen können
 
-    private boolean hasText; // Gibt es noch einen Text zu der Fertigkeit? (Vorurteile gegen "Orks")
-
+    private boolean hasFreienText; // Gibt es noch einen frei zu wählenden Text zu der Fertigkeit? (Vorurteile gegen "Orks")
+    private String[] textVorschlaege; // Eine Liste Möglicher angaben für den Text
+    // Es ist möglich das eine Fertigkeit "hasFreienText = false" ist, aber Text Vorschläge besitzt
+    // in diesem Fall können nur die Vorschläge gewählt werden, nichts anderes
+    
     private boolean hasElementAngabe; // Gibt es noch ein Element zu dieser Fertigkeit (Unfähigkeit
                                                 // "Schwerter")
-
-    private String[] textVorschlaege; // Eine Liste Möglicher angaben für den Text
 
     private boolean isWaehlbar = true; // Nicht wählbare können nur über die Herkunft erlangt werden
 
@@ -73,7 +74,7 @@ public abstract class Fertigkeit extends CharElement {
      * @return true - Die Fertigkeit benötigt noch die Angabe eines Textes, ansonsten "false".
      */
     public boolean hasText() {
-        return hasText;
+        return hasFreienText;
     }
 
     /**
@@ -118,7 +119,7 @@ public abstract class Fertigkeit extends CharElement {
      * @param hatText Setzt das Attribut hatText.
      */
     public void setHasText(boolean hatText) {
-        this.hasText = hatText;
+        this.hasFreienText = hatText;
     }
 
     /**

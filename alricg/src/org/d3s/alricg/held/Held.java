@@ -17,6 +17,7 @@ import org.d3s.alricg.charKomponenten.Rasse;
 import org.d3s.alricg.charKomponenten.Repraesentation;
 import org.d3s.alricg.charKomponenten.Sprache;
 import org.d3s.alricg.charKomponenten.Talent;
+import org.d3s.alricg.charKomponenten.Werte;
 import org.d3s.alricg.charKomponenten.Zauber;
 import org.d3s.alricg.controller.CharKomponente;
 import org.d3s.alricg.controller.Notepad;
@@ -63,6 +64,8 @@ public class Held {
 	private Sprache[] muttersprache;  // kann mehrere geben, siehe "Golbin Festumer G"
 	private Sprache[] zweitsprache; 
 	private Sprache[] lehrsprache; 
+	
+	private Werte.CharArten[] charArt;
 	
 	// TODO Evtl. wird die Repräsentation später anders (über den Prozesser) angegeben
 	// zum besseren Testen jedoch ersteinmal als Attribut
@@ -464,6 +467,20 @@ public class Held {
 	 */
 	public Repraesentation[] getRepraesentationen() {
 		return repraesentation;
+	}
+
+	/**
+	 * @return Returns the charArt.
+	 */
+	public Werte.CharArten[] getCharArt() {
+		return charArt;
+	}
+
+	/**
+	 * @param charArt The charArt to set.
+	 */
+	public void setCharArt(Werte.CharArten[] charArt) {
+		this.charArt = charArt;
 	}
 	
 	/**

@@ -42,9 +42,13 @@ public class Werte {
 	}
 
 	public enum CharArten {
-		alle("alle"), nichtMagisch("nichtMagisch"), vollZauberer("vollZauberer"), halbZauberer(
-				"halbZauberer"), viertelZauberer("viertelZauberer"), geweiht(
-				"geweiht"), borbaradianer("borbaradianer");
+		alle("alle"), 
+		nichtMagisch("nichtMagisch"), 
+		vollZauberer("vollZauberer"), 
+		halbZauberer("halbZauberer"), 
+		viertelZauberer("viertelZauberer"), 
+		geweiht("geweiht"), 
+		borbaradianer("borbaradianer");
 
 		private String value; // ID des Elements
 
