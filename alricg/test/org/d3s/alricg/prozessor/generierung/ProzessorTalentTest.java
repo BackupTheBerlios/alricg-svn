@@ -26,6 +26,8 @@ import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorTalent;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.store.DataStore;
 import org.d3s.alricg.store.FactoryFinder;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  * <u>Beschreibung:</u><br> 
@@ -41,12 +43,15 @@ public class ProzessorTalentTest extends TestCase {
 	private LinkProzessorFront<Eigenschaft, ExtendedProzessorEigenschaft, GeneratorLink> prozessorEigenschaft;
 	private ElementBox<GeneratorLink> box, boxEigenschaft;
 	private DataStore data;
-
+	
 	/*
 	 * @see TestCase#setUp()
 	 */
-	protected void setUp() throws Exception {
+	@Before public void setUp() throws Exception {
 		GeneratorLink tmpLink;
+		
+	    // Starten des Programms (sollte eigentlich in eine "@BeforeClass" Methode)
+		ProgAdmin.main(new String[] { "noScreen" });
 		
         // initialisieren
         FactoryFinder.init();
