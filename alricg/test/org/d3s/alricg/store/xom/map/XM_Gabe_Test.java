@@ -7,9 +7,10 @@
  */
 package org.d3s.alricg.store.xom.map;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
-import junit.framework.TestCase;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -17,25 +18,24 @@ import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.Gabe;
 import org.d3s.alricg.store.FactoryFinder;
 import org.d3s.alricg.store.xom.XOMStoreObjectMother;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-public class XM_Gabe_Test extends TestCase {
+public class XM_Gabe_Test {
 
 	private XOMStoreObjectMother oma;
 	private XOMMapper<CharElement> mappy;
 
-	public XM_Gabe_Test(String name) {
-		super(name);
-	}
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		oma = new XOMStoreObjectMother();
 		mappy = new XOMMapper_Gabe();
 		FactoryFinder.init(new File(
 				"test/org/d3s/alricg/store/factory.properties"));
 	}
 
-	public void testMapFromXML() {
+	@Test public void testMapFromXML() {
 		try {
 			final Element xom = new Element("gabe");
 			oma.addProbe(xom);
@@ -70,7 +70,7 @@ public class XM_Gabe_Test extends TestCase {
 		}
 	}
 
-	public void testMapToXML() {
+	@Ignore("Not implemented yet!") @Test public void testMapToXML() {
 		fail("Not implemented yet!");
 	}
 

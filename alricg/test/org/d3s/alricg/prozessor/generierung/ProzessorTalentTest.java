@@ -8,7 +8,11 @@
  */
 package org.d3s.alricg.prozessor.generierung;
 
-import junit.framework.TestCase;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.d3s.alricg.charKomponenten.Eigenschaft;
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
@@ -28,13 +32,14 @@ import org.d3s.alricg.store.DataStore;
 import org.d3s.alricg.store.FactoryFinder;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * <u>Beschreibung:</u><br> 
  * 
  * @author V. Strelow
  */
-public class ProzessorTalentTest extends TestCase {
+public class ProzessorTalentTest {
 	private IdLink link1, link2, link3;
 	private Talent talent1, talent2, talent3;
 	private Rasse ras;
@@ -43,6 +48,11 @@ public class ProzessorTalentTest extends TestCase {
 	private LinkProzessorFront<Eigenschaft, ExtendedProzessorEigenschaft, GeneratorLink> prozessorEigenschaft;
 	private ElementBox<GeneratorLink> box, boxEigenschaft;
 	private DataStore data;
+	
+	@BeforeClass public static void startTestClass() {
+	    // Starten des Programms
+	    ProgAdmin.main(new String[] { "noScreen" });
+	}
 	
 	/*
 	 * @see TestCase#setUp()
@@ -124,7 +134,7 @@ public class ProzessorTalentTest extends TestCase {
 	/**
 	 * Testet ob das "SetUp" richtig funktioniert hat!
 	 */
-	public void testRichtigHinzugefuegt() {
+	@Test public void testRichtigHinzugefuegt() {
 		
 		link1.setZiel(talent1);
 		link2.setZiel(talent2);
@@ -156,7 +166,7 @@ public class ProzessorTalentTest extends TestCase {
 	 * Testet ob die Kosten für die Talente richtig berechnet werden, sowie das setzen der
 	 * Stufen und die Bestimmung der aktivierten Talente.
 	 */
-	public void testStufeSetzenKostenBerechnen() {
+	@Test public void testStufeSetzenKostenBerechnen() {
 		final ExtendedProzessorTalent extProz;
 		extProz = (ExtendedProzessorTalent) prozessor.getExtendedFunctions();
 		
@@ -300,7 +310,7 @@ public class ProzessorTalentTest extends TestCase {
 	/**
 	 * Testet ob die minimalen und maximalen Werte für ein Talent richtig berechnet werden!
 	 */
-	public void testMinMaxWerte() {
+	@Test public void testMinMaxWerte() {
 		
 		prozessorEigenschaft.updateWert( // MU auf 10 setzen
 				boxEigenschaft.getObjectById(EigenschaftEnum.MU.getId()),
@@ -344,7 +354,7 @@ public class ProzessorTalentTest extends TestCase {
 	/**
 	 * Testet ob richtig bestimmt wird ob ein Talent hinzugefügt werden darf!
 	 */
-	public void testCanAddAsNewElement() {
+	@Test public void testCanAddAsNewElement() {
 		Talent tmpTalent;
 		
 		// 3. nicht Basis Talent hinzufügen

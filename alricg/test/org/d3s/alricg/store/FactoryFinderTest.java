@@ -7,37 +7,30 @@
 
 package org.d3s.alricg.store;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.d3s.alricg.controller.MessengerMock;
 import org.d3s.alricg.controller.ProgAdmin;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests für den FactoryFinder.
  * 
  * @author <a href="mailto:msturzen@mac.com>St. Martin</a>
  */
-public class FactoryFinderTest extends TestCase {
+public class FactoryFinderTest {
 
-    public FactoryFinderTest() {
-        super();
-    }
 
-    public FactoryFinderTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before public void setUp() throws Exception {
         ProgAdmin.messenger = new MessengerMock();
         FactoryFinder.reset();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testFindUninitialized() {
+    @Test public void testFindUninitialized() {
         try {
             FactoryFinder.find();
             fail("NullPointerException expected.");
@@ -47,7 +40,7 @@ public class FactoryFinderTest extends TestCase {
         }
     }
 
-    public void testInitAndFind() {
+    @Test public void testInitAndFind() {
         try {
             FactoryFinder.init();
             assertNotNull(FactoryFinder.find());
@@ -61,7 +54,7 @@ public class FactoryFinderTest extends TestCase {
         }
     }
 
-    public void testReset() {
+    @Test public void testReset() {
         try {
             FactoryFinder.init();
         } catch (Throwable t) {

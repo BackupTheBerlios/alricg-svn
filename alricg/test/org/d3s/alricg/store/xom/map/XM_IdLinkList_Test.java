@@ -7,9 +7,9 @@
  */
 package org.d3s.alricg.store.xom.map;
 
-import java.io.File;
+import static org.junit.Assert.*;
 
-import junit.framework.TestCase;
+import java.io.File;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -26,14 +26,15 @@ import org.d3s.alricg.controller.MessengerMock;
 import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.store.FactoryFinder;
 import org.d3s.alricg.store.xom.XOMStoreObjectMother;
+import org.junit.Before;
+import org.junit.Test;
 
-public class XM_IdLinkList_Test extends TestCase {
+public class XM_IdLinkList_Test {
 
 	private XOMStoreObjectMother oma;
 	private XOMMapper<IdLinkList> mappy;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		oma = new XOMStoreObjectMother();
 		mappy = new XOMMapper_IdLinkList();
 		ProgAdmin.messenger = new MessengerMock();
@@ -41,7 +42,7 @@ public class XM_IdLinkList_Test extends TestCase {
 				"test/org/d3s/alricg/store/factory.properties"));
 	}
 
-	public void testMapFromXML() {
+	@Test public void testMapFromXML() {
 
 		Element e = new Element("idlinklist");
 

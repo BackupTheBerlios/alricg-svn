@@ -7,27 +7,26 @@
  */
 package org.d3s.alricg.store.xom.map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.charZusatz.SchwarzeGabe;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-public class XM_SchwarzeGabe_Test extends TestCase {
+public class XM_SchwarzeGabe_Test {
 
 	private XOMMapper<CharElement> mappy;
 
-	public XM_SchwarzeGabe_Test(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		mappy = new XOMMapper_SchwarzeGabe();
 	}
 
-	public void testMapFromXML() {
+	@Test public void testMapFromXML() {
 		try {
 		final Element xom = new Element("gabe");
 		final String name = "SGA-Schuppenechse";
@@ -68,7 +67,7 @@ public class XM_SchwarzeGabe_Test extends TestCase {
 		}
 	}
 
-	public void testMapToXML() {
+	@Ignore("Not implemented yet!") @Test public void testMapToXML() {
 		fail("Not implemented yet!");
 	}
 

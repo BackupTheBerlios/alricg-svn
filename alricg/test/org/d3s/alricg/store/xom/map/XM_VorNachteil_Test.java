@@ -6,9 +6,13 @@
  */
 package org.d3s.alricg.store.xom.map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 
-import junit.framework.TestCase;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -19,23 +23,21 @@ import org.d3s.alricg.controller.MessengerMock;
 import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.store.FactoryFinder;
 import org.d3s.alricg.store.xom.XOMStoreObjectMother;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Tests für XOMMapper_Fertigkeit
  * 
  * @author <a href="mailto:msturzen@mac.com>St. Martin</a>
  */
-public class XM_VorNachteil_Test extends TestCase {
+public class XM_VorNachteil_Test {
 
 	private XOMStoreObjectMother oma;
 	private XOMMapper<CharElement> mappy;
 
-	public XM_VorNachteil_Test(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		oma = new XOMStoreObjectMother();
 		mappy = new XOMMapper_VorNachteilBase();
 		ProgAdmin.messenger = new MessengerMock();
@@ -43,7 +45,7 @@ public class XM_VorNachteil_Test extends TestCase {
 				"test/org/d3s/alricg/store/factory.properties"));
 	}
 
-	public void testMapFromXML() {
+	@Test public void testMapFromXML() {
 		final Element xom = new Element("VorNachteilBase");
 		oma.addGPKosten(xom);
 
@@ -136,7 +138,7 @@ public class XM_VorNachteil_Test extends TestCase {
 
 	}
 
-	public void testMapToXML() {
+	@Ignore("Not implemented yet!") @Test public void testMapToXML() {
 		fail("Not implemented yet!");
 	}
 

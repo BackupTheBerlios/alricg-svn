@@ -7,9 +7,10 @@
  */
 package org.d3s.alricg.store.xom.map;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
-import junit.framework.TestCase;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -21,19 +22,17 @@ import org.d3s.alricg.controller.MessengerMock;
 import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.store.FactoryFinder;
 import org.d3s.alricg.store.xom.XOMStoreObjectMother;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-public class XM_FkWaffe_Test extends TestCase {
+public class XM_FkWaffe_Test {
 
 	private XOMStoreObjectMother oma;
 	private XOMMapper<CharElement> mappy;
 
-	public XM_FkWaffe_Test(String name) {
-		super(name);
-	}
 
-	protected void setUp() throws Exception {
-		super.setUp();
-
+	@Before public void setUp() throws Exception {
 		oma = new XOMStoreObjectMother();
 		mappy = new XOMMapper_FkWaffe();
 		ProgAdmin.messenger = new MessengerMock();
@@ -42,7 +41,7 @@ public class XM_FkWaffe_Test extends TestCase {
 
 	}
 
-	public void testMapFromXML() {
+	@Test public void testMapFromXML() {
 		final Element xom = new Element("fkWaffe");
 		oma.addErhaeltlichBei(xom, "REG-BAY");
 		oma.add(CharKomponente.region, "REG-BAY", new RegionVolk("REG-BAY"));
@@ -95,7 +94,7 @@ public class XM_FkWaffe_Test extends TestCase {
 
 	}
 
-	public void testMapToXML() {
+	@Ignore("Not implemented yet!") @Test public void testMapToXML() {
 		fail("Not implemented yet!");
 	}
 }

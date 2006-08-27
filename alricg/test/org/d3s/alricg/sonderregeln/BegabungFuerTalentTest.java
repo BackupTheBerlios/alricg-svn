@@ -8,7 +8,8 @@
  */
 package org.d3s.alricg.sonderregeln;
 
-import junit.framework.TestCase;
+
+import static org.junit.Assert.*;
 
 import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.Eigenschaft;
@@ -27,8 +28,11 @@ import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorTalent;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.store.DataStore;
 import org.d3s.alricg.store.FactoryFinder;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-public class BegabungFuerTalentTest extends TestCase {
+public class BegabungFuerTalentTest {
 	private LinkProzessorFront<Talent, ExtendedProzessorTalent, GeneratorLink> prozessor;
 	private ElementBox<GeneratorLink> box, boxEigenschaft;
 	private Held held;
@@ -39,7 +43,12 @@ public class BegabungFuerTalentTest extends TestCase {
     
     private DataStore data;
 	
-	protected void setUp() throws Exception {
+	@BeforeClass public static void startTestClass() {
+	    // Starten des Programms
+	    ProgAdmin.main(new String[] { "noScreen" });
+	}
+    
+	@Before public void setUp() throws Exception {
 		
         ProgAdmin.main(new String[] { "noScreen" });
     	
@@ -118,26 +127,12 @@ public class BegabungFuerTalentTest extends TestCase {
 		link3.setZiel(vorteil);
 		link3.setZweitZiel( talent3 );
 		
-		super.setUp();
-	}
-
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		
-		prozessor = null;
-		vorteil = null;
-		link1 = null;
-		link2 = null;
-		link3 = null;
-		talent1 = null;
-		talent2 = null;
-		talent3 = null;
 	}
 
 	/*
 	 * Teste die Methode "canAddSelf()"
 	 */
-	public void testCanAddSelf() {
+	@Test public void testCanAddSelf() {
 		
 		talent1.setKostenKlasse(KostenKlasse.A);
 		// Nr.1 Sollte nicht gehen, da KostenKlasse A
@@ -167,7 +162,7 @@ public class BegabungFuerTalentTest extends TestCase {
 	/*
 	 * Testet die Änderung der Kostenklasse durch die Sonderregel
 	 */
-	public void testChangeKostenKlasse() {
+	@Test public void testChangeKostenKlasse() {
 		
 		prozessor.updateWert(getLink(talent1), 3);
 		prozessor.updateWert(getLink(talent2), 5);
@@ -216,7 +211,7 @@ public class BegabungFuerTalentTest extends TestCase {
 	}
 
 	
-	public void testChangeKostenModiKlasse() {
+	@Test public void testChangeKostenModiKlasse() {
 		
 		// Modifikator (durch eine Rasse) erzeugen
 		link2 = new IdLink(new Rasse("RAS-JUnit-test"), null);

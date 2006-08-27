@@ -8,12 +8,15 @@
  */
 package org.d3s.alricg.prozessor;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.d3s.alricg.charKomponenten.CharElement;
+import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.prozessor.utils.FormelSammlung;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.Lernmethode;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * <u>Beschreibung:</u><br> 
@@ -21,13 +24,18 @@ import org.d3s.alricg.prozessor.utils.FormelSammlung.Lernmethode;
  * DSA (SKT), wenn also die Daten geänert werden, sind diese Tests hinfällig. 
  * @author V. Strelow
  */
-public class FormelSammlungTest extends TestCase {
+public class FormelSammlungTest {
 
+	@BeforeClass public static void startTestClass() {
+	    // Starten des Programms
+	    ProgAdmin.main(new String[] { "noScreen" });
+	}
+	
 	/**
 	 * Testet die original SKT, indem alle Stufen bis 30 Addiert werden und mit der
 	 * Summen-SKT verglichen werden 
 	 */
-	public void testGetSktWert() {
+	@Test public void testGetSktWert() {
 		int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0;
 		
 		for (int i = 1; i < 31; i++) {
@@ -54,7 +62,7 @@ public class FormelSammlungTest extends TestCase {
 	/*
 	 * Testet die Kosten für den Abbau von Nachteilen anhand von 2 Beispielen
 	 */
-	public void testberechneNachteilAbbauen() {
+	@Test public void testBerechneNachteilAbbauen() {
 		assertEquals(
 				700,
 				FormelSammlung.berechneNachteilAbbauen(
@@ -72,7 +80,7 @@ public class FormelSammlungTest extends TestCase {
 	/*
 	 * Testet das senken von schlechten Eigenschaften anhand von 2 Beispielen
 	 */
-	public void testberechneSchEigSenkenKosten() {
+	@Test public void testberechneSchEigSenkenKosten() {
 		assertEquals(
 				430,
 				FormelSammlung.berechneSchEigSenkenKosten(
@@ -91,7 +99,7 @@ public class FormelSammlungTest extends TestCase {
 	 * Class under test for int berechneSktKosten(int, int, int, Lernmethode, KostenKlasse, boolean)
 	 * Testet Arten von Berechnungen auf der SKT. 
 	 */
-	public void testBerechneSktKostenintintintLernmethodeKostenKlasseboolean() {
+	@Test public void testBerechneSktKostenintintintLernmethodeKostenKlasseboolean() {
 		
 		// Aktivierung 
 		assertEquals(
@@ -184,7 +192,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechneMR() {
+	@Test public void testBerechneMR() {
 		assertEquals(
 				7, // 6,6 = 7
 				FormelSammlung.berechneMR(10,11,12)
@@ -195,7 +203,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechneINI() {
+	@Test public void testBerechneINI() {
 		assertEquals(
 				9, // 8,6 = 9
 				FormelSammlung.berechneINI(10,11,12)
@@ -206,7 +214,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechneAtBasis() {
+	@Test public void testBerechneAtBasis() {
 		assertEquals(
 				7, // 6,6 = 7
 				FormelSammlung.berechneAtBasis(10,11,12)
@@ -217,7 +225,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechnePaBasis() {
+	@Test public void testBerechnePaBasis() {
 		assertEquals(
 				7, // 6,6 = 7
 				FormelSammlung.berechnePaBasis(10,11,12)
@@ -228,7 +236,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechneFkBasis() {
+	@Test public void testBerechneFkBasis() {
 		assertEquals(
 				7, // 6,6 = 7
 				FormelSammlung.berechneFkBasis(10,11,12)
@@ -239,7 +247,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechneLep() {
+	@Test public void testBerechneLep() {
 		assertEquals(
 				16, // 15,5 = 16
 				FormelSammlung.berechneLep(10,11)
@@ -250,7 +258,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechneAup() {
+	@Test public void testBerechneAup() {
 		assertEquals(
 				17, // 16,5 = 17
 				FormelSammlung.berechneAup(10,11,12)
@@ -261,7 +269,7 @@ public class FormelSammlungTest extends TestCase {
 			);
 	}
 
-	public void testBerechneAsp() {
+	@Test public void testBerechneAsp() {
 		assertEquals(
 				17, // 16,5 = 17
 				FormelSammlung.berechneAsp(10,11,12)

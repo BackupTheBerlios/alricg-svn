@@ -8,7 +8,7 @@
  */
 package org.d3s.alricg.prozessor.generierung;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.d3s.alricg.charKomponenten.Eigenschaft;
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
@@ -17,6 +17,7 @@ import org.d3s.alricg.charKomponenten.Profession;
 import org.d3s.alricg.charKomponenten.Talent;
 import org.d3s.alricg.charKomponenten.links.IdLink;
 import org.d3s.alricg.controller.CharKomponente;
+import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.held.Held;
 import org.d3s.alricg.prozessor.LinkProzessorFront;
 import org.d3s.alricg.prozessor.common.GeneratorLink;
@@ -25,8 +26,12 @@ import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorEigenschaf
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.store.DataStore;
 import org.d3s.alricg.store.FactoryFinder;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-public class ProzessorEigenschaftenTest extends TestCase {
+
+public class ProzessorEigenschaftenTest {
     private Held held;
     private LinkProzessorFront<Eigenschaft, ExtendedProzessorEigenschaft, GeneratorLink> prozessor;
     private LinkProzessorFront<Talent, ExtendedProzessorEigenschaft, GeneratorLink> prozessorTalent;
@@ -37,13 +42,12 @@ public class ProzessorEigenschaftenTest extends TestCase {
 
     private IdLink link, link2;
 
-    /*
-     * (non-Javadoc) Methode überschrieben
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
+	@BeforeClass public static void startTestClass() {
+	    // Starten des Programms
+	    ProgAdmin.main(new String[] { "noScreen" });
+	}
+    
+    @Before public void setUp() throws Exception {
     	
         // initialisieren
         FactoryFinder.init();
@@ -72,21 +76,10 @@ public class ProzessorEigenschaftenTest extends TestCase {
 
     }
 
-    /**
-     * Liefert den Link zu dem CharElement zurück (für Talente gedacht)
-     * 
-     * @param enu Die gewünschte Eigenschaft
-     * @return Der Link von ProzessorXX zu der Eigenschaft
-     *
-    private GeneratorLink getLinkTalent(CharElement elem) {
-
-        return (GeneratorLink) prozessor.getLinkByCharElement(elem, null, null);
-    }
-
     /*
      * Testet der Basis Funktionen: Das Setzen der Eigenschaften und die Berechnung der Kosten!
      */
-    public void testUpdateStufe() {
+    @Test public void testUpdateStufe() {
 
         prozessor.updateWert(getLink(EigenschaftEnum.KO), 10);
         prozessor.updateWert(getLink(EigenschaftEnum.KK), 11);
@@ -145,7 +138,7 @@ public class ProzessorEigenschaftenTest extends TestCase {
     /*
      * Testet mehrer Operationen auf der Eigenschaft Mut (Setzen der Eigenschaft, Kosten, Modis)
      */
-    public void testMU() {
+    @Test public void testMU() {
         // ------------- Test der Eigenschaft MU
         // Kultur setzen
         link = new IdLink(k, null);
@@ -194,7 +187,7 @@ public class ProzessorEigenschaftenTest extends TestCase {
     /*
      * Testet mehrer Operationen auf der Eigenschaft Klugheit (Setzen der Eigenschaft, Kosten, Modis durch 2x Herkunft)
      */
-    public void testKL() {
+    @Test public void testKL() {
         // Kultur setzen
         link = new IdLink(k, null);
         link.setWert(2);
@@ -265,7 +258,7 @@ public class ProzessorEigenschaftenTest extends TestCase {
     /*
      * Testet mehrer Operationen auf der Berechneten Eigenschaft Lep (Setzen der Eigenschaft, Kosten, Modis)
      */
-    public void testLEP() {
+    @Test public void testLEP() {
         // Setzen eines Modis durch eine Kultur
         link = new IdLink(k, null);
         link.setWert(4);
@@ -291,7 +284,7 @@ public class ProzessorEigenschaftenTest extends TestCase {
     /*
      * Testet mehrer Operationen auf der Berechneten Eigenschaft Asp (Setzen der Eigenschaft, Kosten, Modis)
      */
-    public void testASP() {
+    @Test public void testASP() {
         // Setzen eines Modis durch Kultur
         link = new IdLink(k, null);
         link.setWert(1);
@@ -367,7 +360,7 @@ public class ProzessorEigenschaftenTest extends TestCase {
     }
 
     
-    public void testNegativ() {
+    @Test public void testNegativ() {
         // Kultur setzen
         link = new IdLink(k, null);
         link.setWert(-2);
@@ -394,7 +387,7 @@ public class ProzessorEigenschaftenTest extends TestCase {
     /**
      * Testet die Abhängigkeiten für den Minimalen Wert zwischen Talent und Eigeschaft.
      */
-    public void testTalentEigenschaft() {
+    @Test public void testTalentEigenschaft() {
         Talent talent1, talent2;
 
         // Erzeugen der Talente:

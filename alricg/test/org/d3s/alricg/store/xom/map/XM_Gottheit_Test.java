@@ -7,28 +7,26 @@
  */
 package org.d3s.alricg.store.xom.map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 import nu.xom.Element;
 
 import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.Gottheit;
 import org.d3s.alricg.charKomponenten.Gottheit.GottheitArt;
 import org.d3s.alricg.charKomponenten.Gottheit.KenntnisArt;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-public class XM_Gottheit_Test extends TestCase {
+public class XM_Gottheit_Test {
 
 	private XOMMapper<CharElement> mappy;
 
-	public XM_Gottheit_Test(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		mappy = new XOMMapper_Gottheit();
 	}
 
-	public void testMapFromXML() {
+	@Test public void testMapFromXML() {
 		try {
 			final Element xom = new Element("gabe");
 			final String name = "GOT-Namenlos";
@@ -78,7 +76,7 @@ public class XM_Gottheit_Test extends TestCase {
 		}
 	}
 
-	public void testMapToXML() {
+	@Ignore("Not implemented yet!") @Test public void testMapToXML() {
 		fail("Not implemented yet!");
 	}
 

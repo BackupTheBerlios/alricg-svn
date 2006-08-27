@@ -7,24 +7,27 @@
  */
 package org.d3s.alricg.store.xom.map;
 
-import java.io.File;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import java.io.File;
 
 import org.d3s.alricg.controller.CharKomponente;
 import org.d3s.alricg.controller.MessengerMock;
 import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.store.FactoryFinder;
+import org.junit.Before;
+import org.junit.Test;
 
-public class XOMMappingHelper_Test extends TestCase {
+public class XOMMappingHelper_Test {
 
-	protected void setUp() throws Exception {
+	@Before public void setUp() throws Exception {
 		ProgAdmin.messenger = new MessengerMock();
 		FactoryFinder.init(new File(
 				"test/org/d3s/alricg/store/factory.properties"));
 	}
 
-	public void testChooseXOMMapper() {
+	@Test public void testChooseXOMMapper() {
 
 		XOMMapper< ? > mappy = XOMMappingHelper.instance().chooseXOMMapper(
 				CharKomponente.ausruestung);

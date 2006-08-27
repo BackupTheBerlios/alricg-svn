@@ -7,7 +7,10 @@
  */
 package org.d3s.alricg.sonderregeln;
 
-import junit.framework.TestCase;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.Eigenschaft;
@@ -18,6 +21,7 @@ import org.d3s.alricg.charKomponenten.Talent;
 import org.d3s.alricg.charKomponenten.links.IdLink;
 import org.d3s.alricg.charKomponenten.sonderregeln.Stubenhocker;
 import org.d3s.alricg.controller.CharKomponente;
+import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.held.Held;
 import org.d3s.alricg.prozessor.LinkProzessorFront;
 import org.d3s.alricg.prozessor.common.GeneratorLink;
@@ -27,13 +31,16 @@ import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorTalent;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.store.DataStore;
 import org.d3s.alricg.store.FactoryFinder;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * <u>Beschreibung:</u><br> 
  * Testet die Sonderregel "Stubenhocker".
  * @author V. Strelow
  */
-public class StubenhockerTest extends TestCase {
+public class StubenhockerTest {
 	private Talent talent1, talent2, talent3, talent4, talent5, talent6, 
 				talentBasis1, talentBasis2, talentBasis3;
 	private LinkProzessorFront<Talent, ExtendedProzessorTalent, GeneratorLink> prozessorTalent;
@@ -47,8 +54,12 @@ public class StubenhockerTest extends TestCase {
 	private Stubenhocker stubenSR;
 	private DataStore data;
 	
-	protected void setUp() throws Exception {
-		super.setUp();
+	@BeforeClass public static void startTestClass() {
+	    // Starten des Programms
+	    ProgAdmin.main(new String[] { "noScreen" });
+	}
+	
+	@Before public void setUp() throws Exception {
 		
         // initialisieren
         FactoryFinder.init();
@@ -189,16 +200,11 @@ public class StubenhockerTest extends TestCase {
 		talentBasis3.setName("Test Basis Talent 3");
 	}
 
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
 	/**
 	 * Testet ob die Methode "canAddSelf" richtig funktioniert, die überprüft ob die SR zum
 	 * Helden hinzugefügt werden kann.
 	 */
-	public void testCanAddSelf() {
+	@Test public void testCanAddSelf() {
 		prozessorEigenschaft.updateWert(getLinkEigenschaft(EigenschaftEnum.GE), 9);
 		prozessorEigenschaft.updateWert(getLinkEigenschaft(EigenschaftEnum.KO), 10);
 		prozessorEigenschaft.updateWert(getLinkEigenschaft(EigenschaftEnum.KK), 11);
@@ -243,7 +249,7 @@ public class StubenhockerTest extends TestCase {
 	/**
 	 * Testet ob die Beschränkungen im Bezug auf die Eigenschaften richtig funktionieren.
 	 */
-	public void testEigenschaften() {
+	@Test public void testEigenschaften() {
 		// Link zu dem Nachteil erzeugen
 		link1 = new IdLink(null, null);
 		link1.setZiel(nachteil);
@@ -270,7 +276,7 @@ public class StubenhockerTest extends TestCase {
 	/**
 	 * Testet ob die Stufen der Talente richtige gesetzt/ begrenzt werden
 	 */
-	public void testTalentStufen() {
+	@Test public void testTalentStufen() {
 		// Link zu dem Nachteil erzeugen
 		link1 = new IdLink(null, null);
 		link1.setZiel(nachteil);
@@ -401,7 +407,7 @@ public class StubenhockerTest extends TestCase {
 	/**
 	 * Testet ob die Kosten für ein Talent richtig berechnet werden.
 	 */
-	public void testTalentKosten() {
+	@Test public void testTalentKosten() {
 		// Link zu dem Nachteil erzeugen
 		link1 = new IdLink(null, null);
 		link1.setZiel(nachteil);

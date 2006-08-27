@@ -6,33 +6,35 @@
  */
 package org.d3s.alricg.store.xom.map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.RegelAnmerkung;
 import org.d3s.alricg.controller.CharKomponente;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Tests für XOMMapper_CharElement
  * 
  * @author <a href="mailto:msturzen@mac.com>St. Martin</a>
  */
-public class XM_CharElement_Test extends TestCase {
+public class XM_CharElement_Test {
 
 	private XOMMapper<CharElement> mappy;
 
-	public XM_CharElement_Test(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		mappy = new XOMMapper_CharElementBase();
 	}
 
-	public void testMapFromXMLSimple() {
+	@Test public void testMapFromXMLSimple() {
 		final Element xom = new Element("CharElementBase");
 
 		String name = "ElementName";
@@ -140,7 +142,7 @@ public class XM_CharElement_Test extends TestCase {
 		assertEquals("Sammelbegriff falsch", "", charElement.getSammelBegriff());
 	}
 
-	public void testMapFromXMLRegelAnmerkungen() {
+	@Test public void testMapFromXMLRegelAnmerkungen() {
 		final Element xom = new Element("CharElementBase");
 		xom.addAttribute(new Attribute("name", "ElementName"));
 
@@ -200,7 +202,7 @@ public class XM_CharElement_Test extends TestCase {
 
 	}
 
-	public void testMapFromXMLSonderregeln() {
+	@Test public void testMapFromXMLSonderregeln() {
 		// Sonderregeln werden z.Zt. nicht gemappt!
 		// => Teste auch das, dmits einen Fehler gibt, falls es doch mal impl.
 		// wird.
@@ -223,7 +225,7 @@ public class XM_CharElement_Test extends TestCase {
 
 	}
 
-	public void testMapToXML() {
+	@Ignore("Not implemented yet!") @Test public void testMapToXML() {
 		fail("Not implemented yet!");
 	}
 

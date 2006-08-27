@@ -6,7 +6,10 @@
  */
 package org.d3s.alricg.store.xom.map;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -16,29 +19,28 @@ import org.d3s.alricg.controller.MessengerMock;
 import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.store.xom.XOMStoreObjectMother;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Tests für XOMMapper_SchriftSprache
  * 
  * @author <a href="mailto:msturzen@mac.com>St. Martin</a>
  */
-public class XM_Sprache_Test extends TestCase {
+public class XM_Sprache_Test {
 
 	private XOMStoreObjectMother oma;
 	private XOMMapper<CharElement> mappy;
 
-	public XM_Sprache_Test(String name) {
-		super(name);
-	}
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		oma = new XOMStoreObjectMother();
 		mappy = new XOMMapper_Sprache();
 		ProgAdmin.messenger = new MessengerMock();
 	}
 
-	public void testMapFromXML() {
+	@Test public void testMapFromXML() {
 		final Element xom = new Element("SchriftSpracheBase");
 		oma.addSchriftSprachDaten(xom);
 
@@ -78,7 +80,7 @@ public class XM_Sprache_Test extends TestCase {
 		assertEquals("zugehoerigeSchrift falsch", 0, s.getZugehoerigeSchrift().getLinks().length);
 	}
 
-	public void testMapToXML() {
+	@Ignore("Not implemented yet!") @Test public void testMapToXML() {
 		fail("Not implemented yet!");
 	}
 }

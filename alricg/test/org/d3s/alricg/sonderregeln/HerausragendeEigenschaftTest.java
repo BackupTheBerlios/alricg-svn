@@ -8,7 +8,10 @@
  */
 package org.d3s.alricg.sonderregeln;
 
-import junit.framework.TestCase;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.d3s.alricg.charKomponenten.Eigenschaft;
 import org.d3s.alricg.charKomponenten.EigenschaftEnum;
@@ -17,6 +20,7 @@ import org.d3s.alricg.charKomponenten.Vorteil;
 import org.d3s.alricg.charKomponenten.links.IdLink;
 import org.d3s.alricg.charKomponenten.sonderregeln.HerausragendeEigenschaft;
 import org.d3s.alricg.controller.CharKomponente;
+import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.held.Held;
 import org.d3s.alricg.prozessor.LinkProzessorFront;
 import org.d3s.alricg.prozessor.common.GeneratorLink;
@@ -24,13 +28,16 @@ import org.d3s.alricg.prozessor.elementBox.ElementBox;
 import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorEigenschaft;
 import org.d3s.alricg.store.DataStore;
 import org.d3s.alricg.store.FactoryFinder;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * <u>Beschreibung:</u><br> 
  *
  * @author V. Strelow
  */
-public class HerausragendeEigenschaftTest extends TestCase {
+public class HerausragendeEigenschaftTest {
     private LinkProzessorFront<Eigenschaft, ExtendedProzessorEigenschaft, GeneratorLink> prozessor;
     private ElementBox<GeneratorLink> box;
     private Held held;
@@ -40,11 +47,12 @@ public class HerausragendeEigenschaftTest extends TestCase {
 	private IdLink link, link2;
     private DataStore data;
 	
-	/* (non-Javadoc) Methode überschrieben
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeClass public static void startTestClass() {
+	    // Starten des Programms
+	    ProgAdmin.main(new String[] { "noScreen" });
+	}
+    
+	@Before public void setUp() throws Exception {
 		
         // initialisieren
         FactoryFinder.init();
@@ -74,7 +82,7 @@ public class HerausragendeEigenschaftTest extends TestCase {
 	 * Testet das eine Herausragende Eigenschaft NICHT hinzugefügt werden darf, 
 	 * wenn bereits die Eigenschaft einen negativen Modi besitzt.
 	 */
-	public void testCanAddSelf() {
+	@Test public void testCanAddSelf() {
 		prozessor.updateWert(getLink(EigenschaftEnum.KO), 10);
 		
 		// Der Link der die Sonderregel enthält
@@ -123,7 +131,7 @@ public class HerausragendeEigenschaftTest extends TestCase {
 	/**
 	 * Testet das hinzufügen und entfernen der Sonderregel.
 	 */
-	public void testSonderregelMitAdmin() {
+	@Test public void testSonderregelMitAdmin() {
 		prozessor.updateWert(getLink(EigenschaftEnum.KL), 10);
 		prozessor.updateWert(getLink(EigenschaftEnum.IN), 9);
 		
@@ -174,7 +182,7 @@ public class HerausragendeEigenschaftTest extends TestCase {
 	/**
 	 * Testet das Hinzufügen und entfernen von zwei Sonderregeln
 	 */
-	public void testZweiSonderregelMitAdmin() {
+	@Test public void testZweiSonderregelMitAdmin() {
 		prozessor.updateWert(getLink(EigenschaftEnum.MU), 10);
 		prozessor.updateWert(getLink(EigenschaftEnum.FF), 9);
 		

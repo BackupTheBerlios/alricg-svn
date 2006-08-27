@@ -8,7 +8,8 @@
  */
 package org.d3s.alricg.sonderregeln;
 
-import junit.framework.TestCase;
+
+import static org.junit.Assert.assertEquals;
 
 import org.d3s.alricg.charKomponenten.CharElement;
 import org.d3s.alricg.charKomponenten.Eigenschaft;
@@ -17,6 +18,7 @@ import org.d3s.alricg.charKomponenten.Vorteil;
 import org.d3s.alricg.charKomponenten.links.IdLink;
 import org.d3s.alricg.charKomponenten.sonderregeln.BegabungFuerTalentgruppe;
 import org.d3s.alricg.controller.CharKomponente;
+import org.d3s.alricg.controller.ProgAdmin;
 import org.d3s.alricg.held.Held;
 import org.d3s.alricg.prozessor.LinkProzessorFront;
 import org.d3s.alricg.prozessor.common.GeneratorLink;
@@ -25,8 +27,11 @@ import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorTalent;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.store.DataStore;
 import org.d3s.alricg.store.FactoryFinder;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-public class BegabungFuerTalentgruppeTest extends TestCase {
+public class BegabungFuerTalentgruppeTest {
 	private LinkProzessorFront<Talent, ExtendedProzessorTalent, GeneratorLink> prozessor;
 	private ElementBox<GeneratorLink> box, boxEigenschaft;
 	private Held held;
@@ -36,7 +41,12 @@ public class BegabungFuerTalentgruppeTest extends TestCase {
     private DataStore data;
     private BegabungFuerTalentgruppe begabungSR;
 
-    protected void setUp() throws Exception {
+	@BeforeClass public static void startTestClass() {
+	    // Starten des Programms
+	    ProgAdmin.main(new String[] { "noScreen" });
+	}
+    
+    @Before public void setUp() throws Exception {
         // initialisieren
         FactoryFinder.init();
         data = FactoryFinder.find().getData();
@@ -100,11 +110,7 @@ public class BegabungFuerTalentgruppeTest extends TestCase {
 
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testKosten() {
+    @Test public void testKosten() {
         // Talente hinzufügen
         prozessor.addNewElement(talent1);
         prozessor.addNewElement(talent2);
