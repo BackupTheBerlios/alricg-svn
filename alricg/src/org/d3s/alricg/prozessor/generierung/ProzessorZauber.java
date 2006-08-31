@@ -251,11 +251,11 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		
 		int startStufe;
 		if ( aktivierteZauber.contains( zauber ) ) {
-			startStufe = link.getWertModis();
-			notepad.writeMessage( TEXT_AKTIVIEREN );
-		} else {
 			startStufe = CharElement.KEIN_WERT;
 			notepad.writeMessage( TEXT_MODIS + startStufe );
+		} else {
+			startStufe = link.getWertModis();
+			notepad.writeMessage( TEXT_AKTIVIEREN );
 		}
 		
 		int zielStufe = link.getWert();
@@ -357,7 +357,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		elementBox.add( link );
 		
 		for( Eigenschaft eigenschaft : ziel.get3Eigenschaften() ) {
-			hashMapNachEigensch.get( eigenschaft ).add( link );
+			hashMapNachEigensch.get( eigenschaft.getEigenschaftEnum() ).add( link );
 		}
 		
 		pruefeZauberAktivierung( link );
@@ -443,12 +443,12 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		Zauber zauber = (Zauber) link.getZiel();
 		
 		if( besitztModifikator( link ) ) {
-			
+
 			// Der Zauber besitzt einen Modifikator
 			aktivierteZauber.remove( zauber );
 			
 		} else { // Zauber wurde aktiviert
-			
+
 			aktivierteZauber.add( zauber );
 			
 		}
@@ -461,7 +461,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		Zauber zauber = (Zauber) neuerHauszauber.getZiel();
 		
 		hauszauberMap.put( zauber, (Repraesentation) neuerHauszauber.getZweitZiel() );
-		
+
 		GeneratorLink zauberLink = elementBox.getObjectById( zauber );
 		
 		if ( null != zauberLink ) {
@@ -607,7 +607,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	}
 
 	private boolean besitztModifikator( GeneratorLink link ) {
-		return 0 == link.getLinkModiList().size();
+		return 0 != link.getLinkModiList().size();
 	}
 
 	private boolean besitztKeinenModifikator( GeneratorLink link ) {
