@@ -7,6 +7,8 @@ import java.util.Random;
 import junit.framework.TestCase;
 
 import org.d3s.alricg.charKomponenten.Eigenschaft;
+import org.d3s.alricg.charKomponenten.EigenschaftEnum;
+import org.d3s.alricg.charKomponenten.Rasse;
 import org.d3s.alricg.charKomponenten.Repraesentation;
 import org.d3s.alricg.charKomponenten.Zauber;
 import org.d3s.alricg.charKomponenten.Werte.MagieMerkmal;
@@ -18,6 +20,7 @@ import org.d3s.alricg.held.Held;
 import org.d3s.alricg.prozessor.LinkProzessorFront;
 import org.d3s.alricg.prozessor.common.GeneratorLink;
 import org.d3s.alricg.prozessor.elementBox.ElementBox;
+import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorEigenschaft;
 import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorZauber;
 import org.d3s.alricg.prozessor.utils.FormelSammlung.KostenKlasse;
 import org.d3s.alricg.store.DataStore;
@@ -174,6 +177,9 @@ public class ProzessorZauberTest extends TestCase {
 		}
 	}
 	
+	/**
+	 * Prueft ob ein neuer Zauber korrekt eingefuegt wird.
+	 */
 	public void testZauberEinfuegen() {
 		
 		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
@@ -200,6 +206,9 @@ public class ProzessorZauberTest extends TestCase {
 		assertTrue( box.getEqualObjects( zauberLink1 ).get( 0 ).getZweitZiel() == repraesentation );
 	}
 
+	/**
+	 * Prueft ob sich die Stufe aendern laesst und die Kosten richtig berechnet werden.
+	 */
 	public void testStufeAendern() {
 		
 		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
@@ -224,6 +233,10 @@ public class ProzessorZauberTest extends TestCase {
 		assertEquals( 33, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten() );
 	}
 
+	/**
+	 * Prueft ob sich ein Modifikator setzen laesst und ob die Kosten korrekt
+	 * berechnet werden.
+	 */
 	public void testModiSetzen() {
 		
 		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
@@ -243,12 +256,125 @@ public class ProzessorZauberTest extends TestCase {
 		
 		prozessor.addNewElement( zauber1 );
 		
-		IdLink modi = new IdLink( null, null );
+		Rasse rasse = new Rasse( "RAS-test" );
+		IdLink modi = new IdLink( rasse, null );
 		modi.setZiel( zauber1 );
 		modi.setWert( 5 );
 		prozessor.addModi( modi );
 		
+		assertEquals( 5, box.getEqualObjects( zauberLink1 ).get( 0 ).getWert() );
+		
 		assertEquals( 0, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten() );
+	}
+	
+	/**
+	 * Prueft ob die Kosten korrekt berechnet werden wenn eine Stufe und ein
+	 * Modifikator gesetzt sind.
+	 */
+	public void testModiUndStufeSetzen() {
+
+		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
+		
+		Repraesentation repraesentation = new Repraesentation( "REP-test-1" );
+		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
+		
+		Zauber zauber1 = erzeugeZauber( "ZAU-test-1", KostenKlasse.C, MagieMerkmal.antimagie );
+		
+		Link zauberLink1 = new IdLink( null, null );
+		zauberLink1.setZiel( zauber1 );
+		zauberLink1.setZweitZiel( new Repraesentation( "REP-test-2" ) );
+		
+		Collection< Link > moeglicheZauber = erzeugeZauberLinks( ANZAHL_MOEGLICHE_ZAUBER );
+		moeglicheZauber.add( zauberLink1 );
+		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
+		
+		prozessor.addNewElement( zauber1 );
+
+		prozessor.updateWert( box.getObjectById(zauber1), 7 );
+		
+		Rasse rasse = new Rasse( "RAS-test" );
+		IdLink modi = new IdLink( rasse, null );
+		modi.setZiel( zauber1 );
+		modi.setWert( 3 );
+		prozessor.addModi( modi );
+		
+		// Als Zauber fremder Repraesentation wird nach Spalte E gesteigert.
+		assertEquals( 124, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten() );
+	}
+	
+	/**
+	 * Prueft ob der Maximalwert bei einem Zauber eigener Repraesentation 
+	 * korrekt bestimmt wird.
+	 */
+	public void testMinMaxWert() {
+
+		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
+		
+		// Wert der Eigenschaften festlegen. 
+		LinkProzessorFront<Eigenschaft, ExtendedProzessorEigenschaft, GeneratorLink> prozessorEigenschaft;
+		prozessorEigenschaft = held.getProzessor( CharKomponente.eigenschaft );
+
+		ElementBox<GeneratorLink> boxEigenschaft = prozessorEigenschaft.getElementBox();;
+		
+		prozessorEigenschaft.updateWert(
+				boxEigenschaft.getObjectById( EigenschaftEnum.MU.getId() ),
+				10 );
+		prozessorEigenschaft.updateWert(
+				boxEigenschaft.getObjectById( EigenschaftEnum.KL.getId() ),
+				12 );
+		prozessorEigenschaft.updateWert(
+				boxEigenschaft.getObjectById( EigenschaftEnum.IN.getId() ),
+				14 );
+		
+		// Eigene Repraesentation festlegen.
+		Repraesentation repraesentation = new Repraesentation( "REP-eigeneReapraesentation" );
+		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
+		
+		// Zauber erzeugen
+		Zauber zauber1 = erzeugeZauber( "ZAU-eigeneRepraesentation", KostenKlasse.C, MagieMerkmal.antimagie );
+		zauber1.setDreiEigenschaften( new Eigenschaft[]{
+				(Eigenschaft) data.getCharElement( "EIG-MU", CharKomponente.eigenschaft ),
+				(Eigenschaft) data.getCharElement( "EIG-KL", CharKomponente.eigenschaft ),
+				(Eigenschaft) data.getCharElement( "EIG-IN", CharKomponente.eigenschaft )
+		} );
+
+		Zauber zauber2 = erzeugeZauber( "ZAU-fremdeRepraesentation", KostenKlasse.C, MagieMerkmal.antimagie );
+		zauber2.setDreiEigenschaften( new Eigenschaft[]{
+				(Eigenschaft) data.getCharElement( "EIG-MU", CharKomponente.eigenschaft ),
+				(Eigenschaft) data.getCharElement( "EIG-KL", CharKomponente.eigenschaft ),
+				(Eigenschaft) data.getCharElement( "EIG-IN", CharKomponente.eigenschaft )
+		} );
+		
+		// Moegliche Zauber erzeugen.
+		Link zauberLink1 = new IdLink( null, null );
+		zauberLink1.setZiel( zauber1 );
+		zauberLink1.setZweitZiel( repraesentation );
+		
+		Link zauberLink2 = new IdLink( null, null );
+		zauberLink2.setZiel( zauber2 );
+		zauberLink2.setZweitZiel( new Repraesentation( "REP-fremdeRepraesentation" ) );
+		
+		Collection< Link > moeglicheZauber = erzeugeZauberLinks( ANZAHL_MOEGLICHE_ZAUBER );
+		moeglicheZauber.add( zauberLink1 );
+		moeglicheZauber.add( zauberLink2 );
+		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
+		
+		prozessor.addNewElement( zauber1 );
+		prozessor.addNewElement( zauber2 );
+
+		assertEquals( 17, prozessor.getMaxWert( box.getObjectById( zauber1 )));
+		assertEquals(  0, prozessor.getMinWert( box.getObjectById( zauber1 )));
+
+		assertEquals( 14, prozessor.getMaxWert( box.getObjectById( zauber2 )));
+		assertEquals(  0, prozessor.getMinWert( box.getObjectById( zauber2 )));
+		
+		// Modifikator durch Rasse erzeugen
+		IdLink link = new IdLink(new Rasse( "RAS-Rasse" ), null);
+		link.setZiel( zauber2 );
+		link.setWert( 4 );
+		prozessor.addModi( link );
+		
+		assertEquals( 4, prozessor.getMinWert( box.getObjectById( zauber2 )));
 	}
 	
 	/**
@@ -316,6 +442,7 @@ public class ProzessorZauberTest extends TestCase {
 			final MagieMerkmal ... magieMerkmale ) {
 
 		Zauber zauber = erzeugeZauber( id );
+		zauber.setName( id );
 		zauber.setKostenKlasse( kostenKlasse );
 		zauber.setMerkmale( magieMerkmale );
 		
@@ -329,8 +456,7 @@ public class ProzessorZauberTest extends TestCase {
 	private Zauber erzeugeZauber( final String id ) {
 
 		final Zauber zauber = new Zauber( id );
-		
-		System.out.println( "Zauber: " + zauber );
+		zauber.setName( id );
 
 		zauber.setDreiEigenschaften( new Eigenschaft[] {
 				getEigenschaft(), getEigenschaft(), getEigenschaft()
