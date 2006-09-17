@@ -372,12 +372,16 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 */
 	public boolean canAddElement(Zauber ziel) {
 		
+		if ( ( ! held.isVollzauberer() ) && ( ! held.isHalbzauberer() ) ) {
+			// Nur Voll- und Halbzauberer koennen Zauber aktivieren.
+			return false;
+		}
+		
 		if ( held.isVollzauberer() && ( aktivierteZauber.size() >= MAX_ZAUBER_AKTIVIERUNG_VOLLZAUBERER )
 	      ||(held.isHalbzauberer() && ( aktivierteZauber.size() >= MAX_ZAUBER_AKTIVIERUNG_HALBZAUBERER ) ) ) {
 			
 			//Es kann kein weiterer Zauber mehr aktiviert werden.
 			notepad.writeMessage( TEXT_KEINE_AKTIVIERUNG );
-			
 			return false;
 		}
 		

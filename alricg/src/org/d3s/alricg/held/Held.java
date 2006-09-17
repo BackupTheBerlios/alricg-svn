@@ -421,11 +421,21 @@ public class Held {
 		return this.isVollzauberer;
 	}
 	
+	/** Nur zum testen eingefuegt. */
+	public void setVollzauberer( boolean istVollzauberer ) {
+		this.isVollzauberer = istVollzauberer;
+	}
+	
 	/**
 	 * @return true - Der Held besitzt den Vorteil "Halbzauberer", ansonsten false
 	 */
 	public boolean isHalbzauberer() {
 		return this.isHalbzauberer;
+	}
+	
+	/** Nur zu testen eingefuegt. */
+	public void setHalbzauberer( boolean istHalbzauberer ) {
+		this.isHalbzauberer = istHalbzauberer;
 	}
 	
 	/**

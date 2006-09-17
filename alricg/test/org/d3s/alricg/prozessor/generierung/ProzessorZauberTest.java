@@ -1,7 +1,9 @@
 package org.d3s.alricg.prozessor.generierung;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 import junit.framework.TestCase;
@@ -303,8 +305,8 @@ public class ProzessorZauberTest extends TestCase {
 	}
 	
 	/**
-	 * Prueft ob der Maximalwert bei einem Zauber eigener Repraesentation 
-	 * korrekt bestimmt wird.
+	 * Prueft ob der Maximal- und Minmalwert fuer die Zauber korrekt bestimmt
+	 * werden.
 	 */
 	public void testMinMaxWert() {
 
@@ -327,7 +329,7 @@ public class ProzessorZauberTest extends TestCase {
 				14 );
 		
 		// Eigene Repraesentation festlegen.
-		Repraesentation repraesentation = new Repraesentation( "REP-eigeneReapraesentation" );
+		Repraesentation repraesentation = new Repraesentation( "REP-eigeneRepraesentation" );
 		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
 		
 		// Zauber erzeugen
@@ -374,14 +376,55 @@ public class ProzessorZauberTest extends TestCase {
 		link.setWert( 4 );
 		prozessor.addModi( link );
 		
-		assertEquals( 4, prozessor.getMinWert( box.getObjectById( zauber2 )));
+		assertEquals( 14, prozessor.getMaxWert( box.getObjectById( zauber2 )));
+		assertEquals(  4, prozessor.getMinWert( box.getObjectById( zauber2 )));
+	}
+	
+	/**
+	 * 
+	 */
+	public void testCanAddElement() {
+
+		held.setRepraesentationen( new Repraesentation[0] );
+		
+		Zauber zauberZuViel = erzeugeZauber( "ZAU-ZuViel" );
+		
+		List< Link > zauberlinks = erzeugeZauberLinks( 10 );
+		zauberlinks.add( erzeugeZauberLink( zauberZuViel, "REP-test" ) );
+		extendedProzessor.setMoeglicheZauber( zauberlinks );
+		
+		assertFalse( prozessor.canAddElement( zauberZuViel ) );
+		
+		// Halbzauberer testen
+		macheZuHalbzauberer( held );
+		
+		assertTrue( prozessor.canAddElement( zauberZuViel ) );
+		
+		for ( int i = 0 ; i < 5 ; i++ ) {
+			Zauber zauber = (Zauber) zauberlinks.get( i ).getZiel();
+			assertTrue( prozessor.canAddElement( zauber ) );
+			prozessor.addNewElement( zauber );
+		}
+		
+		assertFalse( prozessor.canAddElement( zauberZuViel ) );
+		
+		// Vollzauberer testen
+		macheZuVollzauberer( held );
+
+		for ( int i = 5 ; i < 10 ; i++ ) {
+			Zauber zauber = (Zauber) zauberlinks.get( i ).getZiel();
+			assertTrue( prozessor.canAddElement( zauber ) );
+			prozessor.addNewElement( zauber );
+		}
+		
+		assertFalse( prozessor.canAddElement( zauberZuViel ) );
 	}
 	
 	/**
 	 * Erzeugt eine Liste von Zaubern
 	 */
-	private Collection< Link > erzeugeZauberLinks( final int anzahl ) {
-		Collection< Link > zauberlinks = new HashSet< Link >();
+	private List< Link > erzeugeZauberLinks( final int anzahl ) {
+		List< Link > zauberlinks = new ArrayList< Link >();
 
 		for( Zauber zauber : erzeugeZauberliste( anzahl ) ) {
 			
@@ -441,28 +484,26 @@ public class ProzessorZauberTest extends TestCase {
 			final KostenKlasse kostenKlasse, 
 			final MagieMerkmal ... magieMerkmale ) {
 
-		Zauber zauber = erzeugeZauber( id );
+		Zauber zauber = new Zauber( id );
 		zauber.setName( id );
 		zauber.setKostenKlasse( kostenKlasse );
 		zauber.setMerkmale( magieMerkmale );
-		
-		return zauber;
-	}
-	
-	/**
-	 * @param id z.B. "ZAU-test-1"
-	 * @return ein Zauber mit drei zuefaellig gewaehlten Probe-Eigenschaften.
-	 */
-	private Zauber erzeugeZauber( final String id ) {
-
-		final Zauber zauber = new Zauber( id );
-		zauber.setName( id );
 
 		zauber.setDreiEigenschaften( new Eigenschaft[] {
 				getEigenschaft(), getEigenschaft(), getEigenschaft()
 		} );
 		
 		return zauber;
+	}
+	
+	/**
+	 * @param id z.B. "ZAU-test-1"
+	 * @return ein Zauber mit drei zuefaellig gewaehlten Probe-Eigenschaften,
+	 * 			Kostenklase A und Merkmal Antimagie.
+	 */
+	private Zauber erzeugeZauber( final String id ) {
+
+		return erzeugeZauber( id, KostenKlasse.A, MagieMerkmal.antimagie  );
 	}
 
 	/**
@@ -508,5 +549,15 @@ public class ProzessorZauberTest extends TestCase {
 		}
 		
 		return (Eigenschaft) data.getCharElement( eigenschaft, CharKomponente.eigenschaft );
+	}
+	
+	private void macheZuHalbzauberer( Held held ) {
+		held.setVollzauberer( false );
+		held.setHalbzauberer( true );
+	}
+	
+	private void macheZuVollzauberer( Held held ) {
+		held.setHalbzauberer( false );
+		held.setVollzauberer( true );
 	}
 }
