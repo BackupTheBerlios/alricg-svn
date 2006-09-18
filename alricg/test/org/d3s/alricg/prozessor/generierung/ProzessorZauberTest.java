@@ -381,9 +381,12 @@ public class ProzessorZauberTest extends TestCase {
 	}
 	
 	/**
-	 * 
+	 * Testet ob die maximale Anzahl aktivierbare Zauber eingehalten wird.
+	 * Nichtzauberer und Viertelzauberer duerfen keine Zauber aktivieren.
+	 * Halbzauberer duerfen 5 Zauber aktivieren.
+	 * Vollzauberer duerfen 10 Zauber aktivieren.
 	 */
-	public void testCanAddElement() {
+	public void testCanAddElementMaximum() {
 
 		held.setRepraesentationen( new Repraesentation[0] );
 		
@@ -395,7 +398,8 @@ public class ProzessorZauberTest extends TestCase {
 		
 		assertFalse( prozessor.canAddElement( zauberZuViel ) );
 		
-		// Halbzauberer testen
+		// Halbzauberer testen. 
+		// Testen ob nur 5 Zauber aktiviert werden koennen.
 		macheZuHalbzauberer( held );
 		
 		assertTrue( prozessor.canAddElement( zauberZuViel ) );
@@ -405,10 +409,10 @@ public class ProzessorZauberTest extends TestCase {
 			assertTrue( prozessor.canAddElement( zauber ) );
 			prozessor.addNewElement( zauber );
 		}
-		
 		assertFalse( prozessor.canAddElement( zauberZuViel ) );
 		
-		// Vollzauberer testen
+		// Vollzauberer testen.
+		// Testen ob nur 10 Zauber aktiviert werden koennen.
 		macheZuVollzauberer( held );
 
 		for ( int i = 5 ; i < 10 ; i++ ) {
@@ -416,8 +420,81 @@ public class ProzessorZauberTest extends TestCase {
 			assertTrue( prozessor.canAddElement( zauber ) );
 			prozessor.addNewElement( zauber );
 		}
-		
 		assertFalse( prozessor.canAddElement( zauberZuViel ) );
+	}
+	
+	/**
+	 * Test: Ein Zauber den ein Held schon besitzt kann nicht hinzugefuegt 
+	 * werden.
+	 */
+	public void testCanAddElementSchonAktivert() {
+		
+		held.setRepraesentationen( new Repraesentation[ 0 ] );
+		
+		Collection< Link > moeglicheZauber = erzeugeZauberLinks( 5 );
+		
+		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
+		
+		macheZuVollzauberer( held );
+		
+		for ( Link zauberlink : moeglicheZauber ) {
+			Zauber zauber = (Zauber) zauberlink.getZiel();
+			assertTrue( prozessor.canAddElement( zauber ) );
+			prozessor.addNewElement( zauber ); 
+			assertFalse( prozessor.canAddElement( zauber ) );
+		}
+	}
+	
+	/**
+	 * Testet ob nur moegliche Zauber hinzugefuegt werden koennen. 
+	 */
+	public void testCanAddElementMoeglicheZauber() {
+		
+		held.setRepraesentationen( new Repraesentation[ 0 ] );
+		
+		Collection< Link > moeglicheZauber = erzeugeZauberLinks( 7 );
+		
+		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
+		
+		macheZuVollzauberer( held );
+		
+		for ( Link zauberlink : moeglicheZauber ) {
+			assertTrue( prozessor.canAddElement( (Zauber) zauberlink.getZiel() ) );
+		}
+		
+		Zauber nichtMoeglich = erzeugeZauber( "ZAU-nicht moeglich" );
+		assertFalse( prozessor.canAddElement( nichtMoeglich ) );
+	}
+	
+	public void testCanRemoveElement() {
+		
+		held.setRepraesentationen( new Repraesentation[ 0 ] );
+		
+		List< Link > moeglicheZauber = erzeugeZauberLinks( 4 );
+		
+		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
+		
+		macheZuVollzauberer( held );
+		
+		List< GeneratorLink > generatorLinks = new ArrayList< GeneratorLink >();
+		
+		for ( Link zauberlink : moeglicheZauber ) {
+			generatorLinks.add( prozessor.addNewElement( (Zauber) zauberlink.getZiel() ) );
+		}
+
+		Zauber zauber = (Zauber) generatorLinks.get( 0 ).getZiel();
+		
+		// Modifikator durch Rasse erzeugen
+		IdLink link = new IdLink(new Rasse( "RAS-Rasse" ), null);
+		link.setZiel( zauber );
+		link.setWert( 4 );
+		prozessor.addModi( link );
+		
+		assertFalse( prozessor.canRemoveElement( generatorLinks.get( 0 ) ) );
+		
+		for ( int i = 1 ; i < generatorLinks.size() ; i++ ) {
+			assertTrue( prozessor.canRemoveElement( generatorLinks.get( i ) ) );
+		}
 	}
 	
 	/**
