@@ -497,6 +497,69 @@ public class ProzessorZauberTest extends TestCase {
 		}
 	}
 	
+	public void testContainsLink() {
+
+		held.setRepraesentationen( new Repraesentation[ 0 ] );
+		
+		List< Link > zauberlinks = erzeugeZauberLinks( 12 );
+		
+		extendedProzessor.setMoeglicheZauber( zauberlinks );
+		
+		for ( int i = 0 ; i < 6 ; i++ ) {
+			prozessor.addNewElement( (Zauber) zauberlinks.get( i ).getZiel() );
+			assertTrue( prozessor.containsLink( zauberlinks.get( i ) ) );
+			assertFalse( prozessor.containsLink( zauberlinks.get( i+6 ) ) );
+		}
+		
+	}
+	
+	public void testGetGesamtkosten() {
+		
+		held.setRepraesentationen( new Repraesentation[ 0 ] );
+
+		Repraesentation repraesentation = new Repraesentation( "REP-test-1" );
+		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
+		
+		Zauber zauber1 = erzeugeZauber( "ZAU-test-1", KostenKlasse.A, MagieMerkmal.antimagie );
+		Zauber zauber2 = erzeugeZauber( "ZAU-test-2", KostenKlasse.B, MagieMerkmal.antimagie );
+		Zauber zauber3 = erzeugeZauber( "ZAU-test-3", KostenKlasse.C, MagieMerkmal.antimagie );
+		
+		Link zauberLink1 = new IdLink( null, null );
+		zauberLink1.setZiel( zauber1 );
+		zauberLink1.setZweitZiel( repraesentation );
+
+		Link zauberLink2 = new IdLink( null, null );
+		zauberLink2.setZiel( zauber2 );
+		zauberLink2.setZweitZiel( repraesentation );
+
+		Link zauberLink3 = new IdLink( null, null );
+		zauberLink3.setZiel( zauber3 );
+		zauberLink3.setZweitZiel( repraesentation );
+		
+		Collection< Link > moeglicheZauber = erzeugeZauberLinks( 10 );
+		moeglicheZauber.add( zauberLink1 );
+		moeglicheZauber.add( zauberLink2 );
+		moeglicheZauber.add( zauberLink3 );
+		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
+
+		assertEquals( 0, prozessor.getGesamtKosten() );
+		
+		prozessor.addNewElement( zauber1 );
+		prozessor.addNewElement( zauber2 );
+		prozessor.addNewElement( zauber3 );
+
+		assertEquals( 6, prozessor.getGesamtKosten() );
+		
+		prozessor.updateWert( box.getObjectById( zauber1 ), 5 );
+		assertEquals( 22, prozessor.getGesamtKosten() );
+		
+		prozessor.updateWert( box.getObjectById( zauber2 ), 3 );
+		assertEquals( 34, prozessor.getGesamtKosten() );
+		
+		prozessor.updateWert( box.getObjectById( zauber3 ), 7 );
+		assertEquals( 127, prozessor.getGesamtKosten() );
+	}
+	
 	/**
 	 * Erzeugt eine Liste von Zaubern
 	 */
