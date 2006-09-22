@@ -422,7 +422,9 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		elementBox.remove( element );
 		
 		for ( Eigenschaft eigenschaft : zauber.get3Eigenschaften() ) {
-			hashMapNachEigensch.get( eigenschaft ).remove( zauber );
+			hashMapNachEigensch
+			.get( eigenschaft.getEigenschaftEnum() )
+			.remove( zauber );
 		}
 		
 		talentGpKosten -= element.getKosten();
@@ -442,7 +444,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		return Collections.unmodifiableList( new ArrayList<GeneratorLink>( zauber ) );
 	}
 	
-	public void pruefeZauberAktivierung( GeneratorLink link ) {
+	private void pruefeZauberAktivierung( GeneratorLink link ) {
 		
 		Zauber zauber = (Zauber) link.getZiel();
 		

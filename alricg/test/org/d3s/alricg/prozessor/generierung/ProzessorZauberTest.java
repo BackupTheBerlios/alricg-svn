@@ -38,6 +38,8 @@ public class ProzessorZauberTest extends TestCase {
 	private ExtendedProzessorZauber extendedProzessor;
 	private ElementBox< GeneratorLink > box;
 	
+	Repraesentation repraesentation; 
+	
 	@Before public void setUp() throws Exception {
 		ProgAdmin.main(new String[] { "noScreen" });
 			
@@ -49,6 +51,10 @@ public class ProzessorZauberTest extends TestCase {
 		prozessor = held.getProzessor( CharKomponente.zauber );
 		extendedProzessor = prozessor.getExtendedFunctions();
 		box = prozessor.getElementBox();
+		
+		repraesentation = new Repraesentation( "REP-test-1" );
+		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
+		
 	}
 	
 	/** 
@@ -157,7 +163,7 @@ public class ProzessorZauberTest extends TestCase {
 			assertTrue( extendedProzessor.getMoeglicheZauber().contains( zauber ) );
 		}
 	}
-
+	
 	/**
 	 * Aendert die moeglichen Zauber mittels der setMoeglicheZauber-Methode.
 	 */
@@ -186,9 +192,6 @@ public class ProzessorZauberTest extends TestCase {
 		
 		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
 		
-		Repraesentation repraesentation = new Repraesentation( "REP-test-1" );
-		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
-		
 		final Zauber zauber1 = erzeugeZauber( "ZAU-test-1", KostenKlasse.A, MagieMerkmal.antimagie );
 
 		Link zauberLink1 = new IdLink( null, null );
@@ -215,9 +218,6 @@ public class ProzessorZauberTest extends TestCase {
 		
 		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
 		
-		Repraesentation repraesentation = new Repraesentation( "REP-test-1" );
-		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
-		
 		Zauber zauber1 = erzeugeZauber( "ZAU-test-1", KostenKlasse.B, MagieMerkmal.antimagie );
 		
 		Link zauberLink1 = new IdLink( null, null );
@@ -242,9 +242,6 @@ public class ProzessorZauberTest extends TestCase {
 	public void testModiSetzen() {
 		
 		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
-		
-		Repraesentation repraesentation = new Repraesentation( "REP-test-1" );
-		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
 		
 		Zauber zauber1 = erzeugeZauber( "ZAU-test-1", KostenKlasse.B, MagieMerkmal.antimagie );
 		
@@ -276,9 +273,6 @@ public class ProzessorZauberTest extends TestCase {
 	public void testModiUndStufeSetzen() {
 
 		final int ANZAHL_MOEGLICHE_ZAUBER = 17;
-		
-		Repraesentation repraesentation = new Repraesentation( "REP-test-1" );
-		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
 		
 		Zauber zauber1 = erzeugeZauber( "ZAU-test-1", KostenKlasse.C, MagieMerkmal.antimagie );
 		
@@ -327,10 +321,6 @@ public class ProzessorZauberTest extends TestCase {
 		prozessorEigenschaft.updateWert(
 				boxEigenschaft.getObjectById( EigenschaftEnum.IN.getId() ),
 				14 );
-		
-		// Eigene Repraesentation festlegen.
-		Repraesentation repraesentation = new Repraesentation( "REP-eigeneRepraesentation" );
-		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
 		
 		// Zauber erzeugen
 		Zauber zauber1 = erzeugeZauber( "ZAU-eigeneRepraesentation", KostenKlasse.C, MagieMerkmal.antimagie );
@@ -387,8 +377,6 @@ public class ProzessorZauberTest extends TestCase {
 	 * Vollzauberer duerfen 10 Zauber aktivieren.
 	 */
 	public void testCanAddElementMaximum() {
-
-		held.setRepraesentationen( new Repraesentation[0] );
 		
 		Zauber zauberZuViel = erzeugeZauber( "ZAU-ZuViel" );
 		
@@ -429,8 +417,6 @@ public class ProzessorZauberTest extends TestCase {
 	 */
 	public void testCanAddElementSchonAktivert() {
 		
-		held.setRepraesentationen( new Repraesentation[ 0 ] );
-		
 		Collection< Link > moeglicheZauber = erzeugeZauberLinks( 5 );
 		
 		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
@@ -450,8 +436,6 @@ public class ProzessorZauberTest extends TestCase {
 	 */
 	public void testCanAddElementMoeglicheZauber() {
 		
-		held.setRepraesentationen( new Repraesentation[ 0 ] );
-		
 		Collection< Link > moeglicheZauber = erzeugeZauberLinks( 7 );
 		
 		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
@@ -467,8 +451,6 @@ public class ProzessorZauberTest extends TestCase {
 	}
 	
 	public void testCanRemoveElement() {
-		
-		held.setRepraesentationen( new Repraesentation[ 0 ] );
 		
 		List< Link > moeglicheZauber = erzeugeZauberLinks( 4 );
 		
@@ -499,8 +481,6 @@ public class ProzessorZauberTest extends TestCase {
 	
 	public void testContainsLink() {
 
-		held.setRepraesentationen( new Repraesentation[ 0 ] );
-		
 		List< Link > zauberlinks = erzeugeZauberLinks( 12 );
 		
 		extendedProzessor.setMoeglicheZauber( zauberlinks );
@@ -514,11 +494,6 @@ public class ProzessorZauberTest extends TestCase {
 	}
 	
 	public void testGetGesamtkosten() {
-		
-		held.setRepraesentationen( new Repraesentation[ 0 ] );
-
-		Repraesentation repraesentation = new Repraesentation( "REP-test-1" );
-		held.setRepraesentationen( new Repraesentation[]{ repraesentation } );
 		
 		Zauber zauber1 = erzeugeZauber( "ZAU-test-1", KostenKlasse.A, MagieMerkmal.antimagie );
 		Zauber zauber2 = erzeugeZauber( "ZAU-test-2", KostenKlasse.B, MagieMerkmal.antimagie );
@@ -558,6 +533,49 @@ public class ProzessorZauberTest extends TestCase {
 		
 		prozessor.updateWert( box.getObjectById( zauber3 ), 7 );
 		assertEquals( 127, prozessor.getGesamtKosten() );
+	}
+	
+	/** Testet die Methode removeElement( GeneratorLink ) */
+	public void testRemoveElement() {
+		
+		Collection< Zauber > zauber = erzeugeZauberliste( 13 );
+		
+		for ( Zauber z : zauber ) {
+			prozessor.addNewElement( z );
+		}
+		
+		for ( GeneratorLink link : new ArrayList<GeneratorLink>( prozessor.getUnmodifiableList() ) ) {
+			assertTrue( prozessor.containsLink( link ) );
+			prozessor.removeElement( link );
+			assertFalse( prozessor.containsLink( link ) );
+		}
+	}
+
+	/** Testet die Methode removeModi( GeneratorLink, IdLink ). */
+	public void testRemoveModi() {
+		
+		final Zauber zauber = erzeugeZauber( "ZAU-test" );
+		
+		GeneratorLink link = prozessor.addNewElement( zauber );
+		
+		// Modifkator durch Rasse erzeugen.
+		Rasse rasse = new Rasse( "RAS-Rasse" );
+		IdLink modi1 = new IdLink(new Rasse( "RAS-Rasse" ), null);
+		modi1.setZiel( zauber );
+		modi1.setWert( 4 );
+		prozessor.addModi( modi1 );
+		
+		// Modifkator durch Rasse erzeugen.
+		IdLink modi2 = new IdLink(new Rasse( "RAS-Rasse" ), null);
+		modi2.setZiel( zauber );
+		modi2.setWert( 3 );
+		prozessor.addModi( modi2 );
+		
+		assertEquals( 7, link.getWert() );
+		
+		prozessor.removeModi( link, modi1 );
+		
+		assertEquals( 3, link.getWert() );
 	}
 	
 	/**
@@ -700,4 +718,5 @@ public class ProzessorZauberTest extends TestCase {
 		held.setHalbzauberer( false );
 		held.setVollzauberer( true );
 	}
+	
 }
