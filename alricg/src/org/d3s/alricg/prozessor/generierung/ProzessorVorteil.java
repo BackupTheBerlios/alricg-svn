@@ -8,6 +8,7 @@
  */
 package org.d3s.alricg.prozessor.generierung;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.d3s.alricg.charKomponenten.CharElement;
@@ -37,7 +38,7 @@ import org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorVorteil;
  *  - Die Änderungen der Kosten, auch durch Vorteile, wird im Prozessor nicht berechnet. Dies
  *  	übernimmt der "VerbilligteKostenAdmin"
  *   
- * @author name
+ * @author Tobias Freudenreich
  */
 public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, GeneratorLink> 
 					implements LinkProzessor<Vorteil, GeneratorLink>, ExtendedProzessorVorteil {
@@ -47,6 +48,14 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	private final Notepad notepade;
 	private final Held held;
 	
+	// Texte für Notepade-Meldungen
+	private final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
+	
+	// Speichert die gewählten Vorteile
+	private ArrayList<Vorteil> gewaehlteVorteile;
+	
+	// Die gesamtkosten für alle Vorteile
+	private int gpKosten;
 	
 	public ProzessorVorteil(Held held, Notepad notepade) {
 		this.held = held;
@@ -54,6 +63,9 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		this.sonderregelAdmin = held.getSonderregelAdmin();
 		this.verbFertigkeitenAdmin = held.getVerbFertigkeitenAdmin();
 		this.elementBox = new ElementBoxLink<GeneratorLink>();
+		
+		gewaehlteVorteile = new ArrayList<Vorteil>();
+		gpKosten = 0;
 	}
 	
 	/* (non-Javadoc)
@@ -66,24 +78,21 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		 * - oder Vorteil.textVorschlaege.length > 0
 		 * (bzw. wenn der Link bereits einen text besitzt)
 		 */
-		
-		// TODO Auto-generated method stub
-		return false;
+		return link.hasText();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#canUpdateWert(LINK)
 	 */
 	public boolean canUpdateWert(GeneratorLink link) {
-		// TODO Auto-generated method stub
-		return false;
+		return link.getWert() > 0; // Vorteile mit Wert 0 haben immer Wert 0 (z.b. Vollzauberer)
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#canUpdateZweitZiel(LINK, org.d3s.alricg.charKomponenten.CharElement)
 	 */
 	public boolean canUpdateZweitZiel(GeneratorLink link, CharElement zweitZiel) {
-		// TODO Auto-generated method stub
+		// TODO hängt noch davon ab wie ein link der Liste hinzugefügt wird
 		return false;
 	}
 
@@ -94,30 +103,36 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		// Hier reicht es nicht die ID zu überprüfen wie bei Talenten. 
 		// Es muß mit "elementBox.contiansEqualObject" geprüft werden, um auch Text und ZweitZiel zu überprüfen
 		
-		// TODO Auto-generated method stub
-		return false;
+		return elementBox.contiansEqualObject(link);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#updateText(LINK, java.lang.String)
 	 */
 	public void updateText(GeneratorLink link, String text) {
-		// TODO Auto-generated method stub
+		if (text != null) {
+			link.setText(text);
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#updateWert(LINK, int)
 	 */
 	public void updateWert(GeneratorLink link, int wert) {
-		// TODO Auto-generated method stub
-		
+		if (wert > 0) { // Vorteile haben entweder immer Wert 0 (dann ist der Wert nicht änderbar) oder irgendwas > 0
+			link.setWert(wert);
+			//TODO evtl. noch updateKosten(link);
+		}		
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#updateZweitZiel(LINK, org.d3s.alricg.charKomponenten.CharElement)
 	 */
 	public void updateZweitZiel(GeneratorLink link, CharElement zweitZiel) {
-		// TODO Auto-generated method stub
+		if (zweitZiel != null) {
+			link.setZweitZiel(zweitZiel);
+			//TODO evtl. noch updateKosten(link); aufrufen (z.b. bei Änderung von Begabung für Schwerter auf Begabung für Töpfern
+		}
 		
 	}
 
@@ -141,24 +156,23 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#getGesamtKosten()
 	 */
 	public int getGesamtKosten() {
-		// TODO Auto-generated method stub
-		return 0;
+		return gpKosten;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#getMaxWert(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public int getMaxWert(Link link) {
-		// TODO Auto-generated method stub
-		return 0;
+		// hier evtl. noch Überprüfung, ob wirklich ein Vorteil übergeben wurde
+		return ((Vorteil)link.getZiel()).getMaxStufe();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#getMinWert(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public int getMinWert(Link link) {
-		// TODO Auto-generated method stub
-		return 0;
+		// hier evtl. noch Überprüfung, ob wirklich ein Vorteil übergeben wurde
+		return ((Vorteil)link.getZiel()).getMinStufe();
 	}
 
 	/* (non-Javadoc)
@@ -199,8 +213,33 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		 * - Die Stufe wird auf den minimalWert gesetzt
 		 */
 		
-		// TODO Auto-generated method stub
-		return null;
+		String linkText = null;
+		int stufe = 0;
+		CharElement zweitZiel = null;
+		
+		if (ziel.isHasFreienText()) {
+			linkText = "Bitte Text eingeben";
+		} else if (!ziel.isHasFreienText() && (ziel.getTextVorschlaege() != null)) {
+			linkText = ziel.getTextVorschlaege()[0];
+		}
+		
+		if (ziel.getMinStufe() > 0) {
+			stufe = ziel.getMinStufe();
+		}
+		
+		//TODO zweitziel?? Bsp. Begabung für Schwerter
+		
+		if (ziel.isElementAngabe()) { 
+			// TODO mail schreiben wo das erste Element der Liste steht
+		}
+		
+		//Link wird erstellt und zur List hinzugefügt
+		GeneratorLink tmpLink = new GeneratorLink(ziel, linkText, zweitZiel, stufe);
+		elementBox.add(tmpLink);
+		
+		//updateKosten(tmpLink);
+		//wird evtl. garnicht benötigt
+		return tmpLink;
 	}
 
 	/* (non-Javadoc)
@@ -254,6 +293,10 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 */
 	public void removeMoeglicheZweitZiele(Vorteil vorteil) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public void updateKosten() {
 		
 	}
 
