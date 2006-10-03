@@ -121,7 +121,7 @@ public abstract class Herkunft extends CharElement {
      * 
      * @param eigenschaft Die Enum aus der Klasse "Eigenschaften"
      * @return Der Modifikator-Wert für diese Eigenschaft
-     * @see org.d3s.alricg.CharComponenten.EigenschaftEnum
+     * @see org.d3s.alricg.charKomponenten.EigenschaftEnum
      */
     public int getEigenschaftModi(EigenschaftEnum eigenschaft) {
         // TODO implement getModi mit enum
