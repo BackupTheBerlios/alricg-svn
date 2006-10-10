@@ -57,7 +57,7 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	private final String TEXT_BASIS_TALENT = "Talent ist Basis-Talent.";
 	
 	protected boolean STUFE_ERHALTEN = true;
-	protected int MAX_TALENT_AKTIVIERUNG = 5;
+	protected int maxTalentAktivierungen = 5;
 	
 	private final SonderregelAdmin sonderregelAdmin;
 	private final VerbilligteFertigkeitAdmin verbFertigkeitenAdmin;
@@ -135,7 +135,7 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#canAddElement(ZIEL)
 	 */
 	public boolean canAddElement(Talent ziel) {
-		if (aktivierteTalente.size() >= MAX_TALENT_AKTIVIERUNG) {
+		if (aktivierteTalente.size() >= maxTalentAktivierungen) {
 			// Muß aktiviert werden, aber dies ist nicht mehr möglich!
 			notepade.writeMessage(TEXT_KEINE_AKTIVIERUNG);
 			return false;
@@ -422,8 +422,7 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	}
 	
 // -------------- Extended Methoden -------------
-
-
+	
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.ExtendedProzessorTalent#getAktivierteTalente()
 	 */
@@ -475,6 +474,13 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 		{
 			aktivierteTalente.add((Talent) genLink.getZiel());
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorTalent#setMaxTalentAktivierung(int)
+	 */
+	public void setMaxTalentAktivierung(int maxAktivierungen) {
+		maxTalentAktivierungen = maxAktivierungen;
 	}
 	
 }

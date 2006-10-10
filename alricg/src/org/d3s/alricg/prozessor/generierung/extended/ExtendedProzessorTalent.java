@@ -52,4 +52,11 @@ public interface ExtendedProzessorTalent {
 	 * @return Alle Talente, die auf die EIgenschaft "eigEnum" geprobt werden
 	 */
 	public List<? extends HeldenLink> getTalentList(EigenschaftEnum eigEnum);
+	
+	/**
+	 * Setzt, wie viele Talente aktiviert werden dürfen. (für SR "Veteran")
+	 * @param maxAktivierungen Die neue Anzahl der maximal aktivierbaren Talente
+	 */
+	public void setMaxTalentAktivierung(int maxAktivierungen);
+
 }
