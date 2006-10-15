@@ -150,4 +150,9 @@ public abstract class Fertigkeit extends CharElement {
     public void setTextVorschlaege(String[] textVorschlaege) {
         this.textVorschlaege = textVorschlaege;
     }
+
+	public boolean isHasFreienText() {
+		return hasFreienText;
+	}
+	
 }
