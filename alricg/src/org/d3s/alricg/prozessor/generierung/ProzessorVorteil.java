@@ -78,7 +78,8 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		 * - oder Vorteil.textVorschlaege.length > 0
 		 * (bzw. wenn der Link bereits einen text besitzt)
 		 */
-		return link.hasText();
+		Vorteil vorteilMerker = (Vorteil)link.getZiel();
+		return (vorteilMerker.isHasFreienText()) || (vorteilMerker.getTextVorschlaege().length > 0);
 	}
 
 	/* (non-Javadoc)
@@ -119,9 +120,10 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#updateWert(LINK, int)
 	 */
 	public void updateWert(GeneratorLink link, int wert) {
-		if (wert > 0) { // Vorteile haben entweder immer Wert 0 (dann ist der Wert nicht änderbar) oder irgendwas > 0
+		// Vorteile haben entweder immer Wert 0 (dann ist der Wert nicht änderbar) oder irgendwas > 0
+		if (wert > 0) { 
 			link.setWert(wert);
-			//TODO evtl. noch updateKosten(link);
+			updateKosten(link);
 		}		
 	}
 
@@ -148,7 +150,19 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#canAddElement(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public boolean canAddElement(Link link) {
-		// TODO Auto-generated method stub
+		// TODO finish
+		Vorteil vorteilMerker = (Vorteil)link.getZiel();
+		
+		//für den Char überhaupt erlaubt?
+		//TODO enum anschauen
+		/*vorteilMerker.getFuerWelcheChars().
+		held.getCharArt();*/
+		
+		//Kollision mit anderen Vorteilen? (evtl. nicht notwendig, wenn z.B. gutaussehend/herausragendes Ausshen mit Stufen gemacht werden)
+		
+		//Kollision mit Nachteilen?
+		//TODO nachfragen wie Nachteile abgerufen werden
+		
 		return false;
 	}
 
@@ -194,9 +208,23 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateKosten(LINK)
 	 */
-	public void updateKosten(GeneratorLink Link) {
-		// TODO Auto-generated method stub
+	public void updateKosten(GeneratorLink genLink) {
+		int kosten = 0;
+		Vorteil vorteilMerker = (Vorteil)genLink.getZiel();
 		
+		//alte Kosten abziehen
+		gpKosten -= genLink.getKosten();
+		
+		//neue Kosten berechnen
+		if (genLink.getWert() == 0) { //Vorteil hat keine Stufe
+			kosten = vorteilMerker.getGpKosten();
+		} else { //Vorteil hat eine Stufe
+			kosten = vorteilMerker.getGpKosten()*genLink.getWert();
+		}
+		
+		//Kosten eintragen
+		genLink.setKosten(kosten);
+		gpKosten += kosten;
 	}
 
 	/* (non-Javadoc)
@@ -237,8 +265,8 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		GeneratorLink tmpLink = new GeneratorLink(ziel, linkText, zweitZiel, stufe);
 		elementBox.add(tmpLink);
 		
-		//updateKosten(tmpLink);
-		//wird evtl. garnicht benötigt
+		updateKosten(tmpLink);
+		
 		return tmpLink;
 	}
 
@@ -266,7 +294,13 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.Prozessor#removeElement(ELEM)
 	 */
 	public void removeElement(GeneratorLink element) {
-		// TODO Auto-generated method stub
+		final Vorteil vorteilMerker = (Vorteil)element.getZiel();
+		
+		//Vorteil aus der Liste herausnehmen
+		elementBox.remove(vorteilMerker);
+		
+		//Kosten für dieses Element abziehen
+		gpKosten -= element.getKosten();
 		
 	}
 
@@ -293,10 +327,6 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 */
 	public void removeMoeglicheZweitZiele(Vorteil vorteil) {
 		// TODO Auto-generated method stub
-		
-	}
-	
-	public void updateKosten() {
 		
 	}
 
