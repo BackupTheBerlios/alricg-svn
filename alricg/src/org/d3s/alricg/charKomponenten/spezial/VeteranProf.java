@@ -9,17 +9,15 @@
 package org.d3s.alricg.charKomponenten.spezial;
 
 import org.d3s.alricg.charKomponenten.CharElement;
-import org.d3s.alricg.charKomponenten.Eigenschaft;
-import org.d3s.alricg.charKomponenten.EigenschaftEnum;
 import org.d3s.alricg.charKomponenten.Profession;
+import org.d3s.alricg.charKomponenten.charZusatz.SimpelGegenstand;
 import org.d3s.alricg.charKomponenten.links.AbstractVariableAuswahl;
 import org.d3s.alricg.charKomponenten.links.Auswahl;
+import org.d3s.alricg.charKomponenten.links.AuswahlAusruestung;
 import org.d3s.alricg.charKomponenten.links.IdLink;
-import org.d3s.alricg.charKomponenten.links.VariableAuswahlAnzahl;
+import org.d3s.alricg.charKomponenten.links.IdLinkList;
+import org.d3s.alricg.charKomponenten.links.AuswahlAusruestung.HilfsAuswahl;
 import org.d3s.alricg.charKomponenten.sonderregeln.principle.SonderregelAdapter;
-import org.d3s.alricg.controller.CharKomponente;
-import org.d3s.alricg.store.DataStore;
-import org.d3s.alricg.store.FactoryFinder;
 
 /**
  * <u>Beschreibung:</u><br> 
@@ -43,58 +41,61 @@ public class VeteranProf extends Profession {
 	 * (LE, AU, AE, SO, Talente) der zweiten Profession werden zur Haelfte
 	 * angerechnet. Fuer die normale Variante des Veteran uebergibt man einfach 
 	 * zweimal die selbe Profession.
+	 * <p>
+	 * <strong>ACHTUNG: Die Herkunft von nicht veränderten Auswahlen zeigt noch
+	 * auf die Original Profession.</strong> Bitte im Quellcode nachpruefen. 
 	 *  
-	 * @param profEins Die "original" Profession, die eigentlich gewählt wurde
-	 * @param profZwei Die Veteran-Profession die gewählt wurde
+	 * @param prof1 Die "original" Profession, die eigentlich gewählt wurde
+	 * @param prof2 Die Veteran-Profession die gewählt wurde
 	 */
-	public VeteranProf(Profession profEins, Profession profZwei) {
-		super(profEins.getId() + " / " + profZwei.getId());
+	public VeteranProf( Profession prof1, Profession prof2 ) {
+		super( prof1.getId() + " / " + prof2.getId() );
 
-		this.profEins = profEins;
-		this.profZwei = profZwei;
+		this.profEins = prof1;
+		this.profZwei = prof2;
 		
-		if ( profEins == profZwei ) {
+		if ( prof1 == prof2 ) {
 			// Hier wird der normale Fall abgehandelt dass der Held die Boni
 			// auf SO, LE, AE, AU und Talente 1,5-fach (aufgerundet) erhaelt.
 			
-			setAktivierbareZauber( profEins.getAktivierbareZauber() );
-			setAnzeigen( profEins.isAnzeigen() );
-			setAnzeigenText( profEins.getAnzeigenText() );
-			setArt( profEins.getArt() );
-			setAufwand( profEins.getAufwand() );
-			setAusruestung( profEins.getAusruestung() );
-			setBeschreibung( profEins.getBeschreibung() );
-			setBesondererBesitz( profEins.getBesondererBesitz() );
-			setEmpfNachteile( profEins.getEmpfNachteile() );
-			setEmpfVorteile( profEins.getEmpfVorteile() );
-			setGeschlecht( profEins.getGeschlecht() );
-			setGeweihtGottheit( profEins.getGeweihtGottheit() );
-			setGpKosten( profEins.getGpKosten() );
-			setHauszauber( profEins.getHauszauber() );
-			setKannGewaehltWerden( profEins.isKannGewaehltWerden() );
-			setLiturgienAuswahl( profEins.getLiturgienAuswahl() );
-			setMagierAkademie( profEins.getMagierAkademie() );
-			setNachteileAuswahl( profEins.getNachteileAuswahl() );
-			setName( profEins.getName() + " (Veteran)" ); // TODO Ok?
-			setRegelAnmerkung( profEins.getRegelAnmerkung() );
-			setRepraesentation( profEins.getRepraesentation() );
-			setRitualeAuswahl( profEins.getRitualeAuswahl() );
-			setRitusModis( profEins.getRitusModis() );
-			setSammelberiff( profEins.getSammelBegriff() );
-			setSfAuswahl( profEins.getSfAuswahl() );
-			setSoMax( profEins.getSoMax() );
-			setSoMin( profEins.getSoMin() );
-			setSonderregel( (SonderregelAdapter) profEins.getSonderregel() );
-			setUngeNachteile( profEins.getUngeNachteile() );
-			setUngeVorteile( profEins.getUngeVorteile() );
-			setVarianten( profEins.getVarianten() ); // TODO macht das Sinn?
-			setVerbilligteLiturgien( profEins.getVerbilligteLiturgien() );
-			setVerbilligteNacht( profEins.getVerbilligteNacht() );
-			setVerbilligteRituale( profEins.getVerbilligteRituale() );
-			setVerbilligteSonderf( profEins.getVerbilligteSonderf() );
-			setVerbilligteVort( profEins.getVerbilligteVort() );
-			setZauber( profEins.getZauber() );
-			setZauberNichtBeginn( profEins.getZauberNichtBeginn() );
+			setAktivierbareZauber( prof1.getAktivierbareZauber() );
+			setAnzeigen( prof1.isAnzeigen() );
+			setAnzeigenText( prof1.getAnzeigenText() );
+			setArt( prof1.getArt() );
+			setAufwand( prof1.getAufwand() );
+			setAusruestung( prof1.getAusruestung() );
+			setBeschreibung( prof1.getBeschreibung() + ", " + prof2.getBeschreibung() );
+			setBesondererBesitz( prof1.getBesondererBesitz() );
+			setEmpfNachteile( prof1.getEmpfNachteile() );
+			setEmpfVorteile( prof1.getEmpfVorteile() );
+			setGeschlecht( prof1.getGeschlecht() );
+			setGeweihtGottheit( prof1.getGeweihtGottheit() );
+			setGpKosten( prof1.getGpKosten() );
+			setHauszauber( prof1.getHauszauber() );
+			setKannGewaehltWerden( prof1.isKannGewaehltWerden() );
+			setLiturgienAuswahl( prof1.getLiturgienAuswahl() );
+			setMagierAkademie( prof1.getMagierAkademie() );
+			setNachteileAuswahl( prof1.getNachteileAuswahl() );
+			setName( prof1.getName() + " (Veteran)" ); // TODO Ok?
+			setRegelAnmerkung( prof1.getRegelAnmerkung() );
+			setRepraesentation( prof1.getRepraesentation() );
+			setRitualeAuswahl( prof1.getRitualeAuswahl() );
+			setRitusModis( prof1.getRitusModis() );
+			setSammelberiff( prof1.getSammelBegriff() );
+			setSfAuswahl( prof1.getSfAuswahl() );
+			setSoMax( prof1.getSoMax() );
+			setSoMin( prof1.getSoMin() );
+			setSonderregel( (SonderregelAdapter) prof1.getSonderregel() );
+			setUngeNachteile( prof1.getUngeNachteile() );
+			setUngeVorteile( prof1.getUngeVorteile() );
+			setVarianten( prof1.getVarianten() ); // TODO macht das Sinn?
+			setVerbilligteLiturgien( prof1.getVerbilligteLiturgien() );
+			setVerbilligteNacht( prof1.getVerbilligteNacht() );
+			setVerbilligteRituale( prof1.getVerbilligteRituale() );
+			setVerbilligteSonderf( prof1.getVerbilligteSonderf() );
+			setVerbilligteVort( prof1.getVerbilligteVort() );
+			setZauber( prof1.getZauber() );
+			setZauberNichtBeginn( prof1.getZauberNichtBeginn() );
 
 			// Hier werden die Boni mit dem 1,5-fachen Wert erzeugt.
 			// TODO Bei den Eigenschaften werden die Variablen Auswahlen noch 
@@ -102,13 +103,105 @@ public class VeteranProf extends Profession {
 			// ein "LE oder AU +2" werden. Das ist aber noch nicht der Fall.
 			// Da das in den Regeln noch nicht vor kommt lass ich es, fuers 
 			// erste, einfach mal weg.
-			setEigenschaftModis( kopieren( profEins.getEigenschaftModis(), eigenschaften ) );
-			setTalente( kopieren( profEins.getTalente(), talente ) );
-			setSchriften( kopieren( profEins.getSchriften(), talente ) );
-			setSprachen( kopieren( profEins.getSprachen(), talente ) );
+			setEigenschaftModis( kopieren( prof1.getEigenschaftModis(), eigenschaften ) );
+			setTalente( kopieren( prof1.getTalente(), talente ) );
+			setSchriften( kopieren( prof1.getSchriften(), talente ) );
+			setSprachen( kopieren( prof1.getSprachen(), talente ) );
+			
+		} else {
+			// Hier wird der Sonderfall fuer Gardisten, Soldaten und Soeldner
+			// abgehandelt, die eine Variante ihrer Profession als zweite
+			// Dienstzeit waehlen koennen. Siehe dazu die S&H-Errata vom 
+			// 08.07.02
+
+			setAnzeigen( prof1.isAnzeigen() );
+			setAnzeigenText( prof1.getAnzeigenText() );
+			setArt( prof1.getArt() );
+			setAufwand( prof1.getAufwand() );
+			setAusruestung( prof1.getAusruestung() );
+			setBeschreibung( prof1.getBeschreibung() );
+			setBesondererBesitz( prof1.getBesondererBesitz() );
+			setEmpfNachteile( prof1.getEmpfNachteile() );
+			setEmpfVorteile( prof1.getEmpfVorteile() );
+			setGeschlecht( prof1.getGeschlecht() );
+			setGpKosten( prof1.getGpKosten() );
+			setKannGewaehltWerden( prof1.isKannGewaehltWerden() );
+			setName( prof1.getName() + ", 2. Dienstzeit " + prof2.getName() ); // TODO Ok?
+			setRegelAnmerkung( prof1.getRegelAnmerkung() ); // Muss ich das auch zusammenlegen?
+			setSammelberiff( prof1.getSammelBegriff() );
+			setSoMax( prof1.getSoMax() );
+			setSoMin( prof1.getSoMin() );
+			setSonderregel( (SonderregelAdapter) prof1.getSonderregel() );
+			setUngeNachteile( prof1.getUngeNachteile() );
+			setUngeVorteile( prof1.getUngeVorteile() );
+			setVarianten( prof1.getVarianten() ); // TODO macht das Sinn?
+			setVerbilligteLiturgien( prof1.getVerbilligteLiturgien() );
+			setVerbilligteNacht( prof1.getVerbilligteNacht() );
+			setVerbilligteSonderf( prof1.getVerbilligteSonderf() );
+			setVerbilligteVort( prof1.getVerbilligteVort() );
+			
+			setSfAuswahl( vereinen( prof1.getSfAuswahl(), prof2.getSfAuswahl() ) );
+			setNachteileAuswahl( vereinen( prof1.getNachteileAuswahl(), prof2.getNachteileAuswahl() ) );
+			setVorteileAuswahl( vereinen( prof1.getVorteileAuswahl(), prof2.getNachteileAuswahl() ) );
 		}
 	}
 	
+	/**
+	 * @param auswahl1
+	 * @param auswahl2
+	 * @return Eine Auswahl die sich aus {@code auswahl1} und {@code auswahl2}
+	 * 		zusammensetzt.
+	 */
+	private Auswahl vereinen( Auswahl auswahl1, Auswahl auswahl2 ) {
+		
+		Auswahl neueAuswahl = new Auswahl( this );
+		
+		neueAuswahl.setFesteAuswahl( vereinen( auswahl1.getFesteAuswahl(), auswahl2.getFesteAuswahl() ) );
+		
+		neueAuswahl.setVariableAuswahl( vereinen( auswahl1.getVariableAuswahl(), auswahl2.getVariableAuswahl() ) );
+		
+		return neueAuswahl;
+	}
+	
+	/**
+	 * Macht aus zwei Arrays ein einziges.
+	 * 
+	 * @param auswahl1 ist der erste Teil des neuen Arrays.
+	 * @param auswahl2 ist der zweite Teil des neuen Arrays.
+	 * @return Ein Array das sich aus dem Inhalt von {@code auswahl1} und 
+	 * 		{@code auswahl2} zusammensetzt.
+	 */
+	private AbstractVariableAuswahl[] vereinen( AbstractVariableAuswahl[] auswahl1, AbstractVariableAuswahl[] auswahl2 ) {
+		
+		AbstractVariableAuswahl[] neueAuswahl = new AbstractVariableAuswahl[ auswahl1.length + auswahl2.length ];
+		
+		System.arraycopy( auswahl1, 0, neueAuswahl, 0, auswahl1.length );
+		
+		System.arraycopy( auswahl2, 0, neueAuswahl, auswahl1.length, auswahl2.length );
+		
+		return neueAuswahl;
+	}
+	
+	
+	/**
+	 * Macht aus zwei Arrays ein einziges.
+	 * 
+	 * @param links1 ist der erste Teil des neuen Arrays.
+	 * @param links2 ist der zweite Teil des neuen Arrays.
+	 * @return Ein Array das sich aus dem Inhalt von {@code link1} und 
+	 * 		{@code link2} zusammensetzt.
+	 */
+	private IdLink[] vereinen( IdLink[] links1, IdLink[] links2 ) {
+		
+		IdLink[] neueLinks = new IdLink[ links1.length + links2.length ];
+		
+		System.arraycopy( links1, 0, neueLinks, 0, links1.length );
+		
+		System.arraycopy( links2, 0, neueLinks, links1.length, links2.length );
+		
+		return neueLinks;
+	}
+		
 	/**
 	 * Erzeugt eine Kopie einer Auswahl.
 	 * 
@@ -321,9 +414,4 @@ public class VeteranProf extends Profession {
 			return ( ( 3 * wert ) + 1 ) / 2;
 		}
 	};
-	
-	/**
-	 * Legt eine Kopie eines IdLinks an ohne dabei etwas zu veraendern.
-	 */
-	private LinkKopierer standard = new LinkKopierer();
 }
