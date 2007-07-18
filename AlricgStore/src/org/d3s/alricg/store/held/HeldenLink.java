@@ -6,7 +6,7 @@
  * For more information see "http://alricg.die3sphaere.de/".
  *
  */
-package org.d3s.alricg.store.elements;
+package org.d3s.alricg.store.held;
 
 import org.d3s.alricg.store.charElemente.links.Link;
 

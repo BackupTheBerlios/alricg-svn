@@ -8,10 +8,12 @@
 package org.d3s.alricg.store.access;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
@@ -22,6 +24,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.d3s.alricg.store.Activator;
+import org.d3s.alricg.store.access.hide.XmlVirtualAccessor;
 import org.eclipse.core.runtime.Platform;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,20 +34,17 @@ import org.xml.sax.SAXException;
 
 
 /**
+ * Diese Klasse bietet Funktionen zum Speichern und Laden von Daten an.
+ * 
  * @author Vincent
- *
  */
-
 public class StoreAccessor {
 	private static String ORIGINAL_FILES_PATH; 
 	private static String USER_FILES_PATH;
 	private static String CHARS_PATH;
 	private static StoreAccessor instance; 
-	private JAXBContext ctx;
 	
-	private StoreAccessor() throws JAXBException {
-		ctx = JAXBContext.newInstance(XmlVirtualAccessor.class);
-		
+	private StoreAccessor() {
 		try {
 			ORIGINAL_FILES_PATH = Platform.getLocation().append(File.separatorChar + "original" + File.separatorChar).toOSString();
 			USER_FILES_PATH = Platform.getLocation().append(File.separatorChar + "user" + File.separatorChar).toOSString();
@@ -59,6 +60,10 @@ public class StoreAccessor {
 		proveDir(CHARS_PATH);
 	}
 	
+	/**
+	 * Überprüft ob ein Verzeichnis vorhanden ist, wenn nicht wird es angelegt
+	 * @param dirPath Zu prüfendes Verzeichnis
+	 */
 	private void proveDir(String dirPath) {
 		File f  = new File(dirPath);
 		if (!f.exists()) {
@@ -66,13 +71,26 @@ public class StoreAccessor {
 		}
 	}
 	
-	public static StoreAccessor getIntance()  throws JAXBException {
+	/**
+	 * @return Liefert die Instanz des Singeltons StoreAccessor
+	 * @throws JAXBException
+	 */
+	public static StoreAccessor getIntance() {
 		if (instance == null)  {
 			instance = new StoreAccessor();
 		}
 		return instance;
 	}
 	
+	/**
+	 * Läd alle XML-Files aus den Verzeichnisen ORIGINAL_FILES_PATH und USER_FILES_PATH
+	 * und speichert das Ergebnis im XmlVirtualAccessor.
+	 * @return
+	 * @throws JAXBException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	public XmlVirtualAccessor loadFiles() throws JAXBException, ParserConfigurationException, SAXException, IOException {
 	// Alle Files laden
 		List<File> files = new ArrayList<File>();
@@ -81,16 +99,23 @@ public class StoreAccessor {
 		
 	// Files in einem Document vereinen
 		// Document erzeugen und "Wurzel" erstellen
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setNamespaceAware(true);
-		DocumentBuilder db = factory.newDocumentBuilder();
+		final DocumentBuilder db = factory.newDocumentBuilder();
 		Document rootDoc = db.newDocument();
 		Element rootElement = rootDoc.createElement(XmlVirtualAccessor.XML_TAG);
 		rootDoc.appendChild(rootElement);
 		
+		// Alle XML-Dateien einlesen und zur Wurzel hinzufügen
 		for (int i = 0; i < files.size(); i++) {
 			Document doc = db.parse(files.get(i));
 			Node node = doc.getFirstChild();
+			
+			Activator.logger.log(
+					Level.INFO,
+					"Vorbereitung für laden vom XML-Datei {0} ", 
+					files.get(i).getAbsolutePath());
+			
 			((Element) node).setAttribute(
 					XmlVirtualAccessor.XML_FILEPATH_TAG, 
 					files.get(i).getAbsolutePath());
@@ -98,24 +123,75 @@ public class StoreAccessor {
 			rootElement.appendChild(node);
 		}
 		
-		
-		Unmarshaller unmarshaller = ctx.createUnmarshaller();
+		// Unmarshal
+		final JAXBContext ctx = JAXBContext.newInstance(XmlVirtualAccessor.class);
+		final Unmarshaller unmarshaller = ctx.createUnmarshaller();
 		XmlVirtualAccessor virtuelAccessor = (XmlVirtualAccessor) unmarshaller.unmarshal(rootDoc);
 
+		Activator.logger.log(
+				Level.INFO, 
+				"Alle XML-Dateien geladen.");
+		
 		return virtuelAccessor;
-
 	}
 
-	public void saveFiles(XmlVirtualAccessor virtuelAccessor) throws JAXBException {
-		Marshaller marshaller = ctx.createMarshaller();
+	/**
+	 * Speichert den XmlAccessor in ein File wie im "filePath" Attribut des 
+	 * XmlAccessors angegeben.
+	 * @param virtuelAccessor Accessor der gespeichert werden soll
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public void saveFile(XmlAccessor xmlAccessor) throws JAXBException, IOException {
+		final JAXBContext ctx = JAXBContext.newInstance(XmlAccessor.class);
+		final Marshaller marshaller = ctx.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, "ISO-8859-1");
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		marshaller.marshal(virtuelAccessor, System.out);
 		
+		if (xmlAccessor.getFilePath() == null) {
+				throw new IOException("Es wurde für mindestes ein XML-File kein " +
+						"Speicherort (konkreter FileName als filePath im XmlAccessor) " +
+						"angegeben! Entsprechende Files wurden nicht gespeichert.");
+		}
+		
+		marshaller.marshal(
+				xmlAccessor, 
+				new FileWriter(xmlAccessor.getFilePath())
+			);
+		
+		Activator.logger.log(
+				Level.INFO, 
+				"XML-Datei wurde gespeichert: {0}",
+				xmlAccessor.getFilePath());
 	}
 	
+	/**
+	 * Speichert alle Dateien aus dem "XmlVirtualAccessor" in XML-Files. Jeder 
+	 * XmlAccessor aus dem "XmlVirtualAccessor" wird in ein File gespeichert 
+	 * wie im "filePath" Attribut des XmlAccessors angegeben.
+	 * @param virtuelAccessor Accessor der gespeichert werden soll
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public void saveFiles(List<XmlAccessor> xmlAccessor) throws JAXBException, IOException {
+		
+		for (int i = 0; i < xmlAccessor.size(); i++) {
+			Activator.logger.log(
+					Level.INFO,
+					"Speichere Datei: " + xmlAccessor.get(i).getFilePath());
+			saveFile(xmlAccessor.get(i));
+		}
+
+	}
 	
-	public List<File> find(String start, String extensionPattern, List<File> files ) 
+	/**
+	 * Sucht rekursiv von dem Start-Ordner aus nach Dateien die dem Pattern 
+	 * entsprechen und speichert sie in der Liste.
+	 * @param start Ordner von wo die rekursive Suche beginnt
+	 * @param extensionPattern Pattern welche Dateien gesucht werden
+	 * @param files Liste aller gefundenen Dateien
+	 */
+	public void find(String start, String extensionPattern, List<File> files ) 
 	  { 
 	    final Stack<File> dirs = new Stack<File>(); 
 	    final File startdir = new File( start ); 
@@ -135,8 +211,6 @@ public class StoreAccessor {
 	            files.add( file ); 
 	      } 
 	    } 
-	 
-	    return files; 
 	  } 
 	
 }

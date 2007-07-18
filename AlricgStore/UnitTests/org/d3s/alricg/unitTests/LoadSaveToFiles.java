@@ -8,6 +8,7 @@
 package org.d3s.alricg.unitTests;
 
 import org.d3s.alricg.store.access.StoreAccessor;
+import org.d3s.alricg.store.access.hide.XmlVirtualAccessor;
 import org.junit.Test;
 
 /**
@@ -19,6 +20,7 @@ public class LoadSaveToFiles {
 	@Test
 	public void testLoad() throws Exception {
 		StoreAccessor storeAcc = StoreAccessor.getIntance();
-		storeAcc.loadFiles();
+		XmlVirtualAccessor va = storeAcc.loadFiles();
+		storeAcc.saveFiles(va.getXmlAccessor());
 	}
 }

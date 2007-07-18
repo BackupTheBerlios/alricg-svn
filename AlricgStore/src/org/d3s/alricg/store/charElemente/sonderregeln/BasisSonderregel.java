@@ -9,9 +9,9 @@
 package org.d3s.alricg.store.charElemente.sonderregeln;
 
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.d3s.alricg.store.charElemente.links.Link;
-import org.d3s.alricg.store.elements.HeldenLink;
-import org.d3s.alricg.store.elements.KostenKlasse;
+import org.d3s.alricg.store.held.HeldenLink;
 
 /**
  * <u>Beschreibung:</u><br> 

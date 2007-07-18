@@ -7,7 +7,7 @@
 
 package org.d3s.alricg.store.charElemente;
 
-import org.d3s.alricg.store.elements.KostenKlasse;
+import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 
 /**
  * <b>Beschreibung:</b><br>

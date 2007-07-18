@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSchemaType;
 
-import org.d3s.alricg.store.elements.KostenKlasse;
+import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 
 /**
  * Oberklasse von Talenten und Zaubern, fasst Gemeinsamkeiten zusammen.

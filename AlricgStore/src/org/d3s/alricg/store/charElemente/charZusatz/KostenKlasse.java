@@ -5,7 +5,7 @@
  * protected and under the GNU General Public License.
  * For more information see "http://www.alricg.de/".
  */
-package org.d3s.alricg.store.elements;
+package org.d3s.alricg.store.charElemente.charZusatz;
 
 /**
  * Bildet die Spalten der SKT ab und bietet rudimentäre Operationen.

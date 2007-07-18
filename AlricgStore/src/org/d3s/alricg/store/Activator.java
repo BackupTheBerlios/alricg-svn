@@ -1,7 +1,8 @@
 package org.d3s.alricg.store;
 
-import org.d3s.alricg.store.access.StoreAccessor;
-import org.eclipse.core.runtime.Platform;
+import java.util.logging.Logger;
+
+import org.d3s.loggingService.LoggerManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -12,7 +13,8 @@ public class Activator extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.d3s.alricg.store";
-
+	public static Logger logger = LoggerManager.getLogger(PLUGIN_ID, null);
+	
 	// The shared instance
 	private static Activator plugin;
 	
@@ -20,6 +22,7 @@ public class Activator extends Plugin {
 	 * The constructor
 	 */
 	public Activator() {
+		logger = LoggerManager.getLogger(PLUGIN_ID, this);
 	}
 
 	/*

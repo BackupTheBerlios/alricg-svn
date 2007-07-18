@@ -10,7 +10,7 @@ package org.d3s.alricg.store.charElemente.sonderregeln;
 
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.links.Link;
-import org.d3s.alricg.store.elements.Held;
+import org.d3s.alricg.store.held.Held;
 
 /**
  * <u>Beschreibung:</u><br> 
