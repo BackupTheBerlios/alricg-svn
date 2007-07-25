@@ -195,18 +195,9 @@ public class Werte {
 		 */
 		private String value; // ID des Elements
 
-		private Icon icon16;
-
-		private Icon icon24;
 
 		private MagieMerkmal(String value) {
-
-		}
-
-		private MagieMerkmal(String value, Icon icon16, Icon icon24) {
 			this.value = value;
-			this.icon16 = icon16;
-			this.icon24 = icon24;
 		}
 
 		/**
@@ -214,20 +205,6 @@ public class Werte {
 		 */
 		public String getValue() {
 			return value;
-		}
-
-		/**
-		 * @return Das zum Merkmal zugehörige Icon in 16x16 Pixeln
-		 */
-		public Icon getIconKlein() {
-			return icon16;
-		}
-
-		/**
-		 * @return Das zum Merkmal zugehörige Icon in 24x24 Pixeln
-		 */
-		public Icon getIconGross() {
-			return icon24;
 		}
 
 	}

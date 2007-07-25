@@ -7,6 +7,7 @@
  */
 package org.d3s.alricg.store.access.hide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,7 +28,7 @@ public class XmlVirtualAccessor {
 	@XmlTransient
 	public static final String XML_FILEPATH_TAG = "filePath";
 	
-	private List<XmlAccessor> xmlAccessor;
+	private List<XmlAccessor> xmlAccessor = new ArrayList<XmlAccessor>();
 
 	/**
 	 * @return the xmlAccessor

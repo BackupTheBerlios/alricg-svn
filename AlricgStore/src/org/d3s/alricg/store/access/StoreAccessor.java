@@ -46,14 +46,15 @@ public class StoreAccessor {
 	
 	private StoreAccessor() {
 		try {
-			ORIGINAL_FILES_PATH = Platform.getLocation().append(File.separatorChar + "original" + File.separatorChar).toOSString();
-			USER_FILES_PATH = Platform.getLocation().append(File.separatorChar + "user" + File.separatorChar).toOSString();
+			ORIGINAL_FILES_PATH = Platform.getLocation().append(File.separatorChar + "original").toOSString();
+			USER_FILES_PATH = Platform.getLocation().append(File.separatorChar + "user").toOSString();
+			CHARS_PATH = Platform.getLocation().append(File.separatorChar + "chars").toOSString();
 		} catch(org.eclipse.core.runtime.AssertionFailedException e) {
 			// TEST dies ist lediglich zum testen
 			File f = new File("testDir");
-			ORIGINAL_FILES_PATH = f.getAbsolutePath() + File.separatorChar + "original" + File.separatorChar;
-			USER_FILES_PATH = f.getAbsolutePath() + File.separatorChar + "user" + File.separatorChar;
-			CHARS_PATH = f.getAbsolutePath() + File.separatorChar + "chars" + File.separatorChar;
+			ORIGINAL_FILES_PATH = f.getAbsolutePath() + File.separatorChar + File.separatorChar + "original" + File.separatorChar;
+			USER_FILES_PATH = f.getAbsolutePath() + File.separatorChar + File.separatorChar + "user" + File.separatorChar;
+			CHARS_PATH = f.getAbsolutePath() + File.separatorChar + File.separatorChar + "chars" + File.separatorChar;
 		}
 		proveDir(ORIGINAL_FILES_PATH);
 		proveDir(USER_FILES_PATH);
@@ -91,7 +92,7 @@ public class StoreAccessor {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public XmlVirtualAccessor loadFiles() throws JAXBException, ParserConfigurationException, SAXException, IOException {
+	public StoreDataAccessor loadFiles() throws JAXBException, ParserConfigurationException, SAXException, IOException {
 	// Alle Files laden
 		List<File> files = new ArrayList<File>();
 		find( ORIGINAL_FILES_PATH, "(.*\\.xml$)", files );
@@ -113,7 +114,7 @@ public class StoreAccessor {
 			
 			Activator.logger.log(
 					Level.INFO,
-					"Vorbereitung für laden vom XML-Datei {0} ", 
+					"Laden vom Datei: {0} ", 
 					files.get(i).getAbsolutePath());
 			
 			((Element) node).setAttribute(
@@ -132,7 +133,7 @@ public class StoreAccessor {
 				Level.INFO, 
 				"Alle XML-Dateien geladen.");
 		
-		return virtuelAccessor;
+		return new StoreDataAccessor(virtuelAccessor);
 	}
 
 	/**
@@ -158,11 +159,6 @@ public class StoreAccessor {
 				xmlAccessor, 
 				new FileWriter(xmlAccessor.getFilePath())
 			);
-		
-		Activator.logger.log(
-				Level.INFO, 
-				"XML-Datei wurde gespeichert: {0}",
-				xmlAccessor.getFilePath());
 	}
 	
 	/**
@@ -178,7 +174,7 @@ public class StoreAccessor {
 		for (int i = 0; i < xmlAccessor.size(); i++) {
 			Activator.logger.log(
 					Level.INFO,
-					"Speichere Datei: " + xmlAccessor.get(i).getFilePath());
+					"Speichern von Datei: " + xmlAccessor.get(i).getFilePath());
 			saveFile(xmlAccessor.get(i));
 		}
 
@@ -191,26 +187,46 @@ public class StoreAccessor {
 	 * @param extensionPattern Pattern welche Dateien gesucht werden
 	 * @param files Liste aller gefundenen Dateien
 	 */
-	public void find(String start, String extensionPattern, List<File> files ) 
-	  { 
-	    final Stack<File> dirs = new Stack<File>(); 
-	    final File startdir = new File( start ); 
-	    final Pattern p = Pattern.compile( extensionPattern, Pattern.CASE_INSENSITIVE ); 
-	 
-	    if ( startdir.isDirectory() ) 
-	      dirs.push( startdir ); 
-	 
-	    while ( dirs.size() > 0 ) 
-	    { 
-	      for ( File file : dirs.pop().listFiles() ) 
-	      { 
-	        if ( file.isDirectory() ) 
-	          dirs.push( file ); 
-	        else 
-	          if ( p.matcher(file.getName()).matches() ) 
-	            files.add( file ); 
-	      } 
-	    } 
-	  } 
+	private void find(String start, String extensionPattern, List<File> files) {
+		final Stack<File> dirs = new Stack<File>();
+		final File startdir = new File(start);
+		final Pattern p = Pattern.compile(extensionPattern,
+				Pattern.CASE_INSENSITIVE);
+
+		if (startdir.isDirectory())
+			dirs.push(startdir);
+
+		while (dirs.size() > 0) {
+			for (File file : dirs.pop().listFiles()) {
+				if (file.isDirectory())
+					dirs.push(file);
+				else if (p.matcher(file.getName()).matches())
+					files.add(file);
+			}
+		}
+	}
+
+	/**
+	 * @return the oRIGINAL_FILES_PATH
+	 */
+	public String getOriginalFilesPath() {
+		return ORIGINAL_FILES_PATH;
+	}
+
+	/**
+	 * @return the uSER_FILES_PATH
+	 */
+	public String getUserFilesPath() {
+		return USER_FILES_PATH;
+	}
+
+	/**
+	 * @return the cHARS_PATH
+	 */
+	public String getCharsFilesPath() {
+		return CHARS_PATH;
+	}
+	
+	
 	
 }

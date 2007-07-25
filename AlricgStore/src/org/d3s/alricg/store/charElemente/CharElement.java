@@ -23,7 +23,7 @@ import org.d3s.alricg.store.charElemente.sonderregeln.Sonderregel;
  * 
  * @author Vincent
  */
-public abstract class CharElement {
+public abstract class CharElement implements Comparable<CharElement> {
     public static int KEIN_WERT = -100;
 
     private String sammelbegriff; // Zur besseren Sortierung
@@ -243,10 +243,10 @@ public abstract class CharElement {
      * @param ce Das CharElement, mit dem verglichen werden soll
      * @return "a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than
      *         the specified object."
-     *
+     */
     public int compareTo(CharElement ce) {
-        return id.compareTo(ce.getId());
+        return getId().compareTo(ce.getId());
     }
-    */
+    
 	
 }

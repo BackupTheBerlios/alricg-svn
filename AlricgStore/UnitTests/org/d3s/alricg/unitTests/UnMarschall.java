@@ -327,6 +327,7 @@ public class UnMarschall {
 		talentArray[0].setKostenKlasse(KostenKlasse.B);
 		talentArray[0].setName("Talent 1");
 		talentArray[0].setId("Talent-1");
+		talentArray[0].setSpezialisierungen(new String[] {"spez1", "spez2", "spez3"});
 		
 		talentArray[1] = new Talent();
 		talentArray[1].setDreiEigenschaften(eigArray);

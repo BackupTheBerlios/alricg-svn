@@ -7,6 +7,8 @@
 
 package org.d3s.alricg.store.charElemente;
 
+import java.util.Arrays;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -136,6 +138,7 @@ public class Zauber extends Faehigkeit {
 	 */
 	public void setMerkmale(MagieMerkmal[] merkmale) {
 		this.merkmale = merkmale;
+		Arrays.sort(merkmale);
 	}
 	/**
 	 * @param verbreitung Setzt das Attribut verbreitung.

@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.d3s.alricg.store.access.hide.XmlVirtualAccessor;
+import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
@@ -47,9 +48,19 @@ import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
  * 
  * @author Vincent
  */
-public class StoreDataAccessor {
+public class StoreDataAccessor implements CharElementAccessor {
 	private XmlVirtualAccessor virtualAccessor;
-
+	private static StoreDataAccessor self;
+	
+	protected StoreDataAccessor(XmlVirtualAccessor virtualAccessor) {
+		this.virtualAccessor = virtualAccessor;
+		self = this;
+	}
+	
+	public static StoreDataAccessor getInstance() {
+		return self;
+	}
+	
 	/**
 	 * @return the virtualAccessor
 	 */
@@ -57,6 +68,53 @@ public class StoreDataAccessor {
 		return virtualAccessor.getXmlAccessor();
 	}
 	
+	public List<? extends CharElement> getMatchingList(CharElement element, CharElementAccessor accessor) {
+		
+		if (element instanceof Eigenschaft) {
+			return accessor.getEigenschaftList();
+		} else if (element instanceof Talent) {
+			return accessor.getTalentList();
+		} else if (element instanceof Zauber) {
+			return accessor.getZauberList();
+		} else if (element instanceof Repraesentation) {
+			return accessor.getRepraesentationList();
+		} else if (element instanceof Gabe) {
+			return accessor.getGabeList();
+		} else if (element instanceof Vorteil) {
+			return accessor.getVorteilList();
+		} else if (element instanceof Nachteil) {
+			return accessor.getNachteilList();
+		} else if (element instanceof Sonderfertigkeit) {
+			return accessor.getSonderfList();
+		} else if (element instanceof Rasse) {
+			return accessor.getRasseList();
+		} else if (element instanceof Kultur) {
+			return accessor.getKulturList();
+		} else if (element instanceof Profession) {
+			return accessor.getProfessionList();
+		} else if (element instanceof Gottheit) {
+			return accessor.getGottheitList();
+		} else if (element instanceof Liturgie) {
+			return accessor.getLiturgieList();
+		} else if (element instanceof RegionVolk) {
+			return accessor.getRasseList();
+		} else if (element instanceof RitualKenntnis) {
+			return accessor.getRitualkenntnisList();
+		} else if (element instanceof Schrift) {
+			return accessor.getSchriftList();
+		} else if (element instanceof Sprache) {
+			return accessor.getSpracheList();
+		} else if (element instanceof Gegenstand) {
+			return accessor.getGegenstandList();
+		} else if (element instanceof DaemonenPakt) {
+			return accessor.getDaemonenPaktList();
+		} else if (element instanceof MagierAkademie) {
+			return accessor.getMagierAkademieList();
+		} else {
+			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
+					element.getClass() + " vorhanden.");
+		}
+	}
 	/**
 	 * Interface um den Algortmus zur Erstellung der nicht Modifizierbaren Listen
 	 * von dem Datenlesen zu trennen.
@@ -64,8 +122,8 @@ public class StoreDataAccessor {
 	 *
 	 * @param <Ziel> Typ der CharElemente in der Liste
 	 */
-	public static interface ListGetter<Ziel> {
-		public List<Ziel> getList(XmlAccessor xmlAccs);
+	private static interface ListGetter<Ziel> {
+		public List<Ziel> getList(CharElementAccessor xmlAccs);
 	}
 	
 	/**
@@ -74,7 +132,7 @@ public class StoreDataAccessor {
 	 * @param listGetter Objekt um auf die richtigen Listen zuzugreifen
 	 * @return Nicht Modifizerbare Liste mit allen Objekten von Typ "Ziel" im Accessor
 	 */
-	public <Ziel> List<Ziel> getList(ListGetter<Ziel> listGetter) {
+	private <Ziel> List<Ziel> getList(ListGetter<Ziel> listGetter) {
 		final List<XmlAccessor> xmlAccs = virtualAccessor.getXmlAccessor();
 		final List<Ziel> list = new ArrayList<Ziel>();
 		
@@ -92,7 +150,7 @@ public class StoreDataAccessor {
 	public List<Eigenschaft> getEigenschaftList() {
 		ListGetter<Eigenschaft> listGetter = new ListGetter<Eigenschaft>(){
 			@Override
-			public List<Eigenschaft> getList(XmlAccessor xmlAccs) {
+			public List<Eigenschaft> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getEigenschaftList();
 			}
 		};
@@ -106,7 +164,7 @@ public class StoreDataAccessor {
 	public List<Talent> getTalentList() {
 		ListGetter<Talent> listGetter = new ListGetter<Talent>(){
 			@Override
-			public List<Talent> getList(XmlAccessor xmlAccs) {
+			public List<Talent> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getTalentList();
 			}
 		};
@@ -119,7 +177,7 @@ public class StoreDataAccessor {
 	public List<Zauber> getZauberList() {
 		ListGetter<Zauber> listGetter = new ListGetter<Zauber>(){
 			@Override
-			public List<Zauber> getList(XmlAccessor xmlAccs) {
+			public List<Zauber> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getZauberList();
 			}
 		};
@@ -132,7 +190,7 @@ public class StoreDataAccessor {
 	public List<Repraesentation> getRepraesentationList() {
 		ListGetter<Repraesentation> listGetter = new ListGetter<Repraesentation>(){
 			@Override
-			public List<Repraesentation> getList(XmlAccessor xmlAccs) {
+			public List<Repraesentation> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getRepraesentationList();
 			}
 		};
@@ -145,7 +203,7 @@ public class StoreDataAccessor {
 	public List<Gabe> getGabeList() {
 		ListGetter<Gabe> listGetter = new ListGetter<Gabe>(){
 			@Override
-			public List<Gabe> getList(XmlAccessor xmlAccs) {
+			public List<Gabe> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getGabeList();
 			}
 		};
@@ -158,7 +216,7 @@ public class StoreDataAccessor {
 	public List<Vorteil> getVorteilList() {
 		ListGetter<Vorteil> listGetter = new ListGetter<Vorteil>(){
 			@Override
-			public List<Vorteil> getList(XmlAccessor xmlAccs) {
+			public List<Vorteil> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getVorteilList();
 			}
 		};
@@ -171,7 +229,7 @@ public class StoreDataAccessor {
 	public List<Nachteil> getNachteilList() {
 		ListGetter<Nachteil> listGetter = new ListGetter<Nachteil>(){
 			@Override
-			public List<Nachteil> getList(XmlAccessor xmlAccs) {
+			public List<Nachteil> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getNachteilList();
 			}
 		};
@@ -184,7 +242,7 @@ public class StoreDataAccessor {
 	public List<Sonderfertigkeit> getSonderfList() {
 		ListGetter<Sonderfertigkeit> listGetter = new ListGetter<Sonderfertigkeit>(){
 			@Override
-			public List<Sonderfertigkeit> getList(XmlAccessor xmlAccs) {
+			public List<Sonderfertigkeit> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getSonderfList();
 			}
 		};
@@ -197,7 +255,7 @@ public class StoreDataAccessor {
 	public List<Rasse> getRasseList() {
 		ListGetter<Rasse> listGetter = new ListGetter<Rasse>(){
 			@Override
-			public List<Rasse> getList(XmlAccessor xmlAccs) {
+			public List<Rasse> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getRasseList();
 			}
 		};
@@ -210,7 +268,7 @@ public class StoreDataAccessor {
 	public List<Kultur> getKulturList() {
 		ListGetter<Kultur> listGetter = new ListGetter<Kultur>(){
 			@Override
-			public List<Kultur> getList(XmlAccessor xmlAccs) {
+			public List<Kultur> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getKulturList();
 			}
 		};
@@ -223,7 +281,7 @@ public class StoreDataAccessor {
 	public List<Profession> getProfessionList() {
 		ListGetter<Profession> listGetter = new ListGetter<Profession>(){
 			@Override
-			public List<Profession> getList(XmlAccessor xmlAccs) {
+			public List<Profession> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getProfessionList();
 			}
 		};
@@ -236,7 +294,7 @@ public class StoreDataAccessor {
 	public List<Gottheit> getGottheitList() {
 		ListGetter<Gottheit> listGetter = new ListGetter<Gottheit>(){
 			@Override
-			public List<Gottheit> getList(XmlAccessor xmlAccs) {
+			public List<Gottheit> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getGottheitList();
 			}
 		};
@@ -249,7 +307,7 @@ public class StoreDataAccessor {
 	public List<Liturgie> getLiturgieList() {
 		ListGetter<Liturgie> listGetter = new ListGetter<Liturgie>(){
 			@Override
-			public List<Liturgie> getList(XmlAccessor xmlAccs) {
+			public List<Liturgie> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getLiturgieList();
 			}
 		};
@@ -262,7 +320,7 @@ public class StoreDataAccessor {
 	public List<RegionVolk> getRegionVolkList() {
 		ListGetter<RegionVolk> listGetter = new ListGetter<RegionVolk>(){
 			@Override
-			public List<RegionVolk> getList(XmlAccessor xmlAccs) {
+			public List<RegionVolk> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getRegionVolkList();
 			}
 		};
@@ -275,7 +333,7 @@ public class StoreDataAccessor {
 	public List<RitualKenntnis> getRitualkenntnisList() {
 		ListGetter<RitualKenntnis> listGetter = new ListGetter<RitualKenntnis>(){
 			@Override
-			public List<RitualKenntnis> getList(XmlAccessor xmlAccs) {
+			public List<RitualKenntnis> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getRitualkenntnisList();
 			}
 		};
@@ -288,7 +346,7 @@ public class StoreDataAccessor {
 	public List<Schrift> getSchriftList() {
 		ListGetter<Schrift> listGetter = new ListGetter<Schrift>(){
 			@Override
-			public List<Schrift> getList(XmlAccessor xmlAccs) {
+			public List<Schrift> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getSchriftList();
 			}
 		};
@@ -301,7 +359,7 @@ public class StoreDataAccessor {
 	public List<Sprache> getSpracheList() {
 		ListGetter<Sprache> listGetter = new ListGetter<Sprache>(){
 			@Override
-			public List<Sprache> getList(XmlAccessor xmlAccs) {
+			public List<Sprache> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getSpracheList();
 			}
 		};
@@ -314,7 +372,7 @@ public class StoreDataAccessor {
 	public List<Gegenstand> getGegenstandList() {
 		ListGetter<Gegenstand> listGetter = new ListGetter<Gegenstand>(){
 			@Override
-			public List<Gegenstand> getList(XmlAccessor xmlAccs) {
+			public List<Gegenstand> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getGegenstandList();
 			}
 		};
@@ -327,7 +385,7 @@ public class StoreDataAccessor {
 	public List<DaemonenPakt> getDaemonenPaktList() {
 		ListGetter<DaemonenPakt> listGetter = new ListGetter<DaemonenPakt>(){
 			@Override
-			public List<DaemonenPakt> getList(XmlAccessor xmlAccs) {
+			public List<DaemonenPakt> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getDaemonenPaktList();
 			}
 		};
@@ -340,7 +398,7 @@ public class StoreDataAccessor {
 	public List<MagierAkademie> getMagierAkademieList() {
 		ListGetter<MagierAkademie> listGetter = new ListGetter<MagierAkademie>(){
 			@Override
-			public List<MagierAkademie> getList(XmlAccessor xmlAccs) {
+			public List<MagierAkademie> getList(CharElementAccessor xmlAccs) {
 				return xmlAccs.getMagierAkademieList();
 			}
 		};

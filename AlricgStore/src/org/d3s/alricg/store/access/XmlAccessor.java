@@ -7,10 +7,13 @@
  */
 package org.d3s.alricg.store.access;
 
+import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
@@ -37,8 +40,8 @@ import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
  * @author Vincent
  */
 @XmlRootElement
-public class XmlAccessor {
-	private String filePath;
+public class XmlAccessor implements CharElementAccessor {
+	private File filePath;
 	private String version;
 	
 	/**
@@ -46,13 +49,20 @@ public class XmlAccessor {
 	 */
 	@XmlAttribute
 	public String getFilePath() {
+		if (filePath == null) return null;
+		return filePath.getAbsolutePath();
+	}
+	
+	@XmlTransient
+	public File getFile() {
 		return filePath;
 	}
+	
 	/**
 	 * @param filePath the filePath to set
 	 */
 	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+		this.filePath = new File(filePath);
 	}
 	
 	/**
@@ -69,7 +79,6 @@ public class XmlAccessor {
 		this.version = version;
 	}
 
-	
 	private List<Eigenschaft> eigenschaftList;
 	private List<Talent> talentList;
 	private List<Zauber> zauberList;
@@ -91,8 +100,8 @@ public class XmlAccessor {
 	private List<DaemonenPakt> daemonenPaktList;
 	private List<MagierAkademie> magierAkademieList;
 	
-	/**
-	 * @return the eigenschaftList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getEigenschaftList()
 	 */
 	public List<Eigenschaft> getEigenschaftList() {
 		return eigenschaftList;
@@ -104,8 +113,8 @@ public class XmlAccessor {
 		this.eigenschaftList = eigenschaftList;
 	}
 
-	/**
-	 * @return the talentList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getTalentList()
 	 */
 	public List<Talent> getTalentList() {
 		return talentList;
@@ -117,8 +126,8 @@ public class XmlAccessor {
 		this.talentList = talentList;
 	}
 	
-	/**
-	 * @return the zauberList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getZauberList()
 	 */
 	public List<Zauber> getZauberList() {
 		return zauberList;
@@ -130,8 +139,8 @@ public class XmlAccessor {
 		this.zauberList = zauberList;
 	}
 	
-	/**
-	 * @return the repraesentationList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getRepraesentationList()
 	 */
 	public List<Repraesentation> getRepraesentationList() {
 		return repraesentationList;
@@ -143,8 +152,8 @@ public class XmlAccessor {
 		this.repraesentationList = repraesentationList;
 	}
 	
-	/**
-	 * @return the gabeList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getGabeList()
 	 */
 	public List<Gabe> getGabeList() {
 		return gabeList;
@@ -156,8 +165,8 @@ public class XmlAccessor {
 		this.gabeList = gabeList;
 	}
 	
-	/**
-	 * @return the vorteilList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getVorteilList()
 	 */
 	public List<Vorteil> getVorteilList() {
 		return vorteilList;
@@ -169,8 +178,8 @@ public class XmlAccessor {
 		this.vorteilList = vorteilList;
 	}
 	
-	/**
-	 * @return the nachteilList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getNachteilList()
 	 */
 	public List<Nachteil> getNachteilList() {
 		return nachteilList;
@@ -182,8 +191,8 @@ public class XmlAccessor {
 		this.nachteilList = nachteilList;
 	}
 	
-	/**
-	 * @return the sonderfList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getSonderfList()
 	 */
 	public List<Sonderfertigkeit> getSonderfList() {
 		return sonderfList;
@@ -194,8 +203,8 @@ public class XmlAccessor {
 	public void setSonderfList(List<Sonderfertigkeit> sonderfList) {
 		this.sonderfList = sonderfList;
 	}
-	/**
-	 * @return the rasseList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getRasseList()
 	 */
 	public List<Rasse> getRasseList() {
 		return rasseList;
@@ -206,8 +215,8 @@ public class XmlAccessor {
 	public void setRasseList(List<Rasse> rasseList) {
 		this.rasseList = rasseList;
 	}
-	/**
-	 * @return the kulturList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getKulturList()
 	 */
 	public List<Kultur> getKulturList() {
 		return kulturList;
@@ -218,8 +227,8 @@ public class XmlAccessor {
 	public void setKulturList(List<Kultur> kulturList) {
 		this.kulturList = kulturList;
 	}
-	/**
-	 * @return the professionList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getProfessionList()
 	 */
 	public List<Profession> getProfessionList() {
 		return professionList;
@@ -230,8 +239,8 @@ public class XmlAccessor {
 	public void setProfessionList(List<Profession> professionList) {
 		this.professionList = professionList;
 	}
-	/**
-	 * @return the gottheitList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getGottheitList()
 	 */
 	public List<Gottheit> getGottheitList() {
 		return gottheitList;
@@ -242,8 +251,8 @@ public class XmlAccessor {
 	public void setGottheitList(List<Gottheit> gottheitList) {
 		this.gottheitList = gottheitList;
 	}
-	/**
-	 * @return the liturgieList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getLiturgieList()
 	 */
 	public List<Liturgie> getLiturgieList() {
 		return liturgieList;
@@ -254,8 +263,8 @@ public class XmlAccessor {
 	public void setLiturgieList(List<Liturgie> liturgieList) {
 		this.liturgieList = liturgieList;
 	}
-	/**
-	 * @return the regionVolkList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getRegionVolkList()
 	 */
 	public List<RegionVolk> getRegionVolkList() {
 		return regionVolkList;
@@ -266,8 +275,8 @@ public class XmlAccessor {
 	public void setRegionVolkList(List<RegionVolk> regionVolkList) {
 		this.regionVolkList = regionVolkList;
 	}
-	/**
-	 * @return the ritualkenntnisList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getRitualkenntnisList()
 	 */
 	public List<RitualKenntnis> getRitualkenntnisList() {
 		return ritualkenntnisList;
@@ -278,8 +287,8 @@ public class XmlAccessor {
 	public void setRitualkenntnisList(List<RitualKenntnis> ritualkenntnisList) {
 		this.ritualkenntnisList = ritualkenntnisList;
 	}
-	/**
-	 * @return the schriftList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getSchriftList()
 	 */
 	public List<Schrift> getSchriftList() {
 		return schriftList;
@@ -290,8 +299,8 @@ public class XmlAccessor {
 	public void setSchriftList(List<Schrift> schriftList) {
 		this.schriftList = schriftList;
 	}
-	/**
-	 * @return the spracheList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getSpracheList()
 	 */
 	public List<Sprache> getSpracheList() {
 		return spracheList;
@@ -302,8 +311,8 @@ public class XmlAccessor {
 	public void setSpracheList(List<Sprache> spracheList) {
 		this.spracheList = spracheList;
 	}
-	/**
-	 * @return the gegenstandList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getGegenstandList()
 	 */
 	public List<Gegenstand> getGegenstandList() {
 		return gegenstandList;
@@ -314,8 +323,8 @@ public class XmlAccessor {
 	public void setGegenstandList(List<Gegenstand> gegenstandList) {
 		this.gegenstandList = gegenstandList;
 	}
-	/**
-	 * @return the daemonenPaktList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getDaemonenPaktList()
 	 */
 	public List<DaemonenPakt> getDaemonenPaktList() {
 		return daemonenPaktList;
@@ -326,8 +335,8 @@ public class XmlAccessor {
 	public void setDaemonenPaktList(List<DaemonenPakt> daemonenPaktList) {
 		this.daemonenPaktList = daemonenPaktList;
 	}
-	/**
-	 * @return the magierAkademieList
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getMagierAkademieList()
 	 */
 	public List<MagierAkademie> getMagierAkademieList() {
 		return magierAkademieList;
