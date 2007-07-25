@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="AlricgEditor"
+            name="Editor">
+      </category>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.TalentView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.TalentView"
+            name="Talent View">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.FileView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.FileView"
+            name="File View">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.d3s.alricg.editor.editors.TalentEditor"
+            id="org.d3s.alricg.editor.editors.TalentEditor"
+            name="TalentEditor">
+      </editor>
+   </extension>
+
+</plugin>
