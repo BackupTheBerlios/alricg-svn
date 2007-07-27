@@ -76,7 +76,7 @@ public class StoreAccessor {
 	 * @return Liefert die Instanz des Singeltons StoreAccessor
 	 * @throws JAXBException
 	 */
-	public static StoreAccessor getIntance() {
+	public static StoreAccessor getInstance() {
 		if (instance == null)  {
 			instance = new StoreAccessor();
 		}
@@ -136,6 +136,20 @@ public class StoreAccessor {
 		return new StoreDataAccessor(virtuelAccessor);
 	}
 
+	/**
+	 * Fügt einen neues File, zum Datenbestand hinzu. (Die Datei wird erst mit "save" abgelegt")
+	 * @param file File welches hinzugefügt werden soll
+	 * @return Der neue XmlAccessor zu dem File
+	 */
+	public XmlAccessor addNewFile(File file ) {
+		XmlAccessor newOne = new XmlAccessor();
+		newOne.setFilePath(file.getAbsolutePath());
+		newOne.setVersion("0.1");
+		
+		StoreDataAccessor.getInstance().getXmlAccessors().add(newOne);
+		return newOne;
+	}
+	
 	/**
 	 * Speichert den XmlAccessor in ein File wie im "filePath" Attribut des 
 	 * XmlAccessors angegeben.

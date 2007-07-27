@@ -19,7 +19,7 @@ public class LoadSaveToFiles {
 
 	@Test
 	public void testLoad() throws Exception {
-		StoreAccessor storeAcc = StoreAccessor.getIntance();
+		StoreAccessor storeAcc = StoreAccessor.getInstance();
 		StoreDataAccessor storeData = storeAcc.loadFiles();
 		storeAcc.saveFiles(storeData.getXmlAccessors());
 	}

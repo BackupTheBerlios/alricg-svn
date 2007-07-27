@@ -50,7 +50,7 @@ import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
  */
 public class StoreDataAccessor implements CharElementAccessor {
 	private XmlVirtualAccessor virtualAccessor;
-	private static StoreDataAccessor self;
+	private static StoreDataAccessor self = new StoreDataAccessor(new XmlVirtualAccessor()); // Für Tests
 	
 	protected StoreDataAccessor(XmlVirtualAccessor virtualAccessor) {
 		this.virtualAccessor = virtualAccessor;
@@ -68,53 +68,59 @@ public class StoreDataAccessor implements CharElementAccessor {
 		return virtualAccessor.getXmlAccessor();
 	}
 	
-	public List<? extends CharElement> getMatchingList(CharElement element, CharElementAccessor accessor) {
-		
-		if (element instanceof Eigenschaft) {
+	public List<? extends CharElement> getMatchingList(Class clazz) {
+		return getMatchingList(clazz, this);
+	}
+	
+	public List<? extends CharElement> getMatchingList(Class clazz, CharElementAccessor accessor) {
+
+		if (clazz == Eigenschaft.class) {
 			return accessor.getEigenschaftList();
-		} else if (element instanceof Talent) {
+		} else if (clazz ==  Talent.class) {
 			return accessor.getTalentList();
-		} else if (element instanceof Zauber) {
+		} else if (clazz ==  Zauber.class) {
 			return accessor.getZauberList();
-		} else if (element instanceof Repraesentation) {
+		} else if (clazz ==  Repraesentation.class) {
 			return accessor.getRepraesentationList();
-		} else if (element instanceof Gabe) {
+		} else if (clazz ==  Gabe.class) {
 			return accessor.getGabeList();
-		} else if (element instanceof Vorteil) {
+		} else if (clazz ==  Vorteil.class) {
 			return accessor.getVorteilList();
-		} else if (element instanceof Nachteil) {
+		} else if (clazz ==  Nachteil.class) {
 			return accessor.getNachteilList();
-		} else if (element instanceof Sonderfertigkeit) {
+		} else if (clazz ==  Sonderfertigkeit.class) {
 			return accessor.getSonderfList();
-		} else if (element instanceof Rasse) {
+		} else if (clazz ==  Rasse.class) {
 			return accessor.getRasseList();
-		} else if (element instanceof Kultur) {
+		} else if (clazz ==  Kultur.class) {
 			return accessor.getKulturList();
-		} else if (element instanceof Profession) {
+		} else if (clazz ==  Profession.class) {
 			return accessor.getProfessionList();
-		} else if (element instanceof Gottheit) {
+		} else if (clazz ==  Gottheit.class) {
 			return accessor.getGottheitList();
-		} else if (element instanceof Liturgie) {
+		} else if (clazz ==  Liturgie.class) {
 			return accessor.getLiturgieList();
-		} else if (element instanceof RegionVolk) {
+		} else if (clazz ==  RegionVolk.class) {
 			return accessor.getRasseList();
-		} else if (element instanceof RitualKenntnis) {
+		} else if (clazz ==  RitualKenntnis.class) {
 			return accessor.getRitualkenntnisList();
-		} else if (element instanceof Schrift) {
+		} else if (clazz ==  Schrift.class) {
 			return accessor.getSchriftList();
-		} else if (element instanceof Sprache) {
+		} else if (clazz ==  Sprache.class) {
 			return accessor.getSpracheList();
-		} else if (element instanceof Gegenstand) {
+		} else if (clazz ==  Gegenstand.class) {
 			return accessor.getGegenstandList();
-		} else if (element instanceof DaemonenPakt) {
+		} else if (clazz ==  DaemonenPakt.class) {
 			return accessor.getDaemonenPaktList();
-		} else if (element instanceof MagierAkademie) {
+		} else if (clazz ==  MagierAkademie.class) {
 			return accessor.getMagierAkademieList();
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
-					element.getClass() + " vorhanden.");
+					clazz.toString() + " vorhanden.");
 		}
 	}
+	
+	
 	/**
 	 * Interface um den Algortmus zur Erstellung der nicht Modifizierbaren Listen
 	 * von dem Datenlesen zu trennen.
