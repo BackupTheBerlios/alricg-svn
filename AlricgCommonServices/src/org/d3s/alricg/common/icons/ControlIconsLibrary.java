@@ -16,6 +16,12 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public enum ControlIconsLibrary {
 
 	info("information.png"),
+	warning("warning.png"),
+	
+// Elemente bearbeiten
+	add("add.png"),
+	delete("cross.png"),
+	edit("pencil.png"),
 	
 // Tabellen
 	swapTree_Table("table_relationship.png"),

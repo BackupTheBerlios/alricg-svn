@@ -9,7 +9,6 @@ package org.d3s.alricg.common.icons;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 
@@ -26,18 +25,11 @@ import org.eclipse.ui.PlatformUI;
 public class ImageService {
 	protected static String BASE_IMAGEPATH;
 	private static final ImageService self = new ImageService();
-	public static ImageDescriptor testBild;
+	
 	
 	private ImageService() {
 		
 		BASE_IMAGEPATH = Platform.getInstanceLocation().getURL() + "icons/";
-		
-		try {
-			testBild = ImageDescriptor.createFromURL(new URL(BASE_IMAGEPATH + "controls/table_relationship.png"));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public static ImageService getImageService() {
