@@ -15,6 +15,7 @@ import java.util.List;
 import org.d3s.alricg.editor.common.ViewUtils.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 
@@ -25,19 +26,40 @@ import org.d3s.alricg.store.charElemente.CharElement;
 public class EditorViewUtils {
 
 	/**
+	 * Interface für die generalisierung von EditorTreeObject und EditorTableObject
+	 * @author Vincent
+	 */
+	public static interface EditorTreeOrTableObject extends TreeOrTableObject {
+		
+		/**
+		 * @return File in dem das Element gespeichert ist
+		 */
+		public File getFile();
+		
+		/**
+		 * @return Der Accessor, in dem das Element gespeichert ist
+		 */
+		public XmlAccessor getAccessor();
+	}
+	
+	/**
 	 * Spezielles TreeObject für den Editor, um noch einen FilePath angeben zu können
 	 * @author Vincent
 	 */
-	public static class EditorTreeObject extends TreeObject {
-		private File filePath;
+	public static class EditorTreeObject extends TreeObject implements EditorTreeOrTableObject {
+		private XmlAccessor accessor;
 		
-		public EditorTreeObject(Object value, TreeObject parent, File filePath) {
+		public EditorTreeObject(Object value, TreeObject parent, XmlAccessor accessor) {
 			super(value, parent);
-			this.filePath = filePath;
+			this.accessor = accessor;
 		}
 
 		public File getFile() {
-			return filePath;
+			return accessor.getFile();
+		}
+
+		public XmlAccessor getAccessor() {
+			return accessor;
 		}
 	}
 	
@@ -45,16 +67,20 @@ public class EditorViewUtils {
 	 * Spezielles TableObject für den Editor, um noch einen FilePath angeben zu können
 	 * @author Vincent
 	 */
-	public static class EditorTableObject  extends TableObject {
-		private File filePath;
+	public static class EditorTableObject  extends TableObject implements EditorTreeOrTableObject {
+		private XmlAccessor accessor;
 		
-		public EditorTableObject(Object value, File filePath) {
+		public EditorTableObject(Object value, XmlAccessor accessor) {
 			super(value);
-			this.filePath = filePath;
+			this.accessor = accessor;
 		}
 
 		public File getFile() {
-			return filePath;
+			return accessor.getFile();
+		}
+		
+		public XmlAccessor getAccessor() {
+			return accessor;
 		}
 	}
 	
@@ -115,7 +141,7 @@ public class EditorViewUtils {
 					parent.addChildren(new EditorTreeObject(
 							charElementList.get(i2), 
 							parent,
-							accessorList.get(i1).getFile()));
+							accessorList.get(i1)));
 				}
 			}
 		}
@@ -147,8 +173,7 @@ public class EditorViewUtils {
 				returnList.add(
 						new EditorTableObject(
 								charElementList.get(i2), 
-								accessorList.get(i1).getFile()
-								)
+								accessorList.get(i1))
 						);
 			}
 		}

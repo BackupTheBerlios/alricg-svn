@@ -20,8 +20,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
@@ -34,7 +38,11 @@ import org.eclipse.ui.IViewSite;
  */
 public class ViewUtils {
 	
-	public static class TableObject {
+	public static interface TreeOrTableObject {
+		public Object getValue();
+	}
+	
+	public static class TableObject implements TreeOrTableObject {
 		private final Object value;
 		
 		public TableObject(Object value) {
@@ -50,7 +58,7 @@ public class ViewUtils {
 	 * Zur Darstellung mit einem TreeViewer
 	 * @author Vincent
 	 */
-	public static class TreeObject {
+	public static class TreeObject implements TreeOrTableObject {
 		private List<TreeObject> children;
 		private final TreeObject parent;
 		private final Object value;
@@ -85,6 +93,26 @@ public class ViewUtils {
 		public String toString() {
 			return value.toString();
 		}
+	}
+	
+	/**
+	 * Liefert zu einem Parent-Composite von einem Tree/Table View das selektierte Element.
+	 * @param parentComp Der Parent von einem Tree/Table View
+	 * @return Das selektierte Element oder "null" wenn nichts selektiert ist
+	 */
+	public static TreeOrTableObject getSelectedObject(Composite parentComp) {
+		final Control topControl = ((StackLayout) parentComp.getLayout()).topControl;
+		TreeOrTableObject value = null;
+		
+		if (topControl instanceof Tree && ((Tree) topControl).getSelection().length > 0) {
+			value = (TreeOrTableObject) ((Tree) topControl).getSelection()[0].getData();
+
+		} else if ( ((Table) topControl).getSelection().length > 0 ) {
+			value = (TreeOrTableObject) ((Table) topControl).getSelection()[0].getData();
+			
+		}
+		
+		return value;
 	}
 
 	/**
@@ -215,6 +243,20 @@ public class ViewUtils {
 				((TableViewer) viewer).getControl().setRedraw(false);
 				((TableViewer) viewer).setSorter(sorter.getNewInstance());
 				((TableViewer) viewer).getControl().setRedraw(true);
+			}
+		}
+	}
+	
+	/**
+	 * Setzt den Index einer ComboBox auf den übergebenen Wert. Ist der
+	 * Wert in der ComboBox nicht vorhaden, wird nichts geändert.
+	 * @param combo Die ComboBox zum ändern
+	 * @param str Der Wert, auf den die ComboBox gesetzt werden soll
+	 */
+	public static void findAndSetIndex(Combo combo, String str) {
+		for (int i = 0; i < combo.getItems().length; i++) {
+			if (combo.getItem(i).equals(str)) {
+				combo.select(i);
 			}
 		}
 	}

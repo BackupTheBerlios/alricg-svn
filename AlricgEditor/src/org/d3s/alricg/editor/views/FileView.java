@@ -53,6 +53,8 @@ import org.eclipse.ui.part.ViewPart;
  */
 
 public class FileView extends ViewPart {
+	public static final String ID = "org.d3s.alricg.editor.views.FileView";
+	
 	private TreeViewer viewer;
 	private Action action1;
 	private Action action2;
@@ -109,16 +111,16 @@ public class FileView extends ViewPart {
 		final HashMap<String, TreeObject> fileHash = new HashMap<String, TreeObject>();
 		
 		TreeObject treeObj = new TreeObject(
-					new File(StoreAccessor.getIntance().getOriginalFilesPath()),
+					new File(StoreAccessor.getInstance().getOriginalFilesPath()),
 					invisibleRoot);
 		invisibleRoot.addChildren(treeObj);
-		fileHash.put(StoreAccessor.getIntance().getOriginalFilesPath(), treeObj);
+		fileHash.put(StoreAccessor.getInstance().getOriginalFilesPath(), treeObj);
 		
 		treeObj = new TreeObject(
-					new File(StoreAccessor.getIntance().getUserFilesPath()),
+					new File(StoreAccessor.getInstance().getUserFilesPath()),
 					invisibleRoot);
 		invisibleRoot.addChildren(treeObj);
-		fileHash.put(StoreAccessor.getIntance().getUserFilesPath(), treeObj);
+		fileHash.put(StoreAccessor.getInstance().getUserFilesPath(), treeObj);
 		
 		for (int i = 0; i < accessorList.size(); i++) {
 			helper(fileHash, accessorList.get(i).getFile());

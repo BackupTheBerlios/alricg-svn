@@ -26,6 +26,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.d3s.alricg.editor.editors.TalentEditor"
+            icon="icons/sample.gif"
             id="org.d3s.alricg.editor.editors.TalentEditor"
             name="TalentEditor">
       </editor>

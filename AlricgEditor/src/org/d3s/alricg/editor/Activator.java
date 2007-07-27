@@ -34,7 +34,7 @@ public class Activator extends AbstractUIPlugin {
 		
 		// >>> TEST Laden der Daten, aber nur zum Testen
 		try {
-			StoreAccessor.getIntance().loadFiles();
+			StoreAccessor.getInstance().loadFiles();
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
