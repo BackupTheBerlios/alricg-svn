@@ -17,10 +17,13 @@ import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
+import org.d3s.alricg.store.charElemente.KulturVariante;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
+import org.d3s.alricg.store.charElemente.ProfessionVariante;
 import org.d3s.alricg.store.charElemente.Rasse;
+import org.d3s.alricg.store.charElemente.RasseVariante;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.d3s.alricg.store.charElemente.RitualKenntnis;
@@ -33,6 +36,7 @@ import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.charZusatz.DaemonenPakt;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
+import org.d3s.alricg.store.charElemente.charZusatz.SchwarzeGabe;
 
 /**
  * Diese Klasse managed den Umgang mit IDs
@@ -64,7 +68,12 @@ public class IdFactory {
 		classHash.put(Sprache.class, "SPR");
 		classHash.put(Gegenstand.class, "GEG");
 		classHash.put(DaemonenPakt.class, "DAM");
-		classHash.put(MagierAkademie.class, "MAG");	
+		classHash.put(MagierAkademie.class, "MAG");
+		classHash.put(SchwarzeGabe.class, "SGA");	
+		
+		classHash.put(RasseVariante.class, "VRA");
+		classHash.put(KulturVariante.class, "VKU");
+		classHash.put(ProfessionVariante.class, "VPO");	
 	}
 	
 	public static IdFactory getInstance() {

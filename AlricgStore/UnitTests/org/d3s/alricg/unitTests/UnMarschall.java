@@ -297,8 +297,6 @@ public class UnMarschall {
 		Assert.assertEquals(15, ((OptionVoraussetzung) voraus.getPosVoraussetzung().get(0)
 									.getAlternativOption().getAlternativOption()).getAbWert());
 		
-		
-		
 	}
 	
 	@Test
@@ -919,7 +917,6 @@ public class UnMarschall {
 
 	}
 	
-	
 	@Before
 	public void initTest() {
 		xmlAccessor = new XmlAccessor();
@@ -933,42 +930,6 @@ public class UnMarschall {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, "ISO-8859-1"); 
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		unmarshaller = ctx.createUnmarshaller();
-	}
-
-
-	@Ignore
-	@Test
-	public void unmarshall() throws Exception {
-
-		/*
-		File f1 = new File("testFile.xml");
-		File f2 = new File("testFile2.xml");
-		
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true);
-		DocumentBuilder db = factory.newDocumentBuilder();
-		Document doc1 = db.parse(f1);
-		Document doc2 = db.parse(f2);
-		
-		Node node = doc2.getFirstChild();
-		node = doc1.importNode(node, true);
-		//doc1.insertBefore(node, doc1.getFirstChild());
-		doc1.getFirstChild().appendChild(node);
-		//doc1.getFirstChild().getChildNodes().getLength();
-		
-		JAXBContext ctx = JAXBContext.newInstance(Foo.class);
-		Unmarshaller unmarshaller = ctx.createUnmarshaller();
-		Foo foo = (Foo) unmarshaller.unmarshal(doc1);
-		
-		Marshaller marshaller = ctx.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		marshaller.marshal(foo, System.out);
-		
-		System.out.println(foo.getBar().getId());
-		System.out.println(foo.getBars().get(0).getId());
-		System.out.println(foo.getBars().get(1).getId());
-		System.out.println(foo.getEbars().get(3).getId());
-		*/
 	}
 
 }

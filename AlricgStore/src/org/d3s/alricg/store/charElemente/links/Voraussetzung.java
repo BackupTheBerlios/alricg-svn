@@ -25,7 +25,7 @@ import org.d3s.alricg.store.charElemente.CharElement;
 public class Voraussetzung {
 	
 	private List<OptionVoraussetzung> posVoraussetzung; // Die "muss haben" Voraussetzungen
-	private List<OptionVoraussetzung> negVoraussetzungen; // Die "darf nicht" Voraussetzungen
+	private List<OptionVoraussetzung> negVoraussetzung; // Die "darf nicht" Voraussetzungen
 	
 	/**
 	 * Gibt die "muss haben" Voraussetzungen an. Eine
@@ -53,11 +53,11 @@ public class Voraussetzung {
 	 * @see getPositiveVoraussetzung()
 	 * @return
 	 */
-	public List<OptionVoraussetzung> getNegVoraussetzungen() {
-		return negVoraussetzungen;
+	public List<OptionVoraussetzung> getNegVoraussetzung() {
+		return negVoraussetzung;
 	}
-	public void setNegVoraussetzungen(List<OptionVoraussetzung> negVoraussetzungen) {
-		this.negVoraussetzungen = negVoraussetzungen;
+	public void setNegVoraussetzungen(List<OptionVoraussetzung> negVoraussetzung) {
+		this.negVoraussetzung = negVoraussetzung;
 	}
 
 	

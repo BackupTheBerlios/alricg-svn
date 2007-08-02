@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.d3s.alricg.store.access.hide.AbstractCharElementsAccessor;
 import org.d3s.alricg.store.access.hide.XmlVirtualAccessor;
-import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
@@ -33,6 +33,7 @@ import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.charZusatz.DaemonenPakt;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
+import org.d3s.alricg.store.charElemente.charZusatz.SchwarzeGabe;
 
 /**
  * Diese Klasse bietet zugriff auf alle aktuell geladenen Elemente.
@@ -48,10 +49,10 @@ import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
  * 
  * @author Vincent
  */
-public class StoreDataAccessor implements CharElementAccessor {
-	private XmlVirtualAccessor virtualAccessor;
+public class StoreDataAccessor extends AbstractCharElementsAccessor implements CharElementAccessor {
 	private static StoreDataAccessor self = new StoreDataAccessor(new XmlVirtualAccessor()); // Für Tests
-	
+	private XmlVirtualAccessor virtualAccessor;
+
 	protected StoreDataAccessor(XmlVirtualAccessor virtualAccessor) {
 		this.virtualAccessor = virtualAccessor;
 		self = this;
@@ -60,66 +61,13 @@ public class StoreDataAccessor implements CharElementAccessor {
 	public static StoreDataAccessor getInstance() {
 		return self;
 	}
-	
+
 	/**
 	 * @return the virtualAccessor
 	 */
 	public List<XmlAccessor> getXmlAccessors() {
 		return virtualAccessor.getXmlAccessor();
 	}
-	
-	public List<? extends CharElement> getMatchingList(Class clazz) {
-		return getMatchingList(clazz, this);
-	}
-	
-	public List<? extends CharElement> getMatchingList(Class clazz, CharElementAccessor accessor) {
-
-		if (clazz == Eigenschaft.class) {
-			return accessor.getEigenschaftList();
-		} else if (clazz ==  Talent.class) {
-			return accessor.getTalentList();
-		} else if (clazz ==  Zauber.class) {
-			return accessor.getZauberList();
-		} else if (clazz ==  Repraesentation.class) {
-			return accessor.getRepraesentationList();
-		} else if (clazz ==  Gabe.class) {
-			return accessor.getGabeList();
-		} else if (clazz ==  Vorteil.class) {
-			return accessor.getVorteilList();
-		} else if (clazz ==  Nachteil.class) {
-			return accessor.getNachteilList();
-		} else if (clazz ==  Sonderfertigkeit.class) {
-			return accessor.getSonderfList();
-		} else if (clazz ==  Rasse.class) {
-			return accessor.getRasseList();
-		} else if (clazz ==  Kultur.class) {
-			return accessor.getKulturList();
-		} else if (clazz ==  Profession.class) {
-			return accessor.getProfessionList();
-		} else if (clazz ==  Gottheit.class) {
-			return accessor.getGottheitList();
-		} else if (clazz ==  Liturgie.class) {
-			return accessor.getLiturgieList();
-		} else if (clazz ==  RegionVolk.class) {
-			return accessor.getRasseList();
-		} else if (clazz ==  RitualKenntnis.class) {
-			return accessor.getRitualkenntnisList();
-		} else if (clazz ==  Schrift.class) {
-			return accessor.getSchriftList();
-		} else if (clazz ==  Sprache.class) {
-			return accessor.getSpracheList();
-		} else if (clazz ==  Gegenstand.class) {
-			return accessor.getGegenstandList();
-		} else if (clazz ==  DaemonenPakt.class) {
-			return accessor.getDaemonenPaktList();
-		} else if (clazz ==  MagierAkademie.class) {
-			return accessor.getMagierAkademieList();
-		} else {
-			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
-					clazz.toString() + " vorhanden.");
-		}
-	}
-	
 	
 	/**
 	 * Interface um den Algortmus zur Erstellung der nicht Modifizierbaren Listen
@@ -412,5 +360,18 @@ public class StoreDataAccessor implements CharElementAccessor {
 		return getList(listGetter);
 	}
 	
+	/**
+	 * @return the SchwarzeGabe
+	 */
+	public List<SchwarzeGabe> getSchwarzeGabeList() {
+		ListGetter<SchwarzeGabe> listGetter = new ListGetter<SchwarzeGabe>(){
+			@Override
+			public List<SchwarzeGabe> getList(CharElementAccessor xmlAccs) {
+				return xmlAccs.getSchwarzeGabeList();
+			}
+		};
+		
+		return getList(listGetter);
+	}
 	
 }

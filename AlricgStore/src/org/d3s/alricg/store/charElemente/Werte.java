@@ -64,7 +64,7 @@ public class Werte {
 	public enum Geschlecht {
 		mann,
 		frau,
-		unbekannt
+		mannOderFrau
 	};
 
 	@XmlEnum
@@ -240,6 +240,7 @@ public class Werte {
 		private String name; // Voller Name der Eigenschaft
 		private String abk; // Abkürzung der Eigenschaft
 		private String id; // ID der Eigenschaft
+		private Eigenschaft eigenschaftCharElement;
 
 		/**
 		 * @param bezeichnung
@@ -292,6 +293,14 @@ public class Werte {
 		 */
 		public String toString() {
 			return abk;
+		}
+		
+		public void setEigenschaft(Eigenschaft eigenschaftCharElement) {
+			this.eigenschaftCharElement = eigenschaftCharElement;
+		}
+		
+		public Eigenschaft getEigenschaft() {
+			return eigenschaftCharElement;
 		}
 
 		/**

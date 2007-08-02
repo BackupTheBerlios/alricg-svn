@@ -30,6 +30,21 @@ public class WuerfelSammlung {
 									// groesseWuerfel
 	private static Random ranGenerator = new Random();;
 
+	public WuerfelSammlung() {
+		//  empty constructor for JaxB
+	}
+	
+	/**
+	 * @param anzahlW Anzahl der Würfel
+	 * @param augenW Augen der Würfel, jeweils zum index von "anzahlW"
+	 * @param festWert fester Wert der zum Ergebnis addiert wird
+	 */
+	public WuerfelSammlung(int[] anzahlW, int[] augenW, int festWert) {
+		this.anzahlWuerfel = anzahlW;
+		this.augenWuerfel = augenW;
+		this.festWert = festWert;
+	}
+	
 	/**
 	 * Addiert je einen Zufallswert pro Würfel und den Festwert. Dies ergibt
 	 * einen gültigen "Würfelwurf".

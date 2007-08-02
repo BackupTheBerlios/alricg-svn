@@ -25,16 +25,16 @@ public abstract class Herkunft extends CharElement {
 	public static int SO_MIN_DEFAULT = 0;
 	public static int SO_MAX_DEFAULT = 100;
 	private int gpKosten;
-    private boolean kannGewaehltWerden = true; // Eine Herkunft kann auch nur als Basis
+    private boolean kannGewaehltWerden; // Eine Herkunft kann auch nur als Basis
                                         // für Varianten dienen
-    private Geschlecht geschlecht = Geschlecht.unbekannt;
+    private Geschlecht geschlecht;
     private int soMin = SO_MIN_DEFAULT;
     private int soMax = SO_MAX_DEFAULT;
     private Auswahl<Eigenschaft> eigenschaftModis;
-    private Auswahl<Vorteil> vorteileAuswahl;
-    private Auswahl<Nachteil> nachteileAuswahl;
-    private Auswahl<Sonderfertigkeit> sfAuswahl;
-    private Auswahl<Liturgie> liturgienAuswahl;
+    private Auswahl<Vorteil> vorteile;
+    private Auswahl<Nachteil> nachteile;
+    private Auswahl<Sonderfertigkeit> sonderfertigkeiten;
+    private Auswahl<Liturgie> liturgien;
     private Auswahl<Talent> talente;
     private IdLink<Vorteil>[] empfVorteile;
     private IdLink<Nachteil>[] empfNachteile;
@@ -49,75 +49,62 @@ public abstract class Herkunft extends CharElement {
     public abstract HerkunftVariante[] getVarianten();
     
     public static class MagieEigenschaften {
-	    private Auswahl zauber;
-	    private Auswahl hauszauber;
-	    private Auswahl aktivierbareZauber;
-	    private IdLink<Zauber> ZauberNichtBeginn;
+	    private Auswahl<Zauber> zauber;
+	    private Auswahl<Zauber> hauszauber;
+	    private Auswahl<Zauber> aktivierbareZauber;
+	    private IdLink<Zauber>[] ZauberNichtBeginn;
 		/**
 		 * @return the zauber
 		 */
-		public Auswahl getZauber() {
+		public Auswahl<Zauber> getZauber() {
 			return zauber;
 		}
 		/**
 		 * @param zauber the zauber to set
 		 */
-		public void setZauber(Auswahl zauber) {
+		public void setZauber(Auswahl<Zauber> zauber) {
 			this.zauber = zauber;
 		}
 		/**
 		 * @return the hauszauber
 		 */
-		public Auswahl getHauszauber() {
+		public Auswahl<Zauber> getHauszauber() {
 			return hauszauber;
 		}
 		/**
 		 * @param hauszauber the hauszauber to set
 		 */
-		public void setHauszauber(Auswahl hauszauber) {
+		public void setHauszauber(Auswahl<Zauber> hauszauber) {
 			this.hauszauber = hauszauber;
 		}
 		/**
 		 * @return the aktivierbareZauber
 		 */
-		public Auswahl getAktivierbareZauber() {
+		public Auswahl<Zauber> getAktivierbareZauber() {
 			return aktivierbareZauber;
 		}
 		/**
 		 * @param aktivierbareZauber the aktivierbareZauber to set
 		 */
-		public void setAktivierbareZauber(Auswahl aktivierbareZauber) {
+		public void setAktivierbareZauber(Auswahl<Zauber> aktivierbareZauber) {
 			this.aktivierbareZauber = aktivierbareZauber;
 		}
 		/**
 		 * @return the zauberNichtBeginn
 		 */
-		public IdLink<Zauber> getZauberNichtBeginn() {
+		public IdLink<Zauber>[] getZauberNichtBeginn() {
 			return ZauberNichtBeginn;
 		}
 		/**
 		 * @param zauberNichtBeginn the zauberNichtBeginn to set
 		 */
-		public void setZauberNichtBeginn(IdLink<Zauber> zauberNichtBeginn) {
+		public void setZauberNichtBeginn(IdLink<Zauber>[] zauberNichtBeginn) {
 			ZauberNichtBeginn = zauberNichtBeginn;
 		}
-
+		
     }
 
-    /**
-     * Mit dieser Methode werden die Modifikationen auf Eigenschaften (MU, KL,.. ),
-     * LeP, AsP, AuP, Ka, SO, INI und MR ausgelesen.
-     * 
-     * @param eigenschaft Die Enum aus der Klasse "Eigenschaften"
-     * @return Der Modifikator-Wert für diese Eigenschaft
-     * @see org.d3s.alricg.CharComponenten.EigenschaftEnum
-     */
-    public int getEigenschaftModi(EigenschaftEnum eigenschaft) {
-        // TODO implement oder Löschen!
-        return 0; // eigenschaftModis[modiId];
-    }
-
-
+    
 	/**
 	 * @return the gpKosten
 	 */
@@ -213,68 +200,67 @@ public abstract class Herkunft extends CharElement {
 		this.eigenschaftModis = eigenschaftModis;
 	}
 
-
 	/**
-	 * @return the vorteileAuswahl
+	 * @return the vorteile
 	 */
-	public Auswahl<Vorteil> getVorteileAuswahl() {
-		return vorteileAuswahl;
+	public Auswahl<Vorteil> getVorteile() {
+		return vorteile;
 	}
 
 
 	/**
-	 * @param vorteileAuswahl the vorteileAuswahl to set
+	 * @param vorteile the vorteile to set
 	 */
-	public void setVorteileAuswahl(Auswahl<Vorteil> vorteileAuswahl) {
-		this.vorteileAuswahl = vorteileAuswahl;
+	public void setVorteile(Auswahl<Vorteil> vorteile) {
+		this.vorteile = vorteile;
 	}
 
 
 	/**
-	 * @return the nachteileAuswahl
+	 * @return the nachteile
 	 */
-	public Auswahl<Nachteil> getNachteileAuswahl() {
-		return nachteileAuswahl;
+	public Auswahl<Nachteil> getNachteile() {
+		return nachteile;
 	}
 
 
 	/**
-	 * @param nachteileAuswahl the nachteileAuswahl to set
+	 * @param nachteile the nachteile to set
 	 */
-	public void setNachteileAuswahl(Auswahl<Nachteil> nachteileAuswahl) {
-		this.nachteileAuswahl = nachteileAuswahl;
+	public void setNachteile(Auswahl<Nachteil> nachteile) {
+		this.nachteile = nachteile;
 	}
 
 
 	/**
-	 * @return the sfAuswahl
+	 * @return the sonderfertigkeiten
 	 */
-	public Auswahl<Sonderfertigkeit> getSfAuswahl() {
-		return sfAuswahl;
+	public Auswahl<Sonderfertigkeit> getSonderfertigkeiten() {
+		return sonderfertigkeiten;
 	}
 
 
 	/**
-	 * @param sfAuswahl the sfAuswahl to set
+	 * @param sonderfertigkeiten the sonderfertigkeiten to set
 	 */
-	public void setSfAuswahl(Auswahl<Sonderfertigkeit> sfAuswahl) {
-		this.sfAuswahl = sfAuswahl;
+	public void setSonderfertigkeiten(Auswahl<Sonderfertigkeit> sonderfertigkeiten) {
+		this.sonderfertigkeiten = sonderfertigkeiten;
 	}
 
 
 	/**
-	 * @return the liturgienAuswahl
+	 * @return the liturgien
 	 */
-	public Auswahl<Liturgie> getLiturgienAuswahl() {
-		return liturgienAuswahl;
+	public Auswahl<Liturgie> getLiturgien() {
+		return liturgien;
 	}
 
 
 	/**
-	 * @param liturgienAuswahl the liturgienAuswahl to set
+	 * @param liturgien the liturgien to set
 	 */
-	public void setLiturgienAuswahl(Auswahl<Liturgie> liturgienAuswahl) {
-		this.liturgienAuswahl = liturgienAuswahl;
+	public void setLiturgien(Auswahl<Liturgie> liturgien) {
+		this.liturgien = liturgien;
 	}
 
 

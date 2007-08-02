@@ -31,7 +31,20 @@ public class IdLink<ZIEL extends CharElement> extends Link<ZIEL> {
      * Falls dieser Link im Helden "gespeichtert" ist, wird hier eine Verbindung zwischen Held und Links gehalten
      * private HeldenLink heldenLink;
      */
-
+    
+    public IdLink() {
+    	// Konstruktor für JaxB
+    }
+    
+    public IdLink(CharElement quelle, ZIEL ziel, CharElement zweitZiel, int wert, String text) {
+    	this.setQuelle(quelle);
+    	this.setZiel(ziel);
+    	this.setZweitZiel(zweitZiel);
+    	this.setWert(wert);
+    	this.setText(text);
+    }
+    
+    
     /**
      * Liefert das CharElement, welches diesen IdLink "besitzt"
      * 

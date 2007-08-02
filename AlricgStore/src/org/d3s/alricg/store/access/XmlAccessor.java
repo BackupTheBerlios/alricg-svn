@@ -8,13 +8,14 @@
 package org.d3s.alricg.store.access;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.d3s.alricg.store.access.hide.AbstractCharElementsAccessor;
+import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
@@ -35,12 +36,13 @@ import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.charZusatz.DaemonenPakt;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
+import org.d3s.alricg.store.charElemente.charZusatz.SchwarzeGabe;
 
 /**
  * @author Vincent
  */
 @XmlRootElement
-public class XmlAccessor implements CharElementAccessor {
+public class XmlAccessor extends AbstractCharElementsAccessor implements CharElementAccessor {
 	private File filePath;
 	private String version;
 	
@@ -56,6 +58,11 @@ public class XmlAccessor implements CharElementAccessor {
 	@XmlTransient
 	public File getFile() {
 		return filePath;
+	}
+	
+	@Override
+	public List<? extends CharElement> getMatchingList(Class clazz) {
+		return super.getMatchingList(clazz);
 	}
 	
 	/**
@@ -99,6 +106,7 @@ public class XmlAccessor implements CharElementAccessor {
 	private List<Gegenstand> gegenstandList;
 	private List<DaemonenPakt> daemonenPaktList;
 	private List<MagierAkademie> magierAkademieList;
+	private List<SchwarzeGabe> schwarzeGabeList;
 	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.store.access.CharElementAccessor#getEigenschaftList()
@@ -347,5 +355,19 @@ public class XmlAccessor implements CharElementAccessor {
 	public void setMagierAkademieList(List<MagierAkademie> magierAkademieList) {
 		this.magierAkademieList = magierAkademieList;
 	}
+
+	/**
+	 * @return the schwarzeGabeList
+	 */
+	public List<SchwarzeGabe> getSchwarzeGabeList() {
+		return schwarzeGabeList;
+	}
+	/**
+	 * @param schwarzeGabeList the schwarzeGabeList to set
+	 */
+	public void setSchwarzeGabeList(List<SchwarzeGabe> schwarzeGabeList) {
+		this.schwarzeGabeList = schwarzeGabeList;
+	}
+	
 	
 }

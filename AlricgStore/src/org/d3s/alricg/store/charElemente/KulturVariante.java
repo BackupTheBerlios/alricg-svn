@@ -31,7 +31,7 @@ public class KulturVariante extends Kultur implements HerkunftVariante {
 	/** Liste von Elementen die aus der original-Kultur "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. SF, Vorteile, Nachteile. 
 	 * KEINE Elemente die in einer Auswahl stehen! */
-	public List<IdLink> entferneElement;
+	public IdLink[] entferneElement;
 	
 	/** Liste von XML-Tags die aus der original-Kultur "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. sonderfertigkeiten, vorteile.*/
@@ -65,14 +65,14 @@ public class KulturVariante extends Kultur implements HerkunftVariante {
 	/**
 	 * @return the entferneElement
 	 */
-	public List<IdLink> getEntferneElement() {
+	public IdLink[] getEntferneElement() {
 		return entferneElement;
 	}
 
 	/**
 	 * @param entferneElement the entferneElement to set
 	 */
-	public void setEntferneElement(List<IdLink> entferneElement) {
+	public void setEntferneElement(IdLink[] entferneElement) {
 		this.entferneElement = entferneElement;
 	}
 

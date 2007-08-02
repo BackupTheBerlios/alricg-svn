@@ -18,8 +18,8 @@ import org.d3s.alricg.store.charElemente.links.Auswahl;
  * @author V.Strelow
  */
 public class Kultur extends Herkunft {
-    private List<Profession> professionMoeglich;
-    private List<Profession> professionUeblich;
+    private Profession[] professionMoeglich;
+    private Profession[] professionUeblich;
     private Auswahl<Sprache> muttersprache;
     private Auswahl<Sprache> zweitsprache;
     private Auswahl<Sprache> lehrsprache;
@@ -28,28 +28,30 @@ public class Kultur extends Herkunft {
     private Auswahl<Gegenstand> ausruestung; // Vom Typ Gegenstand
     private RegionVolk regionVolk;
     private KulturVariante[] varianten;
+
+
 	/**
 	 * @return the professionMoeglich
 	 */
-	public List<Profession> getProfessionMoeglich() {
+	public Profession[] getProfessionMoeglich() {
 		return professionMoeglich;
 	}
 	/**
 	 * @param professionMoeglich the professionMoeglich to set
 	 */
-	public void setProfessionMoeglich(List<Profession> professionMoeglich) {
+	public void setProfessionMoeglich(Profession[] professionMoeglich) {
 		this.professionMoeglich = professionMoeglich;
 	}
 	/**
 	 * @return the professionUeblich
 	 */
-	public List<Profession> getProfessionUeblich() {
+	public Profession[] getProfessionUeblich() {
 		return professionUeblich;
 	}
 	/**
 	 * @param professionUeblich the professionUeblich to set
 	 */
-	public void setProfessionUeblich(List<Profession> professionUeblich) {
+	public void setProfessionUeblich(Profession[] professionUeblich) {
 		this.professionUeblich = professionUeblich;
 	}
 	/**

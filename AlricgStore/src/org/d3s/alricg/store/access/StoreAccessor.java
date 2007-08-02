@@ -42,7 +42,7 @@ public class StoreAccessor {
 	private static String ORIGINAL_FILES_PATH; 
 	private static String USER_FILES_PATH;
 	private static String CHARS_PATH;
-	private static StoreAccessor instance; 
+	private static StoreAccessor instance;
 	
 	private StoreAccessor() {
 		try {
@@ -73,6 +73,20 @@ public class StoreAccessor {
 	}
 	
 	/**
+	 * Sucht den zu einem File gehörigen XML-Accessor heraus
+	 * @param file Der Name des Files
+	 * @return Der zugehörige XmlAccessor oder "null" falls keiner existiert
+	 */
+	public XmlAccessor getXmlAccessor(File file) {
+		List<XmlAccessor> accList = StoreDataAccessor.getInstance().getXmlAccessors();
+		for (int i = 0; i< accList.size(); i++) {
+			if (accList.get(i).getFile().equals(file)) {
+				return accList.get(i);
+			}
+		}
+		return null;
+	}
+	/**
 	 * @return Liefert die Instanz des Singeltons StoreAccessor
 	 * @throws JAXBException
 	 */
@@ -97,6 +111,8 @@ public class StoreAccessor {
 		List<File> files = new ArrayList<File>();
 		find( ORIGINAL_FILES_PATH, "(.*\\.xml$)", files );
 		find( USER_FILES_PATH, "(.*\\.xml$)", files );
+		
+	// DefaultCreateAccessor festlegen
 		
 	// Files in einem Document vereinen
 		// Document erzeugen und "Wurzel" erstellen

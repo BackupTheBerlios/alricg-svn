@@ -129,8 +129,8 @@ public abstract class Link<ZIEL extends CharElement> {
 	/**
 	 * @param linkId Setzt das Attribut linkId.
 	 */
-	public void setZweitZiel(CharElement link) {
-		this.zweitZiel = link;
+	public void setZweitZiel(CharElement zweitZiel) {
+		this.zweitZiel = zweitZiel;
 	}
 	/**
 	 * @param text Setzt das Attribut text.

@@ -2,6 +2,9 @@ package org.d3s.alricg.store.access;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
@@ -22,14 +25,31 @@ import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.charZusatz.DaemonenPakt;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
+import org.d3s.alricg.store.charElemente.charZusatz.SchwarzeGabe;
 
-public interface CharElementAccessor {
 
+public abstract interface CharElementAccessor {
+
+	public static final Class[] ALL_STORED_CLASSES = new Class [] {
+		Eigenschaft.class, Talent.class, Zauber.class, Repraesentation.class, 
+		Gabe.class, Vorteil.class, Nachteil.class, Sonderfertigkeit.class,
+		Rasse.class, Kultur.class, Profession.class, Gottheit.class, 
+		Liturgie.class, RegionVolk.class, RitualKenntnis.class, Schrift.class, 
+		Sprache.class, SchwarzeGabe.class, Gegenstand.class, DaemonenPakt.class, 
+		MagierAkademie.class};
+	
+	
+	/**
+	 * @return the talentList
+	 */
+	public abstract List<? extends CharElement> getMatchingList(Class clazz);
+	
 	/**
 	 * @return the eigenschaftList
 	 */
 	public abstract List<Eigenschaft> getEigenschaftList();
-
+	
+	
 	/**
 	 * @return the talentList
 	 */
@@ -124,5 +144,11 @@ public interface CharElementAccessor {
 	 * @return the magierAkademieList
 	 */
 	public abstract List<MagierAkademie> getMagierAkademieList();
+	
+	/**
+	 * @return the SchwarzeGabeList
+	 */
+	public abstract List<SchwarzeGabe> getSchwarzeGabeList();
+	
 
 }

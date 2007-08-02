@@ -27,14 +27,14 @@ public interface HerkunftVariante {
 	 * werden sollen, z.B. SF, Vorteile, Nachteile. 
 	 * KEINE Elemente die in einer Auswahl stehen!.
 	 */
-	public List<IdLink> getEntferneElement();
+	public IdLink[] getEntferneElement();
 	
 	/**
 	 * @param entferneElement Liste von Elementen die aus der original-Kultur "entfernt"
 	 * (also nicht beachtet) werden sollen, z.B. SF, Vorteile, Nachteile. 
 	 * KEINE Elemente die in einer Auswahl stehen!.
 	 */
-	public void setEntferneElement(List<IdLink> entferneElement);
+	public void setEntferneElement(IdLink[] entferneElement);
 	
 	/**
 	 * @return Liste von XML-Tags die aus der original-Kultur "entfernt" (also nicht beachtet) 

@@ -23,8 +23,8 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
  * @author V.Strelow
  */
 public class Rasse extends Herkunft {
-    private List<IdLink<Kultur>> kulturMoeglich;
-    private List<IdLink<Kultur>> kulturUeblich;
+    private IdLink<Kultur>[] kulturMoeglich;
+    private IdLink<Kultur>[] kulturUeblich;
 
     private FarbenAngabe[] haarfarbe;
     private FarbenAngabe[] augenfarbe;
@@ -36,31 +36,31 @@ public class Rasse extends Herkunft {
     
     private RasseVariante[] varianten;
 
+
+
 	/**
 	 * @return the kulturMoeglich
 	 */
-	public List<IdLink<Kultur>> getKulturMoeglich() {
+	public IdLink<Kultur>[] getKulturMoeglich() {
 		return kulturMoeglich;
 	}
 
 	/**
 	 * @param kulturMoeglich the kulturMoeglich to set
 	 */
-	public void setKulturMoeglich(List<IdLink<Kultur>> kulturMoeglich) {
+	public void setKulturMoeglich(IdLink<Kultur>[] kulturMoeglich) {
 		this.kulturMoeglich = kulturMoeglich;
 	}
-
 	/**
 	 * @return the kulturUeblich
 	 */
-	public List<IdLink<Kultur>> getKulturUeblich() {
+	public IdLink<Kultur>[] getKulturUeblich() {
 		return kulturUeblich;
 	}
-
 	/**
 	 * @param kulturUeblich the kulturUeblich to set
 	 */
-	public void setKulturUeblich(List<IdLink<Kultur>> kulturUeblich) {
+	public void setKulturUeblich(IdLink<Kultur>[] kulturUeblich) {
 		this.kulturUeblich = kulturUeblich;
 	}
 
@@ -165,6 +165,15 @@ public class Rasse extends Herkunft {
 	public static class FarbenAngabe {
 		private String farbe;
 		private int wahrscheinlichkeit;
+		
+		public FarbenAngabe() {
+			// Empty Consructor for JaxB
+		}
+		
+		public FarbenAngabe(String farbe, int wahrscheinlichkeit) {
+			// Empty Consructor for JaxB
+		}
+		
 		/**
 		 * @return the farbe
 		 */

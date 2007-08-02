@@ -31,7 +31,7 @@ public class RasseVariante extends Rasse implements HerkunftVariante {
 	/** Liste von Elementen die aus der original-Rasse "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. SF, Vorteile, Nachteile. 
 	 * KEINE Elemente die in einer Auswahl stehen! */
-	private List<IdLink> entferneElement;
+	private IdLink[] entferneElement;
 	
 	/** Liste von XML-Tags die aus der original-Rasse "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. sonderfertigkeiten, vorteile.*/
@@ -51,13 +51,13 @@ public class RasseVariante extends Rasse implements HerkunftVariante {
 	/**
 	 * @return Liefert das Attribut entferneElement.
 	 */
-	public  List<IdLink>  getEntferneElement() {
+	public  IdLink[]  getEntferneElement() {
 		return entferneElement;
 	}
 	/**
 	 * @param entferneElement Setzt das Attribut entferneElement.
 	 */
-	public void setEntferneElement(List<IdLink>  entferneElement) {
+	public void setEntferneElement(IdLink[]  entferneElement) {
 		this.entferneElement = entferneElement;
 	}
 	/**

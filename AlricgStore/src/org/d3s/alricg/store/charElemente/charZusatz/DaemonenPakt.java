@@ -30,15 +30,14 @@ public class DaemonenPakt extends CharElement {
 	private String daemonenName;
 	private int paktzuschlag;
 	private int kosten;
-	private List<IdLink<Nachteil>> verbilligteNachteile;
-	private List<IdLink<Vorteil>> verbilligteVorteile;
-	private List<IdLink<Sonderfertigkeit>> verbilligteSonderf;
-	private List<IdLink<Talent>> verbilligteTalente;
-	private List<IdLink<Zauber>> verbilligteZauber;
-	private List<MagieMerkmal> magieMerkmal;
-	private List<IdLink<Nachteil>> schlechteEigenschaften;
-	private List<IdLink<SchwarzeGabe>> schwarzeGaben;
-	private List<IdLink<Eigenschaft>> verbilligteEigenschaften;
+	private IdLink<Nachteil>[] verbilligteNachteile;
+	private IdLink<Vorteil>[] verbilligteVorteile;
+	private IdLink<Sonderfertigkeit>[] verbilligteSonderf;
+	private IdLink<Talent>[] verbilligteTalente;
+	private IdLink<Zauber>[] verbilligteZauber;
+	private MagieMerkmal[] magieMerkmal;
+	private IdLink<SchwarzeGabe>[] schwarzeGaben;
+	private IdLink<Eigenschaft>[] verbilligteEigenschaften;
 	/**
 	 * @return the daemonenName
 	 */
@@ -78,114 +77,98 @@ public class DaemonenPakt extends CharElement {
 	/**
 	 * @return the verbilligteNachteile
 	 */
-	public List<IdLink<Nachteil>> getVerbilligteNachteile() {
+	public IdLink<Nachteil>[] getVerbilligteNachteile() {
 		return verbilligteNachteile;
 	}
 	/**
 	 * @param verbilligteNachteile the verbilligteNachteile to set
 	 */
-	public void setVerbilligteNachteile(List<IdLink<Nachteil>> verbilligteNachteile) {
+	public void setVerbilligteNachteile(IdLink<Nachteil>[] verbilligteNachteile) {
 		this.verbilligteNachteile = verbilligteNachteile;
 	}
 	/**
 	 * @return the verbilligteVorteile
 	 */
-	public List<IdLink<Vorteil>> getVerbilligteVorteile() {
+	public IdLink<Vorteil>[] getVerbilligteVorteile() {
 		return verbilligteVorteile;
 	}
 	/**
 	 * @param verbilligteVorteile the verbilligteVorteile to set
 	 */
-	public void setVerbilligteVorteile(List<IdLink<Vorteil>> verbilligteVorteile) {
+	public void setVerbilligteVorteile(IdLink<Vorteil>[] verbilligteVorteile) {
 		this.verbilligteVorteile = verbilligteVorteile;
 	}
 	/**
 	 * @return the verbilligteSonderf
 	 */
-	public List<IdLink<Sonderfertigkeit>> getVerbilligteSonderf() {
+	public IdLink<Sonderfertigkeit>[] getVerbilligteSonderf() {
 		return verbilligteSonderf;
 	}
 	/**
 	 * @param verbilligteSonderf the verbilligteSonderf to set
 	 */
-	public void setVerbilligteSonderf(
-			List<IdLink<Sonderfertigkeit>> verbilligteSonderf) {
+	public void setVerbilligteSonderf(IdLink<Sonderfertigkeit>[] verbilligteSonderf) {
 		this.verbilligteSonderf = verbilligteSonderf;
 	}
 	/**
 	 * @return the verbilligteTalente
 	 */
-	public List<IdLink<Talent>> getVerbilligteTalente() {
+	public IdLink<Talent>[] getVerbilligteTalente() {
 		return verbilligteTalente;
 	}
 	/**
 	 * @param verbilligteTalente the verbilligteTalente to set
 	 */
-	public void setVerbilligteTalente(List<IdLink<Talent>> verbilligteTalente) {
+	public void setVerbilligteTalente(IdLink<Talent>[] verbilligteTalente) {
 		this.verbilligteTalente = verbilligteTalente;
 	}
 	/**
 	 * @return the verbilligteZauber
 	 */
-	public List<IdLink<Zauber>> getVerbilligteZauber() {
+	public IdLink<Zauber>[] getVerbilligteZauber() {
 		return verbilligteZauber;
 	}
 	/**
 	 * @param verbilligteZauber the verbilligteZauber to set
 	 */
-	public void setVerbilligteZauber(List<IdLink<Zauber>> verbilligteZauber) {
+	public void setVerbilligteZauber(IdLink<Zauber>[] verbilligteZauber) {
 		this.verbilligteZauber = verbilligteZauber;
 	}
 	/**
 	 * @return the magieMerkmal
 	 */
-	public List<MagieMerkmal> getMagieMerkmal() {
+	public MagieMerkmal[] getMagieMerkmal() {
 		return magieMerkmal;
 	}
 	/**
 	 * @param magieMerkmal the magieMerkmal to set
 	 */
-	public void setMagieMerkmal(List<MagieMerkmal> magieMerkmal) {
+	public void setMagieMerkmal(MagieMerkmal[] magieMerkmal) {
 		this.magieMerkmal = magieMerkmal;
-	}
-	/**
-	 * @return the schlechteEigenschaften
-	 */
-	public List<IdLink<Nachteil>> getSchlechteEigenschaften() {
-		return schlechteEigenschaften;
-	}
-	/**
-	 * @param schlechteEigenschaften the schlechteEigenschaften to set
-	 */
-	public void setSchlechteEigenschaften(
-			List<IdLink<Nachteil>> schlechteEigenschaften) {
-		this.schlechteEigenschaften = schlechteEigenschaften;
 	}
 	/**
 	 * @return the schwarzeGaben
 	 */
-	public List<IdLink<SchwarzeGabe>> getSchwarzeGaben() {
+	public IdLink<SchwarzeGabe>[] getSchwarzeGaben() {
 		return schwarzeGaben;
 	}
 	/**
 	 * @param schwarzeGaben the schwarzeGaben to set
 	 */
-	public void setSchwarzeGaben(List<IdLink<SchwarzeGabe>> schwarzeGaben) {
+	public void setSchwarzeGaben(IdLink<SchwarzeGabe>[] schwarzeGaben) {
 		this.schwarzeGaben = schwarzeGaben;
 	}
 	/**
 	 * @return the verbilligteEigenschaften
 	 */
-	public List<IdLink<Eigenschaft>> getVerbilligteEigenschaften() {
+	public IdLink<Eigenschaft>[] getVerbilligteEigenschaften() {
 		return verbilligteEigenschaften;
 	}
 	/**
 	 * @param verbilligteEigenschaften the verbilligteEigenschaften to set
 	 */
 	public void setVerbilligteEigenschaften(
-			List<IdLink<Eigenschaft>> verbilligteEigenschaften) {
+			IdLink<Eigenschaft>[] verbilligteEigenschaften) {
 		this.verbilligteEigenschaften = verbilligteEigenschaften;
 	}
-	
-	
 }

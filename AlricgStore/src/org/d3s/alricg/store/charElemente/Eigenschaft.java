@@ -34,6 +34,7 @@ public class Eigenschaft extends CharElement {
 	 */
 	public void setEigenschaftEnum(EigenschaftEnum eigenschaftEnum) {
 		this.eigenschaftEnum = eigenschaftEnum;
+		eigenschaftEnum.setEigenschaft(this);
 	}
 
 	/* (non-Javadoc) Methode überschrieben
