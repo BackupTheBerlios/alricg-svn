@@ -22,6 +22,8 @@ public enum ControlIconsLibrary {
 	add("add.png"),
 	delete("cross.png"),
 	edit("pencil.png"),
+	setPageAsAdd("page_add.png"),
+	renamePage("page_edit.png"),
 	
 // Tabellen
 	swapTree_Table("table_relationship.png"),
