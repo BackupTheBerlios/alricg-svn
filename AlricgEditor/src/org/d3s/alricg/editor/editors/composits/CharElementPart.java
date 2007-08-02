@@ -77,6 +77,9 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		txtName = new Text(groupBasisDaten, SWT.BORDER);
 		txtName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		txtName.addFocusListener( new FocusListener() {
+			
+			// TODO Vorsicht! Die ID darf sich nicht ändern wenn das element bereits
+			// mit anderen CharElement verbunden ist!
 			@Override
 		    public void focusLost(FocusEvent event) {	
 				if (!txtName.getText().equalsIgnoreCase(lastFocusedName) 
@@ -164,6 +167,8 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		charElem.setSammelbegriff(getNullFromString(this.txtSammelbegriff.getText()));
 		charElem.setSonderregelKlasse(getNullFromString(this.txtSonderregelKlasse.getText()));
 		charElem.setAnzeigen(this.cbxAnzeigen.getSelection());
+		
+		monitor.worked(1);
 	}
 	
 	

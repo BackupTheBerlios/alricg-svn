@@ -11,16 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
+import org.d3s.alricg.editor.editors.composits.AbstarctElementPart;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
@@ -60,7 +67,7 @@ public class ViewUtils {
 	 */
 	public static class TreeObject implements TreeOrTableObject {
 		private List<TreeObject> children;
-		private final TreeObject parent;
+		private TreeObject parent;
 		private final Object value;
 		
 		public TreeObject(Object value, TreeObject parent) {
@@ -86,6 +93,11 @@ public class ViewUtils {
 			if (children == null) children =  new ArrayList<TreeObject>();
 			children.add(newChild);
 		}
+		public void removeChildren(TreeObject removeChild) {
+			children.remove(removeChild);
+			removeChild.parent = null;
+		}
+		
 		public void setChildren(List<TreeObject> children) {
 			this.children = children;
 		}
@@ -134,6 +146,10 @@ public class ViewUtils {
 		public TreeViewContentProvider(TreeObject invisibleRoot) {
 			this.invisibleRoot = invisibleRoot;
 		}
+		
+		public TreeObject getRoot() {
+			return invisibleRoot;
+		}
 
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
@@ -142,7 +158,8 @@ public class ViewUtils {
 
 		@Override
 		public Object[] getElements(Object parent) {
-			if (parent instanceof IViewSite) {
+			if (parent instanceof IViewSite
+					|| parent instanceof AbstarctElementPart) {
 				return getChildren(invisibleRoot);
 			}
 			return getChildren(parent);
@@ -176,6 +193,10 @@ public class ViewUtils {
 			this.list = list;
 		}
 
+		public List<? extends TableObject> getElementList() {
+			return list;
+		}
+		
 		@Override
 		public void dispose() {
 			// Noop
@@ -260,5 +281,40 @@ public class ViewUtils {
 			}
 		}
 	}
+	
+	/**
+	 * DragSourceListener für Trees und Tabellen um CharElemente zu "Dragen"
+	 * @author Vincent
+	 */
+	public static class CharElementDragSourceListener implements DragSourceListener {
+		private final ColumnViewer viewer;
+		
+		public CharElementDragSourceListener(ColumnViewer viewer) {
+			this.viewer = viewer;
+		}
+		
+		@Override
+		public void dragStart(DragSourceEvent event) {
+			if (viewer.getSelection().isEmpty()) {
+				event.doit = false;
+			} 
+			final TreeOrTableObject treeTableObj = 
+				(TreeOrTableObject) ((StructuredSelection)viewer.getSelection()).getFirstElement();
 			
+			if ( !(treeTableObj.getValue() instanceof CharElement) ) {
+				event.doit = false;
+			}
+		}
+		
+		@Override
+		public void dragSetData(DragSourceEvent event) {
+			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+			LocalSelectionTransfer.getTransfer().setSelection(selection);
+
+		} 
+		@Override
+		public void dragFinished(DragSourceEvent event) {
+			// Noop
+		}
+	}	
 }

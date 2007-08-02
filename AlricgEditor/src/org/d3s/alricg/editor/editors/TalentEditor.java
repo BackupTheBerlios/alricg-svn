@@ -17,7 +17,10 @@ import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.editors.composits.AbstarctElementPart;
 import org.d3s.alricg.editor.editors.composits.CharElementPart;
 import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
+import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
 import org.d3s.alricg.editor.utils.CharElementEditorInput;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.editor.views.charElemente.TalentView;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -39,7 +42,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
 /**
@@ -51,7 +56,10 @@ public class TalentEditor extends MultiPageEditorPart {
 	private CharElementPart charElementPart;
 	private FaehigkeitPart faehigkeitPart;
 	private TalentPart talentPart;
+	private VoraussetzungPart voraussetzungsPart;
+	
 	private ScrolledComposite scrollComp;
+	
 	
 	
 	/**
@@ -222,6 +230,8 @@ public class TalentEditor extends MultiPageEditorPart {
 								listSpez.getItems().length
 						));
 			}
+			
+			monitor.worked(1);
 		}
 
 		/* (non-Javadoc)
@@ -285,6 +295,15 @@ public class TalentEditor extends MultiPageEditorPart {
 		return scrollComp;
 	}
 	
+	private Composite createPage2() {
+		Talent talentInput = (Talent) ((CharElementEditorInput) this.getEditorInput()).getCharElement();
+
+		voraussetzungsPart = new VoraussetzungPart(getContainer());
+		voraussetzungsPart.loadData(talentInput);
+		
+		return voraussetzungsPart.treeViewer.getTree();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.MultiPageEditorPart#createPages()
 	 */
@@ -292,8 +311,12 @@ public class TalentEditor extends MultiPageEditorPart {
 	protected void createPages() {
 
 		int index1 = addPage(createPage1());
-		setPageText(index1, "Preview");
+		setPageText(index1, "Daten");
 		
+		index1 = addPage(createPage2());
+		setPageText(index1, "Voraussetzungen");
+		
+		/*
 		Composite composite = new Composite(getContainer(), SWT.NONE);
 		GridLayout layout = new GridLayout();
 		composite.setLayout(layout);
@@ -313,7 +336,7 @@ public class TalentEditor extends MultiPageEditorPart {
 
 		int index = addPage(composite);
 		setPageText(index, "Properties");
-
+		 */
 	}
 
 	/* (non-Javadoc)
@@ -321,16 +344,14 @@ public class TalentEditor extends MultiPageEditorPart {
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		monitor.beginTask("Save Talent to CharElement and File", 4);
+		monitor.beginTask("Save Talent to CharElement and File", 5);
 		Talent tal = (Talent) ((CharElementEditorInput) this.getEditorInput()).getCharElement();
 		
 		// Save to Charelement
 		this.charElementPart.saveData(monitor, tal);
-		monitor.worked(1);
 		this.faehigkeitPart.saveData(monitor, tal);
-		monitor.worked(2);
 		this.talentPart.saveData(monitor, tal);
-		monitor.worked(3);
+		this.voraussetzungsPart.saveData(monitor, tal);
 		
 		// Save to File
 		monitor.subTask("Save Talent File");
@@ -345,9 +366,14 @@ public class TalentEditor extends MultiPageEditorPart {
 			monitor.setCanceled(true);
 			e.printStackTrace();
 		}
-		monitor.worked(4);
+		monitor.worked(1);
 		
 		monitor.done();
+		
+		IViewPart vp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(TalentView.ID);
+		if (vp != null) {
+			((RefreshableViewPart) vp).refresh();
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -374,8 +400,9 @@ public class TalentEditor extends MultiPageEditorPart {
 		Talent tal = (Talent) ((CharElementEditorInput) this.getEditorInput()).getCharElement();
 		
 		return charElementPart.isDirty(tal)
+						|| voraussetzungsPart.isDirty(tal)
 						|| faehigkeitPart.isDirty(tal) 
-						||  talentPart.isDirty(tal);
+						|| talentPart.isDirty(tal);
 	}
 
 	/* (non-Javadoc)

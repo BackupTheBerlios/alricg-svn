@@ -4,12 +4,18 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import org.d3s.alricg.common.icons.ControlIconsLibrary;
+import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
+import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -56,6 +62,15 @@ public class FileView extends ViewPart {
 	public static final String ID = "org.d3s.alricg.editor.views.FileView";
 	
 	private TreeViewer viewer;
+	
+	private Image markForAddImage;
+	
+	private Action infos;
+	private Action deleteFile;
+	private Action createNewFile;
+	private Action renameFile;
+	private Action markForAdd;
+	
 	private Action action1;
 	private Action action2;
 	private Action doubleClickAction;
@@ -69,6 +84,9 @@ public class FileView extends ViewPart {
 		
 		@Override
 		public Image getImage(Object obj) {
+			if ( ((TreeObject) obj).getValue() == ViewModel.getMarkedFileForNew()) {
+				return markForAddImage;
+			}
 			String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
 			if (((TreeObject) obj).getChildren() != null)
 			   imageKey = ISharedImages.IMG_OBJ_FOLDER;
@@ -126,6 +144,7 @@ public class FileView extends ViewPart {
 			helper(fileHash, accessorList.get(i).getFile());
 		}
 		// ------------------------
+		markForAddImage = ControlIconsLibrary.setPageAsAdd.getImageDescriptor().createImage();
 		
 		viewer.setContentProvider(new TreeViewContentProvider(invisibleRoot));
 		viewer.setLabelProvider(new ViewLabelProvider());
@@ -149,6 +168,41 @@ public class FileView extends ViewPart {
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
+		menuMgr.addMenuListener(new IMenuListener() {
+			
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				if ( viewer.getSelection().isEmpty()) {
+					infos.setEnabled(false);
+					deleteFile.setEnabled(false);
+					createNewFile.setEnabled(false);
+					renameFile.setEnabled(false);
+					markForAdd.setEnabled(false);
+					return;
+				}
+				
+				infos.setEnabled(true);
+				createNewFile.setEnabled(true);
+				if (viewer.getTree().getSelection()[0].getParent().getParent() == null) {
+					// "user" oder "orginal" --> Alles Deaktivieren
+					markForAdd.setEnabled(false);
+					deleteFile.setEnabled(false);
+					renameFile.setEnabled(false);
+					
+				} else if (	((File) ((TreeObject) viewer.getTree().getSelection()[0].getData())
+															.getValue()).isDirectory()) {
+					markForAdd.setEnabled(false);
+					deleteFile.setEnabled(true);
+					renameFile.setEnabled(true);
+					
+				} else {
+					markForAdd.setEnabled(true);
+					deleteFile.setEnabled(true);
+					renameFile.setEnabled(true);
+				}
+			}
+		});		
+		
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuMgr, viewer);
 	}
@@ -160,17 +214,17 @@ public class FileView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(new Separator());
-		manager.add(action2);
+
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(action2);
+		manager.add(this.infos);
 		manager.add(new Separator());
-		// Other plug-ins can contribute there actions here
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		manager.add(markForAdd);
+		manager.add(new Separator());		
+		manager.add(this.createNewFile);
+		manager.add(this.renameFile);
+		manager.add(this.deleteFile);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
@@ -179,11 +233,61 @@ public class FileView extends ViewPart {
 	}
 
 	private void makeActions() {
+		
+		infos = new Action() {
+			public void run() {
+				showMessage("Noch zu Implementieren");
+			}};
+		infos.setText("Informationen");
+		infos.setToolTipText("Zeigt Informationen über das selektiere File an");
+		infos.setImageDescriptor(ControlIconsLibrary.info.getImageDescriptor());
+		
+		deleteFile = new Action() {
+			public void run() {
+				showMessage("Noch zu Implementieren");
+			}};
+		deleteFile.setText("Datei löschen");
+		deleteFile.setToolTipText("Löscht die selektierte Datei");
+		deleteFile.setImageDescriptor(ControlIconsLibrary.delete.getImageDescriptor());
+		
+		createNewFile = new Action() {
+			public void run() {
+				showMessage("Noch zu Implementieren");
+			}};
+		createNewFile.setText("Neue Datei erstellen");
+		createNewFile.setToolTipText("Erzeugt eine neue Quell-Datei für CharElemente");
+		createNewFile.setImageDescriptor(ControlIconsLibrary.add.getImageDescriptor());
+		
+		renameFile = new Action() {
+			public void run() {
+				showMessage("Noch zu Implementieren");
+			}};
+		renameFile.setText("Umbenennen");
+		renameFile.setToolTipText("Benennt die Datei um");
+		renameFile.setImageDescriptor(ControlIconsLibrary.renamePage.getImageDescriptor());
+		
+		markForAdd = new Action() {
+			public void run() {
+				if (viewer.getSelection().isEmpty()) return;
+				
+				final File f = (File) ((TreeObject) viewer.getTree()
+						.getSelection()[0].getData()).getValue();
+				
+				if (f.isFile()) {
+					ViewModel.setMarkedFileForNew(f);
+					viewer.refresh();
+				}
+			}};
+		markForAdd.setText("Neue Elemente hier erstellen");
+		markForAdd.setToolTipText("Neue CharElemente werden in der Datei erzeugt, welches markiert ist");
+		markForAdd.setImageDescriptor(ControlIconsLibrary.setPageAsAdd.getImageDescriptor());
+		
 		action1 = new Action() {
 			public void run() {
 				showMessage("Action 1 executed");
 			}
 		};
+		
 		action1.setText("Action 1");
 		action1.setToolTipText("Action 1 tooltip");
 		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
@@ -210,7 +314,7 @@ public class FileView extends ViewPart {
 	private void hookDoubleClickAction() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
+				renameFile.run();
 			}
 		});
 	}
@@ -227,4 +331,16 @@ public class FileView extends ViewPart {
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
+
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		markForAddImage.dispose();
+	}
+	
+	
 }

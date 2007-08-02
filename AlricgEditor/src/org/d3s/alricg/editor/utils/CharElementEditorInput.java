@@ -20,8 +20,8 @@ import org.eclipse.ui.IPersistableElement;
  */
 public class CharElementEditorInput implements IEditorInput {
 	private CharElement charElement;
-	private String id;
 	private XmlAccessor xmlAccessor;
+	private String id;
 	
 	public CharElementEditorInput(CharElement charElement, XmlAccessor xmlAccessor) {
 		this.charElement = charElement;

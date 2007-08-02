@@ -180,4 +180,52 @@ public class EditorViewUtils {
 		return returnList;
 	}
 	
+	public static void addElementToTree(
+			TreeObject invisibleRoot, Regulator regulator, 
+			CharElement charElement, XmlAccessor xmlAccessor)
+	{
+		final Object[] firstCat = regulator.getFirstCategory(charElement);
+		
+		// Alle Kategorien suchen / erzeugen
+		List<TreeObject> catList = findChilds(invisibleRoot, firstCat);
+		
+		// Falls Sammelbegriff, diesen in gefundenen Kategorien suchen / erzeugen
+		if (charElement.getSammelbegriff() != null) {
+			String[] tmpStrArray = new String[] {charElement.getSammelbegriff()};
+			List<TreeObject> tmpCatList = new ArrayList<TreeObject>();
+			
+			for (int i1 = 0; i1 < catList.size(); i1++) {
+				tmpCatList.addAll(findChilds(catList.get(i1), tmpStrArray));
+			}
+			catList = tmpCatList;
+		}
+		
+		// In jeder Kategorie Element hinzufügen
+		for (int i = 0; i < catList.size(); i++) {
+			catList.get(i).addChildren(new EditorTreeObject(
+					charElement, 
+					catList.get(i),
+					xmlAccessor)
+			);
+		}
+	}
+	
+	public static List<TreeObject> findChilds(TreeObject node, Object[] category) {
+		List<TreeObject> returnList = new ArrayList<TreeObject>();
+		
+		for (int i2 = 0; i2 < category.length; i2++) {
+			for (int i1 = 0; i1 < node.getChildren().length; i1++) {
+				if (node.getChildren()[i1].getValue().equals(category[i2])) {
+					returnList.add(node.getChildren()[i1]);
+				}
+			}
+			if (returnList.size() <= i2) {
+				TreeObject newChild = new TreeObject(category[i2], node);
+				node.addChildren(newChild);
+				returnList.add(newChild);
+			}
+		}
+		
+		return returnList;
+	}
 }

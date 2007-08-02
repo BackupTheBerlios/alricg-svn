@@ -7,7 +7,6 @@
  */
 package org.d3s.alricg.editor.common;
 
-import org.d3s.alricg.common.icons.ImageService;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
@@ -50,21 +49,6 @@ public class CustomColumnLabelProvider {
 		}
 		
 		return null;
-		
-		/*
-		if (element instanceof TreeObject) {
-			if (((TreeObject)element).getValue() instanceof CharElement) {
-				return (CharElement) ((TreeObject)element).getValue();
-			}
-		} else if (element instanceof TableObject) {
-			return (CharElement) ((TableObject)element).getValue();
-		} else if (element instanceof Link) {
-			return ((Link) element).getZiel();
-		} else if (element instanceof CharElement) {
-			return (CharElement) element;
-		}
-		
-		return null;*/
 	}
 	
 	/**
@@ -175,4 +159,52 @@ public class CustomColumnLabelProvider {
 		}
 	}
 	
+	/**
+	 * Zeigt den Wert eines Links. Wenn wert = KEIN_WERT, wird "-" angezeigt
+	 * @author Vincent
+	 */
+	public static class LinkWertProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			if (element instanceof Link) {
+				if ( ((Link) element).getWert() == Link.KEIN_WERT) {
+					return "-";
+				}
+				return Integer.toString( ((Link) element).getWert() );
+			}
+			return "";
+		}
+	}
+	
+	/**
+	 * Zeigt den Text eines Links.
+	 * @author Vincent
+	 */
+	public static class LinkTextProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			if (element instanceof Link) {
+				if ( ((Link) element).getText() != null) {
+					return ((Link) element).getText();
+				}
+			}
+			return "";
+		}
+	}
+	
+	/**
+	 * Zeigt das ZweitZiel eines Links. Wenn keines vorhanden, wird "-" angezeigt.
+	 * @author Vincent
+	 */
+	public static class LinkZweitZielProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			if (element instanceof Link) {
+				if ( ((Link) element).getZweitZiel() != null) {
+					return ((Link) element).getZweitZiel().getName();
+				}
+			}
+			return "-";
+		}
+	}
 }

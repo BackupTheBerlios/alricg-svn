@@ -120,10 +120,10 @@ public class FaehigkeitPart extends AbstarctElementPart<Faehigkeit> {
 			if (abk.equals(cobEig1.getText()) ) {
 				dreiEigenArray[0] = eigenList.get(i);
 			}
-			if (abk.equals(	cobEig1.getText() )) {
+			if (abk.equals(	cobEig2.getText() )) {
 				dreiEigenArray[1] = eigenList.get(i);
 			}
-			if (abk.equals(	cobEig1.getText() )) {
+			if (abk.equals(	cobEig3.getText() )) {
 				dreiEigenArray[2] = eigenList.get(i);
 			}
 		}
@@ -136,6 +136,8 @@ public class FaehigkeitPart extends AbstarctElementPart<Faehigkeit> {
 				break;
 			}
 		}
+		
+		monitor.worked(1);
 	}
 	
 	
