@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.d3s.alricg.store.access.hide.DependecySearcher;
-import org.d3s.alricg.store.access.hide.DependecySearcher.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
@@ -74,7 +73,7 @@ public class CharElementFactory {
 	 */
 	public List<DependencyTableObject> checkDependencies(CharElement toCheck, 
 									List<XmlAccessor> accList, IProgressMonitor monitor) {
-		return dependecySearcher.checkDependencies(toCheck, monitor, accList);
+		return dependecySearcher.checkDependencies(toCheck, accList, monitor);
 	}
 	
 	/**
@@ -101,6 +100,15 @@ public class CharElementFactory {
 	 */
 	public boolean deleteCharElement(CharElement toDelete, XmlAccessor accessor) {
 		return accessor.getMatchingList(toDelete.getClass()).remove(toDelete);
+	}
+	
+	/**
+	 * Fügt das Element zum Accessor hinzu.
+	 * @param toAdd Element welches Hinzugefügt werden soll
+	 * @param accessor Accessor zum Hinzufügen
+	 */
+	public void addCharElement(CharElement toAdd, XmlAccessor accessor) {
+		((List) accessor.getMatchingList(toAdd.getClass())).add(toAdd);
 	}
 
 	
@@ -537,4 +545,31 @@ public class CharElementFactory {
 		ssp.setKostenKlasse(KostenKlasse.A);
 	}
 	
+	/**
+	 * Speichert gefundene Abhängigkeiten und ermöglicht das Anzeigen in einer Tabelle
+	 * @author Vincent
+	 */
+	public static class DependencyTableObject {
+		private String text;
+		private XmlAccessor accessor;
+		private CharElement charElement;
+		
+		public DependencyTableObject(CharElement value, XmlAccessor accessor, String text) {
+			this.text = text;
+			this.accessor = accessor;
+			this.charElement = value;
+		}
+
+		public String getText() {
+			return text;
+		}
+		
+		public XmlAccessor getAccessor() {
+			return accessor;
+		}
+		
+		public CharElement getCharElement() {
+			return charElement;
+		}
+	}
 }

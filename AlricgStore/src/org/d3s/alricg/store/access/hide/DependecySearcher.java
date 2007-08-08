@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.d3s.alricg.store.access.XmlAccessor;
+import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Herkunft;
@@ -47,7 +48,7 @@ public class DependecySearcher {
 	 * @return Eine Liste von TableObjects die dem User angezeigt werden können 
 	 */
 	public List<DependencyTableObject> checkDependencies(CharElement toCheck, 
-			IProgressMonitor monitor, List<XmlAccessor> accList) 
+			 List<XmlAccessor> accList, IProgressMonitor monitor) 
 	{
 		errorList = new ArrayList<DependencyTableObject>();
 		
@@ -56,6 +57,11 @@ public class DependecySearcher {
 			monitor.subTask("Prüfe " + accList.get(i).getFile().getName());
 			checkDependencyXmlAccessor(toCheck, accList.get(i) );
 			monitor.worked(1);
+			
+			// Falls cancel-Button geklickt
+			if (monitor.isCanceled()) {
+				return null;
+			}
 		}
 		monitor.done();
 		
@@ -568,31 +574,5 @@ public class DependecySearcher {
 		}
 	}
 	
-	/**
-	 * Speichert gefundene Abhängigkeiten und ermöglicht das Anzeigen in einer Tabelle
-	 * @author Vincent
-	 */
-	public static class DependencyTableObject {
-		private String text;
-		private XmlAccessor accessor;
-		private CharElement charElement;
-		
-		public DependencyTableObject(CharElement value, XmlAccessor accessor, String text) {
-			this.text = text;
-			this.accessor = accessor;
-			this.charElement = value;
-		}
 
-		public String getText() {
-			return text;
-		}
-		
-		public XmlAccessor getAccessor() {
-			return accessor;
-		}
-		
-		public CharElement getCharElement() {
-			return charElement;
-		}
-	}
 }

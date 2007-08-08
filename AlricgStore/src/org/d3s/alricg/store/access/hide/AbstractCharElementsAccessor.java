@@ -9,8 +9,6 @@ package org.d3s.alricg.store.access.hide;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.d3s.alricg.store.access.CharElementAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
@@ -45,7 +43,7 @@ import org.d3s.alricg.store.charElemente.charZusatz.SchwarzeGabe;
 public abstract class AbstractCharElementsAccessor implements CharElementAccessor {
 	
 	public List<? extends CharElement> getMatchingList(Class clazz) {
-
+		
 		if (clazz == Eigenschaft.class) {
 			return getEigenschaftList();
 		} else if (clazz ==  Talent.class) {

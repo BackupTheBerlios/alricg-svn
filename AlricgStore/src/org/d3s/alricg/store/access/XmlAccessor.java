@@ -8,6 +8,7 @@
 package org.d3s.alricg.store.access;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -86,27 +87,27 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 		this.version = version;
 	}
 
-	private List<Eigenschaft> eigenschaftList;
-	private List<Talent> talentList;
-	private List<Zauber> zauberList;
-	private List<Repraesentation> repraesentationList;
-	private List<Gabe> gabeList;
-	private List<Vorteil> vorteilList;
-	private List<Nachteil> nachteilList;
-	private List<Sonderfertigkeit> sonderfList;
-	private List<Rasse> rasseList;
-	private List<Kultur> kulturList;
-	private List<Profession> professionList;
-	private List<Gottheit> gottheitList;
-	private List<Liturgie> liturgieList;
-	private List<RegionVolk> regionVolkList;
-	private List<RitualKenntnis> ritualkenntnisList;
-	private List<Schrift> schriftList;
-	private List<Sprache> spracheList;
-	private List<Gegenstand> gegenstandList;
-	private List<DaemonenPakt> daemonenPaktList;
-	private List<MagierAkademie> magierAkademieList;
-	private List<SchwarzeGabe> schwarzeGabeList;
+	private List<Eigenschaft> eigenschaftList = new ArrayList<Eigenschaft>();
+	private List<Talent> talentList = new ArrayList<Talent>();
+	private List<Zauber> zauberList = new ArrayList<Zauber>();
+	private List<Repraesentation> repraesentationList = new ArrayList<Repraesentation>();
+	private List<Gabe> gabeList = new ArrayList<Gabe>();
+	private List<Vorteil> vorteilList = new ArrayList<Vorteil>();
+	private List<Nachteil> nachteilList = new ArrayList<Nachteil>();
+	private List<Sonderfertigkeit> sonderfList = new ArrayList<Sonderfertigkeit>();
+	private List<Rasse> rasseList = new ArrayList<Rasse>();
+	private List<Kultur> kulturList = new ArrayList<Kultur>();
+	private List<Profession> professionList = new ArrayList<Profession>();;
+	private List<Gottheit> gottheitList = new ArrayList<Gottheit>();
+	private List<Liturgie> liturgieList = new ArrayList<Liturgie>();
+	private List<RegionVolk> regionVolkList = new ArrayList<RegionVolk>();
+	private List<RitualKenntnis> ritualkenntnisList = new ArrayList<RitualKenntnis>();
+	private List<Schrift> schriftList = new ArrayList<Schrift>();
+	private List<Sprache> spracheList = new ArrayList<Sprache>();
+	private List<Gegenstand> gegenstandList = new ArrayList<Gegenstand>();
+	private List<DaemonenPakt> daemonenPaktList = new ArrayList<DaemonenPakt>();
+	private List<MagierAkademie> magierAkademieList = new ArrayList<MagierAkademie>();
+	private List<SchwarzeGabe> schwarzeGabeList = new ArrayList<SchwarzeGabe>();
 	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.store.access.CharElementAccessor#getEigenschaftList()

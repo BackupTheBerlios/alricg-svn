@@ -15,7 +15,7 @@ import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
-import org.d3s.alricg.store.access.hide.DependecySearcher.DependencyTableObject;
+import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
