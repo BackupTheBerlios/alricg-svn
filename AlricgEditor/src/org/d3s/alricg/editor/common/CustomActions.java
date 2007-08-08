@@ -8,18 +8,19 @@
 package org.d3s.alricg.editor.common;
 
 import java.io.File;
-import java.util.List;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
+
+import javax.xml.bind.JAXBException;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.common.CustomFilter.CurrentFileFilter;
-import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
-import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.utils.CharElementEditorInput;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
-import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
+import org.d3s.alricg.editor.utils.EditorViewUtils.DependencyProgressMonitor;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
 import org.d3s.alricg.editor.views.ViewModel;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
@@ -29,6 +30,7 @@ import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -40,7 +42,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -136,17 +137,19 @@ public class CustomActions {
 	 * @author Vincent
 	 */
 	public static class EditCharElementAction extends Action {
-		private Composite parentComp;
-		private String editorID;
+		private final Composite parentComp;
+		private final String editorID;
+		private final RefreshableViewPart viewPart;
 		
 		/**
 		 * Konstruktor
 		 * @param parentComp Das Parent Composite von einem Tree/Table View
 		 * @param editorID Die ID des Editors, der zum bearbeiten geöffnet werden soll
 		 */
-		public EditCharElementAction(Composite parentComp, String editorID) {
+		public EditCharElementAction(Composite parentComp, String editorID, RefreshableViewPart viewPart) {
 			this.parentComp = parentComp;
 			this.editorID = editorID;
+			this.viewPart = viewPart;
 			
 			this.setText("Bearbeiten");
 			this.setToolTipText("Öffnet das selektierte Element zur Bearbeitung.");
@@ -165,7 +168,8 @@ public class CustomActions {
 			
 			IEditorInput editorInput = new CharElementEditorInput(
 					(CharElement) treeTableObj.getValue(),
-					treeTableObj.getAccessor());
+					treeTableObj.getAccessor(),
+					viewPart);
 	
 			try {
 				page.openEditor(editorInput, editorID, true);
@@ -179,6 +183,12 @@ public class CustomActions {
 		}
 	}
 	
+	/**
+	 * Erstellt ein neues CharElement. Damit diese Action ausgeführt werden kann,
+	 * muß das Feld "ViewModel.MarkedFileForNew" gesetzt werden
+	 * 
+	 * @author Vincent
+	 */
 	public static abstract class BuildNewCharElementAction extends Action {
 		private final Class clazz;
 		private final Composite parentComp;
@@ -220,20 +230,11 @@ public class CustomActions {
 			if (ViewUtils.getSelectedObject(parentComp) instanceof TreeObject) {
 				runForTreeView(newCharElem, (TreeObject) ViewUtils.getSelectedObject(parentComp));
 			}
-
-			// "Daten-Modelle" holen
-			List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
-			TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
-			
-			// Setze neues Element und aktualisiere
-			tabList.add(new EditorTableObject(newCharElem, xmlAccessor));
-			EditorViewUtils.addElementToTree(root, viewer.getRegulator(), newCharElem, xmlAccessor);
-			viewer.refresh();
 			
 			// Öffnen Editor mit neuem CharElement
 			final IWorkbenchPage page = PlatformUI.getWorkbench()
 										.getActiveWorkbenchWindow().getActivePage();
-			IEditorInput editorInput = new CharElementEditorInput(newCharElem, xmlAccessor);
+			final IEditorInput editorInput = new CharElementEditorInput(newCharElem, xmlAccessor, viewer);
 			
 			try {
 				page.openEditor(editorInput, editorID, true);
@@ -255,14 +256,20 @@ public class CustomActions {
 		protected abstract void runForTreeView(CharElement newCharElem, TreeObject treeObj);
 	}
 
+	/**
+	 * 
+	 * @author Vincent
+	 */
 	public static class DeleteCharElementAction extends Action {
 		private final Composite parentComp;
+		private final RefreshableViewPart view;
 		// TODO implement
 		/**
 		 * Konstruktor
 		 */
-		public DeleteCharElementAction(Composite parentComp) {
+		public DeleteCharElementAction(Composite parentComp, RefreshableViewPart view) {
 			this.parentComp = parentComp;
+			this.view = view;
 			
 			this.setText("Löschen");
 			this.setToolTipText("Löscht das selektierte Element.");;
@@ -280,16 +287,59 @@ public class CustomActions {
 			
 			final EditorTreeOrTableObject treeTableObj = 
 						(EditorTreeOrTableObject) ViewUtils.getSelectedObject(parentComp);
+			final DependencyProgressMonitor monitor = new DependencyProgressMonitor((CharElement) treeTableObj.getValue());
 			
 			if (treeTableObj.getValue() instanceof CharElement) {
 				// 1. Prüfen
-
+			    try {
+					new ProgressMonitorDialog(parentComp.getShell()).run(true, true, monitor);
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return;
+				}
 				
-				// 2. Nachfragen
+				if (monitor.getMonitor().isCanceled())  {
+					// Abbruch durch user
+					return;
+				} else if (monitor.getDepList().size() > 0) {
+					// Kann nicht gelöscht werden, da Abhängigkeiten bestehen
+					// TODO Informationen anzeigen
+					return;
+				}
+				
+				// CharElement kann gelöscht werden: Sicherheitsabfrage
+				final CharElement charElement = (CharElement) treeTableObj.getValue();
+				final boolean b = MessageDialog.openConfirm(
+						parentComp.getShell(), 
+						"Löschen bestätigen", 
+						"Möchten sie das Element " 
+						+ charElement.getName()
+						+ " wirklich löschen?");
+				
+				// Löschen
+				if (!b) return;
+				
+				EditorViewUtils.removeElementFromView(
+						view,
+						charElement);
+				CharElementFactory.getInstance().deleteCharElement(
+						charElement,
+						treeTableObj.getAccessor());
+				view.refresh();
+				
+				try {
+					StoreAccessor.getInstance().saveFile( treeTableObj.getAccessor() );
+				} catch (JAXBException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			
-			
-			super.run();
 		}
 	}
 	

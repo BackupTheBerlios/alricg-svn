@@ -15,6 +15,11 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.links.Link;
+import org.d3s.alricg.store.charElemente.links.Option;
+import org.d3s.alricg.store.charElemente.links.OptionAnzahl;
+import org.d3s.alricg.store.charElemente.links.OptionListe;
+import org.d3s.alricg.store.charElemente.links.OptionVerteilung;
+import org.d3s.alricg.store.charElemente.links.OptionVoraussetzung;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -49,6 +54,62 @@ public class CustomColumnLabelProvider {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Zeigt den Namen eines CharElement an. Get für CharElemente, TreeObjects und Links.
+	 * @author Vincent
+	 */
+	public static class OptionNameLabelProvider extends NameLabelProvider {
+		@Override
+		public String getText(Object element) {
+			if ( !(((TreeObject)element).getValue() instanceof Option) ) {
+				return super.getText(element);
+			}
+			
+			final StringBuilder strBuilder = new StringBuilder();
+			final Option option = (Option) ((TreeObject)element).getValue();
+			final TreeObject[] siblings = ((TreeObject)element).getParent().getChildren();;
+			
+			int counter = 0;
+			for (int i = 0; i < siblings.length; i++) {
+				if (siblings[i].getValue() instanceof Option) {
+					counter++;
+					if (siblings[i].equals(element)) {
+						break;
+					}
+				}
+			}
+			
+			if ( ((TreeObject)element).getParent().getValue() instanceof Option) {
+				strBuilder.append("Alternative ");
+			}
+			
+			
+			if (option instanceof OptionVoraussetzung) {
+				strBuilder.append("Voraussetzung");
+			} else if (option instanceof OptionAnzahl) {
+				strBuilder.append("Auswahl Anzahl");
+			} else if (option instanceof OptionListe) {
+				strBuilder.append("Auswahl Liste");
+			} else if (option instanceof OptionVerteilung) {
+				strBuilder.append("Auswahl Verteilung");
+			} else {
+				throw new IllegalArgumentException("Parameter-Klasse" + option.getClass() + " konnte nicht gefunden werden!");
+			}
+			strBuilder.append(" ").append(counter);
+			
+			return strBuilder.toString();
+		}
+		
+		@Override
+		public Image getImage(Object obj) {
+			if (((TreeObject)obj).getValue() instanceof Option) {
+				return PlatformUI.getWorkbench().getSharedImages().getImage(
+						ISharedImages.IMG_OBJ_FOLDER);
+			}
+			return super.getImage(obj);
+		}
 	}
 	
 	/**

@@ -7,11 +7,13 @@
  */
 package org.d3s.alricg.editor.common;
 
+import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
+import org.d3s.alricg.store.charElemente.links.Option;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -72,6 +74,19 @@ public class CustomColumnViewerSorter {
 		public ViewerSorter getNewInstance() {
 			return new NameSorter();
 		}
+	}
+	
+	public static class OptionNameSorter extends NameSorter {
+
+		@Override
+		public int category(Object element) {
+			if (((TreeObject) element).getValue() instanceof Option) {
+				return 1;
+			}
+			return 2;
+		}
+		
+		
 	}
 	
 	public static class SktSorter extends CreatableViewerSorter {

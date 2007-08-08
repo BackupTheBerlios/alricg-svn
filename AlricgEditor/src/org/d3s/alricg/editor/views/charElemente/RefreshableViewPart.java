@@ -7,20 +7,13 @@
  */
 package org.d3s.alricg.editor.views.charElemente;
 
-import java.util.List;
-
 import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
-import org.d3s.alricg.editor.common.ViewUtils.Regulator;
-import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
-import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
-import org.d3s.alricg.editor.utils.EditorViewUtils;
+import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
+import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.FileView;
-import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IMenuListener;
@@ -36,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -204,19 +196,4 @@ public abstract class RefreshableViewPart extends ViewPart {
 	
 	public abstract Regulator getRegulator();
 	
-	/*
-	public void rebuildTreeTable() {
-
-		((TableViewContentProvider) viewerTable.getContentProvider())
-			.setElementList(
-					EditorViewUtils.buildTableView(
-					StoreDataAccessor.getInstance().getXmlAccessors(), 
-					getRegulator())
-				);
-		
-		((TreeViewContentProvider) viewerTree.getContentProvider())
-			.setRoot(EditorViewUtils.buildEditorViewTree(
-					StoreDataAccessor.getInstance().getXmlAccessors(), 
-					getRegulator()));
-	}*/
 }

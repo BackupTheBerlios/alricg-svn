@@ -8,11 +8,11 @@
 package org.d3s.alricg.editor.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.editors.composits.AbstarctElementPart;
-import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -21,7 +21,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -38,6 +37,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPartSite;
 
 /**
  * Tools um mit View zu Arbeiten
@@ -66,7 +66,7 @@ public class ViewUtils {
 	 * @author Vincent
 	 */
 	public static class TreeObject implements TreeOrTableObject {
-		private List<TreeObject> children;
+		private TreeObject[] children;
 		private TreeObject parent;
 		private final Object value;
 		
@@ -81,25 +81,45 @@ public class ViewUtils {
 		public TreeObject getParent() {
 			return parent;
 		}
+		public void setParent(TreeObject parent) {
+			this.parent = parent;
+		}
 
+		/**
+		 * Alle Kinder oder "null" falls es keine gibt
+		 * @return
+		 */
 		public TreeObject[] getChildren() {
-			if (children != null) {
-				return children.toArray(new TreeObject[children.size()]);
-			}
-			return null;
+			return children;
 		}
 
 		public void addChildren(TreeObject newChild) {
-			if (children == null) children =  new ArrayList<TreeObject>();
-			children.add(newChild);
+			if (children == null) {
+				children =  new TreeObject[0];
+			}
+			final TreeObject[] tmpTree = new TreeObject[children.length+1];
+			for (int i = 0; i < children.length; i++) {
+				tmpTree[i] = children[i];
+			}
+			tmpTree[children.length] = newChild;
+			children = tmpTree;
 		}
 		public void removeChildren(TreeObject removeChild) {
-			children.remove(removeChild);
-			removeChild.parent = null;
+			if (children == null) return;
+			
+			List<TreeObject> tmpList = new ArrayList<TreeObject>();
+			tmpList.addAll(	Arrays.asList(children) );
+			if (tmpList.remove(removeChild)) {
+				children = tmpList.toArray(new TreeObject[tmpList.size()]);
+				removeChild.parent = null;
+			}
+			if (children.length == 0) {
+				children = null;
+			}
 		}
 		
 		public void setChildren(List<TreeObject> children) {
-			this.children = children;
+			this.children = children.toArray(new TreeObject[children.size()]);
 		}
 		
 		public String toString() {
@@ -126,18 +146,6 @@ public class ViewUtils {
 		
 		return value;
 	}
-
-	/**
-	 * Schnittstelle welche für Objekte benötigt wird, mit die Methode "buildViewTree"
-	 * verarbeitet werden sollen.
-	 * @see org.d3s.alricg.editor.common.ViewUtils.buildViewTree(Iterator, Regulator)
-	 * @author Vincent
-	 */
-	public static interface Regulator {
-		public Object[] getFirstCategory(CharElement charElement);
-		public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor);
-	}
-	
 	
 	public static class TreeViewContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
@@ -158,8 +166,7 @@ public class ViewUtils {
 
 		@Override
 		public Object[] getElements(Object parent) {
-			if (parent instanceof IViewSite
-					|| parent instanceof AbstarctElementPart) {
+			if (parent instanceof IWorkbenchPartSite) {
 				return getChildren(invisibleRoot);
 			}
 			return getChildren(parent);
@@ -316,5 +323,7 @@ public class ViewUtils {
 		public void dragFinished(DragSourceEvent event) {
 			// Noop
 		}
-	}	
+	}
+	
+	
 }

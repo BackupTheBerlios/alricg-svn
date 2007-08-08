@@ -1,11 +1,7 @@
 package org.d3s.alricg.editor.views.charElemente;
 
-import java.util.List;
-
-import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
 import org.d3s.alricg.editor.common.CustomActions.DeleteCharElementAction;
 import org.d3s.alricg.editor.common.CustomActions.EditCharElementAction;
@@ -13,53 +9,31 @@ import org.d3s.alricg.editor.common.CustomActions.FilterCurrentFileAction;
 import org.d3s.alricg.editor.common.CustomActions.InfoCharElementAction;
 import org.d3s.alricg.editor.common.CustomActions.SwapTreeTableAction;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
-import org.d3s.alricg.editor.common.ViewUtils.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
-import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.editors.TalentEditor;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
-import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
-import org.d3s.alricg.editor.views.FileView;
+import org.d3s.alricg.editor.utils.Regulatoren;
+import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.part.ViewPart;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view
@@ -78,19 +52,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class TalentView extends RefreshableViewPart {
 	public static final String ID = "org.d3s.alricg.editor.views.TalentView";
-	private static final Regulator regulator = 
-		new Regulator() {
-			@Override
-			public Object[] getFirstCategory(CharElement charElement) {
-				return new Object[] { ((Talent) charElement).getSorte() };
-			}
 	
-			@Override
-			public List<? extends CharElement> getListFromAccessor(
-					XmlAccessor accessor) {
-				return accessor.getTalentList();
-			}
-		};
 	/**
 	 * Erstellt eine TreeTable + ContextMenu und setzt sie in den View
 	 */
@@ -150,8 +112,7 @@ public class TalentView extends RefreshableViewPart {
 
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
 		tc.getColumn().setText("Probe");
-		tc
-				.setLabelProvider(new CustomColumnLabelProvider.EigenschaftLabelProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.EigenschaftLabelProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 
@@ -275,7 +236,8 @@ public class TalentView extends RefreshableViewPart {
 						new CustomColumnViewerSorter.SktSorter(), tableViewer));
 
 		// Inhalt und Sortierung setzen
-		tableViewer.setContentProvider(new TableViewContentProvider(					EditorViewUtils.buildTableView(
+		tableViewer.setContentProvider(new TableViewContentProvider(
+				EditorViewUtils.buildTableView(
 				StoreDataAccessor.getInstance().getXmlAccessors(), 
 				getRegulator())));
 		tableViewer.getTable().setSortDirection(SWT.UP);
@@ -300,16 +262,12 @@ public class TalentView extends RefreshableViewPart {
 			}
 		};
 
-		// Element Bearbeiten Action
-		editSelected = new EditCharElementAction(this.parentComp, TalentEditor.ID);
-
 		// Neues Element Action 
 		buildNew = new BuildNewCharElementAction(
 						Talent.class, this, this.parentComp, TalentEditor.ID) {
 
 			@Override
 			protected void runForTreeView(CharElement newCharElem, TreeObject treeObj) {
-				// TODO Auto-generated method stub
 				if (treeObj.getValue() instanceof Talent) {
 					runForTreeView(newCharElem, (TreeObject) treeObj.getParent());
 				} else if (treeObj.getValue() instanceof Talent.Sorte) {
@@ -320,8 +278,11 @@ public class TalentView extends RefreshableViewPart {
 				}
 			}};
 		
+		// Element Bearbeiten Action
+		editSelected = new EditCharElementAction(this.parentComp, TalentEditor.ID, this);
+		
 		// Element löschen Action
-		deleteSelected = new DeleteCharElementAction(this.parentComp);
+		deleteSelected = new DeleteCharElementAction(this.parentComp, this);
 	}
 
 	/* (non-Javadoc)
@@ -329,7 +290,7 @@ public class TalentView extends RefreshableViewPart {
 	 */
 	@Override
 	public Regulator getRegulator() {
-		return regulator;
+		return Regulatoren.talentRegulator;
 	}
 	
 	

@@ -7,7 +7,15 @@
  */
 package org.d3s.alricg.editor.editors.composits;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 import org.d3s.alricg.store.access.IdFactory;
+import org.d3s.alricg.store.access.StoreDataAccessor;
+import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -16,6 +24,7 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -34,6 +43,10 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 									// wichtig für Berechnung der ID, damit diese
 									// nur Berechnet wird, wenn der Name sich 
 									// geändert hat
+	private String inputFileName; // Der letzte Name nach einem Focus wechsel
+									// wichtig für Berechnung der ID, damit diese
+									// nur Berechnet wird, wenn der Name sich 
+									// geändert hat
 	
 	private Group groupBasisDaten;
 	private Text txtID;
@@ -43,7 +56,9 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 	private Text txtBeschreibung;
 	private Text txtRegelAnm;
 	private Button cbxAnzeigen;
+	private Combo cobFile;
 	
+	private HashMap<String, XmlAccessor> cobFileMap = new HashMap<String, XmlAccessor>();
 	
 	public CharElementPart(Composite top, GridData gridData) {
 		// GirdLayout mit zwei Spalten
@@ -126,6 +141,13 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		tmpGData.heightHint = txtRegelAnm.getLineHeight() * 3;
 		txtRegelAnm.setLayoutData(tmpGData);
 		
+		// File / XMLAccessor
+		Label lblFile = new Label(groupBasisDaten, SWT.NONE);
+		lblFile.setText("Datei:");
+		cobFile = new Combo(groupBasisDaten, SWT.READ_ONLY | SWT.CENTER);
+		cobFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		cobFile.setVisibleItemCount(8);
+		
 		// Anzeigen
 		Label filler = new Label(groupBasisDaten, SWT.NONE);
 		cbxAnzeigen = new Button(groupBasisDaten, SWT.CHECK);
@@ -146,7 +168,34 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		
 		this.charElementClass = charElem.getClass();
 		this.lastFocusedName = this.txtName.getText();
-
+	}
+	
+	public void setSelectedXmlAccessor(XmlAccessor accessor) {
+		List<XmlAccessor> accList = StoreDataAccessor.getInstance().getXmlAccessors();
+		List<String> strList = new ArrayList<String>();
+		
+		for (int i = 0; i < accList.size(); i++) {
+			String tmp = accList.get(i).getFile().getName() 
+				+ " (" + accList.get(i).getFile().getAbsolutePath() + ")";
+			
+			if (accessor.equals(accList.get(i))) {
+				inputFileName = tmp;
+			}
+			cobFileMap.put(tmp, accList.get(i));
+			strList.add(tmp);
+		}
+		Collections.sort(strList);
+		
+		for (int i = 0; i < strList.size(); i++) {
+			this.cobFile.add(strList.get(i));
+			if (inputFileName.equals(strList.get(i))) {
+				cobFile.select(cobFile.getItemCount()-1);
+			}
+		}
+	}
+	
+	public XmlAccessor getSelectedXmlAccessor() {
+		return cobFileMap.get(cobFile.getText());
 	}
 	
 	@Override
@@ -186,6 +235,7 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		idNotDirty &= getStringFromNull(charElem.getSammelbegriff()).equals(this.txtSammelbegriff.getText());
 		idNotDirty &= getStringFromNull(charElem.getSonderregelKlasse()).equals(this.txtSonderregelKlasse.getText());
 		idNotDirty &= (charElem.isAnzeigen() == this.cbxAnzeigen.getSelection());	
+		idNotDirty &= cobFile.getText().equals(inputFileName);
 			
 		return !idNotDirty;
 	}

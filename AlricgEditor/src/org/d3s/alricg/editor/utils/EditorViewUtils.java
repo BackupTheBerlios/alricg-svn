@@ -8,16 +8,24 @@
 package org.d3s.alricg.editor.utils;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.d3s.alricg.editor.common.ViewUtils.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
+import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
+import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.XmlAccessor;
+import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 
 /**
  * 
@@ -83,6 +91,37 @@ public class EditorViewUtils {
 			return accessor;
 		}
 	}
+	
+	public static class DependencyProgressMonitor implements IRunnableWithProgress {
+		private IProgressMonitor monitor;
+		private List<DependencyTableObject> depList;
+		final private CharElement charElement;
+		
+		public DependencyProgressMonitor(CharElement charElement) {
+			this.charElement = charElement;
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(org.eclipse.core.runtime.IProgressMonitor)
+		 */
+		@Override
+		public void run(IProgressMonitor monitor)
+				throws InvocationTargetException,
+				InterruptedException {
+			this.monitor = monitor;
+			depList = CharElementFactory.getInstance().checkDependencies(
+							charElement, 
+			    			monitor);
+		}
+
+		public IProgressMonitor getMonitor() {
+			return monitor;
+		}
+
+		public List<DependencyTableObject> getDepList() {
+			return depList;
+		}
+	};
 	
 	/**
 	 * Erzeugt aus einem Liste von Accessoren und zugehörigem Regulator einen Tree 
@@ -180,7 +219,74 @@ public class EditorViewUtils {
 		return returnList;
 	}
 	
-	public static void addElementToTree(
+	public static void removeElementFromView(
+			RefreshableViewPart viewer, 
+			CharElement charElem)
+	{
+		// "Daten-Modelle" holen
+		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
+		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
+		
+		// Aus Table entfernen
+		for (int i = 0; i < tabList.size(); i++) {
+			if ( ((TableObject) tabList.get(i)).getValue().equals(charElem) ) {
+				tabList.remove(i);
+				break;
+			}
+		}
+		
+		// Aus Tree entfernen
+		EditorViewUtils.removeElementFromTree(root, charElem);
+	}
+	
+	/**
+	 * Entfernt ab "node" alle Nodes mit dem value "toRemoveValue". Wenn durch das
+	 * entfernen ein "ordner" des Baumes leer wird, wird dieser ebenfalls entfernt
+	 * @param node Aktuell zu durchsuchender Knoten
+	 * @param toRemoveValue Alle Knoten mit diesem Wert werden gelöscht
+	 * @return true Der Knoten "node" wurde gelöscht, ansonsten false (dies sagt nichts 
+	 * 		darüber aus, ob evtl. unterknoten von "node" gelöscht wurden oder nicht)
+	 */
+	private static boolean removeElementFromTree(TreeObject node, Object toRemoveValue) {
+		boolean hasDeletedFlag = false;
+		
+		if (node.getValue().equals(toRemoveValue) && node.getChildren() == null) {
+			// Entferne Child
+			TreeObject parent = node.getParent();
+			parent.removeChildren(node);
+			hasDeletedFlag = true;
+			
+			// Entferne Parent, wenn dieser keine Kinder mehr hat
+			if (parent.getChildren() == null && parent.getParent() != null) {
+				removeElementFromTree(parent, parent.getValue());
+			}
+		}
+		
+		int idx = 0; 
+		while (node.getChildren() != null && idx < node.getChildren().length) {
+			if (!removeElementFromTree(node.getChildren()[idx], toRemoveValue)) {
+				idx++;
+			}
+		}
+		
+		return hasDeletedFlag;
+	}
+	
+	public static void addElementToView(
+			RefreshableViewPart viewer, 
+			CharElement newCharElem, 
+			XmlAccessor xmlAccessor) 
+	{
+		// "Daten-Modelle" holen
+		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
+		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
+		
+		// Setze neues Element und aktualisiere
+		tabList.add(new EditorTableObject(newCharElem, xmlAccessor));
+		EditorViewUtils.addElementToTree(root, viewer.getRegulator(), newCharElem, xmlAccessor);
+	}
+
+	private static void addElementToTree(
 			TreeObject invisibleRoot, Regulator regulator, 
 			CharElement charElement, XmlAccessor xmlAccessor)
 	{
@@ -210,7 +316,14 @@ public class EditorViewUtils {
 		}
 	}
 	
-	public static List<TreeObject> findChilds(TreeObject node, Object[] category) {
+	/**
+	 * Durchsucht die direkten Kinder von "node" nach den Objekten aus "category".
+	 * Wird eine "category" nicht gefunden, wird sie angelegt.
+	 * @param node Node um die Kinder zu durchsuchen
+	 * @param category Zu findene/anzulegende Objekte
+	 * @return Liste von TreeObjects, welche die "category"-Objekte enthalten
+	 */
+	private static List<TreeObject> findChilds(TreeObject node, Object[] category) {
 		List<TreeObject> returnList = new ArrayList<TreeObject>();
 		
 		for (int i2 = 0; i2 < category.length; i2++) {

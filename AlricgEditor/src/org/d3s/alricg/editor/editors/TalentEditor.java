@@ -18,10 +18,11 @@ import org.d3s.alricg.editor.editors.composits.AbstarctElementPart;
 import org.d3s.alricg.editor.editors.composits.CharElementPart;
 import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
 import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
-import org.d3s.alricg.editor.utils.CharElementEditorInput;
+import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
-import org.d3s.alricg.editor.views.charElemente.TalentView;
+import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
+import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -42,14 +43,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
 /**
  * @author Vincent
- *
  */
 public class TalentEditor extends MultiPageEditorPart {
 	public static final String ID = "org.d3s.alricg.editor.editors.TalentEditor";
@@ -57,9 +55,9 @@ public class TalentEditor extends MultiPageEditorPart {
 	private FaehigkeitPart faehigkeitPart;
 	private TalentPart talentPart;
 	private VoraussetzungPart voraussetzungsPart;
+	private XmlAccessor currentAccessor;
 	
 	private ScrolledComposite scrollComp;
-	
 	
 	
 	/**
@@ -256,7 +254,7 @@ public class TalentEditor extends MultiPageEditorPart {
 	
 	private Composite createPage1() {
 		
-		Talent talentInput = (Talent) ((CharElementEditorInput) this.getEditorInput()).getCharElement();
+		Talent talentInput = (Talent) this.getEditorInput().getAdapter(Talent.class);
 		
 		// Scroll-Container erzeugen und Grid mit 2 Spalten setzen
 		scrollComp = new ScrolledComposite(getContainer(), SWT.V_SCROLL);
@@ -279,6 +277,9 @@ public class TalentEditor extends MultiPageEditorPart {
 		basisDatenGridData.horizontalSpan = 2; // nimm 2 Spalten Platz ein
 		charElementPart = new CharElementPart(mainContainer, basisDatenGridData);
 		charElementPart.loadData(talentInput); 
+		charElementPart.setSelectedXmlAccessor(
+				(XmlAccessor) this.getEditorInput().getAdapter(XmlAccessor.class)
+			);
 		
 		// FaehigkeitPart erzeugen
 		faehigkeitPart = new FaehigkeitPart(mainContainer, null);
@@ -296,12 +297,12 @@ public class TalentEditor extends MultiPageEditorPart {
 	}
 	
 	private Composite createPage2() {
-		Talent talentInput = (Talent) ((CharElementEditorInput) this.getEditorInput()).getCharElement();
+		Talent talentInput = (Talent) this.getEditorInput().getAdapter(Talent.class);
 
-		voraussetzungsPart = new VoraussetzungPart(getContainer());
+		voraussetzungsPart = new VoraussetzungPart(getContainer(), this.getSite());
 		voraussetzungsPart.loadData(talentInput);
 		
-		return voraussetzungsPart.treeViewer.getTree();
+		return voraussetzungsPart.getTree();
 	}
 	
 	/* (non-Javadoc)
@@ -315,28 +316,6 @@ public class TalentEditor extends MultiPageEditorPart {
 		
 		index1 = addPage(createPage2());
 		setPageText(index1, "Voraussetzungen");
-		
-		/*
-		Composite composite = new Composite(getContainer(), SWT.NONE);
-		GridLayout layout = new GridLayout();
-		composite.setLayout(layout);
-		layout.numColumns = 2;
-
-		Button fontButton = new Button(composite, SWT.NONE);
-		GridData gd = new GridData(GridData.BEGINNING);
-		gd.horizontalSpan = 2;
-		fontButton.setLayoutData(gd);
-		fontButton.setText("Change Font...");
-		
-		fontButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				//setFont();
-			}
-		});
-
-		int index = addPage(composite);
-		setPageText(index, "Properties");
-		 */
 	}
 
 	/* (non-Javadoc)
@@ -345,35 +324,56 @@ public class TalentEditor extends MultiPageEditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		monitor.beginTask("Save Talent to CharElement and File", 5);
-		Talent tal = (Talent) ((CharElementEditorInput) this.getEditorInput()).getCharElement();
+		final XmlAccessor oldAccessor = currentAccessor;
+		final Talent talent = (Talent) this.getEditorInput().getAdapter(Talent.class);
+		final RefreshableViewPart viewPart = 
+				(RefreshableViewPart) this.getEditorInput().getAdapter(RefreshableViewPart.class);
 		
 		// Save to Charelement
-		this.charElementPart.saveData(monitor, tal);
-		this.faehigkeitPart.saveData(monitor, tal);
-		this.talentPart.saveData(monitor, tal);
-		this.voraussetzungsPart.saveData(monitor, tal);
+		this.charElementPart.saveData(monitor, talent);
+		this.faehigkeitPart.saveData(monitor, talent);
+		this.talentPart.saveData(monitor, talent);
+		this.voraussetzungsPart.saveData(monitor, talent);
+		
+	// Aktualisiere Ansicht
+		// 1. Element aus Ansicht entfernen
+		EditorViewUtils.removeElementFromView(
+				viewPart,
+				talent);
+		CharElementFactory.getInstance().deleteCharElement(
+				talent, 
+				oldAccessor);
+		// 2. Element zu Ansicht neu hinzufügen
+		currentAccessor = this.charElementPart.getSelectedXmlAccessor();
+		EditorViewUtils.addElementToView(
+				viewPart, 
+				talent, 
+				currentAccessor);
+		CharElementFactory.getInstance().addCharElement(talent, currentAccessor);
+		// 3. Ansicht aktualisieren
+		viewPart.refresh();
 		
 		// Save to File
 		monitor.subTask("Save Talent File");
 		
 		// TODO Besseres Speichern / Fehlerbehandlung!
 		try {
-			StoreAccessor.getInstance().saveFile(((CharElementEditorInput) this.getEditorInput()).getAccessor());
+			StoreAccessor.getInstance().saveFile( currentAccessor );
+			if (!oldAccessor.equals(currentAccessor)) {
+				StoreAccessor.getInstance().saveFile( oldAccessor );
+			}
 		} catch (JAXBException e) {
+			// TODO Fehlerbehandlung
 			monitor.setCanceled(true);
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Fehlerbehandlung
 			monitor.setCanceled(true);
 			e.printStackTrace();
 		}
 		monitor.worked(1);
 		
 		monitor.done();
-		
-		IViewPart vp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(TalentView.ID);
-		if (vp != null) {
-			((RefreshableViewPart) vp).refresh();
-		}
 	}
 	
 	/* (non-Javadoc)
@@ -397,7 +397,7 @@ public class TalentEditor extends MultiPageEditorPart {
 	 */
 	@Override
 	public boolean isDirty() {
-		Talent tal = (Talent) ((CharElementEditorInput) this.getEditorInput()).getCharElement();
+		Talent tal =  (Talent) this.getEditorInput().getAdapter(Talent.class);
 		
 		return charElementPart.isDirty(tal)
 						|| voraussetzungsPart.isDirty(tal)
@@ -411,8 +411,8 @@ public class TalentEditor extends MultiPageEditorPart {
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		super.init(site, input);
-		String name = ((CharElementEditorInput) this.getEditorInput()).getCharElement().getName();
-		
+		String name =  ((Talent) this.getEditorInput().getAdapter(Talent.class)).getName();
+		currentAccessor = (XmlAccessor) this.getEditorInput().getAdapter(XmlAccessor.class);
 		this.setPartName("Talent " + name);
 		this.setContentDescription("Bearbeiten des Talents " + name);
 	}

@@ -7,6 +7,7 @@
  */
 package org.d3s.alricg.editor.utils;
 
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.IdFactory;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
@@ -19,18 +20,16 @@ import org.eclipse.ui.IPersistableElement;
  * @author Vincent
  */
 public class CharElementEditorInput implements IEditorInput {
-	private CharElement charElement;
-	private XmlAccessor xmlAccessor;
-	private String id;
+	private final CharElement charElement;
+	private final XmlAccessor xmlAccessor;
+	private final RefreshableViewPart view;
+	private final String id;
 	
-	public CharElementEditorInput(CharElement charElement, XmlAccessor xmlAccessor) {
+	public CharElementEditorInput(CharElement charElement, XmlAccessor xmlAccessor, RefreshableViewPart view) {
 		this.charElement = charElement;
 		this.xmlAccessor = xmlAccessor;
+		this.view = view;
 		this.id = charElement.getId();
-	}
-	
-	public CharElementEditorInput(String id) {
-		this.id = id;
 	}
 	
 	@Override
@@ -59,7 +58,14 @@ public class CharElementEditorInput implements IEditorInput {
 
 	@Override
 	public Object getAdapter(Class adapter) {
-		// TODO Auto-generated method stub
+		if (CharElement.class.isAssignableFrom(adapter)) {
+			return this.charElement;
+		} else if (XmlAccessor.class.isAssignableFrom(adapter)) {
+			return this.xmlAccessor;
+		} else if (RefreshableViewPart.class.isAssignableFrom(adapter)) {
+			return this.view;
+		}
+
 		return null;
 	}
 	
@@ -80,13 +86,5 @@ public class CharElementEditorInput implements IEditorInput {
 			return true;
 		}
 		return false;
-	}
-	
-	public CharElement getCharElement() {
-		return this.charElement;
-	}
-	
-	public XmlAccessor getAccessor() {
-		return this.xmlAccessor;
 	}
 }
