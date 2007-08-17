@@ -7,6 +7,7 @@
  */
 package org.d3s.alricg.editor.common;
 
+import org.d3s.alricg.common.CharElementNamesService;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
@@ -35,7 +36,7 @@ public class CustomColumnViewerSorter {
 	 * @return Das zugehörige CharElement oder "null" wenn keines existiert
 	 */
 	private static CharElement getCharElement(Object element) {
-		return CustomColumnLabelProvider.getCharElement(element);
+		return ViewUtils.getCharElement(element);
 	}
 	
 	private static int getMultiplikator(Viewer viewer) {
@@ -76,6 +77,27 @@ public class CustomColumnViewerSorter {
 		}
 	}
 	
+	public static class CharElementKlasseSorter extends CreatableViewerSorter {
+
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			if (getCharElement(e1) == null || getCharElement(e2) == null) {
+				return e1.toString().compareTo(e2.toString()) * getMultiplikator(viewer);
+			}
+			
+			return CharElementNamesService.getCharElementName(
+						getCharElement(e1).getClass()).compareTo(
+								CharElementNamesService.getCharElementName(
+										getCharElement(e2).getClass()
+						))* getMultiplikator(viewer);
+		}
+		
+		@Override
+		public ViewerSorter getNewInstance() {
+			return new CharElementKlasseSorter();
+		}
+	}
+	
 	public static class OptionNameSorter extends NameSorter {
 
 		@Override
@@ -86,7 +108,10 @@ public class CustomColumnViewerSorter {
 			return 2;
 		}
 		
-		
+		@Override
+		public ViewerSorter getNewInstance() {
+			return new OptionNameSorter();
+		}
 	}
 	
 	public static class SktSorter extends CreatableViewerSorter {

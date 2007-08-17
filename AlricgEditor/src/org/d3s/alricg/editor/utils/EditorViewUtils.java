@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
@@ -75,7 +76,7 @@ public class EditorViewUtils {
 	 * Spezielles TableObject für den Editor, um noch einen FilePath angeben zu können
 	 * @author Vincent
 	 */
-	public static class EditorTableObject  extends TableObject implements EditorTreeOrTableObject {
+	public static class EditorTableObject extends TableObject implements EditorTreeOrTableObject {
 		private XmlAccessor accessor;
 		
 		public EditorTableObject(Object value, XmlAccessor accessor) {
@@ -92,6 +93,11 @@ public class EditorViewUtils {
 		}
 	}
 	
+	/**
+	 * ProgressMonitro um beim Löschen anzuzeigen wie weit die Überprüfung der 
+	 * "Dependencies" ist. 
+	 * @author Vincent
+	 */
 	public static class DependencyProgressMonitor implements IRunnableWithProgress {
 		private IProgressMonitor monitor;
 		private List<DependencyTableObject> depList;
@@ -219,24 +225,32 @@ public class EditorViewUtils {
 		return returnList;
 	}
 	
+	/**
+	 * Entfernd ein Element (CharElement oder Link) von einem View. Dadurch wird das Element
+	 * NICHT von der Datenbasis entfernd!
+	 * @param viewer Der Viewer von dem das Element entfernd werden soll
+	 * @param element Das zu entferndene Element
+	 */
 	public static void removeElementFromView(
 			RefreshableViewPart viewer, 
-			CharElement charElem)
+			Object element)
 	{
+		if (viewer == null) return;
+		
 		// "Daten-Modelle" holen
 		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
 		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
 		
 		// Aus Table entfernen
 		for (int i = 0; i < tabList.size(); i++) {
-			if ( ((TableObject) tabList.get(i)).getValue().equals(charElem) ) {
+			if ( ((TableObject) tabList.get(i)).getValue().equals(element) ) {
 				tabList.remove(i);
 				break;
 			}
 		}
 		
 		// Aus Tree entfernen
-		EditorViewUtils.removeElementFromTree(root, charElem);
+		EditorViewUtils.removeElementFromTree(root, element);
 	}
 	
 	/**
@@ -272,24 +286,42 @@ public class EditorViewUtils {
 		return hasDeletedFlag;
 	}
 	
+	/**
+	 * Fügt ein Element (CharElement oder Link) zu einem View hinzu.
+	 * Das Element wird mit dieser Methode NICHT zu der Datenbasis hinzugefügt
+	 * @param viewer Der view zu dem das Element hinzugefügt werden soll
+	 * @param element Das Element welches hinzugefügt werden soll
+	 * @param xmlAccessor Der Accessor, zu dem das Element gehört
+	 */
 	public static void addElementToView(
 			RefreshableViewPart viewer, 
-			CharElement newCharElem, 
+			Object element, 
 			XmlAccessor xmlAccessor) 
 	{
+		if (viewer == null) return;
+		
 		// "Daten-Modelle" holen
 		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
 		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
 		
 		// Setze neues Element und aktualisiere
-		tabList.add(new EditorTableObject(newCharElem, xmlAccessor));
-		EditorViewUtils.addElementToTree(root, viewer.getRegulator(), newCharElem, xmlAccessor);
+		tabList.add(new EditorTableObject(element, xmlAccessor));
+		EditorViewUtils.addElementToTree(root, viewer.getRegulator(), element, xmlAccessor);
 	}
 
+	/**
+	 * Fügt ein CharElement zu einem Tree hinzu. (Hilfsmethode von addElementToView)
+	 * @param invisibleRoot Wurzel des Baumes zum hinzufügen
+	 * @param regulator Der Regulator für den entsprechenen View
+	 * @param element Das Element (link oder CharElement), welches hinzugefügt werden soll
+	 * @param xmlAccessor der zugehörige XmlAccessor
+	 */
 	private static void addElementToTree(
 			TreeObject invisibleRoot, Regulator regulator, 
-			CharElement charElement, XmlAccessor xmlAccessor)
+			Object element, XmlAccessor xmlAccessor) 
 	{
+		CharElement charElement = ViewUtils.getCharElement(element);
+		
 		final Object[] firstCat = regulator.getFirstCategory(charElement);
 		
 		// Alle Kategorien suchen / erzeugen
@@ -301,14 +333,28 @@ public class EditorViewUtils {
 			List<TreeObject> tmpCatList = new ArrayList<TreeObject>();
 			
 			for (int i1 = 0; i1 < catList.size(); i1++) {
-				tmpCatList.addAll(findChilds(catList.get(i1), tmpStrArray));
+				List<TreeObject> tmpList = findChilds(catList.get(i1), tmpStrArray);
+				
+				if (tmpList.size() == 0) {
+					// Erzeugen
+					for (int i2 = 0; i2 < catList.size(); i2++) {
+						TreeObject newChild = new TreeObject(
+								charElement.getSammelbegriff(), 
+								catList.get(i2));
+						newChild.setParent(catList.get(i2));
+						catList.get(i2).addChildren(newChild);
+						tmpList.add(newChild);
+					}
+				}
+				tmpCatList.addAll(tmpList);
 			}
 			catList = tmpCatList;
 		}
 		
 		// In jeder Kategorie Element hinzufügen
 		for (int i = 0; i < catList.size(); i++) {
-			catList.get(i).addChildren(new EditorTreeObject(
+			catList.get(i).addChildren(
+				new EditorTreeObject(
 					charElement, 
 					catList.get(i),
 					xmlAccessor)
@@ -327,6 +373,7 @@ public class EditorViewUtils {
 		List<TreeObject> returnList = new ArrayList<TreeObject>();
 		
 		for (int i2 = 0; i2 < category.length; i2++) {
+			if (node.getChildren() == null) continue;
 			for (int i1 = 0; i1 < node.getChildren().length; i1++) {
 				if (node.getChildren()[i1].getValue().equals(category[i2])) {
 					returnList.add(node.getChildren()[i1]);

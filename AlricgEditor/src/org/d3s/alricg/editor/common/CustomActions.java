@@ -18,8 +18,10 @@ import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.common.CustomFilter.CurrentFileFilter;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
-import org.d3s.alricg.editor.utils.CharElementEditorInput;
+import org.d3s.alricg.editor.editors.composits.CharElementEditorInput;
+import org.d3s.alricg.editor.editors.dialoge.ShowDependenciesDialog;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
+import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.EditorViewUtils.DependencyProgressMonitor;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
 import org.d3s.alricg.editor.views.ViewModel;
@@ -86,44 +88,50 @@ public class CustomActions {
 	 */
 	public static class FilterCurrentFileAction extends Action implements ISelectionListener {
 		private final CurrentFileFilter filter = new CurrentFileFilter();
-		private TableViewer viewerTable;
-		private TreeViewer viewerTree;
+		private final Class clazz;
 		
-		public FilterCurrentFileAction(TableViewer viewerTable, TreeViewer viewerTree) {
+		public FilterCurrentFileAction(Class clazz) {
 			super("Tabelle Filtern", Action.AS_CHECK_BOX);
 			
-			this.viewerTable = viewerTable;
-			this.viewerTree = viewerTree;
+			this.clazz = clazz;
 			this.setToolTipText("Zeigt nur Elemente der aktuell selektierten Datei.");
 			this.setImageDescriptor(ControlIconsLibrary.filterTable.getImageDescriptor());
 		}
 		
 		@Override
 		public void run() {
+			final RefreshableViewPart view = 
+				(RefreshableViewPart) ViewEditorIdManager.getView(clazz);
+			if (view == null) return;
 			
 			if (this.isChecked()) {
-				viewerTable.addFilter(filter);
-				viewerTree.addFilter(filter);
+				view.getTableViewer().addFilter(filter);
+				view.getTreeViewer().addFilter(filter);
 			} else {
-				viewerTable.removeFilter(filter);
-				viewerTree.removeFilter(filter);
+				view.getTableViewer().removeFilter(filter);
+				view.getTreeViewer().removeFilter(filter);
 			}
 		}
 		
 		// Vom ISelectionListener - reagiert auf die Selektion im File-View
+		// und set das entsprechende File im Filter 
 		@Override
 		public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+			final RefreshableViewPart view = 
+				(RefreshableViewPart) ViewEditorIdManager.getView(clazz);
+			if (view == null) return;
+			
 			if (selection.isEmpty()) {
 				setCurrentFile(null);
-				viewerTable.refresh();
-				viewerTree.refresh();
+				view.getTableViewer().refresh();
+				view.getTreeViewer().refresh();
 				return;
 			}
 			
 			TreeObject treeObj = (TreeObject) ((TreeSelection) selection).getFirstElement();
 			setCurrentFile(((File) treeObj.getValue()));
-			viewerTable.refresh();
-			viewerTree.refresh();
+			view.getTableViewer().refresh();
+			view.getTreeViewer().refresh();
 		}
 		
 		public void setCurrentFile(File file) {
@@ -139,17 +147,15 @@ public class CustomActions {
 	public static class EditCharElementAction extends Action {
 		private final Composite parentComp;
 		private final String editorID;
-		private final RefreshableViewPart viewPart;
 		
 		/**
 		 * Konstruktor
 		 * @param parentComp Das Parent Composite von einem Tree/Table View
 		 * @param editorID Die ID des Editors, der zum bearbeiten geöffnet werden soll
 		 */
-		public EditCharElementAction(Composite parentComp, String editorID, RefreshableViewPart viewPart) {
+		public EditCharElementAction(Composite parentComp, String editorID) {
 			this.parentComp = parentComp;
 			this.editorID = editorID;
-			this.viewPart = viewPart;
 			
 			this.setText("Bearbeiten");
 			this.setToolTipText("Öffnet das selektierte Element zur Bearbeitung.");
@@ -166,10 +172,9 @@ public class CustomActions {
 			final IWorkbenchPage page = PlatformUI.getWorkbench()
 											.getActiveWorkbenchWindow().getActivePage();
 			
-			IEditorInput editorInput = new CharElementEditorInput(
+			final IEditorInput editorInput = new CharElementEditorInput(
 					(CharElement) treeTableObj.getValue(),
-					treeTableObj.getAccessor(),
-					viewPart);
+					treeTableObj.getAccessor());
 	
 			try {
 				page.openEditor(editorInput, editorID, true);
@@ -193,19 +198,16 @@ public class CustomActions {
 		private final Class clazz;
 		private final Composite parentComp;
 		private final String editorID;
-		private final RefreshableViewPart viewer;
 		
 		/**
 		 * Konstruktor
 		 */
 		public BuildNewCharElementAction(
-				Class clazz, 
-				RefreshableViewPart viewer,
 				Composite parentComp, 
-				String editorID) {
+				String editorID,
+				Class clazz) {
 			this.clazz = clazz;
 			this.parentComp = parentComp;
-			this.viewer = viewer;
 			this.editorID = editorID;
 			
 			this.setText("Neu erzeugen");
@@ -234,7 +236,7 @@ public class CustomActions {
 			// Öffnen Editor mit neuem CharElement
 			final IWorkbenchPage page = PlatformUI.getWorkbench()
 										.getActiveWorkbenchWindow().getActivePage();
-			final IEditorInput editorInput = new CharElementEditorInput(newCharElem, xmlAccessor, viewer);
+			final IEditorInput editorInput = new CharElementEditorInput(newCharElem, xmlAccessor);
 			
 			try {
 				page.openEditor(editorInput, editorID, true);
@@ -262,14 +264,14 @@ public class CustomActions {
 	 */
 	public static class DeleteCharElementAction extends Action {
 		private final Composite parentComp;
-		private final RefreshableViewPart view;
-		// TODO implement
+		private final Class clazz;
+		
 		/**
 		 * Konstruktor
 		 */
-		public DeleteCharElementAction(Composite parentComp, RefreshableViewPart view) {
+		public DeleteCharElementAction(Composite parentComp, Class clazz) {
 			this.parentComp = parentComp;
-			this.view = view;
+			this.clazz = clazz;
 			
 			this.setText("Löschen");
 			this.setToolTipText("Löscht das selektierte Element.");;
@@ -284,7 +286,8 @@ public class CustomActions {
 			if (!(ViewUtils.getSelectedObject(parentComp) instanceof EditorTreeOrTableObject)) {
 				return;
 			}
-			
+			final RefreshableViewPart view = 
+						(RefreshableViewPart) ViewEditorIdManager.getView(clazz);
 			final EditorTreeOrTableObject treeTableObj = 
 						(EditorTreeOrTableObject) ViewUtils.getSelectedObject(parentComp);
 			final DependencyProgressMonitor monitor = new DependencyProgressMonitor((CharElement) treeTableObj.getValue());
@@ -308,7 +311,11 @@ public class CustomActions {
 					return;
 				} else if (monitor.getDepList().size() > 0) {
 					// Kann nicht gelöscht werden, da Abhängigkeiten bestehen
-					// TODO Informationen anzeigen
+					final ShowDependenciesDialog depDialog = new ShowDependenciesDialog(
+							parentComp.getShell(),
+							(CharElement) treeTableObj.getValue(),
+							monitor.getDepList() );
+					depDialog.open();
 					return;
 				}
 				
@@ -330,7 +337,7 @@ public class CustomActions {
 				CharElementFactory.getInstance().deleteCharElement(
 						charElement,
 						treeTableObj.getAccessor());
-				view.refresh();
+				if (view != null) view.refresh();
 				
 				try {
 					StoreAccessor.getInstance().saveFile( treeTableObj.getAccessor() );

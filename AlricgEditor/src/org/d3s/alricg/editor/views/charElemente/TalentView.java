@@ -128,8 +128,9 @@ public class TalentView extends RefreshableViewPart {
 		// Inhalt und Sortierung setzen
 		treeViewer.setContentProvider(
 				new TreeViewContentProvider(EditorViewUtils.buildEditorViewTree(
-				StoreDataAccessor.getInstance().getXmlAccessors(), 
-				getRegulator())));
+						StoreDataAccessor.getInstance().getXmlAccessors(), 
+					getRegulator())
+				));
 		treeViewer.getTree().setSortDirection(SWT.DOWN);
 		treeViewer.setSorter(new CustomColumnViewerSorter.NameSorter());
 		treeViewer.setInput(getViewSite());
@@ -142,7 +143,6 @@ public class TalentView extends RefreshableViewPart {
 	 * @param parent
 	 */
 	protected TableViewer createTable(Composite parent) {
-
 
 		final TableViewer tableViewer = new TableViewer(parent,
 				SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -162,20 +162,17 @@ public class TalentView extends RefreshableViewPart {
 		tc.getColumn().setText("Name");
 		tc.setLabelProvider(new CustomColumnLabelProvider.NameLabelProvider());
 		tc.getColumn().setWidth(200);
-		tc.getColumn()
-				.addSelectionListener(
+		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.NameSorter(),
 								tableViewer));
 
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 1);
 		tc.getColumn().setText("Datei");
-		tc
-				.setLabelProvider(new CustomColumnLabelProvider.DateinameLabelProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.DateinameLabelProvider());
 		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn()
-				.addSelectionListener(
+		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.DateiSorter(),
 								tableViewer));
@@ -212,17 +209,14 @@ public class TalentView extends RefreshableViewPart {
 		});
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn()
-				.addSelectionListener(
+		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.SorteSorter(),
 								tableViewer));
 
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
 		tc.getColumn().setText("Probe");
-		ColumnViewerToolTipSupport.enableFor(tableViewer, ToolTip.NO_RECREATE);
-		tc
-				.setLabelProvider(new CustomColumnLabelProvider.EigenschaftLabelProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.EigenschaftLabelProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 
@@ -236,13 +230,14 @@ public class TalentView extends RefreshableViewPart {
 						new CustomColumnViewerSorter.SktSorter(), tableViewer));
 
 		// Inhalt und Sortierung setzen
-		tableViewer.setContentProvider(new TableViewContentProvider(
-				EditorViewUtils.buildTableView(
-				StoreDataAccessor.getInstance().getXmlAccessors(), 
-				getRegulator())));
+		tableViewer.setContentProvider(new TableViewContentProvider());
 		tableViewer.getTable().setSortDirection(SWT.UP);
 		tableViewer.setSorter(new CustomColumnViewerSorter.NameSorter());
-		tableViewer.setInput(getViewSite());
+		tableViewer.setInput(
+				EditorViewUtils.buildTableView(
+					StoreDataAccessor.getInstance().getXmlAccessors(), 
+					getRegulator())
+				);
 
 		return tableViewer;
 	}
@@ -253,7 +248,7 @@ public class TalentView extends RefreshableViewPart {
 		swapTreeTable = new SwapTreeTableAction(this.parentComp);
 
 		// Tabelle nach File Filtern Action
-		filterAktuellesFile = new FilterCurrentFileAction(viewerTable, viewerTree);
+		filterAktuellesFile = new FilterCurrentFileAction(Talent.class);
 
 		// Information anzeigen Action
 		showInfos = new InfoCharElementAction() {
@@ -264,7 +259,7 @@ public class TalentView extends RefreshableViewPart {
 
 		// Neues Element Action 
 		buildNew = new BuildNewCharElementAction(
-						Talent.class, this, this.parentComp, TalentEditor.ID) {
+						this.parentComp, TalentEditor.ID, Talent.class) {
 
 			@Override
 			protected void runForTreeView(CharElement newCharElem, TreeObject treeObj) {
@@ -279,10 +274,10 @@ public class TalentView extends RefreshableViewPart {
 			}};
 		
 		// Element Bearbeiten Action
-		editSelected = new EditCharElementAction(this.parentComp, TalentEditor.ID, this);
+		editSelected = new EditCharElementAction(this.parentComp, TalentEditor.ID);
 		
 		// Element löschen Action
-		deleteSelected = new DeleteCharElementAction(this.parentComp, this);
+		deleteSelected = new DeleteCharElementAction(this.parentComp, Talent.class);
 	}
 
 	/* (non-Javadoc)

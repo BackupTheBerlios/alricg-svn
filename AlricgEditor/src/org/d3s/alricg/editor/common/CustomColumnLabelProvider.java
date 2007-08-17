@@ -7,7 +7,7 @@
  */
 package org.d3s.alricg.editor.common;
 
-import org.d3s.alricg.editor.common.ViewUtils.TableObject;
+import org.d3s.alricg.common.CharElementNamesService;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
@@ -27,33 +27,22 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Vincent
- *
  */
 public class CustomColumnLabelProvider {
-
+	
 	/**
-	 * Liefert zu einem TreeObject/TableObject mit CharElement oder Link,
-	 * oder einem  CharElement oder Link direkt das zugehörige CharElement. 
-	 * Gibt es KEIN zugehöriges CharElement, so wird "null" zurückgeliefert.
-	 * 
-	 * @param element TreeObject/TableObject/CharElement oder Link
-	 * @return Das zugehörige CharElement oder "null" wenn keines existiert
+	 * Zeigt die Klasse (also "Talent", "Zauber", "Vorteil", ...) zu einem
+	 * CharElement an.
+	 * @author Vincent
 	 */
-	protected static CharElement getCharElement(Object element) {
-		
-		if (element instanceof TreeObject) {
-			element = ((TreeObject)element).getValue();
-		} else if (element instanceof TableObject) {
-			element = ((TableObject)element).getValue();
+	public static class CharElementKlassenLabelProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			CharElement chatEle = ViewUtils.getCharElement(element);
+			if (chatEle == null) return "";
+			
+			return CharElementNamesService.getCharElementName(chatEle.getClass());
 		}
-		
-		if (element instanceof Link) {
-			return ((Link) element).getZiel();
-		} else if (element instanceof CharElement) {
-			return (CharElement) element;
-		}
-		
-		return null;
 	}
 	
 	/**
@@ -68,6 +57,7 @@ public class CustomColumnLabelProvider {
 			}
 			
 			final StringBuilder strBuilder = new StringBuilder();
+			final StringBuilder strBuilderZustaz = new StringBuilder();
 			final Option option = (Option) ((TreeObject)element).getValue();
 			final TreeObject[] siblings = ((TreeObject)element).getParent().getChildren();;
 			
@@ -85,26 +75,76 @@ public class CustomColumnLabelProvider {
 				strBuilder.append("Alternative ");
 			}
 			
-			
 			if (option instanceof OptionVoraussetzung) {
 				strBuilder.append("Voraussetzung");
+				
+				if ( ((OptionVoraussetzung) option).getWert() > 0 ) {
+					strBuilderZustaz.append(" (")
+						.append("Ab Wert ")
+						.append(((OptionVoraussetzung) option).getWert());
+				}
+				if ( ((OptionVoraussetzung) option).getAnzahl() > 0 ) {
+					if (strBuilderZustaz.length() == 0) {
+						strBuilderZustaz.append(" (");
+					} else {
+						strBuilderZustaz.append(",");
+					}
+					strBuilderZustaz.append("Nötig ")
+						.append(((OptionVoraussetzung) option).getAnzahl());
+				}
+				if (strBuilderZustaz.length() > 0) {
+					strBuilderZustaz.append(")");
+				}
+				
 			} else if (option instanceof OptionAnzahl) {
 				strBuilder.append("Auswahl Anzahl");
+				if ( ((OptionAnzahl) option).getAnzahl() > 0 ) {
+					strBuilderZustaz.append(" (").
+							append( ((OptionAnzahl) option).getAnzahl()).
+							append(")");
+				}
+				
 			} else if (option instanceof OptionListe) {
 				strBuilder.append("Auswahl Liste");
+				int[] wertListe = ((OptionListe) option).getWerteListe();
+				if ( ((OptionListe) option).getWerteListe() != null) {
+					strBuilderZustaz.append(" (");
+					for (int i = 0; i < wertListe.length; i++) {
+						strBuilderZustaz.append(wertListe[i]);
+						if ( i < (wertListe.length-1) ) {
+							strBuilderZustaz.append(",");
+						}
+					}
+					strBuilderZustaz.append(")");
+				}
+
 			} else if (option instanceof OptionVerteilung) {
 				strBuilder.append("Auswahl Verteilung");
+				strBuilderZustaz.append(" (")
+					.append( ((OptionVerteilung) option).getWert() )
+					.append(" Punkte");
+				if (((OptionVerteilung) option).getAnzahl() > 0) {
+					strBuilderZustaz.append(" auf ")
+					.append(((OptionVerteilung) option).getAnzahl());
+				}
+				if (((OptionVerteilung) option).getMax() > 0) {
+					strBuilderZustaz.append(", Max. je ")
+					.append(((OptionVerteilung) option).getMax());
+				}
+				strBuilderZustaz.append(")");
+				
 			} else {
 				throw new IllegalArgumentException("Parameter-Klasse" + option.getClass() + " konnte nicht gefunden werden!");
 			}
-			strBuilder.append(" ").append(counter);
+			strBuilder.append(" ").append(counter).append(strBuilderZustaz.toString());
 			
 			return strBuilder.toString();
 		}
 		
 		@Override
 		public Image getImage(Object obj) {
-			if (((TreeObject)obj).getValue() instanceof Option) {
+			if (((TreeObject)obj).getValue() instanceof Option
+					|| ((TreeObject)obj).getValue() instanceof String) {
 				return PlatformUI.getWorkbench().getSharedImages().getImage(
 						ISharedImages.IMG_OBJ_FOLDER);
 			}
@@ -119,7 +159,7 @@ public class CustomColumnLabelProvider {
 	public static class NameLabelProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
-			CharElement chatEle = CustomColumnLabelProvider.getCharElement(element);
+			CharElement chatEle = ViewUtils.getCharElement(element);
 			if (chatEle == null) return ((TreeObject)element).getValue().toString();
 			
 			return chatEle.getName();
@@ -144,14 +184,14 @@ public class CustomColumnLabelProvider {
 	public static class EigenschaftLabelProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
-			CharElement chatEle = CustomColumnLabelProvider.getCharElement(element);
+			CharElement chatEle = ViewUtils.getCharElement(element);
 			if (chatEle == null) return "";
 			
 			return ((Faehigkeit) chatEle).get3EigenschaftenString();
 		}
 		@Override
 		public String getToolTipText(Object element) {
-			CharElement charElem = CustomColumnLabelProvider.getCharElement(element);
+			CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) super.getToolTipText(element);
 			
 			StringBuilder builder = new StringBuilder();
@@ -201,7 +241,7 @@ public class CustomColumnLabelProvider {
 	public static class SKTLabelProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
-			final CharElement charElem = CustomColumnLabelProvider.getCharElement(element);
+			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return "";
 
 			return ((Faehigkeit) charElem).getKostenKlasse().toString();
@@ -209,7 +249,7 @@ public class CustomColumnLabelProvider {
 		
 		@Override
 		public String getToolTipText(Object element) {
-			final CharElement charElem = CustomColumnLabelProvider.getCharElement(element);
+			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null)  super.getToolTipText(element);
 			
 			StringBuilder builder = new StringBuilder();
@@ -227,6 +267,7 @@ public class CustomColumnLabelProvider {
 	public static class LinkWertProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
+			element = ((TreeObject) element).getValue();
 			if (element instanceof Link) {
 				if ( ((Link) element).getWert() == Link.KEIN_WERT) {
 					return "-";
@@ -244,6 +285,7 @@ public class CustomColumnLabelProvider {
 	public static class LinkTextProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
+			element = ((TreeObject) element).getValue();
 			if (element instanceof Link) {
 				if ( ((Link) element).getText() != null) {
 					return ((Link) element).getText();
@@ -251,6 +293,8 @@ public class CustomColumnLabelProvider {
 			}
 			return "";
 		}
+		
+		
 	}
 	
 	/**
@@ -260,12 +304,14 @@ public class CustomColumnLabelProvider {
 	public static class LinkZweitZielProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
+			element = ((TreeObject) element).getValue();
 			if (element instanceof Link) {
 				if ( ((Link) element).getZweitZiel() != null) {
 					return ((Link) element).getZweitZiel().getName();
 				}
+				return "-";
 			}
-			return "-";
+			return "";
 		}
 	}
 }

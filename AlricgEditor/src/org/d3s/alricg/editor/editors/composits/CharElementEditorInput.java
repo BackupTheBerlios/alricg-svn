@@ -5,7 +5,7 @@
  * protected and under the GNU General Public License.
  * For more information see "http://www.alricg.de/".
  */
-package org.d3s.alricg.editor.utils;
+package org.d3s.alricg.editor.editors.composits;
 
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.IdFactory;
@@ -22,13 +22,11 @@ import org.eclipse.ui.IPersistableElement;
 public class CharElementEditorInput implements IEditorInput {
 	private final CharElement charElement;
 	private final XmlAccessor xmlAccessor;
-	private final RefreshableViewPart view;
 	private final String id;
 	
-	public CharElementEditorInput(CharElement charElement, XmlAccessor xmlAccessor, RefreshableViewPart view) {
+	public CharElementEditorInput(CharElement charElement, XmlAccessor xmlAccessor) {
 		this.charElement = charElement;
 		this.xmlAccessor = xmlAccessor;
-		this.view = view;
 		this.id = charElement.getId();
 	}
 	
@@ -62,8 +60,6 @@ public class CharElementEditorInput implements IEditorInput {
 			return this.charElement;
 		} else if (XmlAccessor.class.isAssignableFrom(adapter)) {
 			return this.xmlAccessor;
-		} else if (RefreshableViewPart.class.isAssignableFrom(adapter)) {
-			return this.view;
 		}
 
 		return null;

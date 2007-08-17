@@ -10,12 +10,12 @@ package org.d3s.alricg.editor.views.charElemente;
 import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
-import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
 import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.FileView;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -134,6 +135,10 @@ public abstract class RefreshableViewPart extends ViewPart {
 		manager.add(this.buildNew);
 		manager.add(this.editSelected);
 		manager.add(this.deleteSelected);
+		/* Um die Warnung
+		 * Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'
+		 * im Log zu verhindern */ 
+		manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	/*

@@ -19,6 +19,7 @@ import org.d3s.alricg.editor.editors.composits.CharElementPart;
 import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
 import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
+import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
@@ -327,7 +328,8 @@ public class TalentEditor extends MultiPageEditorPart {
 		final XmlAccessor oldAccessor = currentAccessor;
 		final Talent talent = (Talent) this.getEditorInput().getAdapter(Talent.class);
 		final RefreshableViewPart viewPart = 
-				(RefreshableViewPart) this.getEditorInput().getAdapter(RefreshableViewPart.class);
+				(RefreshableViewPart) ViewEditorIdManager.getView(Talent.class);
+				// (RefreshableViewPart) this.getEditorInput().getAdapter(RefreshableViewPart.class);
 		
 		// Save to Charelement
 		this.charElementPart.saveData(monitor, talent);
@@ -345,13 +347,13 @@ public class TalentEditor extends MultiPageEditorPart {
 				oldAccessor);
 		// 2. Element zu Ansicht neu hinzufügen
 		currentAccessor = this.charElementPart.getSelectedXmlAccessor();
+		CharElementFactory.getInstance().addCharElement(talent, currentAccessor);
 		EditorViewUtils.addElementToView(
 				viewPart, 
 				talent, 
 				currentAccessor);
-		CharElementFactory.getInstance().addCharElement(talent, currentAccessor);
 		// 3. Ansicht aktualisieren
-		viewPart.refresh();
+		if (viewPart != null) viewPart.refresh();
 		
 		// Save to File
 		monitor.subTask("Save Talent File");

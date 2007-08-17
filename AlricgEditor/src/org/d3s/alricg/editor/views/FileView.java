@@ -16,6 +16,7 @@ import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -225,6 +226,10 @@ public class FileView extends ViewPart {
 		manager.add(this.createNewFile);
 		manager.add(this.renameFile);
 		manager.add(this.deleteFile);
+		/* Um die Warnung
+		 * Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'
+		 * im Log zu verhindern */
+		manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {

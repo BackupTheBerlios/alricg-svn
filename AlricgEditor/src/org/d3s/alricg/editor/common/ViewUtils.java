@@ -13,7 +13,10 @@ import java.util.List;
 
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.editors.composits.AbstarctElementPart;
+import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
+import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.links.Link;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -45,10 +48,43 @@ import org.eclipse.ui.IWorkbenchPartSite;
  */
 public class ViewUtils {
 	
+	/**
+	 * Liefert zu einem TreeObject/TableObject mit CharElement oder Link,
+	 * oder einem  CharElement oder Link direkt das zugehörige CharElement. 
+	 * Gibt es KEIN zugehöriges CharElement, so wird "null" zurückgeliefert.
+	 * 
+	 * @param element TreeObject/TableObject/CharElement oder Link
+	 * @return Das zugehörige CharElement oder "null" wenn keines existiert
+	 */
+	public static CharElement getCharElement(Object element) {
+		
+		if (element instanceof TreeObject) {
+			element = ((TreeObject)element).getValue();
+		} else if (element instanceof TableObject) {
+			element = ((TableObject)element).getValue();
+		}
+		
+		if (element instanceof Link) {
+			return ((Link) element).getZiel();
+		} else if (element instanceof CharElement) {
+			return (CharElement) element;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Der "kleinste gemeinsamme Nenner" von TreeObject und TableObject
+	 * @author Vincent
+	 */
 	public static interface TreeOrTableObject {
 		public Object getValue();
 	}
 	
+	/**
+	 * Object um in einem TableViewer dargestellt zu werden.
+	 * @author Vincent
+	 */
 	public static class TableObject implements TreeOrTableObject {
 		private final Object value;
 		
@@ -68,7 +104,7 @@ public class ViewUtils {
 	public static class TreeObject implements TreeOrTableObject {
 		private TreeObject[] children;
 		private TreeObject parent;
-		private final Object value;
+		private Object value;
 		
 		public TreeObject(Object value, TreeObject parent) {
 			this.value = value;
@@ -77,6 +113,9 @@ public class ViewUtils {
 		
 		public Object getValue() {
 			return value;
+		}
+		public void setValue(Object value) {
+			this.value = value;
 		}
 		public TreeObject getParent() {
 			return parent;
@@ -147,6 +186,10 @@ public class ViewUtils {
 		return value;
 	}
 	
+	/**
+	 * Steuert die Anzeige von TreeObjects in einem TreeView
+	 * @author Vincent
+	 */
 	public static class TreeViewContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
 		private TreeObject invisibleRoot;
@@ -192,13 +235,14 @@ public class ViewUtils {
 		}
 	}
 
-	
+	/**
+	 * Steuert die Anzeige von TableObjects in einem TableView
+	 * @author Vincent
+	 */
 	public static class TableViewContentProvider implements IStructuredContentProvider {
 		private List<? extends TableObject> list;
 
-		public TableViewContentProvider(List<? extends TableObject> list) {
-			this.list = list;
-		}
+		public TableViewContentProvider() {	}
 
 		public List<? extends TableObject> getElementList() {
 			return list;
@@ -216,7 +260,8 @@ public class ViewUtils {
 
 		@Override
 		public Object[] getElements(Object inputElement) {
-			if (inputElement instanceof IViewSite) {
+			if (inputElement != null) {
+				list = (List<? extends TableObject>) inputElement;
 				return list.toArray(new TableObject[list.size()]);
 			}
 			return null;
@@ -224,7 +269,8 @@ public class ViewUtils {
 	}
 
 	/**
-	 * Konfigurierbarer SelectionListener für alle Columns
+	 * Konfigurierbarer SelectionListener für alle Columns.
+	 * Ändert bei Klick die Sortierrichtung der Elemente
 	 * @author Vincent
 	 */
 	public static class ViewerSelectionListener implements SelectionListener {
@@ -290,7 +336,7 @@ public class ViewUtils {
 	}
 	
 	/**
-	 * DragSourceListener für Trees und Tabellen um CharElemente zu "Dragen"
+	 * DragSourceListener für Trees und Tabellen um CharElemente zu "Drag'en"
 	 * @author Vincent
 	 */
 	public static class CharElementDragSourceListener implements DragSourceListener {

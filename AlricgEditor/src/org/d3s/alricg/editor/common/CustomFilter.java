@@ -30,7 +30,7 @@ public class CustomFilter {
 	 * @return Das zugehörige CharElement oder "null" wenn keines existiert
 	 */
 	private static CharElement getCharElement(Object element) {
-		return CustomColumnLabelProvider.getCharElement(element);
+		return ViewUtils.getCharElement(element);
 	}
 	
 	public static class CurrentFileFilter extends ViewerFilter {
