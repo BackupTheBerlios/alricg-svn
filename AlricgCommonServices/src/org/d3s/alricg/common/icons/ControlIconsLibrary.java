@@ -20,6 +20,7 @@ public enum ControlIconsLibrary {
 	
 // Elemente bearbeiten
 	add("add.png"),
+	addFolder("folder_add.png"),
 	delete("cross.png"),
 	edit("pencil.png"),
 	setPageAsAdd("page_add.png"),
@@ -28,7 +29,8 @@ public enum ControlIconsLibrary {
 // Tabellen
 	swapTree_Table("table_relationship.png"),
 	filterTable("table_sort.png"),
-	table("table.png");
+	table("table.png"),
+	tableDelete("table_delete.png");
 	
 	private ImageDescriptor icon16;
 	private static final String PATH = "controls/"; // "ImageService.BASE_IMAGEPATH" ging leider nicht
