@@ -7,6 +7,7 @@
  */
 package org.d3s.alricg.store.charElemente.links;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -76,7 +77,21 @@ public abstract class AbstractOption<ZIEL extends CharElement> implements Option
 	@Override
 	public void setLinkList(List<IdLink<ZIEL>> linkList) {
 		this.linkList = linkList;
-		
+	}
+	
+	/**
+	 * Hilfsfunktion für die copyOption Methoden
+	 * @param opt Option zum modifizieren
+	 */
+	protected void copyBasicValues(Option opt) {
+		if (opt.getAlternativOption() != null) {
+			opt.setAlternativOption(getAlternativOption().copyOption());
+		}
+		if (opt.getLinkList() != null) {
+			List<IdLink> tmpList = new ArrayList<IdLink>();
+			tmpList.addAll(opt.getLinkList());
+			opt.setLinkList(tmpList);
+		}
 	}
 
 }

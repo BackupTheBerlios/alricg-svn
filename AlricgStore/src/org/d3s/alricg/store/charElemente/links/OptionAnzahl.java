@@ -8,6 +8,9 @@
  */
 package org.d3s.alricg.store.charElemente.links;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -124,5 +127,14 @@ public class OptionAnzahl extends AbstractOption implements Option {
 			);
 	}
 
+	@Override
+	public Option copyOption() {
+		Option opt = new OptionAnzahl();
+		opt.setAnzahl(anzahl);
+		
+		this.copyBasicValues(opt);
+		
+		return opt;
+	}
 
 }

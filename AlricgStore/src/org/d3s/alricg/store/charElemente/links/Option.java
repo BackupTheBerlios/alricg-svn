@@ -167,5 +167,10 @@ public interface Option<ZIEL extends CharElement> {
 	 */
 	public abstract void setWert(int wert);
 
+	/**
+	 * Erstellt eine neue Option mit allen Werten dieser Option
+	 * @return Kopie dieser Option
+	 */
+	public abstract Option copyOption();
 
 }

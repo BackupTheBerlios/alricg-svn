@@ -8,6 +8,8 @@
  */
 package org.d3s.alricg.store.charElemente.links;
 
+import java.util.Arrays;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -57,7 +59,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class OptionVerteilung extends AbstractOption implements Option  {
     private int max;
     private int anzahl;
-    private int werte;
+    private int wert;
     
 	@Override
 	@XmlAttribute
@@ -84,12 +86,12 @@ public class OptionVerteilung extends AbstractOption implements Option  {
 	@Override
 	@XmlAttribute
 	public int getWert() {
-		return werte;
+		return wert;
 	}
 
 	@Override
 	public void setWert(int wert) {
-		this.werte = wert;
+		this.wert = wert;
 	}
 
 	
@@ -106,6 +108,18 @@ public class OptionVerteilung extends AbstractOption implements Option  {
 		throw new UnsupportedOperationException(
 				"Diese Methode wird im Modus \"Verteilung\" nicht unterstützt!"
 			);
+	}
+	
+	@Override
+	public Option copyOption() {
+		Option opt = new OptionVerteilung();
+		opt.setMax(max);
+		opt.setAnzahl(anzahl);
+		opt.setWert(wert);
+		
+		this.copyBasicValues(opt);
+		
+		return opt;
 	}
 
 }

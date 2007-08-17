@@ -63,6 +63,14 @@ public class IdLink<ZIEL extends CharElement> extends Link<ZIEL> {
 		this.quelle = quelle;
 	}
 
-    
+	/**
+	 * Erstellt eine Kopie des Links
+	 * @return Eine Kopie: Anderes Object, gleicht werte!
+	 */
+    public IdLink copyLink() {
+    	IdLink copy =  new IdLink(this.quelle, getZiel(), getZweitZiel(), getWert(), getText());
+    	copy.setLeitwert(isLeitwert());
+    	return copy;
+    }
     
 }

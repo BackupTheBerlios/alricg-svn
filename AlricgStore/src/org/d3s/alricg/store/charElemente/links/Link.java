@@ -169,6 +169,7 @@ public abstract class Link<ZIEL extends CharElement> {
 	 * @return true - Der übergebene link ist das gleiche Element, ansonsten false 
 	 */
 	public boolean isEqualLink(Link link) {
+		if (link == null) return false;
 		return isEqualLink(link.getZiel().getId(), link.getText(), link.getZweitZiel());
 	}
 	

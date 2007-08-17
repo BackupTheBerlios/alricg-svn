@@ -9,12 +9,6 @@ package org.d3s.alricg.store.charElemente.links;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlSchemaType;
-
-import org.d3s.alricg.store.charElemente.CharElement;
-
 /**
  * Beschreibt Bedingungen die erfüllt sein müssen, damit ein Element, das diese 
  * Voraussetzug besitzt, zum Helden hinzugefügt werden kann. Voraussetzungen können
@@ -56,7 +50,7 @@ public class Voraussetzung {
 	public List<OptionVoraussetzung> getNegVoraussetzung() {
 		return negVoraussetzung;
 	}
-	public void setNegVoraussetzungen(List<OptionVoraussetzung> negVoraussetzung) {
+	public void setNegVoraussetzung(List<OptionVoraussetzung> negVoraussetzung) {
 		this.negVoraussetzung = negVoraussetzung;
 	}
 

@@ -104,10 +104,8 @@ public class UnMarschall {
 			xmlAccessor = null;
 			xmlAccessor = (XmlAccessor) unmarshaller.unmarshal(testFile);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -216,24 +214,24 @@ public class UnMarschall {
 		OptionVoraussetzung[] optVor = new OptionVoraussetzung[5];
 		
 		optVor[0] = new OptionVoraussetzung();
-		optVor[0].setAbWert(10);
+		optVor[0].setWert(10);
 		optVor[0].setAnzahl(0);
 		optVor[0].setLinkList(idLinkListArray[0]);
 		
 		optVor[1] = new OptionVoraussetzung();
-		optVor[1].setAbWert(0);
+		optVor[1].setWert(0);
 		optVor[1].setAnzahl(0);
 		optVor[1].setLinkList(idLinkListArray[1]);
 		optVor[0].setAlternativOption(optVor[1]);
 		
 		optVor[2] = new OptionVoraussetzung();
-		optVor[2].setAbWert(15);
+		optVor[2].setWert(15);
 		optVor[2].setAnzahl(3);
 		optVor[2].setLinkList(idLinkListArray[2]);
 		optVor[1].setAlternativOption(optVor[2]);
 		
 		optVor[3] = new OptionVoraussetzung();
-		optVor[3].setAbWert(16);
+		optVor[3].setWert(16);
 		optVor[3].setAnzahl(4);
 		optVor[3].setLinkList(idLinkListArray[3]);
 		
@@ -265,10 +263,8 @@ public class UnMarschall {
 			xmlAccessor = null;
 			xmlAccessor = (XmlAccessor) unmarshaller.unmarshal(testFile);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -282,7 +278,7 @@ public class UnMarschall {
 		
 		Assert.assertEquals(5, xmlAccessor.getEigenschaftList().size());
 		Assert.assertEquals(3, voraus.getPosVoraussetzung().size());
-		Assert.assertEquals(10, voraus.getPosVoraussetzung().get(0).getAbWert());
+		Assert.assertEquals(10, voraus.getPosVoraussetzung().get(0).getWert());
 		Assert.assertEquals(0, voraus.getPosVoraussetzung().get(0).getAnzahl());
 		
 		linkList = voraus.getPosVoraussetzung().get(0).getLinkList();
@@ -295,7 +291,7 @@ public class UnMarschall {
 		Assert.assertEquals(linkList.get(0).getZweitZiel(), linkList.get(1).getZiel());
 		
 		Assert.assertEquals(15, ((OptionVoraussetzung) voraus.getPosVoraussetzung().get(0)
-									.getAlternativOption().getAlternativOption()).getAbWert());
+									.getAlternativOption().getAlternativOption()).getWert());
 		
 	}
 	
@@ -358,10 +354,8 @@ public class UnMarschall {
 			xmlAccessor = null;
 			xmlAccessor = (XmlAccessor) unmarshaller.unmarshal(testFile);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -483,10 +477,8 @@ public class UnMarschall {
 			xmlAccessor = null;
 			xmlAccessor = (XmlAccessor) unmarshaller.unmarshal(testFile);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -586,10 +578,8 @@ public class UnMarschall {
 			xmlAccessor = null;
 			xmlAccessor = (XmlAccessor) unmarshaller.unmarshal(testFile);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -652,10 +642,8 @@ public class UnMarschall {
 			xmlAccessor = null;
 			xmlAccessor = (XmlAccessor) unmarshaller.unmarshal(testFile);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -816,10 +804,8 @@ public class UnMarschall {
 			xmlAccessor = null;
 			xmlAccessor = (XmlAccessor) unmarshaller.unmarshal(testFile);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

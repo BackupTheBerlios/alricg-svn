@@ -8,6 +8,8 @@
  */
 package org.d3s.alricg.store.charElemente.links;
 
+import java.util.Arrays;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlList;
@@ -121,6 +123,16 @@ public class OptionListe extends AbstractOption implements Option  {
 		throw new UnsupportedOperationException(
 				"Diese Methode wird im Modus \"Liste\" nicht unterstützt!"
 			);
+	}
+	
+	@Override
+	public Option copyOption() {
+		Option opt = new OptionListe();
+		opt.setWerteListe(Arrays.copyOf(getWerteListe(), getWerteListe().length));
+		
+		this.copyBasicValues(opt);
+		
+		return opt;
 	}
 
 }
