@@ -15,7 +15,6 @@ import org.d3s.alricg.store.access.IdFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.Talent;
-import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

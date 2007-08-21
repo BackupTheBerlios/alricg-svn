@@ -192,23 +192,12 @@ public abstract class CharElement implements Comparable<CharElement> {
             LOG.severe("Sonderregel konnte nicht instantziert werden!" + "\n " + e.getMessage());
         }
         return null;
-    }
-
-    /**
-     * @return true - Dieses CharElement verfügt über eine Sonderregel, ansonsten false
-     *
-    public boolean hasSonderregel() {
-        // Prüfen ob es überhaupt eine SR gibt
-        if (sonderregel == null) {
-            return false;
-        }
-        return true;
-    }
+    }*/
     
-
+	@XmlTransient
     public Sonderregel getSonderregel() {
         return sonderregel;
-    }*/
+    }
 
     /**
      * Methode überschrieben

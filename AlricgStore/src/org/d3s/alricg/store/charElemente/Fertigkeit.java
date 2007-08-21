@@ -8,6 +8,7 @@
 package org.d3s.alricg.store.charElemente;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlSchemaType;
 
 
@@ -18,8 +19,29 @@ import javax.xml.bind.annotation.XmlSchemaType;
  * @author V.Strelow
  */
 public abstract class Fertigkeit extends CharElement {
+	@XmlEnum
+	public enum FertigkeitArt {
+		allgemein("allgemein"),
+		waffenloskampf("waffenlosKampf"), 
+		bewaffnetkampf("bewaffnetKampf"), 
+		magisch("magisch"), 
+		geweiht("geweiht"), 
+		schamanisch("schamanisch"), 
+		sonstige("sonstige");
+		private String value; // Value des Elements
+		
+		private FertigkeitArt(String value) {
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+	}
+	
     private Werte.CharArten[] fuerWelcheChars; // Welche Chars diese Fertigkeit wählen können
-   
+	private FertigkeitArt art;
+	
     private boolean isMitFreienText = false; // Gibt es noch einen frei zu wählenden Text zu der Fertigkeit? (Vorurteile gegen "Orks")
     private String[] textVorschlaege; // Eine Liste Möglicher angaben für den Text
     // Es ist möglich das eine Fertigkeit "hasFreienText = false" ist, aber Text Vorschläge besitzt
@@ -117,6 +139,19 @@ public abstract class Fertigkeit extends CharElement {
 		return gpKosten;
 	}
 
+	/**
+	 * @return Liefert das Attribut art.
+	 */
+	public FertigkeitArt getArt() {
+		return art;
+	}
+	/**
+	 * @param art Setzt das Attribut art.
+	 */
+	public void setArt(FertigkeitArt art) {
+		this.art = art;
+	}
+	
 	/**
 	 * @param gpKosten the gpKosten to set
 	 */

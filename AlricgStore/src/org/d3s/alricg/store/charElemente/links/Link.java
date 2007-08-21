@@ -184,15 +184,27 @@ public abstract class Link<ZIEL extends CharElement> {
 	 */
 	public boolean isEqualLink(String id, String text, CharElement zweitZiel) {
 		// Prüft ob zielId, text und linkId gleich sind, nur dann "true"
+		
+		// Ziel Prüfen
 		if ( !ziel.getId().equals(id) ) {
 			return false;
-		} else if ( text != null && !this.text.equals(text) ) {
+		}
+			
+		// Text prüfen
+		if (text == null && this.text == null) {
+			// Noop
+		} else if (text == null || this.text == null ) {
 			return false;
-		} else if ( zweitZiel == null && zweitZiel == null ) {
+		} else if (!this.text.equals(text)) {
+			return false;
+		}
+		
+		// ZweitZiel Prüfen
+		if ( zweitZiel == null && this.zweitZiel == null ) {
 			return true; 
-		} else if ( zweitZiel == null || zweitZiel == null ) {
+		} else if ( zweitZiel == null || this.zweitZiel == null ) {
 			return false; 
-		} else if ( !zweitZiel.equals(zweitZiel) ) {
+		} else if ( !zweitZiel.equals(this.zweitZiel) ) {
 			return false;
 		}
 		

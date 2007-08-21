@@ -70,7 +70,7 @@ public class Werte {
 	@XmlEnum
 	public enum MagieMerkmal {
 		// TODO MagieMerkmal korregieren
-		antimagie("Antimagie"),
+		antimagie("antimagie"),
 		beschwoerung("beschwoerung"),
 		daemonisch("daemonisch"),
 		daemonischBlakharaz("daemonisch (blakharaz)"),
@@ -217,29 +217,30 @@ public class Werte {
 	 */
 	@XmlEnum
 	public enum EigenschaftEnum {
-		MU("Mut", "MU", "EIG-MU"),
-		KL("Klugheit", "KL", "EIG-KL"),
-		IN("Intuition", "IN", "EIG-IN"),
-		CH("Charisma", "CH", "EIG-CH"),
-		FF("Fingerfertigkeit", "FF", "EIG-FF"),
-		GE("Gewandheit", "GE", "EIG-GE"),
-		KO("Konstitution", "KO", "EIG-KO"),
-		KK("Koerperkraft", "KK", "EIG-KK"),
-		SO("Sozialstatus", "SO", "EIG-SO"),
-		MR("Magieresistenz", "MR", "EIG-MR"),
-		LEP("Lebenspunkte", "LeP", "EIG-Lep"),
-		ASP("Astralpunkte", "AsP", "EIG-AsP"),
-		AUP("Ausdauerpunkt", "AuP", "EIG-AuP"),
-		KA("Karmaernergie", "KA", "EIG-KA"),
-		GS("Geschwindigkeit", "GS", "EIG-GS"),
-		INI("Initiative", "INI", "EIG-INI"),
-		FK("FernkampfBasis", "FK", "EIG-FK"),
-		AT("AttackeBasis", "AT", "EIG-AT"),
-		PA("ParadeBasis", "PA", "EIG-PA");
+		MU("Mut", "MU", "Basis", "EIG-MU"),
+		KL("Klugheit", "KL", "Basis", "EIG-KL"),
+		IN("Intuition", "IN", "Basis","EIG-IN"),
+		CH("Charisma", "CH", "Basis","EIG-CH"),
+		FF("Fingerfertigkeit", "FF", "Basis", "EIG-FF"),
+		GE("Gewandheit", "GE", "Basis","EIG-GE"),
+		KO("Konstitution", "KO", "Basis","EIG-KO"),
+		KK("Koerperkraft", "KK", "Basis","EIG-KK"),
+		SO("Sozialstatus", "SO", "Erweitert", "EIG-SO"),
+		MR("Magieresistenz", "MR", "Errechnet", "EIG-MR"),
+		LEP("Lebenspunkte", "LeP", "Errechnet", "EIG-Lep"),
+		ASP("Astralpunkte", "AsP", "Errechnet", "EIG-AsP"),
+		AUP("Ausdauerpunkt", "AuP", "Errechnet", "EIG-AuP"),
+		KA("Karmaernergie", "KaP", "Errechnet", "EIG-KA"),
+		GS("Geschwindigkeit", "GS", "Erweitert", "EIG-GS"),
+		INI("Initiative", "INI", "Errechnet", "EIG-INI"),
+		FK("FernkampfBasis", "FK", "Errechnet", "EIG-FK"),
+		AT("AttackeBasis", "AT", "Errechnet", "EIG-AT"),
+		PA("ParadeBasis", "PA", "Errechnet", "EIG-PA");
 
 		private String name; // Voller Name der Eigenschaft
 		private String abk; // Abkürzung der Eigenschaft
 		private String id; // ID der Eigenschaft
+		private String sammelbegriff; // 
 		private Eigenschaft eigenschaftCharElement;
 
 		/**
@@ -248,7 +249,7 @@ public class Werte {
 		 * @param abkuerzung
 		 *            Key für Library für die Akkürzung des Namens
 		 */
-		private EigenschaftEnum(String name, String abk, String id) {
+		private EigenschaftEnum(String name, String abk, String sammelbegriff, String id) {
 			// TODO Lokalisierung der Strings
 			// name =
 			// FactoryFinder.find().getLibrary().getShortTxt(bezeichnung);
@@ -256,6 +257,7 @@ public class Werte {
 			this.name = name;
 			this.abk = abk;
 			this.id = id;
+			this.sammelbegriff = sammelbegriff;
 		}
 
 		/**
@@ -325,6 +327,10 @@ public class Werte {
 		 */
 		public static int getAnzahlEigenschaften() {
 			return EigenschaftEnum.values().length;
+		}
+
+		public String getSammelbegriff() {
+			return sammelbegriff;
 		}
 	}
 

@@ -14,6 +14,7 @@ import org.d3s.alricg.store.access.hide.DependecySearcher;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
+import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Herkunft;
@@ -243,6 +244,7 @@ public class CharElementFactory {
 			
 		} else if (clazz == Vorteil.class) {
 			charElem = new Vorteil();
+			((Fertigkeit) charElem).setArt(Fertigkeit.FertigkeitArt.allgemein);
 			
 			addToList((Vorteil) charElem, currentAcc, 			
 					new ListGetter<Vorteil>() {
@@ -258,6 +260,7 @@ public class CharElementFactory {
 			
 		} else if (clazz == Nachteil.class) {
 			charElem = new Nachteil();
+			((Fertigkeit) charElem).setArt(Fertigkeit.FertigkeitArt.allgemein);
 			
 			addToList((Nachteil) charElem, currentAcc, 			
 					new ListGetter<Nachteil>() {
@@ -273,7 +276,7 @@ public class CharElementFactory {
 			
 		} else if (clazz == Sonderfertigkeit.class) {
 			charElem = new Sonderfertigkeit();
-			((Sonderfertigkeit) charElem).setArt(Sonderfertigkeit.SonderfArt.allgemein);
+			((Fertigkeit) charElem).setArt(Fertigkeit.FertigkeitArt.allgemein);
 			
 			addToList((Sonderfertigkeit) charElem, currentAcc, 			
 					new ListGetter<Sonderfertigkeit>() {

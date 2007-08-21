@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlEnum;
  * @author Vincent
  */
 public class Gottheit extends CharElement {
+	private String GottheitSymbol;
 	
 	@XmlEnum
 	public enum GottheitArt {

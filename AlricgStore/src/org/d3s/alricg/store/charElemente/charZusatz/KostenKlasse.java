@@ -82,6 +82,5 @@ public enum KostenKlasse {
 	public boolean isBilligerAls(KostenKlasse kk) {
 		return this.ordinal() < kk.ordinal();
 	}
-	
-}
+}	
 

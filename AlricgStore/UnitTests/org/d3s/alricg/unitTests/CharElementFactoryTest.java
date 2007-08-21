@@ -60,11 +60,6 @@ public class CharElementFactoryTest {
 		xmlAcc2 = StoreDataAccessor.getInstance().getXmlAccessors().get(1);
 	}
 	
-	@Before
-	public void la() {
-
-	}
-	
 	/** Erzeugt neue Elemente und überprüft ob diese auch im XmlAccessor
 	 * angelegt wurden */
 	@Test

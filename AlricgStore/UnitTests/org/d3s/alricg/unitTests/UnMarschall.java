@@ -27,8 +27,8 @@ import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
+import org.d3s.alricg.store.charElemente.Fertigkeit.FertigkeitArt;
 import org.d3s.alricg.store.charElemente.Rasse.FarbenAngabe;
-import org.d3s.alricg.store.charElemente.Sonderfertigkeit.SonderfArt;
 import org.d3s.alricg.store.charElemente.Werte.CharArten;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.Werte.Geschlecht;
@@ -47,7 +47,6 @@ import org.d3s.alricg.store.charElemente.links.Voraussetzung;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -73,21 +72,21 @@ public class UnMarschall {
 		eigArray[0].setEigenschaftEnum(EigenschaftEnum.MU);
 		eigArray[0].setBeschreibung("Mut Beschreibung");
 		eigArray[0].setRegelAnmerkung("Mut RegelAnmerkung");
-		eigArray[0].setSammelbegriff("Mut sammelBegriff");
+		//eigArray[0].setSammelbegriff("Mut sammelBegriff");
 		eigArray[0].setAnzeigen(true);
 		
 		eigArray[1] = new Eigenschaft();
 		eigArray[1].setEigenschaftEnum(EigenschaftEnum.KL);
 		eigArray[1].setBeschreibung("KL Beschreibung");
 		eigArray[1].setRegelAnmerkung("KL RegelAnmerkung");
-		eigArray[1].setSammelbegriff("KL sammelBegriff");
+		//eigArray[1].setSammelbegriff("KL sammelBegriff");
 		eigArray[1].setAnzeigen(false);
 		
 		eigArray[2] = new Eigenschaft();
 		eigArray[2].setEigenschaftEnum(EigenschaftEnum.MU);
 		eigArray[2].setBeschreibung("Mut2 Beschreibung");
 		eigArray[2].setRegelAnmerkung("Mut2 RegelAnmerkung");
-		eigArray[2].setSammelbegriff("Mut2 sammelBegriff");
+		//eigArray[2].setSammelbegriff("Mut2 sammelBegriff");
 		
 		// Zusammenstellen
 		eigList.add(eigArray[0]);
@@ -126,7 +125,7 @@ public class UnMarschall {
 		Assert.assertEquals(EigenschaftEnum.MU.getId(), eigen.getId());
 		Assert.assertEquals("Mut Beschreibung", eigen.getBeschreibung());
 		Assert.assertEquals("Mut RegelAnmerkung", eigen.getRegelAnmerkung());
-		Assert.assertEquals("Mut sammelBegriff", eigen.getSammelbegriff());
+		Assert.assertEquals("Basis", eigen.getSammelbegriff());
 		Assert.assertTrue(eigen.isAnzeigen());
 		
 		eigen = xmlAccessor.getEigenschaftList().get(1);
@@ -135,7 +134,7 @@ public class UnMarschall {
 		Assert.assertEquals(EigenschaftEnum.KL.getId(), eigen.getId());
 		Assert.assertEquals("KL Beschreibung", eigen.getBeschreibung());
 		Assert.assertEquals("KL RegelAnmerkung", eigen.getRegelAnmerkung());
-		Assert.assertEquals("KL sammelBegriff", eigen.getSammelbegriff());
+		Assert.assertEquals("Basis", eigen.getSammelbegriff());
 		Assert.assertFalse(eigen.isAnzeigen());
 		
 		eigen = xmlAccessor.getEigenschaftList().get(2);
@@ -144,7 +143,7 @@ public class UnMarschall {
 		Assert.assertEquals(EigenschaftEnum.MU.getId(), eigen.getId());
 		Assert.assertEquals("Mut2 Beschreibung", eigen.getBeschreibung());
 		Assert.assertEquals("Mut2 RegelAnmerkung", eigen.getRegelAnmerkung());
-		Assert.assertEquals("Mut2 sammelBegriff", eigen.getSammelbegriff());
+		Assert.assertEquals("Basis", eigen.getSammelbegriff());
 
 	}
 	
@@ -518,7 +517,7 @@ public class UnMarschall {
 				zaub.getVerbreitung()[0].getAbkuerzungText().toString());
 		Assert.assertEquals(
 				"Rep2 Abk(Rep1 Abk) 10, Rep1 Abk 11", 
-				zaub.getVerbreitungAbkText());
+				zaub.getVerbreitungText(true));
 		
 		Assert.assertEquals(11, zaub.getVerbreitung()[1].getWert());
 		Assert.assertEquals(
@@ -537,7 +536,7 @@ public class UnMarschall {
 		nachteil[0].setBenoetigtZweitZiel(true);
 		nachteil[0].setFuerWelcheChars(new CharArten[] {CharArten.halbZauberer, CharArten.viertelZauberer});
 		nachteil[0].setGpKosten(66);
-		nachteil[0].setKostenProStufe(2);
+		nachteil[0].setKostenProSchritt(2);
 		nachteil[0].setMaxStufe(6);
 		nachteil[0].setMinStufe(4);
 		nachteil[0].setMitFreienText(true);
@@ -600,7 +599,7 @@ public class UnMarschall {
 		Assert.assertEquals(CharArten.halbZauberer, nachteil.getFuerWelcheChars()[0]);
 		Assert.assertEquals(CharArten.viertelZauberer, nachteil.getFuerWelcheChars()[1]);
 		Assert.assertEquals(66,nachteil.getGpKosten());
-		Assert.assertEquals(2,nachteil.getKostenProStufe());
+		Assert.assertEquals(2,nachteil.getKostenProSchritt());
 		Assert.assertEquals(6,nachteil.getMaxStufe());
 		Assert.assertEquals(4,nachteil.getMinStufe());
 		Assert.assertTrue(nachteil.isMitFreienText());
@@ -624,7 +623,7 @@ public class UnMarschall {
 		sondf.setId("sfId");
 		sondf.setName("Sonderf");
 		sondf.setApKosten(100);
-		sondf.setArt(SonderfArt.waffenloskampf);
+		sondf.setArt(FertigkeitArt.waffenloskampf);
 		sondf.setPermAsp(1);
 		sondf.setPermLep(2);
 		sondf.setPermKa(3);
@@ -658,7 +657,7 @@ public class UnMarschall {
 		Assert.assertEquals("sfId", sf.getId());
 		Assert.assertEquals("Sonderf", sf.getName());
 		Assert.assertEquals(100, sf.getApKosten());
-		Assert.assertEquals(SonderfArt.waffenloskampf, sf.getArt());
+		Assert.assertEquals(FertigkeitArt.waffenloskampf, sf.getArt());
 		Assert.assertEquals(1, sf.getPermAsp());
 		Assert.assertEquals(2, sf.getPermLep());
 		Assert.assertEquals(3, sf.getPermKa());

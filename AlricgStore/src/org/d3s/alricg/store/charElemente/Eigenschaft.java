@@ -61,4 +61,10 @@ public class Eigenschaft extends CharElement {
     	return eigenschaftEnum.getBezeichnung();
     }
 
+	@Override
+	public String getSammelbegriff() {
+		return eigenschaftEnum.getSammelbegriff();
+	}
+
+	
 }

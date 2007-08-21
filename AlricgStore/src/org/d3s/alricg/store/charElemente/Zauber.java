@@ -43,13 +43,22 @@ public class Zauber extends Faehigkeit {
 	 * @return Liefert einen kompletten String mit allen Verbreitungen 
 	 * 				als Abkürzungen.
 	 */
-	public String getVerbreitungAbkText() {
-		StringBuffer buffer = verbreitung[0].getAbkuerzungText();
+	public String getVerbreitungText(boolean alsAbk) {
+		StringBuffer buffer;
 		
-		for (int i = 1; i < verbreitung.length; i++) {
-			buffer.append(", ").append(verbreitung[i].getAbkuerzungText());
+		if (alsAbk) {
+			buffer = verbreitung[0].getAbkuerzungText();
+			
+			for (int i = 1; i < verbreitung.length; i++) {
+				buffer.append(", ").append(verbreitung[i].getAbkuerzungText());
+			}
+		} else {
+			buffer = verbreitung[0].getVollenText();
+			
+			for (int i = 1; i < verbreitung.length; i++) {
+				buffer.append(", ").append(verbreitung[i].getVollenText());
+			}	
 		}
-		
 		return buffer.toString();
 	}
 	
@@ -201,6 +210,23 @@ public class Zauber extends Faehigkeit {
             wert = newWert;
         }
 		
+		/**
+		 * @return Den kompleten Text mit den Abkürzungen für die Repräsentationen
+		 */
+		public StringBuffer getVollenText() {
+			StringBuffer buffer = new StringBuffer(repraesentation.getName());
+			
+			if (bekanntBei != null) {
+				buffer.append("(")
+					.append(bekanntBei.getName())
+					.append(")");
+			}
+			buffer.append(" ");
+			buffer.append(wert);
+			
+			return buffer;			
+		}	
+        
 		/**
 		 * @return Den kompleten Text mit den Abkürzungen für die Repräsentationen
 		 */

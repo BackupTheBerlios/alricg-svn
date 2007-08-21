@@ -33,6 +33,15 @@ import org.d3s.alricg.store.held.Held;
 public interface Sonderregel extends BasisSonderregel {
 	
 	/**
+	 * Wird für die Methode "changeAnzeigeText" benötigt. 
+	 * @author Vincent
+	 */
+	public enum ChangeTextContex {
+		VeraendertKosten; // Wird benutzt in der Klasse "VorNachteilVerbilligtProvider"
+	}
+	
+	
+	/**
 	 * Wird aufgerufen um festzustellen ob diese Sonderregel zum Helden
 	 * hinzugefügt werden kann. (vorher werden die üblichen "standart" 
 	 * Prüfungen durchgeführt)
@@ -93,6 +102,16 @@ public interface Sonderregel extends BasisSonderregel {
 	 * @return true - Diese Sonderregel wird zum Management angewendet, ansonsten false
 	 */
 	public boolean isForManagement();
+	
+	/**
+	 * Ermögliches es die Anzeige von Tabellen o.ä. zu ändern. Z.B. bei 
+	 * "Akademische Ausbildung" kann so der Text für die Anzeige, welche Kosten geändert
+	 * werden geändert werden
+	 * @param contex Der Contex in dem der Text benötigt wird
+	 * @return Der anzuzeigende Text oder "null" falls diese Sonderregel den Text nicht 
+	 * ändert
+	 */
+	public String changeAnzeigeText(ChangeTextContex contex);
 	
 	/**
 	 * @return Liefert den Namen der Sonderregel

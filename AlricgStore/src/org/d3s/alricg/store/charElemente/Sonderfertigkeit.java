@@ -16,31 +16,9 @@ import javax.xml.bind.annotation.XmlEnum;
  * @author V.Strelow
  */
 public class Sonderfertigkeit extends Fertigkeit {
-	
-	@XmlEnum
-	public enum SonderfArt {
-		allgemein("allgemein"),
-		waffenloskampf("waffenlosKampf"), 
-		bewaffnetkampf("bewaffnetKampf"), 
-		magisch("magisch"), 
-		geweiht("geweiht"), 
-		schamanisch("schamanisch"), 
-		sonstige("sonstige");
-		private String value; // Value des Elements
-		
-		private SonderfArt(String value) {
-			this.value = value;
-		}
-		
-		public String getValue() {
-			return value;
-		}
-	}
-
 	private int apKosten = KEIN_WERT; // falls sich AP nicht aus GP berechnen lassen
-	private SonderfArt art;
-	private int permAsp = 0, permKa = 0, permLep = 0; // Permanente Kosten
 
+	private int permAsp = 0, permKa = 0, permLep = 0; // Permanente Kosten
 	
 	/**
 	 * @return Liefert das Attribut ap - die Kosten für diese SF in
@@ -50,13 +28,6 @@ public class Sonderfertigkeit extends Fertigkeit {
 		return apKosten;
 	}	
 	
-	/**
-	 * @return Liefert das Attribut art.
-	 */
-	public SonderfArt getArt() {
-		return art;
-	}
-
 	/**
 	 * @return Liefert das Attribut permAsp.
 	 */
@@ -98,12 +69,6 @@ public class Sonderfertigkeit extends Fertigkeit {
 	 */
 	public void setApKosten(int apKosten) {
 		this.apKosten = apKosten;
-	}
-	/**
-	 * @param art Setzt das Attribut art.
-	 */
-	public void setArt(SonderfArt art) {
-		this.art = art;
 	}
 
 }

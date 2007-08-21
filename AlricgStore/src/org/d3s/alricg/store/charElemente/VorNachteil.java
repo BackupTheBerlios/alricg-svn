@@ -17,17 +17,17 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
  * 
  * Die Eingenschaften "ändert..." geben an, dass die Wahl dieses VorNachteils die 
  * Kosten anderer VorNachteile oder Sonderfertigkeiten beeinflussen kann.
- * Der Link gibt als Ziel das zu ändernde CharElement an,  
+ * Der Link gibt als Ziel das zu ändernde CharElement an.   
  * 
  * @author V.Strelow
  */
 public abstract class VorNachteil extends Fertigkeit {
-	private int stufenSchritt = 1; // In welchen Schritten gesteigert werden darf
-	private int kostenProStufe = 1; // wieviele GP pro Stufe (+ feste GPKosten)
+	private int stufenSchritt = 0; // In welchen Schritten gesteigert werden darf
+	private int kostenProSchritt = 0; // wieviele GP pro Stufe (+ feste GPKosten)
 	private int minStufe = 1;
 	private int maxStufe = 1;
 
-	private IdLink<Sonderfertigkeit>[] aendertApSf;
+	private IdLink<Sonderfertigkeit>[] aendertApSf; // Die Kostenänderung hier muss als "AP" angegeben werden!
 	private IdLink<Nachteil>[] aendertGpNachteil;
 	private IdLink<Vorteil>[] aendertGpVorteil;
 
@@ -129,14 +129,14 @@ public abstract class VorNachteil extends Fertigkeit {
 	 * @return the kostenProStufe
 	 */
 	@XmlSchemaType(name = "nonNegativeInteger")
-	public int getKostenProStufe() {
-		return kostenProStufe;
+	public int getKostenProSchritt() {
+		return kostenProSchritt;
 	}
 
 	/**
 	 * @param kostenProStufe the kostenProStufe to set
 	 */
-	public void setKostenProStufe(int kostenProStufe) {
-		this.kostenProStufe = kostenProStufe;
+	public void setKostenProSchritt(int kostenProSchritt) {
+		this.kostenProSchritt = kostenProSchritt;
 	}
 }

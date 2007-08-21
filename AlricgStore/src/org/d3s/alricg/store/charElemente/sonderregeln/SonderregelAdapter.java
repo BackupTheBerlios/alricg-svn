@@ -161,6 +161,14 @@ public abstract class SonderregelAdapter extends CharElement implements Sonderre
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.charElemente.sonderregeln.Sonderregel#changeAnzeigeText(org.d3s.alricg.store.charElemente.sonderregeln.Sonderregel.ChangeTextContex)
+	 */
+	@Override
+	public String changeAnzeigeText(ChangeTextContex contex) {
+		return null;
+	}
+	
 	/* (non-Javadoc) Methode überschrieben
 	 * Standart implementation! Bei dieser implementation wird text zum zweitZiel 
 	 * nicht beachtet, was für die meißten Sonderregel zutrifft. 
