@@ -13,7 +13,6 @@ import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
-import org.d3s.alricg.store.charElemente.links.OptionVoraussetzung;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -79,11 +78,21 @@ public class DragAndDropSupport {
 		private TreeOrTableObject sourceObj;
 		private TreeObject targetObj;
 		private final TreeColumn columnToListen;
+		private final Class defaultOptionclazz; // "Default-Option" falls keine user-angabe
+		private Class acceptCharElementClazz; // CharElemente diesen Typs werden Akzeptiert
 		private CharElement quelle;
 		
-		public AuswahlDrop(TreeViewer viewer, TreeColumn columnToListen) {
+		
+		public AuswahlDrop(TreeViewer viewer, 
+				TreeColumn columnToListen, 
+				Class defaultOptionclazz) {
 			super(viewer);
 			this.columnToListen = columnToListen;
+			this.defaultOptionclazz = defaultOptionclazz;
+		}
+		
+		public void setAcceptCharElementClazz(Class acceptCharElementClazz) {
+			this.acceptCharElementClazz = acceptCharElementClazz;
 		}
 		
 		public void setQuelle(CharElement quelle) {
@@ -110,7 +119,10 @@ public class DragAndDropSupport {
 		 */
 		@Override
 		public boolean performDrop(Object data) {
-			return true;
+			if ( ViewUtils.getCharElement(data).getClass().isAssignableFrom(acceptCharElementClazz) ) {
+				return true;
+			}
+			return false;
 		}
 
 		private void dropToZweitZiel() {
@@ -124,7 +136,7 @@ public class DragAndDropSupport {
 				// Direkt "positiv" oder "negativ"
 				if (targetObj.getChildren() == null) {
 					TreeObject newObject = new TreeObject(
-							VoraussetzungPart.createOption(OptionVoraussetzung.class), 
+							VoraussetzungPart.createOption(defaultOptionclazz), 
 							targetObj);
 					targetObj.addChildren(newObject);
 	

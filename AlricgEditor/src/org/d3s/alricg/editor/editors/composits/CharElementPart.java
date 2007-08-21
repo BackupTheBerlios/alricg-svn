@@ -7,12 +7,12 @@
  */
 package org.d3s.alricg.editor.editors.composits;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.d3s.alricg.editor.editors.EditorMessages;
 import org.d3s.alricg.store.access.IdFactory;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
@@ -43,7 +43,7 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 									// wichtig für Berechnung der ID, damit diese
 									// nur Berechnet wird, wenn der Name sich 
 									// geändert hat
-	private String inputFileName; // Der letzte Name nach einem Focus wechsel
+	private String inputFileName;   // Der letzte Name nach einem Focus wechsel
 									// wichtig für Berechnung der ID, damit diese
 									// nur Berechnet wird, wenn der Name sich 
 									// geändert hat
@@ -60,7 +60,7 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 	
 	private HashMap<String, XmlAccessor> cobFileMap = new HashMap<String, XmlAccessor>();
 	
-	public CharElementPart(Composite top, GridData gridData) {
+	public CharElementPart(Composite top, GridData gridData, boolean isNewCharElement) {
 		// GirdLayout mit zwei Spalten
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -69,59 +69,61 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		
 		// Erzeuge die Gruppe
 		groupBasisDaten = new Group(top, SWT.SHADOW_IN);
-		groupBasisDaten.setText("Basis Daten");
+		groupBasisDaten.setText(EditorMessages.CharElementPart_BasisDaten);
 		groupBasisDaten.setLayoutData(gridData);
 		groupBasisDaten.setLayout(gridLayout);
 		
 		
 		// ID
 		Label lblID = new Label(groupBasisDaten, SWT.NONE);
-		lblID.setText("ID:");
+		lblID.setText(EditorMessages.CharElementPart_ID);
 		txtID = new Text(groupBasisDaten, SWT.BORDER);
 		txtID.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Sonderregel
 		Label lblSonderregel = new Label(groupBasisDaten, SWT.NONE);
-		lblSonderregel.setText("SonderregelKlasse:");
+		lblSonderregel.setText(EditorMessages.CharElementPart_SonderregelKlasse);
 		txtSonderregelKlasse = new Text(groupBasisDaten, SWT.BORDER);
 		txtSonderregelKlasse.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Name
 		Label lblName = new Label(groupBasisDaten, SWT.NONE);
-		lblName.setText("Name:");
+		lblName.setText(EditorMessages.CharElementPart_Name);
 		txtName = new Text(groupBasisDaten, SWT.BORDER);
 		txtName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		txtName.addFocusListener( new FocusListener() {
+		if (isNewCharElement) {
+			// Die ID darf sich nicht ändern wenn das element bereits
+			// mit anderen CharElement verbunden ist! Daher wird die
+			// ID nur geändert, wenn das Element neu erzeugt wurde
 			
-			// TODO Vorsicht! Die ID darf sich nicht ändern wenn das element bereits
-			// mit anderen CharElement verbunden ist!
-			@Override
-		    public void focusLost(FocusEvent event) {	
-				if (!txtName.getText().equalsIgnoreCase(lastFocusedName) 
-						&& charElementClass != null) {
-					txtID.setText(
-							IdFactory.getInstance().getId(charElementClass, txtName.getText()
-					));
-					lastFocusedName = txtName.getText(); 
+			txtName.addFocusListener( new FocusListener() {
+				@Override
+			    public void focusLost(FocusEvent event) {	
+					if (!txtName.getText().equalsIgnoreCase(lastFocusedName) 
+							&& charElementClass != null) {
+						txtID.setText(
+								IdFactory.getInstance().getId(charElementClass, txtName.getText()
+						));
+						lastFocusedName = txtName.getText(); 
+					}
+		        }
+	
+				@Override
+				public void focusGained(FocusEvent e) {
+					// Noop
 				}
-	        }
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// Noop
-			}
-		});
-		
+			});
+		}
 		
 		// Sammelbegriff
 		Label lblSammelbegriff = new Label(groupBasisDaten, SWT.NONE);
-		lblSammelbegriff.setText("Sammelbegriff:");
+		lblSammelbegriff.setText(EditorMessages.CharElementPart_Sammelbegriff);
 		txtSammelbegriff = new Text(groupBasisDaten, SWT.BORDER);
 		txtSammelbegriff.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		// Beschreibung
 		Label lblBeschreibung = new Label(groupBasisDaten, SWT.NONE);
-		lblBeschreibung.setText("Beschreibung:");
+		lblBeschreibung.setText(EditorMessages.CharElementPart_Beschreibung);
 		tmpGData = new GridData(); 
 		tmpGData.verticalAlignment = GridData.BEGINNING;
 		lblBeschreibung.setLayoutData(tmpGData);
@@ -132,7 +134,7 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		
 		// Regelanmerkung
 		Label lblRegelanmerkung = new Label(groupBasisDaten, SWT.NONE);
-		lblRegelanmerkung.setText("Regelanmerkung:");
+		lblRegelanmerkung.setText(EditorMessages.CharElementPart_Regelanmerkung);
 		tmpGData = new GridData(); 
 		tmpGData.verticalAlignment = GridData.BEGINNING;
 		lblRegelanmerkung.setLayoutData(tmpGData);
@@ -143,7 +145,7 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		
 		// File / XMLAccessor
 		Label lblFile = new Label(groupBasisDaten, SWT.NONE);
-		lblFile.setText("Datei:");
+		lblFile.setText(EditorMessages.CharElementPart_Datei);
 		cobFile = new Combo(groupBasisDaten, SWT.READ_ONLY | SWT.CENTER);
 		cobFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		cobFile.setVisibleItemCount(8);
@@ -151,9 +153,9 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		// Anzeigen
 		Label filler = new Label(groupBasisDaten, SWT.NONE);
 		cbxAnzeigen = new Button(groupBasisDaten, SWT.CHECK);
-		cbxAnzeigen.setText("Element anzeigen");
-		cbxAnzeigen.setToolTipText("Nicht Angezeigte Elemente werden in den Standart-Listen" +
-				" nicht angezeigt (für Sonderfälle).");
+		cbxAnzeigen.setText(EditorMessages.CharElementPart_ElementAnzeigen);
+		cbxAnzeigen.setToolTipText(EditorMessages.CharElementPart_ElementAnzeigen_TT); 
+		
 	}
 	
 	@Override
@@ -176,7 +178,7 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 		
 		for (int i = 0; i < accList.size(); i++) {
 			String tmp = accList.get(i).getFile().getName() 
-				+ " (" + accList.get(i).getFile().getAbsolutePath() + ")";
+				+ " (" + accList.get(i).getFile().getAbsolutePath() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if (accessor.equals(accList.get(i))) {
 				inputFileName = tmp;
@@ -200,7 +202,7 @@ public class CharElementPart extends AbstarctElementPart<CharElement> {
 	
 	@Override
 	public void saveData(IProgressMonitor monitor, CharElement charElem) {
-		monitor.subTask("Save CharElement-Data");
+		monitor.subTask("Save CharElement-Data"); //$NON-NLS-1$
 		
 		// Prüfe ob die ID Ok ist. Wenn nicht, berechne eine korrekte
 		if (IdFactory.getInstance().getClass(this.txtID.getText()) == null) {

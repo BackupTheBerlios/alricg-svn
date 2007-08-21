@@ -10,6 +10,7 @@ package org.d3s.alricg.editor.editors.composits;
 import java.util.List;
 
 import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.editors.EditorMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
@@ -38,7 +39,7 @@ public class FaehigkeitPart extends AbstarctElementPart<Faehigkeit> {
 	public FaehigkeitPart(Composite top, GridData gridData) {
 
 		Label lblProbe = new Label(top, SWT.NONE);
-		lblProbe.setText("Probe:");
+		lblProbe.setText(EditorMessages.FaehigkeitPart_Probe);
 		
 		compProbe = new Composite(top, SWT.NONE);
 		RowLayout rl = new RowLayout();
@@ -48,17 +49,17 @@ public class FaehigkeitPart extends AbstarctElementPart<Faehigkeit> {
 		cobEig1 = new Combo(compProbe, SWT.READ_ONLY | SWT.CENTER);
 		configProbeCombo(cobEig1);
 		Label label1 = new Label(compProbe, SWT.NONE);
-		label1.setText(" / ");
+		label1.setText(" / "); //$NON-NLS-1$
 		cobEig2 = new Combo(compProbe, SWT.READ_ONLY);
 		configProbeCombo(cobEig2);
 		Label label2 = new Label(compProbe, SWT.NONE);
-		label2.setText(" / ");
+		label2.setText(" / "); //$NON-NLS-1$
 		cobEig3 = new Combo(compProbe, SWT.READ_ONLY);
 		configProbeCombo(cobEig3);
 		
 		Label lblSKT = new Label(top, SWT.NONE);
-		lblSKT.setText("SKT-Spalte:");
-		lblSKT.setToolTipText("Steigerungskosten-Tabellen Spalte");
+		lblSKT.setText(EditorMessages.FaehigkeitPart_SKT);
+		lblSKT.setToolTipText(EditorMessages.FaehigkeitPart_SKT_TT);
 		
 		cobSKT = new Combo(top, SWT.READ_ONLY);
 		cobSKT.setVisibleItemCount(8);
@@ -109,7 +110,7 @@ public class FaehigkeitPart extends AbstarctElementPart<Faehigkeit> {
 	 */
 	@Override
 	public void saveData(IProgressMonitor monitor,Faehigkeit charElem) {
-		monitor.subTask("Save Faehigkeit-Data");
+		monitor.subTask("Save Faehigkeit-Data"); //$NON-NLS-1$
 		
 		List<Eigenschaft> eigenList = StoreDataAccessor.getInstance().getEigenschaftList();
 		

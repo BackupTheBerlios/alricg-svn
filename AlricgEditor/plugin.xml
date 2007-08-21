@@ -21,6 +21,48 @@
             id="org.d3s.alricg.editor.views.FileView"
             name="File View">
       </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.EigenschaftView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.EigenschaftView"
+            name="Eigenschaft View">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.SonderfertigkeitView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.SonderfertigkeitView"
+            name="SonderfertigkeitView">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.VorteilView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.VorteilView"
+            name="Vorteil View">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.NachteilView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.NachteilView"
+            name="Nachteil View">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.ZauberView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.ZauberView"
+            name="Zauber">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.LiturgieView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.LiturgieView"
+            name="Litugien">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">

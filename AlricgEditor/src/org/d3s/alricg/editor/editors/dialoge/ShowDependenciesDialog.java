@@ -20,6 +20,7 @@ import org.d3s.alricg.editor.editors.composits.CharElementEditorInput;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
+import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
@@ -49,6 +50,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * Dialog um die gefundenen Abhängigkeiten eines CharElements zu zu anderen darzustellen.
  * @author Vincent
  */
 public class ShowDependenciesDialog extends TitleAreaDialog {
@@ -56,24 +58,17 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 	private List<DependencyEditorTableObject> editorTabObj;
 	private Action doubleClickAction;
 	private TableViewer tableViewer;
-	
-	/*
-	public ShowDependenciesDialog(IShellProvider parentShell, CharElement charElement, List<DependencyTableObject> depList) {
-		super(parentShell);
-		this.charElementToDelete = charElement;
-		createTable(depList);
-	}*/
 
 	public ShowDependenciesDialog(Shell parentShell, CharElement charElement, List<DependencyTableObject> depList) {
 		super(parentShell);
 		this.charElementToDelete = charElement;
 		createTable(depList);
-		this.setTitle("lal");
+		this.setTitle(ViewMessages.ShowDependenciesDialog_Titel1);
 	}
 	
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		final Button okButton = this.createButton(parent, OK, "Ok", true);
+		final Button okButton = this.createButton(parent, OK, ViewMessages.ShowDependenciesDialog_OKButton, true);
 		okButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -88,10 +83,8 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		this.setTitle("Element kann nicht gelöscht werden");
-		this.setMessage(" Das Charakter-Element " + charElementToDelete.getName() + 
-				" kann nicht gelöscht werden, solange die folgenden " +
-				"Abhängigkeiten zu anderen Charakter-Elementen bestehen:");
+		this.setTitle(ViewMessages.ShowDependenciesDialog_Titel2);
+		this.setMessage(ViewMessages.bind(ViewMessages.ShowDependenciesDialog_TitelSubText, charElementToDelete.getName()));
 	}
 
 	private void createTable(List<DependencyTableObject> depList) {
@@ -132,7 +125,7 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 		
 		TableViewerColumn tc = new TableViewerColumn(tableViewer, SWT.LEFT, 0);
 		tableViewer.getTable().setSortColumn(tc.getColumn());
-		tc.getColumn().setText("Name");
+		tc.getColumn().setText(ViewMessages.ShowDependenciesDialog_Name);
 		tc.getColumn().setWidth(100);
 		tc.setLabelProvider(new ColumnLabelProvider());
 		tc.setLabelProvider(new CustomColumnLabelProvider.NameLabelProvider());
@@ -142,9 +135,9 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 						tableViewer));
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 1);
-		tc.getColumn().setText("Klasse");
+		tc.getColumn().setText(ViewMessages.ShowDependenciesDialog_Klasse);
 		tc.getColumn().setWidth(100);
-		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementKlassenLabelProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementKlassenProvider());
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.CharElementKlasseSorter(),
@@ -152,7 +145,7 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 		
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
-		tc.getColumn().setText("Datei");
+		tc.getColumn().setText(ViewMessages.ShowDependenciesDialog_Datei);
 		tc.getColumn().setWidth(100);
 		tc.setLabelProvider(new CustomColumnLabelProvider.DateinameLabelProvider());
 		tc.getColumn().addSelectionListener(
@@ -161,7 +154,7 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 						tableViewer));
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
-		tc.getColumn().setText("Anmerkung");
+		tc.getColumn().setText(ViewMessages.ShowDependenciesDialog_Anmerkung);
 		tc.getColumn().setWidth(200);
 		tc.setLabelProvider(new DependencyTextLabelProvider());
 		
@@ -200,7 +193,8 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 				
 				IEditorInput editorInput = new CharElementEditorInput(
 						(CharElement) treeTableObj.getValue(),
-						treeTableObj.getAccessor());
+						treeTableObj.getAccessor(), 
+						false);
 		
 				try {
 					page.openEditor(
@@ -211,7 +205,7 @@ public class ShowDependenciesDialog extends TitleAreaDialog {
 				} catch (PartInitException e) {
 					Activator.logger.log(
 							Level.SEVERE, 
-							"Konnte Editor nicht öffnen. Editor ID: " 
+							"Konnte Editor nicht öffnen. Editor ID: "  //$NON-NLS-1$
 								+ ViewEditorIdManager.getEditorID(treeTableObj.getValue().getClass()), 
 							e);
 				}

@@ -209,9 +209,6 @@ public class ViewUtils {
 
 		@Override
 		public Object[] getElements(Object parent) {
-			if (parent instanceof IWorkbenchPartSite) {
-				return getChildren(invisibleRoot);
-			}
 			return getChildren(parent);
 		}
 

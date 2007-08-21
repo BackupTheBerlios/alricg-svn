@@ -8,14 +8,11 @@
 package org.d3s.alricg.editor.common;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
-
-import javax.xml.bind.JAXBException;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.Activator;
+import org.d3s.alricg.editor.Messages;
 import org.d3s.alricg.editor.common.CustomFilter.CurrentFileFilter;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.editors.composits.CharElementEditorInput;
@@ -30,13 +27,12 @@ import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -48,8 +44,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * Verschiedene Actions
  * @author Vincent
- *
  */
 public class CustomActions {
 	
@@ -61,11 +57,11 @@ public class CustomActions {
 		private Composite parentComp;
 		
 		public SwapTreeTableAction(Composite parentComp) {
-			super("Ansicht wechseln");
+			super(Messages.Actions_ChangeView);
 			
 			this.parentComp = parentComp;
 			this.setImageDescriptor(ControlIconsLibrary.swapTree_Table.getImageDescriptor());
-			this.setToolTipText("Wechselt die Ansicht zwischen Tabelle und Baum");
+			this.setToolTipText(Messages.Actions_ChangeView_TT);
 		}
 		
 		@Override
@@ -91,10 +87,10 @@ public class CustomActions {
 		private final Class clazz;
 		
 		public FilterCurrentFileAction(Class clazz) {
-			super("Tabelle Filtern", Action.AS_CHECK_BOX);
+			super(Messages.Actions_TableFilter, Action.AS_CHECK_BOX);
 			
 			this.clazz = clazz;
-			this.setToolTipText("Zeigt nur Elemente der aktuell selektierten Datei.");
+			this.setToolTipText(Messages.Actions_TableFilter_TT);
 			this.setImageDescriptor(ControlIconsLibrary.filterTable.getImageDescriptor());
 		}
 		
@@ -146,19 +142,19 @@ public class CustomActions {
 	 */
 	public static class EditCharElementAction extends Action {
 		private final Composite parentComp;
-		private final String editorID;
+		private final Class clazz;
 		
 		/**
 		 * Konstruktor
 		 * @param parentComp Das Parent Composite von einem Tree/Table View
-		 * @param editorID Die ID des Editors, der zum bearbeiten geöffnet werden soll
+		 * @param Class clazz Die Klasse des Elements welche beareitet werden sollen
 		 */
-		public EditCharElementAction(Composite parentComp, String editorID) {
+		public EditCharElementAction(Composite parentComp, Class clazz) {
 			this.parentComp = parentComp;
-			this.editorID = editorID;
+			this.clazz = clazz;
 			
-			this.setText("Bearbeiten");
-			this.setToolTipText("Öffnet das selektierte Element zur Bearbeitung.");
+			this.setText(Messages.Actions_Edit);
+			this.setToolTipText(Messages.Actions_Edit_TT);
 			this.setImageDescriptor(ControlIconsLibrary.edit.getImageDescriptor());
 		}
 		
@@ -174,15 +170,16 @@ public class CustomActions {
 			
 			final IEditorInput editorInput = new CharElementEditorInput(
 					(CharElement) treeTableObj.getValue(),
-					treeTableObj.getAccessor());
+					treeTableObj.getAccessor(),
+					false);
 	
 			try {
-				page.openEditor(editorInput, editorID, true);
+				page.openEditor(editorInput, ViewEditorIdManager.getEditorID(clazz), true);
 				
 			} catch (PartInitException e) {
 				Activator.logger.log(
 						Level.SEVERE, 
-						"Konnte Editor nicht öffnen. Editor ID: " + editorID, 
+						"Konnte Editor nicht öffnen. Editor ID: " + ViewEditorIdManager.getEditorID(clazz),  //$NON-NLS-1$
 						e);
 			}
 		}
@@ -194,24 +191,24 @@ public class CustomActions {
 	 * 
 	 * @author Vincent
 	 */
-	public static abstract class BuildNewCharElementAction extends Action {
-		private final Class clazz;
+	public static class BuildNewCharElementAction extends Action {
+		private final Class charElementClazz;
+		private final Class firstCategoryClazz;
 		private final Composite parentComp;
-		private final String editorID;
 		
 		/**
 		 * Konstruktor
 		 */
 		public BuildNewCharElementAction(
 				Composite parentComp, 
-				String editorID,
-				Class clazz) {
-			this.clazz = clazz;
+				Class charElementClazz,
+				Class firstCategoryClazz) {
+			this.charElementClazz = charElementClazz;
+			this.firstCategoryClazz = firstCategoryClazz;
 			this.parentComp = parentComp;
-			this.editorID = editorID;
 			
-			this.setText("Neu erzeugen");
-			this.setToolTipText("Erzeugt ein neues Element und öffnet es zur Bearbeitung.");
+			this.setText(Messages.Actions_NewElement);
+			this.setToolTipText(Messages.Actions_NewElement_TT);
 			this.setImageDescriptor(ControlIconsLibrary.add.getImageDescriptor());
 		}
 		
@@ -219,14 +216,13 @@ public class CustomActions {
 			if (ViewModel.getMarkedFileForNew() == null) {
 				MessageDialog.openInformation(
 						((StackLayout) parentComp.getLayout()).topControl.getShell(),
-						"Nicht Möglich", "Bitte setzen sie erst in der Datei-Ansischt die Datei, " +
-								"in welcher das neue Element erzeugt werden soll.");
+						Messages.Actions_NewElementErrorDialogTitel, Messages.Actions_NewElementErrorDialogText);
 			}
 			
 			XmlAccessor xmlAccessor = 
 				StoreAccessor.getInstance().getXmlAccessor(ViewModel.getMarkedFileForNew());
 			CharElement newCharElem =
-				CharElementFactory.getInstance().buildCharElement(clazz, xmlAccessor);
+				CharElementFactory.getInstance().buildCharElement(charElementClazz, xmlAccessor);
 			
 			// Falls in einem Tree erstellt, dann 
 			if (ViewUtils.getSelectedObject(parentComp) instanceof TreeObject) {
@@ -236,14 +232,14 @@ public class CustomActions {
 			// Öffnen Editor mit neuem CharElement
 			final IWorkbenchPage page = PlatformUI.getWorkbench()
 										.getActiveWorkbenchWindow().getActivePage();
-			final IEditorInput editorInput = new CharElementEditorInput(newCharElem, xmlAccessor);
+			final IEditorInput editorInput = new CharElementEditorInput(newCharElem, xmlAccessor, true);
 			
 			try {
-				page.openEditor(editorInput, editorID, true);
+				page.openEditor(editorInput, ViewEditorIdManager.getEditorID(charElementClazz), true);
 			} catch (PartInitException e) {
 				Activator.logger.log(
 						Level.SEVERE, 
-						"Konnte Editor nicht öffnen. Editor ID: " + editorID, 
+						"Konnte Editor nicht öffnen. Editor ID: " + ViewEditorIdManager.getEditorID(charElementClazz),  //$NON-NLS-1$
 						e);
 			}
 		}
@@ -254,8 +250,20 @@ public class CustomActions {
 		 * auch gleich als Naturtalent angelegt werden.
 		 * @param newCharElem Das neu erstellte Element, welches evtl. geändert wird
 		 * @param treeObj Das TreeObject, welche selektiert ist
-		 */
+		 *
 		protected abstract void runForTreeView(CharElement newCharElem, TreeObject treeObj);
+		*/
+		//@Override
+		protected void runForTreeView(CharElement newCharElem, TreeObject treeObj) {
+			if (treeObj.getValue().getClass() == charElementClazz) {
+				runForTreeView(newCharElem, (TreeObject) treeObj.getParent());
+			} else if (treeObj.getValue().getClass() == firstCategoryClazz) {
+				((Talent) newCharElem).setSorte((Talent.Sorte) treeObj.getValue());
+			} else if (treeObj.getValue() instanceof String) {
+				newCharElem.setSammelbegriff(treeObj.getValue().toString());
+				runForTreeView(newCharElem, (TreeObject) treeObj.getParent());
+			}
+		}
 	}
 
 	/**
@@ -273,8 +281,8 @@ public class CustomActions {
 			this.parentComp = parentComp;
 			this.clazz = clazz;
 			
-			this.setText("Löschen");
-			this.setToolTipText("Löscht das selektierte Element.");;
+			this.setText(Messages.Actions_Delete);
+			this.setToolTipText(Messages.Actions_Delete_TT);;
 			this.setImageDescriptor(ControlIconsLibrary.delete.getImageDescriptor());
 		}
 
@@ -296,13 +304,11 @@ public class CustomActions {
 				// 1. Prüfen
 			    try {
 					new ProgressMonitorDialog(parentComp.getShell()).run(true, true, monitor);
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return;
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+					Activator.logger.log(
+							Level.SEVERE, 
+							"Beim erzeugen des  ProgressMonitorDialogs ist ein Fehler aufgetreten.",  //$NON-NLS-1$
+							e);
 					return;
 				}
 				
@@ -323,10 +329,10 @@ public class CustomActions {
 				final CharElement charElement = (CharElement) treeTableObj.getValue();
 				final boolean b = MessageDialog.openConfirm(
 						parentComp.getShell(), 
-						"Löschen bestätigen", 
-						"Möchten sie das Element " 
+						Messages.Actions_DeleteConfirmDialog, 
+						"Möchten sie das Element "  //$NON-NLS-1$
 						+ charElement.getName()
-						+ " wirklich löschen?");
+						+ " wirklich löschen?"); //$NON-NLS-1$
 				
 				// Löschen
 				if (!b) return;
@@ -341,10 +347,20 @@ public class CustomActions {
 				
 				try {
 					StoreAccessor.getInstance().saveFile( treeTableObj.getAccessor() );
-				} catch (JAXBException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					Activator.logger.log(
+							Level.SEVERE, 
+							"Beim speichern der Datei " + treeTableObj.getAccessor().getFile().getName()  //$NON-NLS-1$
+							+ " innerhalb einer Löschen Action ist ein Fehler aufgetreten.",  //$NON-NLS-1$
+							e);
+					
+					MessageDialog.openError(
+							parentComp.getShell(), 
+							Messages.Actions_SaveErrorDialogTitle, 
+							Messages.bind(
+									Messages.Actions_SaveErrorDialogTitle, 
+									treeTableObj.getAccessor().getFile().getName())
+					);
 				}
 			}
 		}
@@ -354,8 +370,8 @@ public class CustomActions {
 		// TODO implement
 		
 		public InfoCharElementAction() {
-			this.setText("Informationen");
-			this.setToolTipText("Zeigt zu Element weitere Informationen an.");
+			this.setText(Messages.Actions_Infos);
+			this.setToolTipText(Messages.Actions_Infos_TT);
 			this.setImageDescriptor(ControlIconsLibrary.info.getImageDescriptor());
 		}
 		

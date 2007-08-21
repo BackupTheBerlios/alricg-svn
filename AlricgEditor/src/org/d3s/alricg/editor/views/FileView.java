@@ -5,17 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
-import org.d3s.alricg.editor.common.ViewUtils;
-import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
-import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
-import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -60,7 +55,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 
 public class FileView extends ViewPart {
-	public static final String ID = "org.d3s.alricg.editor.views.FileView";
+	public static final String ID = "org.d3s.alricg.editor.views.FileView"; //$NON-NLS-1$
 	
 	private TreeViewer viewer;
 	
@@ -125,7 +120,7 @@ public class FileView extends ViewPart {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		// -----------------------
-		final TreeObject invisibleRoot = new TreeObject("invisibleRoot", null);
+		final TreeObject invisibleRoot = new TreeObject("invisibleRoot", null); //$NON-NLS-1$
 		final List<XmlAccessor> accessorList = StoreDataAccessor.getInstance().getXmlAccessors();
 		final HashMap<String, TreeObject> fileHash = new HashMap<String, TreeObject>();
 		
@@ -150,7 +145,7 @@ public class FileView extends ViewPart {
 		viewer.setContentProvider(new TreeViewContentProvider(invisibleRoot));
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new ViewerSorter());
-		viewer.setInput(getViewSite());
+		viewer.setInput(invisibleRoot);
 		
 		getSite().setSelectionProvider(viewer);
 		
@@ -161,7 +156,7 @@ public class FileView extends ViewPart {
 	}
 
 	private void hookContextMenu() {
-		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -241,34 +236,34 @@ public class FileView extends ViewPart {
 		
 		infos = new Action() {
 			public void run() {
-				showMessage("Noch zu Implementieren");
+				showMessage("Noch zu Implementieren"); //$NON-NLS-1$
 			}};
-		infos.setText("Informationen");
-		infos.setToolTipText("Zeigt Informationen über das selektiere File an");
+		infos.setText(ViewMessages.FileView_Infos);
+		infos.setToolTipText(ViewMessages.FileView_Infos_TT);
 		infos.setImageDescriptor(ControlIconsLibrary.info.getImageDescriptor());
 		
 		deleteFile = new Action() {
 			public void run() {
-				showMessage("Noch zu Implementieren");
+				showMessage("Noch zu Implementieren"); //$NON-NLS-1$
 			}};
-		deleteFile.setText("Datei löschen");
-		deleteFile.setToolTipText("Löscht die selektierte Datei");
+		deleteFile.setText(ViewMessages.FileView_DeleteFile);
+		deleteFile.setToolTipText(ViewMessages.FileView_DeleteFile_TT);
 		deleteFile.setImageDescriptor(ControlIconsLibrary.delete.getImageDescriptor());
 		
 		createNewFile = new Action() {
 			public void run() {
-				showMessage("Noch zu Implementieren");
+				showMessage("Noch zu Implementieren"); //$NON-NLS-1$
 			}};
-		createNewFile.setText("Neue Datei erstellen");
-		createNewFile.setToolTipText("Erzeugt eine neue Quell-Datei für CharElemente");
+		createNewFile.setText(ViewMessages.FileView_NewFile);
+		createNewFile.setToolTipText(ViewMessages.FileView_NewFile_TT);
 		createNewFile.setImageDescriptor(ControlIconsLibrary.add.getImageDescriptor());
 		
 		renameFile = new Action() {
 			public void run() {
-				showMessage("Noch zu Implementieren");
+				showMessage("Noch zu Implementieren"); //$NON-NLS-1$
 			}};
-		renameFile.setText("Umbenennen");
-		renameFile.setToolTipText("Benennt die Datei um");
+		renameFile.setText(ViewMessages.FileView_Rename);
+		renameFile.setToolTipText(ViewMessages.FileView_Rename_TT);
 		renameFile.setImageDescriptor(ControlIconsLibrary.renamePage.getImageDescriptor());
 		
 		markForAdd = new Action() {
@@ -283,35 +278,35 @@ public class FileView extends ViewPart {
 					viewer.refresh();
 				}
 			}};
-		markForAdd.setText("Neue Elemente hier erstellen");
-		markForAdd.setToolTipText("Neue CharElemente werden in der Datei erzeugt, welches markiert ist");
+		markForAdd.setText(ViewMessages.FileView_MarkForNew);
+		markForAdd.setToolTipText(ViewMessages.FileView_MarkForNew_TT);
 		markForAdd.setImageDescriptor(ControlIconsLibrary.setPageAsAdd.getImageDescriptor());
 		
 		action1 = new Action() {
 			public void run() {
-				showMessage("Action 1 executed");
+				showMessage("Action 1 executed"); //$NON-NLS-1$
 			}
 		};
 		
-		action1.setText("Action 1");
-		action1.setToolTipText("Action 1 tooltip");
+		action1.setText("Action 1"); //$NON-NLS-1$
+		action1.setToolTipText("Action 1 tooltip"); //$NON-NLS-1$
 		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		
 		action2 = new Action() {
 			public void run() {
-				showMessage("Action 2 executed");
+				showMessage("Action 2 executed"); //$NON-NLS-1$
 			}
 		};
-		action2.setText("Action 2");
-		action2.setToolTipText("Action 2 tooltip");
+		action2.setText("Action 2"); //$NON-NLS-1$
+		action2.setToolTipText("Action 2 tooltip"); //$NON-NLS-1$
 		action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		doubleClickAction = new Action() {
 			public void run() {
 				ISelection selection = viewer.getSelection();
 				Object obj = ((IStructuredSelection)selection).getFirstElement();
-				showMessage("Double-click detected on "+obj.toString());
+				showMessage("Double-click detected on "+obj.toString()); //$NON-NLS-1$
 			}
 		};
 	}
@@ -326,7 +321,7 @@ public class FileView extends ViewPart {
 	private void showMessage(String message) {
 		MessageDialog.openInformation(
 			viewer.getControl().getShell(),
-			"File View",
+			"File View", //$NON-NLS-1$
 			message);
 	}
 

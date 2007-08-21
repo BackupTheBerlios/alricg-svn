@@ -9,6 +9,11 @@ package org.d3s.alricg.editor.views.charElemente;
 
 import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
+import org.d3s.alricg.editor.common.CustomActions.DeleteCharElementAction;
+import org.d3s.alricg.editor.common.CustomActions.EditCharElementAction;
+import org.d3s.alricg.editor.common.CustomActions.FilterCurrentFileAction;
+import org.d3s.alricg.editor.common.CustomActions.InfoCharElementAction;
+import org.d3s.alricg.editor.common.CustomActions.SwapTreeTableAction;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.FileView;
@@ -48,6 +53,7 @@ public abstract class RefreshableViewPart extends ViewPart {
 	protected Action deleteSelected;
 	protected Action editSelected;
 
+	protected static final int DEFAULT_FIRSTCOLUMN_WIDTH = 200;
 
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize
@@ -75,7 +81,7 @@ public abstract class RefreshableViewPart extends ViewPart {
 	/**
 	 * Setzt das Context-menu
 	 */
-	private void hookContextMenu() {
+	protected void hookContextMenu() {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -129,7 +135,7 @@ public abstract class RefreshableViewPart extends ViewPart {
 	}
 
 	// Das Context Menu beim Rechts-klick
-	private void fillContextMenu(IMenuManager manager) {
+	protected void fillContextMenu(IMenuManager manager) {
 		manager.add(this.showInfos);
 		manager.add(new Separator());
 		manager.add(this.buildNew);
@@ -163,11 +169,6 @@ public abstract class RefreshableViewPart extends ViewPart {
 	 */
 	protected abstract TreeViewer createTree(Composite parent);
 	
-	/**
-	 * Erstellt die Actions
-	 */
-	protected abstract void makeActions();
-	
 	protected void showMessage(String titel, String message) {
 		MessageDialog.openInformation(
 				((StackLayout) parentComp.getLayout()).topControl.getShell(),
@@ -199,6 +200,38 @@ public abstract class RefreshableViewPart extends ViewPart {
 		return viewerTree;
 	}
 	
+	/**
+	 * Erstellt die Actions
+	 */
+	protected void makeActions() {
+
+		// Ansichte wechseln Action
+		swapTreeTable = new SwapTreeTableAction(this.parentComp);
+
+		// Tabelle nach File Filtern Action
+		filterAktuellesFile = new FilterCurrentFileAction(getViewedClass());
+
+		// Information anzeigen Action
+		showInfos = new InfoCharElementAction() {
+			public void run() {
+				showMessage("Table View", "Noch zu implementieren!"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		};
+
+		// Neues Element Action 
+		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), 
+												getRegulator().getFirstCategoryClass());
+		
+		// Element Bearbeiten Action
+		editSelected = new EditCharElementAction(this.parentComp, getViewedClass());
+		
+		// Element löschen Action
+		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass());
+	}
+	
 	public abstract Regulator getRegulator();
 	
+	public abstract Class getViewedClass();
+	
+	//public abstract BuildNewCharElementAction getBuildNewAction();
 }

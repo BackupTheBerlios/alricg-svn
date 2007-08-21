@@ -9,7 +9,11 @@ package org.d3s.alricg.editor.utils;
 
 import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.editors.TalentEditor;
+import org.d3s.alricg.editor.views.charElemente.EigenschaftView;
+import org.d3s.alricg.editor.views.charElemente.NachteilView;
+import org.d3s.alricg.editor.views.charElemente.SonderfertigkeitView;
 import org.d3s.alricg.editor.views.charElemente.TalentView;
+import org.d3s.alricg.editor.views.charElemente.VorteilView;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
@@ -46,7 +50,7 @@ public class ViewEditorIdManager {
 	
 	public static String getEditorID(Class clazz) {
 		if (clazz == Eigenschaft.class) {
-			//return "Eigenschaft";
+			return "KeinEditor";
 		} else if (clazz ==  Talent.class) {
 			return TalentEditor.ID;
 		} else if (clazz ==  Zauber.class) {
@@ -96,7 +100,7 @@ public class ViewEditorIdManager {
 	
 	public static String getViewID(Class clazz) {
 		if (clazz == Eigenschaft.class) {
-			//return "Eigenschaft";
+			return EigenschaftView.ID;
 		} else if (clazz ==  Talent.class) {
 			return TalentView.ID;
 		} else if (clazz ==  Zauber.class) {
@@ -106,11 +110,11 @@ public class ViewEditorIdManager {
 		} else if (clazz ==  Gabe.class) {
 			//return "Gabe";
 		} else if (clazz ==  Vorteil.class) {
-			//return "Vorteil";
+			return VorteilView.ID;
 		} else if (clazz ==  Nachteil.class) {
-			//return "Nachteil";
+			return NachteilView.ID;
 		} else if (clazz ==  Sonderfertigkeit.class) {
-			//return "Sonderfertigkeit";
+			return SonderfertigkeitView.ID;
 		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
 			//return "Rasse";
 		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {

@@ -17,14 +17,19 @@ import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.editors.composits.AbstarctElementPart;
 import org.d3s.alricg.editor.editors.composits.CharElementPart;
 import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
+import org.d3s.alricg.editor.editors.composits.AuswahlPart;
 import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
+import org.d3s.alricg.editor.editors.composits.AuswahlPart.HerkunftAuswahlRegulator;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
+import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.Talent;
+import org.d3s.alricg.store.charElemente.links.Auswahl;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -48,10 +53,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
 /**
+ * Editor um Talente bearbeiten zu können
  * @author Vincent
  */
 public class TalentEditor extends MultiPageEditorPart {
-	public static final String ID = "org.d3s.alricg.editor.editors.TalentEditor";
+	public static final String ID = "org.d3s.alricg.editor.editors.TalentEditor"; //$NON-NLS-1$
 	private CharElementPart charElementPart;
 	private FaehigkeitPart faehigkeitPart;
 	private TalentPart talentPart;
@@ -82,7 +88,7 @@ public class TalentEditor extends MultiPageEditorPart {
 
 			// ComboBox Art
 			Label lblArt = new Label(top, SWT.NONE);
-			lblArt.setText("Art:");
+			lblArt.setText(EditorMessages.TalentEditor_Art);
 			cobArt = new Combo(top, SWT.READ_ONLY);
 			cobArt.add(Talent.Art.basis.toString());
 			cobArt.add(Talent.Art.beruf.toString());
@@ -91,7 +97,7 @@ public class TalentEditor extends MultiPageEditorPart {
 			
 			// ComboBox Sorte
 			Label lblSorte = new Label(top, SWT.NONE);
-			lblSorte.setText("Sorte:");
+			lblSorte.setText(EditorMessages.TalentEditor_Sorte);
 			cobSorte = new Combo(top, SWT.READ_ONLY);
 			cobSorte.setVisibleItemCount(6);
 			cobSorte.add(Talent.Sorte.gesellschaft.toString());
@@ -116,7 +122,7 @@ public class TalentEditor extends MultiPageEditorPart {
 			
 			// Spalte 1 der containerGridData
 			Label lblSpezi = new Label(container, SWT.NONE);
-			lblSpezi.setText("Spezialisierungen:");
+			lblSpezi.setText(EditorMessages.TalentEditor_Spezialisierung);
 			txtSpez = new Text(container, SWT.BORDER);
 			txtSpez.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			txtSpez.addListener (SWT.DefaultSelection, new Listener () {
@@ -169,7 +175,7 @@ public class TalentEditor extends MultiPageEditorPart {
 			
 			// Wert hinzufügen
 			listSpez.add(text);
-			txtSpez.setText("");
+			txtSpez.setText(""); //$NON-NLS-1$
 		}
 		
 		/* (non-Javadoc)
@@ -201,7 +207,7 @@ public class TalentEditor extends MultiPageEditorPart {
 		 */
 		@Override
 		public void saveData(IProgressMonitor monitor, Talent charElem) {
-			monitor.subTask("Save Talent-Data");
+			monitor.subTask("Save Talent-Data"); //$NON-NLS-1$
 			
 			// Art setzen
 			for (int i = 0; i < Talent.Art.values().length; i++) {
@@ -276,7 +282,10 @@ public class TalentEditor extends MultiPageEditorPart {
 		GridData basisDatenGridData = new GridData(GridData.GRAB_HORIZONTAL);
 		basisDatenGridData.widthHint = 600;
 		basisDatenGridData.horizontalSpan = 2; // nimm 2 Spalten Platz ein
-		charElementPart = new CharElementPart(mainContainer, basisDatenGridData);
+		charElementPart = new CharElementPart(
+				mainContainer, 
+				basisDatenGridData,
+				(Boolean) this.getEditorInput().getAdapter(Boolean.class));
 		charElementPart.loadData(talentInput); 
 		charElementPart.setSelectedXmlAccessor(
 				(XmlAccessor) this.getEditorInput().getAdapter(XmlAccessor.class)
@@ -306,17 +315,58 @@ public class TalentEditor extends MultiPageEditorPart {
 		return voraussetzungsPart.getTree();
 	}
 	
+	// TEST zu entfernen, gehötz hier nicht hin
+	private Composite createTestTalent() {
+		Herkunft herk = new Rasse();
+		
+		AuswahlPart auswahlPart = new AuswahlPart(
+				getContainer(), 
+				this.getSite(),
+				new HerkunftAuswahlRegulator() {
+
+					@Override
+					public Auswahl getAuswahl(Herkunft herkunft) {
+						return herkunft.getTalente();
+					}
+
+					@Override
+					public Class getCharElementClazz() {
+						return Talent.class;
+					}
+
+					@Override
+					public String getRootNoteName() {
+						return EditorMessages.TalentEditor_Talente;
+					}
+
+					@Override
+					public void setAuswahl(Herkunft herkunft, Auswahl auswahl) {
+						herkunft.setTalente(auswahl);
+					}
+					
+				});
+		auswahlPart.loadData(herk);
+		
+		return auswahlPart.getTree();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.MultiPageEditorPart#createPages()
 	 */
 	@Override
 	protected void createPages() {
 
-		int index1 = addPage(createPage1());
-		setPageText(index1, "Daten");
+		int index = addPage(createPage1());
+		setPageText(index, EditorMessages.Editor_Daten);
 		
-		index1 = addPage(createPage2());
-		setPageText(index1, "Voraussetzungen");
+		index = addPage(createPage2());
+		setPageText(index, EditorMessages.Editor_Voraussetzungen);
+		
+		// TEST zu entfernen, gehötz hier nicht hin
+		index = addPage(createTestTalent());
+		setPageText(index, "Talente wählen"); //$NON-NLS-1$
+		
+		
 	}
 
 	/* (non-Javadoc)
@@ -324,7 +374,7 @@ public class TalentEditor extends MultiPageEditorPart {
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		monitor.beginTask("Save Talent to CharElement and File", 5);
+		monitor.beginTask("Save Talent to CharElement and File", 5); //$NON-NLS-1$
 		final XmlAccessor oldAccessor = currentAccessor;
 		final Talent talent = (Talent) this.getEditorInput().getAdapter(Talent.class);
 		final RefreshableViewPart viewPart = 
@@ -356,7 +406,7 @@ public class TalentEditor extends MultiPageEditorPart {
 		if (viewPart != null) viewPart.refresh();
 		
 		// Save to File
-		monitor.subTask("Save Talent File");
+		monitor.subTask("Save Talent File"); //$NON-NLS-1$
 		
 		// TODO Besseres Speichern / Fehlerbehandlung!
 		try {
@@ -415,8 +465,8 @@ public class TalentEditor extends MultiPageEditorPart {
 		super.init(site, input);
 		String name =  ((Talent) this.getEditorInput().getAdapter(Talent.class)).getName();
 		currentAccessor = (XmlAccessor) this.getEditorInput().getAdapter(XmlAccessor.class);
-		this.setPartName("Talent " + name);
-		this.setContentDescription("Bearbeiten des Talents " + name);
+		this.setPartName(EditorMessages.TalentEditor_EditorTitle + name);
+		this.setContentDescription(EditorMessages.TalentEditor_EditorDescription + name);
 	}
 
 	/* (non-Javadoc)

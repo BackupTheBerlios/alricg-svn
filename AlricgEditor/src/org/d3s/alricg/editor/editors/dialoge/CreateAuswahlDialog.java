@@ -7,6 +7,7 @@
  */
 package org.d3s.alricg.editor.editors.dialoge;
 
+import org.d3s.alricg.editor.editors.EditorMessages;
 import org.d3s.alricg.store.charElemente.links.Option;
 import org.d3s.alricg.store.charElemente.links.OptionAnzahl;
 import org.d3s.alricg.store.charElemente.links.OptionListe;
@@ -66,15 +67,15 @@ public class CreateAuswahlDialog extends Dialog {
 		container.setLayout(gridLayout);
 		
 		final Label lblModul = new Label(container, SWT.NONE);
-		lblModul.setText("Modus: ");
+		lblModul.setText(EditorMessages.CreateAuswahlDialog_Modus);
 		cobModus = new Combo(container, SWT.READ_ONLY | SWT.CENTER);
 		if (isVoraussetzung) {
-			cobModus.add("Voraussetzung");
+			cobModus.add(EditorMessages.CreateAuswahlDialog_ModusVoraussetzung);
 			cobModus.setEnabled(false);
 		} else {
-			cobModus.add("Anzahl");
-			cobModus.add("Verteilung");
-			cobModus.add("Liste");
+			cobModus.add(EditorMessages.CreateAuswahlDialog_ModusAnzahl);
+			cobModus.add(EditorMessages.CreateAuswahlDialog_ModusVerteilung);
+			cobModus.add(EditorMessages.CreateAuswahlDialog_MoudsListe);
 			cobModus.addModifyListener(new ModifyListener() {
 
 				@Override
@@ -104,7 +105,7 @@ public class CreateAuswahlDialog extends Dialog {
 		}
 		
 		final Label lblAnzahl = new Label(container, SWT.NONE);
-		lblAnzahl.setText("Anzahl: ");
+		lblAnzahl.setText(EditorMessages.CreateAuswahlDialog_Anzahl);
 		spiAnzahl = new Spinner (container, SWT.BORDER);
 		spiAnzahl.setMinimum(0);
 		spiAnzahl.setMaximum(100);
@@ -113,7 +114,7 @@ public class CreateAuswahlDialog extends Dialog {
 		spiAnzahl.setPageIncrement(10);
 		
 		final Label lblWert = new Label(container, SWT.NONE);
-		lblWert.setText("Wert: ");
+		lblWert.setText(EditorMessages.CreateAuswahlDialog_Wert);
 		spiWert = new Spinner (container, SWT.BORDER);
 		spiWert.setMinimum(0);
 		spiWert.setMaximum(100);
@@ -122,7 +123,7 @@ public class CreateAuswahlDialog extends Dialog {
 		spiWert.setPageIncrement(10);
 		
 		final Label lblMax = new Label(container, SWT.NONE);
-		lblMax.setText("Maximal: ");
+		lblMax.setText(EditorMessages.CreateAuswahlDialog_Maximal);
 		spiMax = new Spinner (container, SWT.BORDER);
 		spiMax.setMinimum(0);
 		spiMax.setMaximum(100);
@@ -131,7 +132,7 @@ public class CreateAuswahlDialog extends Dialog {
 		spiMax.setPageIncrement(10);
 		
 		final Label lblWertList = new Label(container, SWT.NONE);
-		lblWertList.setText("Maximal: ");
+		lblWertList.setText(EditorMessages.CreateAuswahlDialog_WertListe);
 		txtWertList = new Text(container, SWT.BORDER);
 		txtWertList.addListener (SWT.Verify, new Listener () {
 			public void handleEvent (Event e) {
@@ -142,7 +143,7 @@ public class CreateAuswahlDialog extends Dialog {
 					return;
 				}
 				
-				if (!e.text.matches("[[0-9]*[,]*]*")) {
+				if (!e.text.matches("[[0-9]*[,]*]*")) { //$NON-NLS-1$
 					e.doit = false;
 				}
 				return;
@@ -166,7 +167,7 @@ public class CreateAuswahlDialog extends Dialog {
 				for (int i = 0; i < initOption.getWerteListe().length; i++) {
 					strBuilder.append(initOption.getWerteListe()[i]);
 					if (i < (initOption.getWerteListe().length - 1)) {
-						strBuilder.append(",");
+						strBuilder.append(","); //$NON-NLS-1$
 					}
 				}
 				txtWertList.setText(strBuilder.toString());
@@ -219,7 +220,7 @@ public class CreateAuswahlDialog extends Dialog {
 			option.setMax(spiMax.getSelection());
 		}
 		if (txtWertList.isEnabled()) {
-			final String[] strList = txtWertList.getText().split(",");
+			final String[] strList = txtWertList.getText().split(","); //$NON-NLS-1$
 			final int[] intList = new int[strList.length];
 			for (int i = 0; i < strList.length; i++) {
 				intList[i] = Integer.parseInt(strList[i]);

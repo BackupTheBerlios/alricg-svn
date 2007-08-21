@@ -155,7 +155,13 @@ public class EditorViewUtils {
 			for (int i2 = 0; i2 < charElementList.size(); i2++) {
 				
 				final CharElement charElement = charElementList.get(i2);
-				final Object[] firstCat = regulator.getFirstCategory(charElement);
+				Object[] firstCat = regulator.getFirstCategory(charElement);
+				
+				// Falls keine "FirstCategory", direkt zum Root hinzufügen
+				if (firstCat.length == 0) {
+					firstCat = new String[]{"dummie"};
+					map.put(firstCat[0].toString(), invisibleRoot);
+				}
 				
 				for (int i3 = 0; i3 < firstCat.length; i3++) {
 					TreeObject parent;

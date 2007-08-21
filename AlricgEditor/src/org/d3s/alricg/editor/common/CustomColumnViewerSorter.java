@@ -7,13 +7,16 @@
  */
 package org.d3s.alricg.editor.common;
 
-import org.d3s.alricg.common.CharElementNamesService;
+import org.d3s.alricg.common.CharElementTextService;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
-import org.d3s.alricg.store.charElemente.Talent;
+import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
+import org.d3s.alricg.store.charElemente.VorNachteil;
+import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
 import org.d3s.alricg.store.charElemente.links.Option;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -34,10 +37,10 @@ public class CustomColumnViewerSorter {
 	 * 
 	 * @param element TreeObject/TableObject/CharElement oder Link
 	 * @return Das zugehörige CharElement oder "null" wenn keines existiert
-	 */
+	 *
 	private static CharElement getCharElement(Object element) {
 		return ViewUtils.getCharElement(element);
-	}
+	}*/
 	
 	private static int getMultiplikator(Viewer viewer) {
 		
@@ -55,51 +58,70 @@ public class CustomColumnViewerSorter {
 	}
 	
 	public static abstract class CreatableViewerSorter extends ViewerSorter {
-		public abstract ViewerSorter getNewInstance();
-	}
-	
-	public static class NameSorter extends CreatableViewerSorter {
-
 		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			if (getCharElement(e1) == null || getCharElement(e2) == null) {
 				return e1.toString().compareTo(e2.toString()) * getMultiplikator(viewer);
 			}
 			
-			return getCharElement(e1).getName()
-						.compareTo(getCharElement(e2).getName())
+			return getComparable(e1).compareTo(getComparable(e2))
 						* getMultiplikator(viewer);
 		}
 		
-		@Override
 		public ViewerSorter getNewInstance() {
-			return new NameSorter();
+			try {
+				return this.getClass().newInstance();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		/**
+		 * Liefert zu einem TreeObject/TableObject mit CharElement oder Link,
+		 * oder einem  CharElement oder Link direkt das zugehörige CharElement. 
+		 * Gibt es KEIN zugehöriges CharElement, so wird "null" zurückgeliefert.
+		 * 
+		 * @param element TreeObject/TableObject/CharElement oder Link
+		 * @return Das zugehörige CharElement oder "null" wenn keines existiert
+		 */
+		protected static CharElement getCharElement(Object element) {
+			return ViewUtils.getCharElement(element);
+		}
+		
+		/**
+		 * Liefert das Element, nach welchen verglichen werden soll
+		 */
+		public abstract Comparable getComparable(Object obj);
+	}
+	
+	public static class NameSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return getCharElement(obj).getName();
 		}
 	}
 	
 	public static class CharElementKlasseSorter extends CreatableViewerSorter {
-
 		@Override
-		public int compare(Viewer viewer, Object e1, Object e2) {
-			if (getCharElement(e1) == null || getCharElement(e2) == null) {
-				return e1.toString().compareTo(e2.toString()) * getMultiplikator(viewer);
-			}
-			
-			return CharElementNamesService.getCharElementName(
-						getCharElement(e1).getClass()).compareTo(
-								CharElementNamesService.getCharElementName(
-										getCharElement(e2).getClass()
-						))* getMultiplikator(viewer);
-		}
-		
-		@Override
-		public ViewerSorter getNewInstance() {
-			return new CharElementKlasseSorter();
+		public Comparable getComparable(Object obj) {
+			return CharElementTextService.getCharElementName(
+					getCharElement(obj).getClass());
 		}
 	}
 	
-	public static class OptionNameSorter extends NameSorter {
-
+	public static class AdditionsFamilieSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			AdditionsFamilie addFam = ((Fertigkeit) getCharElement(obj)).getAdditionsFamilie();
+			if (addFam == null) return "-";
+			return addFam.getAdditionsID() + " " + addFam.getAdditionsWert();
+		}
+	}
+	
+	public static class OptionNameSorter extends CreatableViewerSorter {
 		@Override
 		public int category(Object element) {
 			if (((TreeObject) element).getValue() instanceof Option) {
@@ -107,67 +129,79 @@ public class CustomColumnViewerSorter {
 			}
 			return 2;
 		}
-		
 		@Override
-		public ViewerSorter getNewInstance() {
-			return new OptionNameSorter();
+		public Comparable getComparable(Object obj) {
+			return getCharElement(obj).getName();
 		}
 	}
 	
 	public static class SktSorter extends CreatableViewerSorter {
-
 		@Override
-		public int compare(Viewer viewer, Object e1, Object e2) {
-			if (getCharElement(e1) == null || getCharElement(e2) == null) {
-				return e1.toString().compareTo(e2.toString());
-			}
-			
-			return ((Faehigkeit) getCharElement(e1)).getKostenKlasse().toString()
-						.compareTo(((Faehigkeit) getCharElement(e2)).getKostenKlasse().toString())
-						* getMultiplikator(viewer);
-		}
-		
-		@Override
-		public ViewerSorter getNewInstance() {
-			return new SktSorter();
-		}
+		public Comparable getComparable(Object obj) {
+			return ((Faehigkeit) getCharElement(obj)).getKostenKlasse().toString();
+		}	
 	}
 	
-	public static class ArtSorter extends CreatableViewerSorter {
-
+	public static class FertigkeitGpSorter extends CreatableViewerSorter {
 		@Override
-		public int compare(Viewer viewer, Object e1, Object e2) {
-			if (getCharElement(e1) == null || getCharElement(e2) == null) {
-				return e1.toString().compareTo(e2.toString());
-			}
-			
-			return ((Talent) getCharElement(e1)).getArt().toString()
-						.compareTo(((Talent) getCharElement(e2)).getArt().toString())
-						* getMultiplikator(viewer);
-		}
-		
-		@Override
-		public ViewerSorter getNewInstance() {
-			return new ArtSorter();
-		}
+		public Comparable getComparable(Object obj) {
+			return ((Fertigkeit) getCharElement(obj)).getGpKosten();
+		}	
 	}
 	
-	public static class SorteSorter extends CreatableViewerSorter {
-
+	public static class VorNachteilGpSorter extends CreatableViewerSorter {
 		@Override
-		public int compare(Viewer viewer, Object e1, Object e2) {
-			if (getCharElement(e1) == null || getCharElement(e2) == null) {
-				return e1.toString().compareTo(e2.toString());
-			}
+		public Comparable getComparable(Object obj) {
+			final VorNachteil vorNachteil = ((VorNachteil) getCharElement(obj));
+			int kosten = 0;
 			
-			return ((Talent) getCharElement(e1)).getSorte().toString()
-						.compareTo(((Talent) getCharElement(e2)).getSorte().toString())
-						* getMultiplikator(viewer);
-		}
-		
+			if (vorNachteil.getGpKosten() != CharElement.KEIN_WERT) {
+				kosten += vorNachteil.getGpKosten();
+			}
+			if (vorNachteil.getKostenProSchritt() != CharElement.KEIN_WERT) {
+				kosten += (vorNachteil.getKostenProSchritt() / vorNachteil.getStufenSchritt());
+			}
+			return kosten;
+		}	
+	}
+	
+	public static class SonderFertigkeitApSorter extends CreatableViewerSorter {
 		@Override
-		public ViewerSorter getNewInstance() {
-			return new SorteSorter();
+		public Comparable getComparable(Object obj) {
+			
+			if (getCharElement(obj) instanceof Sonderfertigkeit) {
+				int  kosten = ((Sonderfertigkeit) getCharElement(obj)).getApKosten();
+				if (kosten != CharElement.KEIN_WERT) {
+					return kosten;
+				}
+			}
+			return (((Fertigkeit) getCharElement(obj)).getGpKosten() * 50);
+		}	
+	}
+	
+	public static class FertigkeitBenoetigtZweitZielSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Fertigkeit) getCharElement(obj)).getBenoetigtZweitZiel();
+		}	
+	}
+	
+	public static class FertigkeitBenoetigtTextSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			Fertigkeit charElem = (Fertigkeit) getCharElement(obj);
+			if ( ((Fertigkeit) charElem).isMitFreienText() || 
+					( ((Fertigkeit) charElem).getTextVorschlaege() != null 
+							&& ((Fertigkeit) charElem).getTextVorschlaege().length > 0) )  {
+				return true;
+			}
+			return false;
+		}	
+	}
+	public static class FertigkeitArtSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Sonderfertigkeit) obj).getArt().getValue();
 		}
 	}
 	
@@ -191,8 +225,9 @@ public class CustomColumnViewerSorter {
 		}
 
 		@Override
-		public ViewerSorter getNewInstance() {
-			return new DateiSorter();
+		public Comparable getComparable(Object obj) {
+			// Noop
+			return null;
 		}
 		
 	}

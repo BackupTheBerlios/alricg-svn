@@ -23,11 +23,13 @@ public class CharElementEditorInput implements IEditorInput {
 	private final CharElement charElement;
 	private final XmlAccessor xmlAccessor;
 	private final String id;
+	private final boolean isNew;
 	
-	public CharElementEditorInput(CharElement charElement, XmlAccessor xmlAccessor) {
+	public CharElementEditorInput(CharElement charElement, XmlAccessor xmlAccessor, boolean isNew) {
 		this.charElement = charElement;
 		this.xmlAccessor = xmlAccessor;
 		this.id = charElement.getId();
+		this.isNew = isNew;
 	}
 	
 	@Override
@@ -60,6 +62,8 @@ public class CharElementEditorInput implements IEditorInput {
 			return this.charElement;
 		} else if (XmlAccessor.class.isAssignableFrom(adapter)) {
 			return this.xmlAccessor;
+		} else if (Boolean.class.isAssignableFrom(adapter)) {
+			return this.isNew;
 		}
 
 		return null;
