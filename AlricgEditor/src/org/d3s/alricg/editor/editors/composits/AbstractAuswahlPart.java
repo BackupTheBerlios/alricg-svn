@@ -60,7 +60,7 @@ import org.eclipse.ui.IWorkbenchPartSite;
  * Superklasse für alle Auswahlen
  * @author Vincent
  */
-public abstract class AbstractAuswahlPart<C extends CharElement> extends AbstarctElementPart<C> {
+public abstract class AbstractAuswahlPart<C extends CharElement> extends AbstractElementPart<C> {
 	protected TreeViewer treeViewer;
 	protected Composite parentComp;
 	protected AuswahlDrop auswahlDrop;
@@ -113,9 +113,6 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstarc
 			private final static int MIN_WERT = -10;
 			private final static int MAX_WERT = 20;
 			
-			/* (non-Javadoc)
-			 * @see org.eclipse.jface.viewers.EditingSupport#canEdit(java.lang.Object)
-			 */
 			@Override
 			protected boolean canEdit(Object element) {
 				// Nur Links haben eine Stufe bearbeitet werden
@@ -132,9 +129,6 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstarc
 				return true;
 			}
 
-			/* (non-Javadoc)
-			 * @see org.eclipse.jface.viewers.EditingSupport#getCellEditor(java.lang.Object)
-			 */
 			@Override
 			protected CellEditor getCellEditor(Object element) {
 				if (cellEditor == null) {
@@ -167,9 +161,6 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstarc
 				return cellEditor;
 			}
 
-			/* (non-Javadoc)
-			 * @see org.eclipse.jface.viewers.EditingSupport#getValue(java.lang.Object)
-			 */
 			@Override
 			protected Object getValue(Object element) {
 				int wert = ((Link) ((TreeObject) element).getValue()).getWert();
@@ -185,9 +176,6 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstarc
 				
 			}
 
-			/* (non-Javadoc)
-			 * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object, java.lang.Object)
-			 */
 			@Override
 			protected void setValue(Object element, Object value) {
 				int valueInt = ((Integer) value).intValue();
@@ -534,9 +522,9 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstarc
 		for (int i = 0; i < root.getChildren().length; i++) {
 			// Links hinzufügen
 			if (root.getChildren()[i].getValue() instanceof Link) {
-				final Link tmpLink = (Link) root.getChildren()[i].getValue();
-				if (tmpLink.getText().length() == 0) tmpLink.setText(null);
-				option.getLinkList().add(tmpLink);
+				option.getLinkList().add(
+						(Link) root.getChildren()[i].getValue()
+					);
 			
 			// Alternative Optionen hinzufügen
 			} else if (root.getChildren()[i].getValue() instanceof Option) {

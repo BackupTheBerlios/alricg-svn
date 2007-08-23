@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
  * Legt die ID fest, indem nach einem Focuswechsel vom Namens-Feld die ID neu berechnet wird.
  * @author Vincent
  */
-public class CharElementPart extends AbstarctElementPart<CharElement> {
+public class CharElementPart extends AbstractElementPart<CharElement> {
 	
 	private Class charElementClass; // Class des angezeigten CharElements
 	private String lastFocusedName; // Der letzte Name nach einem Focus wechsel

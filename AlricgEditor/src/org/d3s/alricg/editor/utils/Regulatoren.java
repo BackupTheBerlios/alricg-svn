@@ -7,6 +7,7 @@
  */
 package org.d3s.alricg.editor.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.d3s.alricg.store.access.XmlAccessor;
@@ -15,11 +16,14 @@ import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.Nachteil;
+import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
+import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.Werte;
 import org.d3s.alricg.store.charElemente.Zauber;
+import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
 
 /**
  * @author Vincent
@@ -36,6 +40,56 @@ public class Regulatoren {
 		public Object[] getFirstCategory(CharElement charElement);
 		public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor);
 		public Class getFirstCategoryClass();
+		public void setFirstCategory(CharElement charElement, Object firstCat);
+	}
+	
+	/**
+	 * Dieser Wapper umschließt CharElemente, um bei einer "instanceof" prüfung
+	 * diese als "nicht-CharElement" zu maskieren. Wichtig für Trees.
+	 * @author Vincent
+	 */
+	public static class CharElementWapper {
+		private final CharElement charElement;
+		private final String text;
+		private final Class clazz; 
+		
+		public CharElementWapper(CharElement charElement) {
+			this.charElement = charElement;
+			this.text = null;
+			this.clazz = null;
+		}
+		
+		public CharElementWapper(Class clazz, String text) {
+			this.text = text;
+			this.clazz = clazz;
+			this.charElement = null;
+		}
+		
+		public Class getWappedClass()  {
+			if (clazz != null) {
+				return clazz;
+			}
+			return charElement.getClass();
+		}
+		
+		/* (non-Javadoc)
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if ( !(obj instanceof CharElementWapper) ) return false;
+			
+			return clazz.equals(((CharElementWapper) obj).getWappedClass())  
+									&& text.equals(obj.toString());
+		}
+
+		@Override
+		public String toString() {
+			if (charElement != null) {
+				return charElement.getName();
+			}
+			return text;
+		}
 	}
 	
 	public static final Regulator TalentRegulator = 
@@ -54,6 +108,11 @@ public class Regulatoren {
 			@Override
 			public Class getFirstCategoryClass() {
 				return Talent.Sorte.class;
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Talent) charElement).setSorte( (Talent.Sorte) firstCat);
 			}
 		};
 		
@@ -74,24 +133,41 @@ public class Regulatoren {
 			public Class getFirstCategoryClass() {
 				return Werte.MagieMerkmal.class;
 			}
+			
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Zauber) charElement).setMerkmale(new MagieMerkmal[] {(MagieMerkmal) firstCat });
+			}
 		};
 		
 	public static final Regulator LiturgieRegulator = 
 		new Regulator() {
 			@Override
 			public Object[] getFirstCategory(CharElement charElement) {
-				return ((Liturgie) charElement).getGottheit();
+				Gottheit[] gottArray = ((Liturgie) charElement).getGottheit();
+				CharElementWapper[] wapper = new CharElementWapper[gottArray.length];
+				
+				for (int i = 0; i < wapper.length; i++) {
+					wapper[i] = new CharElementWapper(gottArray[i]);
+				}
+				
+				return wapper;
 			}
 	
 			@Override
 			public List<? extends CharElement> getListFromAccessor(
 					XmlAccessor accessor) {
-				return accessor.getZauberList();
+				return accessor.getLiturgieList();
 			}
 			
 			@Override
 			public Class getFirstCategoryClass() {
-				return Gottheit.class;
+				return CharElementWapper.class;
+			}
+			
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Liturgie) charElement).setGottheit(new Gottheit[] {(Gottheit) firstCat });
 			}
 		};
 		
@@ -112,6 +188,11 @@ public class Regulatoren {
 			public Class getFirstCategoryClass() {
 				return Object.class;
 			}
+			
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				// Noop
+			}
 		};
 		
 	public static final Regulator SonderfertigkeitRegulator = 
@@ -130,6 +211,11 @@ public class Regulatoren {
 			@Override
 			public Class getFirstCategoryClass() {
 				return Fertigkeit.FertigkeitArt.class;
+			}
+			
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Sonderfertigkeit) charElement).setArt((Fertigkeit.FertigkeitArt) firstCat);
 			}
 		};
 		
@@ -150,6 +236,11 @@ public class Regulatoren {
 			public Class getFirstCategoryClass() {
 				return Fertigkeit.FertigkeitArt.class;
 			}
+			
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Vorteil) charElement).setArt((Fertigkeit.FertigkeitArt) firstCat);
+			}
 		};
 		
 	public static final Regulator NachteilRegulator = 
@@ -168,6 +259,68 @@ public class Regulatoren {
 			@Override
 			public Class getFirstCategoryClass() {
 				return Fertigkeit.FertigkeitArt.class;
+			}
+			
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Nachteil) charElement).setArt((Fertigkeit.FertigkeitArt) firstCat);
+			}
+		};
+		
+	public static final Regulator SchriftRegulator = 
+		new Regulator() {
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[0];
+			}
+	
+			@Override
+			public List<? extends CharElement> getListFromAccessor(
+					XmlAccessor accessor) {
+				return accessor.getSchriftList();
+			}
+			
+			@Override
+			public Class getFirstCategoryClass() {
+				return Object.class;
+			}
+			
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				// Noop
+			}
+		};
+		
+	public static final Regulator SpracheRegulator = 
+		new Regulator() {
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				if (charElement instanceof Sprache) {
+					return new CharElementWapper[] { 
+							new CharElementWapper(Sprache.class, "Sprache") };
+				} else {
+					return new CharElementWapper[] { 
+							new CharElementWapper(Schrift.class, "Schrift") };
+				}
+			}
+	
+			@Override
+			public List<? extends CharElement> getListFromAccessor(
+					XmlAccessor accessor) 
+			{
+				List<CharElement> list = new ArrayList<CharElement>();
+				list.addAll(accessor.getSchriftList());
+				list.addAll(accessor.getSpracheList());
+				return list;
+			}
+			
+			@Override
+			public Class getFirstCategoryClass() {
+				return CharElementWapper.class;
+			}
+			
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				// TODO wahrscheinlich die Build-Actions überschreiben (?)
 			}
 		};
 }

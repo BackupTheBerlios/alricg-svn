@@ -219,11 +219,10 @@ public abstract class RefreshableViewPart extends ViewPart {
 		};
 
 		// Neues Element Action 
-		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), 
-												getRegulator().getFirstCategoryClass());
+		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator());
 		
 		// Element Bearbeiten Action
-		editSelected = new EditCharElementAction(this.parentComp, getViewedClass());
+		editSelected = new EditCharElementAction(this.parentComp);
 		
 		// Element löschen Action
 		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass());

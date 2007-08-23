@@ -45,7 +45,6 @@ public class EditorMessages extends NLS {
 	public static String FaehigkeitPart_SKT_TT;
 	public static String TalentEditor_Art;
 	public static String TalentEditor_EditorDescription;
-	public static String TalentEditor_EditorTitle;
 	public static String TalentEditor_Sorte;
 	public static String TalentEditor_Spezialisierung;
 	public static String TalentEditor_Talente;

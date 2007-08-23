@@ -14,6 +14,7 @@ import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.SchriftSprache;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.VorNachteil;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
@@ -112,6 +113,16 @@ public class CustomColumnViewerSorter {
 		}
 	}
 	
+	/**
+	 * Testet lediglich ob eine Voraussetzung existiert oder nicht
+	 */
+	public static class CharElementVoraussetzungSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return 	getCharElement(obj).getVoraussetzung() == null;
+		}
+	}
+	
 	public static class AdditionsFamilieSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
@@ -138,8 +149,14 @@ public class CustomColumnViewerSorter {
 	public static class SktSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
-			return ((Faehigkeit) getCharElement(obj)).getKostenKlasse().toString();
-		}	
+			CharElement charElement = getCharElement(obj);
+			
+			if(charElement instanceof SchriftSprache) {
+				return ((SchriftSprache) getCharElement(obj)).getKostenKlasse().getValue();
+			} else {
+				return ((Faehigkeit) getCharElement(obj)).getKostenKlasse().getValue();
+			}
+		}
 	}
 	
 	public static class FertigkeitGpSorter extends CreatableViewerSorter {
@@ -201,7 +218,14 @@ public class CustomColumnViewerSorter {
 	public static class FertigkeitArtSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
-			return ((Sonderfertigkeit) obj).getArt().getValue();
+			return ((Sonderfertigkeit) getCharElement(obj)).getArt().getValue();
+		}
+	}
+	
+	public static class SchriftSpracheKomplexitaetSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((SchriftSprache) getCharElement(obj)).getKomplexitaet();
 		}
 	}
 	

@@ -244,12 +244,11 @@ public class EigenschaftView extends RefreshableViewPart {
 		};
 
 		// Neues Element Action 
-		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), 
-												getRegulator().getFirstCategoryClass());
+		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator());
 		buildNew.setEnabled(false);
 		
 		// Element Bearbeiten Action
-		editSelected = new EditCharElementAction(this.parentComp, getViewedClass());
+		editSelected = new EditCharElementAction(this.parentComp);
 		editSelected.setEnabled(false);
 		
 		// Element löschen Action

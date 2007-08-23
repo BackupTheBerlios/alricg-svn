@@ -7,27 +7,34 @@
  */
 package org.d3s.alricg.editor.views.charElemente;
 
-import org.d3s.alricg.common.icons.AbstractIconsLibrary;
-import org.d3s.alricg.common.icons.GoetterIconsLibrary;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
+import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
+import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
+import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.Regulatoren;
+import org.d3s.alricg.editor.utils.Regulatoren.CharElementWapper;
 import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.ViewMessages;
-import org.d3s.alricg.editor.views.charElemente.ZauberView.ZauberVerbreitungProvider;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Gottheit;
-import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.Schrift;
+import org.d3s.alricg.store.charElemente.SchriftSprache;
+import org.d3s.alricg.store.charElemente.Sprache;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -38,37 +45,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IViewPart;
+import org.eclipse.swt.widgets.Menu;
 
 /**
- * 
  * @author Vincent
  */
-public class LiturgieView extends RefreshableViewPart {
-	public static final String ID = "org.d3s.alricg.editor.views.LiturgieView";
-	
-	// Über diesen Regulator wird die Darstellung von Images gesteuert
-	private final ImageProviderRegulator<Gottheit> imageProviderRegulator;
-
-	
-	public LiturgieView() {
-		GoetterIconsLibrary.getInstance().addConsumer(this);
-		
-		imageProviderRegulator = new ImageProviderRegulator<Gottheit>() {
-			public String getName(Gottheit obj) {
-				return obj.getName();
-			}
-			public Gottheit[] getItems(CharElement obj) {
-				return ((Liturgie) obj).getGottheit();
-			}
-			public AbstractIconsLibrary<Gottheit> getIconsLibrary() {
-				return GoetterIconsLibrary.getInstance();
-			}
-			public IViewPart getConsumer() {
-				return LiturgieView.this;
-			}
-		};
-	}
+public class SpracheView extends RefreshableViewPart {
+	public static final String ID = "org.d3s.alricg.editor.views.SpracheSchriftView";
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#createTable(org.eclipse.swt.widgets.Composite)
@@ -102,59 +85,43 @@ public class LiturgieView extends RefreshableViewPart {
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 1);
 		tc.getColumn().setText(ViewMessages.TalentView_Datei);
 		tc.setLabelProvider(new CustomColumnLabelProvider.DateinameLabelProvider());
-		tc.getColumn().setWidth(125);
+		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.DateiSorter(),
 								tableViewer));
 
-		// Gottheiten
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
-		tc.getColumn().setText("1");
-		tc.getColumn().setToolTipText("Herkunft 1");
-		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
-		tc.getColumn().setText("2");
-		tc.getColumn().setToolTipText("Herkunft 2");
-		tc.setLabelProvider(new ImageProvider(1, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
-		tc.getColumn().setText("3");
-		tc.getColumn().setToolTipText("Herkunft 3");
-		tc.setLabelProvider(new ImageProvider(2, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 5);
-		tc.getColumn().setText("4");
-		tc.getColumn().setToolTipText("Herkunft 4+");
-		tc.setLabelProvider(new ImageProvider(3, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
 
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 6);
-		tc.getColumn().setText(ViewMessages.TalentView_Probe);
-		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
+		tc.getColumn().setText("Komplexität");
+		tc.setLabelProvider(new CustomColumnLabelProvider.SchriftSpracheKomplexitaetProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
-
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 7);
+		tc.getColumn().addSelectionListener(
+						new ViewerSelectionListener(
+								new CustomColumnViewerSorter.SchriftSpracheKomplexitaetSorter(),
+								tableViewer));
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
 		tc.getColumn().setText(ViewMessages.TalentView_SKT);
 		tc.setLabelProvider(new CustomColumnLabelProvider.SKTLabelProvider());
-		tc.getColumn().setWidth(50);
+		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.SktSorter(), tableViewer));
 		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 8);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
+		tc.getColumn().setText("Schriften");
+		tc.setLabelProvider(new SpracheSchriftenProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+		tc.getColumn().addSelectionListener(
+				new ViewerSelectionListener(
+						new SpracheSchriftenSorter(), tableViewer));
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 5);
 		tc.getColumn().setText(ViewMessages.TalentView_Voraussetzung);
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
@@ -216,54 +183,36 @@ public class LiturgieView extends RefreshableViewPart {
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.DateiSorter(),
 								treeViewer));
-
-
-		// Herkunft
+		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);
-		tc.getColumn().setText("1");
-		tc.getColumn().setToolTipText("Herkunft 1");
-		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
-		tc.getColumn().setText("2");
-		tc.getColumn().setToolTipText("Herkunft 2");
-		tc.setLabelProvider(new ImageProvider(1, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 4);
-		tc.getColumn().setText("3");
-		tc.getColumn().setToolTipText("Herkunft 3");
-		tc.setLabelProvider(new ImageProvider(2, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 5);
-		tc.getColumn().setText("4");
-		tc.getColumn().setToolTipText("Herkunft 4+");
-		tc.setLabelProvider(new ImageProvider(3, imageProviderRegulator));
-		tc.getColumn().setWidth(24);
-		tc.getColumn().setMoveable(true);
-		
-
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 6);
-		tc.getColumn().setText(ViewMessages.TalentView_Probe);
-		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
+		tc.getColumn().setText("Komplexität");
+		tc.setLabelProvider(new CustomColumnLabelProvider.SchriftSpracheKomplexitaetProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
-
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 7);
+		tc.getColumn().addSelectionListener(
+						new ViewerSelectionListener(
+								new CustomColumnViewerSorter.SchriftSpracheKomplexitaetSorter(),
+								treeViewer));
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
 		tc.getColumn().setText(ViewMessages.TalentView_SKT);
 		tc.setLabelProvider(new CustomColumnLabelProvider.SKTLabelProvider());
-		tc.getColumn().setWidth(50);
+		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.SktSorter(), treeViewer));
 		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 8);
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 4);
+		tc.getColumn().setText("Schriften");
+		tc.setLabelProvider(new SpracheSchriftenProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+		tc.getColumn().addSelectionListener(
+				new ViewerSelectionListener(
+						new SpracheSchriftenSorter(), treeViewer));
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 5);
 		tc.getColumn().setText(ViewMessages.TalentView_Voraussetzung);
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
@@ -272,8 +221,6 @@ public class LiturgieView extends RefreshableViewPart {
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.CharElementVoraussetzungSorter(),
 						treeViewer));
-		
-		
 		
 		// Inhalt und Sortierung setzen
 		TreeObject root = EditorViewUtils.buildEditorViewTree(
@@ -285,7 +232,6 @@ public class LiturgieView extends RefreshableViewPart {
 		treeViewer.setInput(root);
 
 		return treeViewer;
-
 	}
 
 	/* (non-Javadoc)
@@ -293,7 +239,7 @@ public class LiturgieView extends RefreshableViewPart {
 	 */
 	@Override
 	public Regulator getRegulator() {
-		return Regulatoren.LiturgieRegulator;
+		return Regulatoren.SpracheRegulator;
 	}
 
 	/* (non-Javadoc)
@@ -301,16 +247,150 @@ public class LiturgieView extends RefreshableViewPart {
 	 */
 	@Override
 	public Class getViewedClass() {
-		return Liturgie.class;
+		return SchriftSprache.class;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+
+	/**
+	 * Setzt das Context-menu
+	 * Überschrieben, da "BuildNew" nur angezeigt werden darf, wenn ein Element selektiert ist
 	 */
 	@Override
-	public void dispose() {
-		GoetterIconsLibrary.getInstance().removeConsumer(this);
-		super.dispose();
+	protected void hookContextMenu() {
+		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				SpracheView.this.fillContextMenu(manager);
+			}
+		});
+		
+		menuMgr.addMenuListener(new IMenuListener() {
+			
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				boolean isEnabled = true;
+				final TreeOrTableObject treeTableObj = ViewUtils.getSelectedObject(parentComp);
+				
+				if (treeTableObj != null && treeTableObj.getValue() instanceof CharElement) {
+					isEnabled = true;
+				} else {
+					isEnabled = false;
+				}
+				
+				for (int i = 0; i < manager.getItems().length; i++) {
+					if (!(manager.getItems()[i] instanceof ActionContributionItem)) {
+						continue;
+					}
+					ActionContributionItem item = (ActionContributionItem) manager.getItems()[i];
+					
+					if (!(item.getAction() instanceof BuildNewCharElementAction)) {
+						item.getAction().setEnabled(isEnabled);
+					}
+				}
+				
+				if (treeTableObj == null) {
+					buildNew.setEnabled(false);
+				}
+			}
+		});
+
+		// For Tree
+		Menu menu = menuMgr.createContextMenu(viewerTree.getControl());
+		viewerTree.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, viewerTree);
+
+		// For Table
+		menu = menuMgr.createContextMenu(viewerTable.getControl());
+		viewerTable.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, viewerTable);
 	}
 	
+	/**
+	 * Überschrieben, da "BuildNew" den Typ nun dynamisch errechnet
+	 */
+	@Override
+	protected void makeActions() {
+		super.makeActions();
+		
+		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator()) {
+
+			/* (non-Javadoc)
+			 * @see org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction#run()
+			 */
+			@Override
+			public void run() {
+				TreeOrTableObject treeObj = ViewUtils.getSelectedObject(parentComp);
+				if (treeObj == null) {
+					return;
+				}
+				
+				// Bei einer Tabelle kann der Typ direkt gelesen werden
+				if (treeObj instanceof TableObject) {
+					this.charElementClazz = treeObj.getValue().getClass();
+				}
+				
+				while (treeObj != null && !treeObj.getValue().getClass().equals(
+									getRegulator().getFirstCategoryClass()) ) 
+				{
+					treeObj = ((TreeObject) treeObj).getParent();
+				}
+				charElementClazz = ((CharElementWapper) treeObj.getValue()).getWappedClass();
+				
+				super.run();
+			}
+			
+		};
+
+	}
+	// Neues Element Action 
+
+	
+	/**
+	 * Erstellt aus der zu der Sprache zugehörigen Schriften einen Text
+	 * @author Vincent
+	 */
+	private static class SpracheSchriftenProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			if ( charElem instanceof Schrift) {
+				return "-";
+			} else if ( ((Sprache)charElem).getZugehoerigeSchrift() == null) {
+				return "keine";
+			}
+			
+			final StringBuilder strB = new StringBuilder();
+			for (int i = 0; i < ((Sprache)charElem).getZugehoerigeSchrift().length; i++) {
+				strB.append(((Sprache)charElem).getZugehoerigeSchrift()[i].getName());
+				if (i+1 < ((Sprache)charElem).getZugehoerigeSchrift().length) {
+					strB.append(", ");
+				}
+			}
+			return 	strB.toString();
+		}
+	}
+	
+	private static class SpracheSchriftenSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			final CharElement elem = ViewUtils.getCharElement(obj);
+			
+			if ( elem  instanceof Schrift) {
+				return "-";
+			} else if ( ((Sprache) elem).getZugehoerigeSchrift() == null) {
+				return "keine";
+			} 
+			
+			final StringBuilder strB = new StringBuilder();
+			for (int i = 0; i < ((Sprache)elem).getZugehoerigeSchrift().length; i++) {
+				strB.append(((Sprache)elem).getZugehoerigeSchrift()[i].getName());
+				if (i+1 < ((Sprache)elem).getZugehoerigeSchrift().length) {
+					strB.append(", ");
+				}
+			}
+			return 	strB.toString();
+		}
+	}
 }

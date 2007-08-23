@@ -7,10 +7,13 @@
  */
 package org.d3s.alricg.editor.views.charElemente;
 
+import org.d3s.alricg.common.icons.AbstractIconsLibrary;
 import org.d3s.alricg.common.icons.MagieIconsLibrary;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
@@ -23,6 +26,7 @@ import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Zauber;
+import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -34,18 +38,36 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewPart;
 
 /**
  * @author Vincent
  *
  */
 public class ZauberView extends RefreshableViewPart {
-
+	public static final String ID = "org.d3s.alricg.editor.views.ZauberView"; 
+	
+	// Über diesen Regulator wird die Darstellung von Images gesteuert
+	private final ImageProviderRegulator<MagieMerkmal> imageProviderRegulator;
+	
 	public ZauberView() {
 		MagieIconsLibrary.getInstance().addConsumer(this);
+		
+		imageProviderRegulator = new ImageProviderRegulator<MagieMerkmal>() {
+				public String getName(MagieMerkmal obj) {
+					return obj.getValue();
+				}
+				public MagieMerkmal[] getItems(CharElement obj) {
+					return ((Zauber) obj).getMerkmale();
+				}
+				public AbstractIconsLibrary<MagieMerkmal> getIconsLibrary() {
+					return MagieIconsLibrary.getInstance();
+				}
+				public IViewPart getConsumer() {
+					return ZauberView.this;
+				}
+		};
 	}
 	
 	/* (non-Javadoc)
@@ -91,29 +113,29 @@ public class ZauberView extends RefreshableViewPart {
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
 		tc.getColumn().setText("1");
 		tc.getColumn().setToolTipText("Magie-Merkmal 1");
-		tc.setLabelProvider(new ZauberMerkmalProvider(0, this));
+		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
 		tc.getColumn().setText("2");
 		tc.getColumn().setToolTipText("Magie-Merkmal 2");
-		tc.setLabelProvider(new ZauberMerkmalProvider(1, this));
+		tc.setLabelProvider(new ImageProvider(1, imageProviderRegulator));
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
 		tc.getColumn().setText("3");
 		tc.getColumn().setToolTipText("Magie-Merkmal 3");
-		tc.setLabelProvider(new ZauberMerkmalProvider(2, this));
+		tc.setLabelProvider(new ImageProvider(2, imageProviderRegulator));
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 5);
 		tc.getColumn().setText("4");
 		tc.getColumn().setToolTipText("Magie-Merkmal 4+");
-		tc.setLabelProvider(new ZauberMerkmalProvider(3, this));
-		tc.getColumn().setWidth(24);
+		tc.setLabelProvider(new ImageProvider(3, imageProviderRegulator));
+		tc.getColumn().setWidth(30);
 		tc.getColumn().setMoveable(true);
 		
 		// verbreitung
@@ -143,6 +165,10 @@ public class ZauberView extends RefreshableViewPart {
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
+		tc.getColumn().addSelectionListener(
+				new ViewerSelectionListener(
+						new CustomColumnViewerSorter.CharElementVoraussetzungSorter(),
+						tableViewer));
 		
 		// Inhalt und Sortierung setzen
 		tableViewer.setContentProvider(new TableViewContentProvider());
@@ -202,29 +228,29 @@ public class ZauberView extends RefreshableViewPart {
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);
 		tc.getColumn().setText("1");
 		tc.getColumn().setToolTipText("Magie-Merkmal 1");
-		tc.setLabelProvider(new ZauberMerkmalProvider(0, this));
+		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
 		tc.getColumn().setText("2");
 		tc.getColumn().setToolTipText("Magie-Merkmal 2");
-		tc.setLabelProvider(new ZauberMerkmalProvider(1, this));
+		tc.setLabelProvider(new ImageProvider(1, imageProviderRegulator));
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 4);
 		tc.getColumn().setText("3");
 		tc.getColumn().setToolTipText("Magie-Merkmal 3");
-		tc.setLabelProvider(new ZauberMerkmalProvider(2, this));
+		tc.setLabelProvider(new ImageProvider(2, imageProviderRegulator));
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 5);
 		tc.getColumn().setText("4");
 		tc.getColumn().setToolTipText("Magie-Merkmal 4+");
-		tc.setLabelProvider(new ZauberMerkmalProvider(3, this));
-		tc.getColumn().setWidth(24);
+		tc.setLabelProvider(new ImageProvider(3, imageProviderRegulator));
+		tc.getColumn().setWidth(29);
 		tc.getColumn().setMoveable(true);
 		
 		// verbreitung
@@ -255,7 +281,10 @@ public class ZauberView extends RefreshableViewPart {
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
-		
+		tc.getColumn().addSelectionListener(
+				new ViewerSelectionListener(
+						new CustomColumnViewerSorter.CharElementVoraussetzungSorter(),
+						treeViewer));
 		
 		// Inhalt und Sortierung setzen
 		TreeObject root = EditorViewUtils.buildEditorViewTree(
@@ -267,7 +296,6 @@ public class ZauberView extends RefreshableViewPart {
 		treeViewer.setInput(root);
 
 		return treeViewer;
-
 	}
 
 	/* (non-Javadoc)
@@ -295,6 +323,11 @@ public class ZauberView extends RefreshableViewPart {
 		super.dispose();
 	}
 
+	
+	/**
+	 * Für die Darstellung der Verbreitung von Zaubern
+	 * @author Vincent
+	 */
 	public static class ZauberVerbreitungProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
@@ -323,7 +356,7 @@ public class ZauberView extends RefreshableViewPart {
 	/**
 	 * Für die Darstellung der Merkmale als Bilder und ToolTip
 	 * @author Vincent
-	 */
+	 *
 	public static class ZauberMerkmalProvider extends ColumnLabelProvider {
 		private static final int ANZAHL_MERKMAL_SPALTEN = 4;
 		private final int index;
@@ -387,9 +420,6 @@ public class ZauberView extends RefreshableViewPart {
 			return retStr;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.CellLabelProvider#getToolTipImage(java.lang.Object)
-		 */
 		@Override
 		public Image getToolTipImage(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
@@ -401,7 +431,7 @@ public class ZauberView extends RefreshableViewPart {
 			}
 			
 			// Image erzeugen
-			final Image	img =  MagieIconsLibrary.getInstance().getImageImageDescriptor24(
+			final Image	img =  MagieIconsLibrary.getInstance().getImageDescriptor24(
 							((Zauber) charElem).getMerkmale()[index]).createImage();
 			
 			// Dispose Image
@@ -415,7 +445,6 @@ public class ZauberView extends RefreshableViewPart {
 			
 			return img;
 		}
-		
-		
-	}
+	}*/
+	
 }

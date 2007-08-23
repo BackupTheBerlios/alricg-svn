@@ -21,6 +21,7 @@ import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.EditorViewUtils.DependencyProgressMonitor;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
+import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.ViewModel;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.CharElementFactory;
@@ -142,16 +143,14 @@ public class CustomActions {
 	 */
 	public static class EditCharElementAction extends Action {
 		private final Composite parentComp;
-		private final Class clazz;
 		
 		/**
 		 * Konstruktor
 		 * @param parentComp Das Parent Composite von einem Tree/Table View
 		 * @param Class clazz Die Klasse des Elements welche beareitet werden sollen
 		 */
-		public EditCharElementAction(Composite parentComp, Class clazz) {
+		public EditCharElementAction(Composite parentComp) {
 			this.parentComp = parentComp;
-			this.clazz = clazz;
 			
 			this.setText(Messages.Actions_Edit);
 			this.setToolTipText(Messages.Actions_Edit_TT);
@@ -174,12 +173,16 @@ public class CustomActions {
 					false);
 	
 			try {
-				page.openEditor(editorInput, ViewEditorIdManager.getEditorID(clazz), true);
+				page.openEditor(
+						editorInput, 
+						ViewEditorIdManager.getEditorID(treeTableObj.getValue().getClass()), 
+						true);
 				
 			} catch (PartInitException e) {
 				Activator.logger.log(
 						Level.SEVERE, 
-						"Konnte Editor nicht öffnen. Editor ID: " + ViewEditorIdManager.getEditorID(clazz),  //$NON-NLS-1$
+						"Konnte Editor nicht öffnen. Editor ID: " 
+							+ ViewEditorIdManager.getEditorID(treeTableObj.getValue().getClass()),  //$NON-NLS-1$
 						e);
 			}
 		}
@@ -192,8 +195,8 @@ public class CustomActions {
 	 * @author Vincent
 	 */
 	public static class BuildNewCharElementAction extends Action {
-		private final Class charElementClazz;
-		private final Class firstCategoryClazz;
+		protected Class charElementClazz;
+		private final Regulator regulator;
 		private final Composite parentComp;
 		
 		/**
@@ -202,9 +205,9 @@ public class CustomActions {
 		public BuildNewCharElementAction(
 				Composite parentComp, 
 				Class charElementClazz,
-				Class firstCategoryClazz) {
+				Regulator regulator) {
 			this.charElementClazz = charElementClazz;
-			this.firstCategoryClazz = firstCategoryClazz;
+			this.regulator = regulator;
 			this.parentComp = parentComp;
 			
 			this.setText(Messages.Actions_NewElement);
@@ -257,8 +260,8 @@ public class CustomActions {
 		protected void runForTreeView(CharElement newCharElem, TreeObject treeObj) {
 			if (treeObj.getValue().getClass() == charElementClazz) {
 				runForTreeView(newCharElem, (TreeObject) treeObj.getParent());
-			} else if (treeObj.getValue().getClass() == firstCategoryClazz) {
-				((Talent) newCharElem).setSorte((Talent.Sorte) treeObj.getValue());
+			} else if (treeObj.getValue().getClass() == regulator.getFirstCategoryClass()) {
+				regulator.setFirstCategory(newCharElem, treeObj.getValue());
 			} else if (treeObj.getValue() instanceof String) {
 				newCharElem.setSammelbegriff(treeObj.getValue().toString());
 				runForTreeView(newCharElem, (TreeObject) treeObj.getParent());

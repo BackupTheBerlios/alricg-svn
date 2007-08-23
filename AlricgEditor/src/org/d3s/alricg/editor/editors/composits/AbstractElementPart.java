@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 /**
  * @author Vincent
  */
-public abstract class AbstarctElementPart<C extends CharElement> {
+public abstract class AbstractElementPart<C extends CharElement> {
 
 	/**
 	 * Wandelt ein Object in einen String um. Dabei wird ein "null" Object zu

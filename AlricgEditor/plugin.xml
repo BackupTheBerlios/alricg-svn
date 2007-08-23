@@ -12,42 +12,42 @@
             class="org.d3s.alricg.editor.views.charElemente.TalentView"
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.views.TalentView"
-            name="Talent View">
+            name="Talente">
       </view>
       <view
             category="AlricgEditor"
             class="org.d3s.alricg.editor.views.FileView"
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.views.FileView"
-            name="File View">
+            name="Dateien">
       </view>
       <view
             category="AlricgEditor"
             class="org.d3s.alricg.editor.views.charElemente.EigenschaftView"
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.views.EigenschaftView"
-            name="Eigenschaft View">
+            name="Eigenschaften">
       </view>
       <view
             category="AlricgEditor"
             class="org.d3s.alricg.editor.views.charElemente.SonderfertigkeitView"
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.views.SonderfertigkeitView"
-            name="SonderfertigkeitView">
+            name="Sonderfertigkeiten">
       </view>
       <view
             category="AlricgEditor"
             class="org.d3s.alricg.editor.views.charElemente.VorteilView"
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.views.VorteilView"
-            name="Vorteil View">
+            name="Vorteile">
       </view>
       <view
             category="AlricgEditor"
             class="org.d3s.alricg.editor.views.charElemente.NachteilView"
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.views.NachteilView"
-            name="Nachteil View">
+            name="Nachteile">
       </view>
       <view
             category="AlricgEditor"
@@ -63,6 +63,55 @@
             id="org.d3s.alricg.editor.views.LiturgieView"
             name="Litugien">
       </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.SpracheView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.SpracheSchriftView"
+            name="Sprachen">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.KulturView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.KulturView"
+            name="Kulturen">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.RasseView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.RasseView"
+            name="Rassen">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.ProfessionView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.ProfessionView"
+            name="Professionen">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.RepraesentationView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.RepraesentationView"
+            name="Repräsentationen">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.GegenstandView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.GegenstandView"
+            name="Gegenstände">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.RegionVolkView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.RegionVolkView"
+            name="Region / Volk">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -71,6 +120,18 @@
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.editors.TalentEditor"
             name="TalentEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.SpracheEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.SpracheEditor"
+            name="SpracheEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.SchriftEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.SchriftEditor"
+            name="SchriftEditor">
       </editor>
    </extension>
 

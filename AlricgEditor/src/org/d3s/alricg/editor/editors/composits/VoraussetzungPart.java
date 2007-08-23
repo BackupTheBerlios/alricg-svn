@@ -53,7 +53,6 @@ public class VoraussetzungPart extends AbstractAuswahlPart {
 	 */
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		treeViewer.getTree().dispose();
 
 	}

@@ -113,7 +113,10 @@ public class TalentView extends RefreshableViewPart {
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
-		
+		tc.getColumn().addSelectionListener(
+				new ViewerSelectionListener(
+						new CustomColumnViewerSorter.CharElementVoraussetzungSorter(),
+						treeViewer));
 		
 		// Inhalt und Sortierung setzen
 		TreeObject root = EditorViewUtils.buildEditorViewTree(
@@ -230,6 +233,10 @@ public class TalentView extends RefreshableViewPart {
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
+		tc.getColumn().addSelectionListener(
+				new ViewerSelectionListener(
+						new CustomColumnViewerSorter.CharElementVoraussetzungSorter(),
+						tableViewer));
 		
 		// Inhalt und Sortierung setzen
 		tableViewer.setContentProvider(new TableViewContentProvider());

@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
-import org.d3s.alricg.editor.editors.composits.AbstarctElementPart;
+import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;

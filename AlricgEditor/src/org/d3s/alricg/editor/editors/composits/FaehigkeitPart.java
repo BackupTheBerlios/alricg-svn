@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Label;
  * Stellt Controls für die Klasse Faehigkeit bereit und verwaltete diese.
  * @author Vincent
  */
-public class FaehigkeitPart extends AbstarctElementPart<Faehigkeit> {
+public class FaehigkeitPart extends AbstractElementPart<Faehigkeit> {
 	private Composite compProbe;
 	private Combo cobEig1;
 	private Combo cobEig2;

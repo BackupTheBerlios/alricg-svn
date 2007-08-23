@@ -8,20 +8,20 @@
 package org.d3s.alricg.editor.common;
 
 import org.d3s.alricg.common.CharElementTextService;
+import org.d3s.alricg.common.icons.AbstractIconsLibrary;
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
-import org.d3s.alricg.common.icons.MagieIconsLibrary;
 import org.d3s.alricg.editor.Messages;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
-import org.d3s.alricg.editor.views.charElemente.ZauberView;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
+import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.VorNachteil;
-import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
@@ -33,7 +33,9 @@ import org.d3s.alricg.store.charElemente.links.OptionVoraussetzung;
 import org.d3s.alricg.store.charElemente.sonderregeln.Sonderregel.ChangeTextContex;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -311,7 +313,23 @@ public class CustomColumnLabelProvider {
 			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return ""; //$NON-NLS-1$
 
-			return ((Faehigkeit) charElem).getKostenKlasse().toString();
+			if (charElem instanceof Schrift) {
+				return ((Schrift) charElem).getKostenKlasse().getValue();
+			} else if (charElem instanceof Sprache) {
+				String tmpStr = ((Sprache) charElem).getKostenKlasse().getValue();
+				
+				if ( ((Sprache) charElem).getWennNichtMuttersprache() != null ) {
+					final Sprache wnm = ((Sprache) charElem).getWennNichtMuttersprache();
+					if (wnm.getKostenKlasse() != ((Sprache) charElem).getKostenKlasse() ) {
+						tmpStr = tmpStr + " / " + wnm.getKostenKlasse().getValue();
+					}
+				}
+				
+				return tmpStr;
+			} else {
+				return ((Faehigkeit) charElem).getKostenKlasse().getValue();
+			}
+			
 		}
 		
 		@Override
@@ -320,9 +338,25 @@ public class CustomColumnLabelProvider {
 			if (charElem == null)  super.getToolTipText(element);
 			
 			StringBuilder builder = new StringBuilder();
-			builder.append(Messages.LabelProvider_SKT_TT)
-				.append(
-						((Faehigkeit) charElem).getKostenKlasse().toString());
+			builder.append(Messages.LabelProvider_SKT_TT);
+			
+			if (charElem instanceof Schrift) {
+				builder.append(((Schrift) charElem).getKostenKlasse().getValue());
+			} else if (charElem instanceof Sprache) {
+				builder.append(((Sprache) charElem).getKostenKlasse().getValue());
+				
+				if ( ((Sprache) charElem).getWennNichtMuttersprache() != null ) {
+					final Sprache wnm = ((Sprache) charElem).getWennNichtMuttersprache();
+					if ( wnm.getKostenKlasse() != ((Sprache) charElem).getKostenKlasse() ) {
+						builder.append(" oder " )
+								.append(wnm.getKostenKlasse().getValue())
+								.append(" wenn nicht Muttersprache");
+					}
+				}
+				
+			} else {
+				builder.append(((Faehigkeit) charElem).getKostenKlasse().getValue());
+			}
 			return builder.toString();
 		}
 	}
@@ -604,6 +638,165 @@ public class CustomColumnLabelProvider {
 			if (charElem == null) return ""; //$NON-NLS-1$
 			
 			return CharElementTextService.getVoraussetzungsText(charElem.getVoraussetzung());
+		}
+	}
+	
+	public static class SchriftSpracheKomplexitaetProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			if (charElem instanceof Schrift) {
+				return Integer.toString( ((Schrift) charElem).getKomplexitaet() );
+			} else {
+				String tmpStr = Integer.toString( ((Sprache) charElem).getKomplexitaet() );
+				
+				if ( ((Sprache) charElem).getWennNichtMuttersprache() != null ) {
+					final Sprache wnm = ((Sprache) charElem).getWennNichtMuttersprache();
+					if (wnm.getKomplexitaet() != ((Sprache) charElem).getKomplexitaet() ) {
+						tmpStr = tmpStr + " / " + Integer.toString( wnm.getKomplexitaet() );
+					}
+				}
+				
+				return tmpStr;
+			}
+		}
+		
+		@Override
+		public String getToolTipText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null)  super.getToolTipText(element);
+			
+			if ( !(charElem instanceof Sprache) 
+					|| ((Sprache) charElem).getWennNichtMuttersprache() == null) {
+				return null;
+			}
+			
+			String retStr;
+			
+			final Sprache wnm = ((Sprache) charElem).getWennNichtMuttersprache();
+			if ( wnm.getKostenKlasse() != ((Sprache) charElem).getKostenKlasse() ) {
+				StringBuilder strB = new StringBuilder();
+				
+				strB.append("Komplexität: ")
+					.append(((Sprache) charElem).getKomplexitaet())
+					.append(" oder ")
+					.append(wnm.getKomplexitaet())
+					.append(" wenn nicht Muttersprache");
+					
+				return strB.toString();
+			}
+			
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * Helper für den ImageProvider. Hierrüber wird die Anzeige der Bilder
+	 * für unterschiedliche Elemente gesteuert
+	 * @author Vincent
+	 * @param <T>
+	 */
+	public static interface ImageProviderRegulator<T> {
+		public String getName(T obj);
+		public T[] getItems(CharElement obj);
+		public AbstractIconsLibrary<T> getIconsLibrary();
+		public IViewPart getConsumer();
+	}
+	
+	
+	/**
+	 * Für die Darstellung von Bildern in Tabellen mit ToolTip
+	 * @author Vincent
+	 */
+	public static class ImageProvider extends ColumnLabelProvider {
+		private static final int ANZAHL_SPALTEN = 4;
+		private final int index;
+		//private final IViewPart consumer;
+		private final ImageProviderRegulator regulator;
+		
+		public ImageProvider(int index, ImageProviderRegulator regulator ) {
+			this.index = index;
+			this.regulator = regulator;
+		}
+		
+		@Override
+		public String getText(Object element) {
+			if (index+1 < ANZAHL_SPALTEN) return "";
+		
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if ( regulator.getItems(charElem).length >= ANZAHL_SPALTEN)  {
+				return "+";
+			}
+			return "";
+		}
+		
+		
+		@Override
+		public Image getImage(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return null;
+			
+			if (regulator.getItems(charElem).length > index) {
+					return regulator.getIconsLibrary().getImage16(
+							regulator.getItems(charElem)[index], 
+							regulator.getConsumer());
+			}
+			return null;
+		}
+
+		@Override
+		public String getToolTipText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return null;
+					
+			String retStr = "";
+			if ( regulator.getItems(charElem).length > index ) {
+				retStr = regulator.getName(regulator.getItems(charElem)[index]);
+			}
+			
+			if (index+1 >= ANZAHL_SPALTEN
+					&& regulator.getItems(charElem).length >= ANZAHL_SPALTEN) {
+				for (int i = index+1; i < regulator.getItems(charElem).length; i++) {
+					
+					retStr = retStr + ", " + regulator.getName(regulator.getItems(charElem)[i]);
+				}
+			}
+
+			if (retStr.length() == 0) return null;
+			return retStr;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.CellLabelProvider#getToolTipImage(java.lang.Object)
+		 */
+		@Override
+		public Image getToolTipImage(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return null;
+			
+			if ( !(regulator.getItems(charElem).length > index)) {
+				return null;
+			}
+			
+			// Image erzeugen
+			final Image	img =  regulator.getIconsLibrary().getImageDescriptor24(
+									regulator.getItems(charElem)[index]).createImage();
+			
+			// Dispose Image
+			final Display d  = regulator.getConsumer().getViewSite().getShell().getDisplay();
+			
+			d.timerExec (100, new Runnable () {
+				public void run () {
+					img.dispose();
+				}
+			});
+			
+			return img;
 		}
 	}
 
