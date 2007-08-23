@@ -7,77 +7,46 @@
  */
 package org.d3s.alricg.common.icons;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
-import org.d3s.alricg.common.Activator;
 import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Vincent
- * 
  */
-public class MagieIconsLibrary {
+public class MagieIconsLibrary extends AbstractIconsLibrary<MagieMerkmal> {
 	private static final String PATH = ImageService.BASE_IMAGEPATH + "charElemente/zauberSymbole/";
-	private List<Object> consumerList = new ArrayList<Object>();
-	private HashMap<MagieMerkmal, Image> imageHash = new HashMap<MagieMerkmal, Image>();
 	
-	/**
-	 * Jedes Object das Bilder von den MagieIconsLibrary nutzt, muss sich hier anmelden
-	 * @param consumer
-	 */
-	public void addConsumer(Object consumer) {
-		consumerList.add(consumer);
+	private static MagieIconsLibrary self = new MagieIconsLibrary();
+	
+	// Protected Constructor
+	private MagieIconsLibrary() {}
+	
+	public static MagieIconsLibrary getInstance() {
+		return self;
 	}
-	
+
 	/**
-	 * 
-	 * @param consumer
+	 * @return ImageDescriptor eines 24x24 Bildes für das gewünscht Merkmal
 	 */
-	public void removeUser(Object consumer) {
-		consumerList.remove(consumer);
-		
-		// Wenn kein Benutzer mehr für die Bilder angemeldet ist, alle disposen
-		if (consumerList.size() == 0) {
-			Iterator<Image> imgIt = imageHash.values().iterator();
-			
-			while (imgIt.hasNext()) {
-				imgIt.next().dispose();
-			}
-		}
-		imageHash.clear();
-	}
-	
 	public ImageDescriptor getImageDescriptor24(MagieMerkmal merkmal) {
 		return getMatchingIcon(merkmal).getImage24();
 	}
 	
-	public Image getImage16(MagieMerkmal merkmale, Object consumer) {
-
-		if (!consumerList.contains(consumer)) {
-			throw new IllegalArgumentException("Consumer müssen sich erst anmelden!");
-		}
-		
-		if (!imageHash.containsKey(merkmale)) {
-			imageHash.put(merkmale, getMatchingIcon(merkmale).getImage16().createImage());
-		}
-		
-		return imageHash.get(merkmale);
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.icons.AbstractIconsLibrary#getImageDescriptor16(java.lang.Object)
+	 */
+	@Override
+	protected ImageDescriptor getImageDescriptor16(MagieMerkmal merkmale) {
+		return getMatchingIcon(merkmale).getImage16();
 	}
-	
-	private Icons getMatchingIcon(MagieMerkmal merkmale) {
+
+	protected Icons getMatchingIcon(MagieMerkmal merkmale) {
 		switch(merkmale) {
 			case antimagie: return Icons.antimagie;
 			case beschwoerung: return Icons.beschwoerung;
@@ -154,7 +123,8 @@ public class MagieIconsLibrary {
 		telekinese("telekinese"),
 		temporal("temporal"),
 		umwelt("umwelt"),
-		verstaendigung("verstaendigung");
+		verstaendigung("verstaendigung");		
+		
 
 		private ImageDescriptor icon16;
 		private ImageDescriptor icon24;

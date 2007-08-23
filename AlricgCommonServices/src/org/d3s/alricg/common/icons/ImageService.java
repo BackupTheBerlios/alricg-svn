@@ -28,7 +28,6 @@ public class ImageService {
 	
 	
 	private ImageService() {
-		
 		BASE_IMAGEPATH = Platform.getInstanceLocation().getURL() + "icons/";
 	}
 	

@@ -18,6 +18,11 @@ public enum ControlIconsLibrary {
 	info("information.png"),
 	warning("warning.png"),
 	
+	accept("accept.png"),
+	cancel("cancel.png"),
+	arrowUp("arrow_up.png"),
+	arrowDown("arrow_down.png"),
+	
 // Elemente bearbeiten
 	add("add.png"),
 	addFolder("folder_add.png"),
