@@ -9,6 +9,14 @@ package org.d3s.alricg.store.charElemente;
 
 /**
  * Repräsentiert die Ritualkenntnis von Magiern und Schamenen.
+ * Wirklich nötig?
+ *  Wie wäre es mit:
+ *  	- RitualK als SF mit Repraesentation als Z.Z.?
+ *  	- Einziges Problem: Hat eine Stufe und beginnt mit "3"
+ * 	    - Bei "Fertigkeit" sollte dann evtl. noch etwas 
+ * 			wie "StartStufe" aufgenommen werden (??)
+ * 	
+ * => Wahrscheinlich ist RK unnötig!!
  * @author Vincent
  */
 public class RitualKenntnis extends Faehigkeit {

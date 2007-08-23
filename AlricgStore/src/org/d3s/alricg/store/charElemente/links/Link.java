@@ -136,11 +136,7 @@ public abstract class Link<ZIEL extends CharElement> {
 	 * @param text Setzt das Attribut text.
 	 */
 	public void setText(String text) {
-		if (text == null)  {
-			this.text  = "";
-		} else {
-			this.text = text;
-		}
+		this.text = text;
 	}
 	/**
 	 * @param wert Setzt das Attribut wert ("-100" bedeutet, das es keinen Wert gibt).

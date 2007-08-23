@@ -20,10 +20,13 @@ import javax.xml.bind.Unmarshaller;
 
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
+import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.Repraesentation;
+import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
+import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
@@ -341,6 +344,48 @@ public class UnMarschall {
 		talentList.add(talentArray[0]);
 		talentList.add(talentArray[1]);
 		talentList.add(talentArray[2]);
+		
+		// TEST >>>>>>>>>
+		/*
+		List<Schrift> schriftList = new ArrayList<Schrift>();
+		Schrift g = new Schrift();
+		g.setId("SRI-testSchrift");
+		g.setName("Lala-Lumpo schrift");
+		g.setKomplexitaet(10);
+		g.setKostenKlasse(KostenKlasse.B);
+		g.setSammelbegriff("Doofe Schriften");
+		schriftList.add(g);
+		xmlAccessor.setSchriftList(schriftList);
+		
+		List<Sprache> spracheList = new ArrayList<Sprache>();
+		Sprache l1 = new Sprache();
+		l1.setId("SPR-testSprache1");
+		l1.setName("Lala-Lopo Sprache");
+		l1.setKomplexitaet(12);
+		l1.setKostenKlasse(KostenKlasse.A);
+		l1.setSammelbegriff("Schlaue Sprachen");
+		l1.setZugehoerigeSchrift(new IdLink(l1, g, null, IdLink.KEIN_WERT, null));
+		
+		Sprache l2 = new Sprache();
+		l2.setId("SPR-testSprache2");
+		l2.setName("Lala-Lopo Sprache2");
+		l2.setKomplexitaet(11);
+		l2.setKostenKlasse(KostenKlasse.C);
+		l2.setSammelbegriff("Ganz Schlaue Sprachen");
+		
+		Sprache l3 = new Sprache();
+		l3.setId("SPR-testSprache2-2");
+		l3.setName("Lala-Lopo Sprache (NichtM)");
+		l3.setKomplexitaet(87);
+		l3.setKostenKlasse(KostenKlasse.H);
+		l3.setSammelbegriff("Ganz Schlaue Sprachen");
+		l2.setWennNichtMuttersprache(l3);
+		
+		spracheList.add(l1);
+		spracheList.add(l2);
+		xmlAccessor.setSpracheList(spracheList);
+		*/
+		// <<<<<<<<<<<<< 
 		
 		xmlAccessor.setTalentList(talentList);
 		xmlAccessor.setEigenschaftList(eigenschaftList);

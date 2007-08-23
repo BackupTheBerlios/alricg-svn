@@ -20,6 +20,7 @@ import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
+import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.VorNachteil;
@@ -236,13 +237,18 @@ public class DependecySearcher {
 	
 	private void checkDependencySprache(List<Sprache> spracheList, CharElement toCheck, XmlAccessor currentAcc) {
 
-		for (int i = 0; i < spracheList.size(); i++) {
-			if( toCheck.equals(spracheList.get(i).getWennNichtMuttersprache()) ) {
-				errorList.add(new DependencyTableObject(spracheList.get(i), currentAcc, "Falls nicht Muttersprache"));
+		for (int i1 = 0; i1 < spracheList.size(); i1++) {
+			if( toCheck.equals(spracheList.get(i1).getWennNichtMuttersprache()) ) {
+				errorList.add(new DependencyTableObject(spracheList.get(i1), currentAcc, "Falls nicht Muttersprache"));
 			}
-			if ( spracheList.get(i).getZugehoerigeSchrift() != null
-					&& !checkDependencyLink(spracheList.get(i).getZugehoerigeSchrift(), toCheck) ) {
-				errorList.add(new DependencyTableObject(spracheList.get(i), currentAcc, "Zugehörige Schrift"));
+			
+			// Zugehörige Schriften prüfen
+			if ( toCheck instanceof Schrift &&	spracheList.get(i1).getZugehoerigeSchrift() != null) {
+				for (int i2 = 0; i2 < spracheList.get(i1).getZugehoerigeSchrift().length; i2++) {
+					if( toCheck.equals(spracheList.get(i1).getZugehoerigeSchrift()[i2]) ) {
+						errorList.add(new DependencyTableObject(spracheList.get(i1), currentAcc, "Zugehörige Schrift"));
+					}
+				}
 			}
 		}
 		

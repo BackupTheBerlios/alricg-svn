@@ -14,8 +14,13 @@ import javax.xml.bind.annotation.XmlSchemaType;
 
 /**
  * <b>Beschreibung:</b><br>
- * Fasst gemeinsamkeiten von Vor-/ Nachteilen und Sonderfertigkeiten zusammmen und bildet die Grundlage für diese.
+ * Fasst gemeinsamkeiten von Vor-/ Nachteilen und Sonderfertigkeiten zusammmen und bildet 
+ * die Grundlage für diese.
  * 
+ * Fertigkeiten können ein "automatischesTalent" besitzen. Wenn eine Fertigkeit zum mit
+ * "automatischesTalent" zum Helden hinzugefügt wird, wird das Talent ebenfalls hinzugefügt.
+ * (analog natürlich entfernen). 
+ * Dies ist nötig für Gaben, Ritualkenntis(Magie), Ritualkenntnis(Schamanen), Liturgiekenntnis
  * @author V.Strelow
  */
 public abstract class Fertigkeit extends CharElement {
@@ -39,6 +44,7 @@ public abstract class Fertigkeit extends CharElement {
 		}
 	}
 	
+	private Talent automatischesTalent;
     private Werte.CharArten[] fuerWelcheChars; // Welche Chars diese Fertigkeit wählen können
 	private FertigkeitArt art;
 	
@@ -180,6 +186,20 @@ public abstract class Fertigkeit extends CharElement {
 		this.additionsFamilie = additionsFamilie;
 	}
 
+	/**
+	 * @return the automatischeTalent
+	 */
+	public Talent getAutomatischesTalent() {
+		return automatischesTalent;
+	}
+
+	/**
+	 * @param automatischeTalent the automatischeTalent to set
+	 */
+	public void setAutomatischesTalent(Talent automatischesTalent) {
+		this.automatischesTalent = automatischesTalent;
+	}
+	
     /**
      * Eine additionsID kennzeichent solche Fertigkeiten, die Zusammengehören und bei mehrfachen erlangen durch Rasse,
      * Kultur, ... zusammengefasst werden. Zu was die Fertigkeiten zusammengefast werden wird über den additionsWert
@@ -221,5 +241,4 @@ public abstract class Fertigkeit extends CharElement {
 			this.additionsWert = additionsWert;
 		}
     }
-
 }

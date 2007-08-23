@@ -8,6 +8,7 @@
 package org.d3s.alricg.store.charElemente;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSchemaType;
 
 /**
@@ -16,12 +17,14 @@ import javax.xml.bind.annotation.XmlSchemaType;
  */
 public class Liturgie extends Faehigkeit {
 	private Gottheit[] gottheit;
-	private int maxStrufe;
+	private int grad;
 	
 	/**
 	 * Gibt an, zu welchen Gottheiten diese Liturgie ursprünglch gehört.
 	 * @return the gottheit
 	 */
+    @XmlIDREF
+    @XmlSchemaType(name = "IDREF")
 	public Gottheit[] getGottheit() {
 		return gottheit;
 	}
@@ -39,15 +42,15 @@ public class Liturgie extends Faehigkeit {
 	 */
 	@XmlAttribute
 	@XmlSchemaType(name = "nonNegativeInteger")
-	public int getMaxStrufe() {
-		return maxStrufe;
+	public int getGrad() {
+		return grad;
 	}
 
 	/**
 	 * @param maxStrufe the maxStrufe to set
 	 */
-	public void setMaxStrufe(int maxStrufe) {
-		this.maxStrufe = maxStrufe;
+	public void setGrad(int grad) {
+		this.grad = grad;
 	}
 	
 }

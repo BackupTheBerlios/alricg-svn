@@ -7,6 +7,9 @@
 
 package org.d3s.alricg.store.charElemente;
 
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlSchemaType;
+
 import org.d3s.alricg.store.charElemente.links.IdLink;
 
 /**
@@ -21,7 +24,7 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
  */
 public class Sprache extends SchriftSprache {
     private Sprache wennNichtMuttersprache;
-    private IdLink<Schrift> zugehoerigeSchrift;
+    private Schrift[] zugehoerigeSchrift;
 	
     /**
      * @see org.d3s.alricg.store.charElemente.SchriftSprache
@@ -39,13 +42,15 @@ public class Sprache extends SchriftSprache {
 	/**
 	 * @return the zugehoerigeSchrift
 	 */
-	public IdLink<Schrift> getZugehoerigeSchrift() {
+    @XmlIDREF
+    @XmlSchemaType(name = "IDREF")
+	public Schrift[] getZugehoerigeSchrift() {
 		return zugehoerigeSchrift;
 	}
 	/**
 	 * @param zugehoerigeSchrift the zugehoerigeSchrift to set
 	 */
-	public void setZugehoerigeSchrift(IdLink<Schrift> zugehoerigeSchrift) {
+	public void setZugehoerigeSchrift(Schrift[] zugehoerigeSchrift) {
 		this.zugehoerigeSchrift = zugehoerigeSchrift;
 	}
 

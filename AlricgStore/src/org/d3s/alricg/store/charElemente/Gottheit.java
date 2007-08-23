@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlEnum;
  * @author Vincent
  */
 public class Gottheit extends CharElement {
-	private String GottheitSymbol;
+	private String gottheitImage;
 	
 	@XmlEnum
 	public enum GottheitArt {
@@ -47,6 +47,20 @@ public class Gottheit extends CharElement {
 	public void setGottheitArt(GottheitArt gottheitArt) {
 		this.gottheitArt = gottheitArt;
 	}
-	
+
+	/**
+	 * @return the gottheitImage
+	 */
+	public String getGottheitImage() {
+		return gottheitImage;
+	}
+
+	/**
+	 * @param gottheitImage the gottheitImage to set
+	 */
+	public void setGottheitImage(String gottheitImage) {
+		this.gottheitImage = gottheitImage;
+	}
+
 	
 }
