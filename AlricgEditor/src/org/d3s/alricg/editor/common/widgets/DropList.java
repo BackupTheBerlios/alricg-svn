@@ -93,7 +93,6 @@ public class DropList extends Composite {
 		
 		listElemente = new List (this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		tmpGData = new GridData(GridData.FILL_BOTH); 
-		tmpGData.verticalIndent = 0;
 		tmpGData.heightHint = listElemente.getItemHeight() * NUMBER_OF_LINES;
 		tmpGData.verticalAlignment = GridData.BEGINNING;
 		listElemente.setLayoutData(tmpGData);
@@ -103,6 +102,7 @@ public class DropList extends Composite {
 		gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 1;
 		gridLayout.marginHeight = 0;
+		gridLayout.marginWidth = 0;
 		compButtons.setLayout(gridLayout);
 		
 		final Button butDelete = new Button(compButtons, SWT.NONE);
@@ -123,7 +123,7 @@ public class DropList extends Composite {
 		
 		final Button butUp = new Button(compButtons, SWT.NONE);
 		butUp.setImage(imgUp);
-		tmpGData = new GridData(imgUp.getImageData().width+4, imgDelete.getImageData().height+4); 
+		tmpGData = new GridData(imgUp.getImageData().width+4, imgUp.getImageData().height+4); 
 		tmpGData.verticalAlignment = GridData.BEGINNING;
 		tmpGData.verticalIndent = 5;
 		butUp.setLayoutData(tmpGData);
@@ -166,9 +166,7 @@ public class DropList extends Composite {
 		
 		final Button butDown = new Button(compButtons, SWT.NONE);
 		butDown.setImage(imgDown);
-		tmpGData = new GridData(imgDown.getImageData().width+4, imgDelete.getImageData().height+4); 
-		tmpGData.verticalAlignment = GridData.BEGINNING;
-		butDown.setLayoutData(tmpGData);
+		butDown.setLayoutData(new GridData(imgDown.getImageData().width+4, imgDown.getImageData().height+4));
 		butDown.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				
@@ -217,6 +215,10 @@ public class DropList extends Composite {
 					event.detail = DND.DROP_NONE;
 					return;
 				} 
+				if (modelList.contains(regulator.getValue(event.data))) {
+					event.detail = DND.DROP_NONE;
+					return;
+				}
 				listElemente.add(regulator.getString(event.data));
 				modelList.add(regulator.getValue(event.data));
 			}

@@ -1,23 +1,20 @@
 /*
- * Created 18.08.2007
+ * Created 25.08.2007
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
  * For more information see "http://www.alricg.de/".
  */
-
 package org.d3s.alricg.editor.views.charElemente;
+
+import org.d3s.alricg.common.icons.AbstractIconsLibrary;
+import org.d3s.alricg.common.icons.GoetterIconsLibrary;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
-import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.DeleteCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.EditCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.FilterCurrentFileAction;
-import org.d3s.alricg.editor.common.CustomActions.InfoCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.SwapTreeTableAction;
-import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
+import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
-import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
@@ -25,16 +22,13 @@ import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.Regulatoren;
 import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
+import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
+import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Gottheit;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -43,21 +37,48 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Vincent
+ *
  */
-public class EigenschaftView extends RefreshableViewPart {
-	public static final String ID = "org.d3s.alricg.editor.views.EigenschaftView"; //$NON-NLS-1$
+public class GoetterView extends RefreshableViewPart {
+	public static final String ID = "org.d3s.alricg.editor.views.GoetterView"; //$NON-NLS-1$
+	
+	// Über diesen Regulator wird die Darstellung von Images gesteuert
+	private final ImageProviderRegulator<Gottheit> imageProviderRegulator;
+	
+
+	public GoetterView() {
+		GoetterIconsLibrary.getInstance().addConsumer(this);
+		
+		imageProviderRegulator = new ImageProviderRegulator<Gottheit>() {
+				public String getName(Gottheit obj) {
+					return obj.getName();
+				}
+				public Gottheit[] getItems(CharElement obj) {
+					return new Gottheit[]{ (Gottheit) obj };
+				}
+				public AbstractIconsLibrary<Gottheit> getIconsLibrary() {
+					return GoetterIconsLibrary.getInstance();
+				}
+				public IViewPart getConsumer() {
+					return GoetterView.this;
+				}
+		};
+	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#createTable(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
 	protected TableViewer createTable(Composite parent) {
+		// init Table
 		final TableViewer tableViewer = new TableViewer(parent,
 				SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 		tableViewer.getTable().setLinesVisible(true);
@@ -73,7 +94,7 @@ public class EigenschaftView extends RefreshableViewPart {
 		// Columns setzen
 		TableViewerColumn tc = new TableViewerColumn(tableViewer, SWT.LEFT, 0);
 		tableViewer.getTable().setSortColumn(tc.getColumn());
-		tc.getColumn().setText("Name");
+		tc.getColumn().setText(ViewMessages.TalentView_Name);
 		tc.setLabelProvider(new CustomColumnLabelProvider.NameLabelProvider());
 		tc.getColumn().setWidth(DEFAULT_FIRSTCOLUMN_WIDTH);
 		tc.getColumn().addSelectionListener(
@@ -82,33 +103,29 @@ public class EigenschaftView extends RefreshableViewPart {
 								tableViewer));
 
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 1);
-		tc.getColumn().setText("Datei");
+		tc.getColumn().setText(ViewMessages.TalentView_Datei);
 		tc.setLabelProvider(new CustomColumnLabelProvider.DateinameLabelProvider());
-		tc.getColumn().setWidth(150);
+		tc.getColumn().setWidth(125);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.DateiSorter(),
 								tableViewer));
 
+		// Symbol
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
-		tc.getColumn().setText("Abk.");
-		tc.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				if (((TableObject) element).getValue() instanceof Eigenschaft) {
-					return ((Eigenschaft) ((TableObject) element).getValue())
-							.getEigenschaftEnum().getAbk();
-				}
-				return ""; //$NON-NLS-1$
-			}
-		});
-		tc.getColumn().setWidth(75);
+		tc.getColumn().setText("");
+		tc.getColumn().setToolTipText("Symbol");
+		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-						new ViewerSelectionListener(
-								new EigenschaftAbkSorter(),
-								tableViewer));
+		
+		// Art
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
+		tc.getColumn().setText("Art");
+		tc.setLabelProvider(new GottheitArtProvider());
+		tc.getColumn().setWidth(150);
+		tc.getColumn().setMoveable(true);
 		
 		// Inhalt und Sortierung setzen
 		tableViewer.setContentProvider(new TableViewContentProvider());
@@ -144,7 +161,7 @@ public class EigenschaftView extends RefreshableViewPart {
 		
 		// Columns
 		TreeViewerColumn tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 0);
-		tc.getColumn().setText("Name");
+		tc.getColumn().setText(ViewMessages.TalentView_Name);
 		treeViewer.getTree().setSortColumn(tc.getColumn());
 		tc.setLabelProvider(new CustomColumnLabelProvider.NameLabelProvider());
 		tc.getColumn().setWidth(DEFAULT_FIRSTCOLUMN_WIDTH);
@@ -153,7 +170,7 @@ public class EigenschaftView extends RefreshableViewPart {
 						new CustomColumnViewerSorter.NameSorter(), treeViewer));
 
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 1);
-		tc.getColumn().setText("Datei");
+		tc.getColumn().setText(ViewMessages.TalentView_Datei);
 		tc.setLabelProvider(new CustomColumnLabelProvider.DateinameLabelProvider());
 		tc.getColumn().setWidth(125);
 		tc.getColumn().setMoveable(true);
@@ -162,25 +179,14 @@ public class EigenschaftView extends RefreshableViewPart {
 								new CustomColumnViewerSorter.DateiSorter(),
 								treeViewer));
 
+		// Symbol
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);
-		tc.getColumn().setText("Abk.");
-		tc.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				if (((TreeObject) element).getValue() instanceof Eigenschaft) {
-					return ((Eigenschaft) ((TreeObject) element).getValue())
-							.getEigenschaftEnum().getAbk();
-				}
-				return ""; //$NON-NLS-1$
-			}
-		});
-		tc.getColumn().setWidth(75);
+		tc.getColumn().setText("");
+		tc.getColumn().setToolTipText("Symbol");
+		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-						new ViewerSelectionListener(
-								new EigenschaftAbkSorter(),
-								treeViewer));
-
+		
 		// Inhalt und Sortierung setzen
 		TreeObject root = EditorViewUtils.buildEditorViewTree(
 				StoreDataAccessor.getInstance().getXmlAccessors(), 
@@ -191,7 +197,6 @@ public class EigenschaftView extends RefreshableViewPart {
 		treeViewer.setInput(root);
 
 		return treeViewer;
-
 	}
 
 	/* (non-Javadoc)
@@ -199,79 +204,25 @@ public class EigenschaftView extends RefreshableViewPart {
 	 */
 	@Override
 	public Regulator getRegulator() {
-		return Regulatoren.EigenschaftRegulator;
+		return Regulatoren.GottheitRegulator;
 	}
 
-	/**
-	 * Setzt das Context-menu
-	 * Überschrieben, da Eigenschaften nicht Editiert werden können
-	 */
-	@Override
-	protected void hookContextMenu() {
-		MenuManager menuMgr = new MenuManager("#PopupMenu");
-		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				EigenschaftView.this.fillContextMenu(manager);
-			}
-		});
-
-		// For Tree
-		Menu menu = menuMgr.createContextMenu(viewerTree.getControl());
-		viewerTree.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewerTree);
-
-		// For Table
-		menu = menuMgr.createContextMenu(viewerTable.getControl());
-		viewerTable.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewerTable);
-	}
-	
-	@Override
-	protected void hookDoubleClickAction() {
-		// Noop
-	}
 	/* (non-Javadoc)
-	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#makeActions()
+	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#getViewedClass()
 	 */
-	@Override
-	protected void makeActions() {
-		// Ansichte wechseln Action
-		swapTreeTable = new SwapTreeTableAction(this.parentComp);
-
-		// Tabelle nach File Filtern Action
-		filterAktuellesFile = new FilterCurrentFileAction(getViewedClass());
-
-		// Information anzeigen Action
-		showInfos = new InfoCharElementAction() {
-			public void run() {
-				showMessage("Eigenschaft View", "Noch zu implementieren!"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		};
-
-		// Neues Element Action 
-		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator());
-		buildNew.setEnabled(false);
-		
-		// Element Bearbeiten Action
-		editSelected = new EditCharElementAction(this.parentComp);
-		editSelected.setEnabled(false);
-		
-		// Element löschen Action
-		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass());
-		deleteSelected.setEnabled(false);
-	}
-
 	@Override
 	public Class getViewedClass() {
-		return Eigenschaft.class;
+		return Gottheit.class;
 	}
 	
-	public static class EigenschaftAbkSorter extends CreatableViewerSorter {
+	
+	public static class GottheitArtProvider extends ColumnLabelProvider {
 		@Override
-		public Comparable getComparable(Object obj) {
-			return ((Eigenschaft) getCharElement(obj))
-						.getEigenschaftEnum().getAbk();
+		public String getText(Object element) {
+			CharElement chatEle = ViewUtils.getCharElement(element);
+			if (chatEle == null) return ((TreeObject)element).getValue().toString();
+			
+			return ((Gottheit) chatEle).getGottheitArt().getValue();
 		}
 	}
 }

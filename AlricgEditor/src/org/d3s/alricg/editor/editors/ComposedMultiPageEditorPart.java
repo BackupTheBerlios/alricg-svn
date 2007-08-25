@@ -41,6 +41,7 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	protected CharElementPart charElementPart;
 	protected VoraussetzungPart voraussetzungsPart;
+	protected ScrolledComposite scrollComp;
 	
 	private XmlAccessor currentAccessor;
 	
@@ -53,7 +54,7 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	protected Composite createCharElementSite() {
 		
 		// Scroll-Container erzeugen und Grid mit 2 Spalten setzen
-		final ScrolledComposite scrollComp = new ScrolledComposite(getContainer(), SWT.V_SCROLL);
+		scrollComp = new ScrolledComposite(getContainer(), SWT.V_SCROLL);
 		scrollComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		scrollComp.setExpandHorizontal(true);
 		scrollComp.setExpandVertical(true);
@@ -211,10 +212,8 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	}
 	
 	protected abstract AbstractElementPart[] getElementParts();
-	// new AbstarctElementPart[] {this.faehigkeitPart, this.talentPart, this.voraussetzungsPart}
 	
 	protected abstract CharElement getEditedCharElement();
-	// : (Talent) this.getEditorInput().getAdapter(Talent.class)
 	
 	protected abstract void addCharElementSiteParts(Composite mainContainer);
 }

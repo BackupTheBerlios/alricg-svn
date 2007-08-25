@@ -76,7 +76,7 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 			spiKompl = new Spinner (tmpComp, SWT.BORDER);
 			spiKompl.setMinimum(1);
 			spiKompl.setMaximum(100);
-			spiKompl.setSelection(0);
+			spiKompl.setSelection(1);
 			spiKompl.setIncrement(1);
 			spiKompl.setPageIncrement(10);
 			
@@ -86,7 +86,7 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 			spiKomplNM = new Spinner (tmpComp, SWT.BORDER);;
 			spiKomplNM.setMinimum(1);
 			spiKomplNM.setMaximum(100);
-			spiKomplNM.setSelection(0);
+			spiKomplNM.setSelection(1);
 			spiKomplNM.setIncrement(1);
 			spiKomplNM.setPageIncrement(10);
 			
@@ -233,15 +233,13 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 		 */
 		@Override
 		public void loadData(Sprache charElem) {
-			ViewUtils.findAndSetIndex(cobSKT, charElem.getKostenKlasse().getValue());
+			cobSKT.setText( charElem.getKostenKlasse().getValue());
 			spiKompl.setSelection(charElem.getKomplexitaet());
 			
 			// Nicht Muttersprache
 			if (charElem.getWennNichtMuttersprache() != null) {
 				cbxAbweichungMutterSpr.setSelection(true);
-				ViewUtils.findAndSetIndex(
-						cobSKTNM, 
-						charElem.getWennNichtMuttersprache().getKostenKlasse().getValue());
+				cobSKTNM.setText(charElem.getWennNichtMuttersprache().getKostenKlasse().getValue());
 				spiKomplNM.setSelection(
 						charElem.getWennNichtMuttersprache().getKomplexitaet());
 			} else {

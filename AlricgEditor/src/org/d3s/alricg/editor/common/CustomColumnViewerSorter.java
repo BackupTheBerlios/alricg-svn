@@ -175,24 +175,17 @@ public class CustomColumnViewerSorter {
 			if (vorNachteil.getGpKosten() != CharElement.KEIN_WERT) {
 				kosten += vorNachteil.getGpKosten();
 			}
-			if (vorNachteil.getKostenProSchritt() != CharElement.KEIN_WERT) {
-				kosten += (vorNachteil.getKostenProSchritt() / vorNachteil.getStufenSchritt());
+			if (vorNachteil.getKostenProStufe() != CharElement.KEIN_WERT) {
+				kosten += (vorNachteil.getKostenProStufe());
 			}
 			return kosten;
-		}	
+		}
 	}
 	
 	public static class SonderFertigkeitApSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
-			
-			if (getCharElement(obj) instanceof Sonderfertigkeit) {
-				int  kosten = ((Sonderfertigkeit) getCharElement(obj)).getApKosten();
-				if (kosten != CharElement.KEIN_WERT) {
-					return kosten;
-				}
-			}
-			return (((Fertigkeit) getCharElement(obj)).getGpKosten() * 50);
+			return (((Fertigkeit) getCharElement(obj)).getGpKosten());
 		}	
 	}
 	

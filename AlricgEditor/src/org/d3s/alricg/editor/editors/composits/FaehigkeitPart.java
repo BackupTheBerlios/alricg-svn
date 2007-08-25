@@ -36,7 +36,7 @@ public class FaehigkeitPart extends AbstractElementPart<Faehigkeit> {
 	private Combo cobEig3;
 	private Combo cobSKT;
 	
-	public FaehigkeitPart(Composite top, GridData gridData) {
+	public FaehigkeitPart(Composite top) {
 
 		Label lblProbe = new Label(top, SWT.NONE);
 		lblProbe.setText(EditorMessages.FaehigkeitPart_Probe);
@@ -96,11 +96,11 @@ public class FaehigkeitPart extends AbstractElementPart<Faehigkeit> {
 	public void loadData(Faehigkeit charElem) {
 		Eigenschaft[] eigArray = charElem.getDreiEigenschaften();
 		
-		ViewUtils.findAndSetIndex(cobEig1, eigArray[0].getEigenschaftEnum().getAbk());
-		ViewUtils.findAndSetIndex(cobEig2, eigArray[1].getEigenschaftEnum().getAbk());
-		ViewUtils.findAndSetIndex(cobEig3, eigArray[2].getEigenschaftEnum().getAbk());
+		cobEig1.setText(eigArray[0].getEigenschaftEnum().getAbk());
+		cobEig2.setText(eigArray[1].getEigenschaftEnum().getAbk());
+		cobEig3.setText(eigArray[2].getEigenschaftEnum().getAbk());
 		
-		ViewUtils.findAndSetIndex(cobSKT, charElem.getKostenKlasse().getValue());
+		cobSKT.setText(charElem.getKostenKlasse().getValue());
 	}
 
 
@@ -168,6 +168,11 @@ public class FaehigkeitPart extends AbstractElementPart<Faehigkeit> {
 		compProbe.dispose();
 	}
 	
-	
+	public void setEnabledAll(boolean enabled) {
+		cobEig1.setEnabled(enabled);
+		cobEig2.setEnabled(enabled);
+		cobEig3.setEnabled(enabled);
+		cobSKT.setEnabled(enabled);
+	}
 
 }

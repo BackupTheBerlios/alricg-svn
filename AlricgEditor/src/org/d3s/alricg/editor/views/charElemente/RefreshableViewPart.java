@@ -27,6 +27,8 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.custom.StackLayout;
@@ -71,6 +73,7 @@ public abstract class RefreshableViewPart extends ViewPart {
 
 		makeActions();
 		hookContextMenu();
+		hookDoubleClickAction();
 		contributeToActionBars();
 
 		getSite().getPage().addSelectionListener(
@@ -145,6 +148,21 @@ public abstract class RefreshableViewPart extends ViewPart {
 		 * Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'
 		 * im Log zu verhindern */ 
 		manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+	
+	// Bei DoppelKlick Editor öffnen
+	protected void hookDoubleClickAction() {
+		viewerTree.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				editSelected.run();
+			}
+		});
+		
+		viewerTable.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				editSelected.run();
+			}
+		});
 	}
 
 	/*

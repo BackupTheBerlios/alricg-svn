@@ -141,14 +141,14 @@ public class NachteilView extends RefreshableViewPart {
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.FertigkeitBenoetigtZweitZielSorter(), tableViewer));
-
+/*
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 8);
 		tc.getColumn().setText("Verändert Kosten");
 		tc.setLabelProvider(new CustomColumnLabelProvider.VorNachteilVerbilligtProvider());
 		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
-
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 9);
+*/
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 8);
 		tc.getColumn().setText("Voraussetzung");
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
@@ -257,14 +257,14 @@ public class NachteilView extends RefreshableViewPart {
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.FertigkeitBenoetigtZweitZielSorter(), treeViewer));
 
-
+/*
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 7);
 		tc.getColumn().setText("Verändert Kosten");
 		tc.setLabelProvider(new CustomColumnLabelProvider.VorNachteilVerbilligtProvider());
 		tc.getColumn().setWidth(150);
 		tc.getColumn().setMoveable(true);
-
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 8);
+*/
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 7);
 		tc.getColumn().setText("Voraussetzung");
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);

@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.widgets.TextList;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.editor.editors.composits.AuswahlPart;
 import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
@@ -56,7 +57,7 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 		private Combo cobArt;
 		private Combo cobSorte;
 		private Text txtSpez;
-		private List listSpez;
+		private TextList listSpez;
 		private Button butAdd;
 		private Button butDelete;
 		private Composite container;
@@ -87,77 +88,21 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 			cobSorte.add(Talent.Sorte.koerper.toString());
 			cobSorte.add(Talent.Sorte.natur.toString());
 			cobSorte.add(Talent.Sorte.wissen.toString());
+			cobSorte.add(Talent.Sorte.spezial.toString());
 			cobSorte.select(0);
 			
 
 		// Container für Spezialisierungen
-			container = new Composite (top, SWT.NONE);
-			GridData containerGridData = new GridData(GridData.GRAB_HORIZONTAL);
-			containerGridData.widthHint = 300;
-			containerGridData.horizontalSpan = 2;
-			GridLayout gridLayout = new GridLayout();
-			gridLayout.numColumns = 3;
-			
-			container.setLayout(gridLayout);
-			container.setLayoutData(containerGridData);
-			
-			// Spalte 1 der containerGridData
-			Label lblSpezi = new Label(container, SWT.NONE);
+			Label lblSpezi = new Label(top, SWT.NONE);
 			lblSpezi.setText(EditorMessages.TalentEditor_Spezialisierung);
-			txtSpez = new Text(container, SWT.BORDER);
-			txtSpez.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			txtSpez.addListener (SWT.DefaultSelection, new Listener () {
-				public void handleEvent (Event e) {
-					addToList();
-				}
-			});
-
-			butAdd = new Button(container, SWT.NONE);
-			butAdd.setImage(imgAdd);
-			butAdd.setLayoutData(new GridData(imgAdd.getImageData().width+4, imgAdd.getImageData().height+4));
-			butAdd.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					addToList();
-				}
-			});
-			
-			// Spalte 2 der containerGridData
-			Label lblFiller = new Label(container, SWT.NONE);
-			
-			listSpez = new List (container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-			GridData tmpGData = new GridData(GridData.FILL_BOTH); 
-			tmpGData.heightHint = listSpez.getItemHeight() * 5;
-			listSpez.setLayoutData(tmpGData);
-			
-			butDelete = new Button(container, SWT.NONE);
-			tmpGData = new GridData(imgDelete.getImageData().width+4, imgDelete.getImageData().height+4); 
+			GridData tmpGData = new  GridData();
 			tmpGData.verticalAlignment = GridData.BEGINNING;
-			butDelete.setLayoutData(tmpGData);
-			butDelete.setImage(imgDelete);
-			butDelete.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					// Lösche alle Markierten
-					listSpez.remove(listSpez.getSelectionIndices());
-				}
-			});
+			tmpGData.verticalIndent = 12;
+			lblSpezi.setLayoutData(tmpGData);
+			
+			listSpez = new TextList(top, SWT.NONE);
 		}
 		
-		// Fügt den aktuellen Text im txtSpez nach Prüfung zur List hinzu 
-		private void addToList() {
-			// Prüfe ob leer
-			String text = txtSpez.getText().trim();
-			if (text.length() == 0) return;
-			
-			// Prüfe ob doppelt
-			String[] strs = listSpez.getItems();
-			for (int i = 0; i < strs.length; i++) {
-				if (strs[i].equalsIgnoreCase(text)) return;
-			}
-			
-			// Wert hinzufügen
-			listSpez.add(text);
-			txtSpez.setText(""); //$NON-NLS-1$
-		}
 		
 		/* (non-Javadoc)
 		 * @see org.d3s.alricg.editor.editors.composits.AbstarctElementPart#dispose()
@@ -174,12 +119,12 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 		 */
 		@Override
 		public void loadData(Talent charElem) {
-			ViewUtils.findAndSetIndex(cobArt, charElem.getArt().name());
-			ViewUtils.findAndSetIndex(cobSorte, charElem.getSorte().name());
+			cobArt.setText(charElem.getArt().name());
+			cobSorte.setText(charElem.getSorte().name());
 			
 			if (charElem.getSpezialisierungen() == null) return;
 			for (int i = 0; i < charElem.getSpezialisierungen().length; i++) {
-				listSpez.add(charElem.getSpezialisierungen()[i]);
+				listSpez.addValue(charElem.getSpezialisierungen()[i]);
 			}
 		}
 
@@ -207,13 +152,13 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 			}
 			
 			// Spezialisierung sichern
-			if (listSpez.getItems().length == 0) {
+			if (listSpez.getValueList().length == 0) {
 				charElem.setSpezialisierungen(null);
 			} else {
 				charElem.setSpezialisierungen(
 						Arrays.copyOf(
-								listSpez.getItems(), 
-								listSpez.getItems().length
+								listSpez.getValueList(), 
+								listSpez.getValueList().length
 						));
 			}
 			
@@ -230,10 +175,10 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 			isNotDirty &= cobArt.getText().equals(charElem.getArt().name());
 			isNotDirty &= cobSorte.getText().equals(charElem.getSorte().name());
 			
-			if (listSpez.getItems().length == 0) {
+			if (listSpez.getValueList().length == 0) {
 				isNotDirty &= (charElem.getSpezialisierungen() == null);
 			} else {
-				isNotDirty &= Arrays.equals(charElem.getSpezialisierungen(), listSpez.getItems());
+				isNotDirty &= Arrays.equals(charElem.getSpezialisierungen(), listSpez.getValueList());
 			}
 			
 			return !isNotDirty;
@@ -245,7 +190,7 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 	protected void addCharElementSiteParts(Composite mainContainer) {
 		
 		// FaehigkeitPart erzeugen
-		faehigkeitPart = new FaehigkeitPart(mainContainer, null);
+		faehigkeitPart = new FaehigkeitPart(mainContainer);
 		faehigkeitPart.loadData((Talent) getEditedCharElement()); 
 		
 		// Talent spezifische Elemte erzeugen

@@ -40,7 +40,7 @@ public class SchriftEditor extends ComposedMultiPageEditorPart {
 			spiKompl = new Spinner (top, SWT.BORDER);
 			spiKompl.setMinimum(1);
 			spiKompl.setMaximum(100);
-			spiKompl.setSelection(0);
+			spiKompl.setSelection(1);
 			spiKompl.setIncrement(1);
 			spiKompl.setPageIncrement(10);
 			
@@ -87,7 +87,7 @@ public class SchriftEditor extends ComposedMultiPageEditorPart {
 		 */
 		@Override
 		public void loadData(Schrift charElem) {
-			ViewUtils.findAndSetIndex(cobSKT, charElem.getKostenKlasse().getValue());
+			cobSKT.setText(charElem.getKostenKlasse().getValue());
 			spiKompl.setSelection(charElem.getKomplexitaet());
 		}
 

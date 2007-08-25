@@ -25,8 +25,8 @@ import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Zauber;
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -56,7 +56,7 @@ public class ZauberView extends RefreshableViewPart {
 		
 		imageProviderRegulator = new ImageProviderRegulator<MagieMerkmal>() {
 				public String getName(MagieMerkmal obj) {
-					return obj.getValue();
+					return obj.getName();
 				}
 				public MagieMerkmal[] getItems(CharElement obj) {
 					return ((Zauber) obj).getMerkmale();
@@ -222,7 +222,6 @@ public class ZauberView extends RefreshableViewPart {
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.DateiSorter(),
 								treeViewer));
-
 
 		// Merkmale
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);

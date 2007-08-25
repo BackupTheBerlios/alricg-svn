@@ -318,19 +318,19 @@ public class ViewUtils {
 		}
 	}
 	
-	/**
+	/*
 	 * Setzt den Index einer ComboBox auf den übergebenen Wert. Ist der
 	 * Wert in der ComboBox nicht vorhaden, wird nichts geändert.
 	 * @param combo Die ComboBox zum ändern
 	 * @param str Der Wert, auf den die ComboBox gesetzt werden soll
-	 */
+	 *
 	public static void findAndSetIndex(Combo combo, String str) {
 		for (int i = 0; i < combo.getItems().length; i++) {
 			if (combo.getItem(i).equals(str)) {
 				combo.select(i);
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * DragSourceListener für Trees und Tabellen um CharElemente zu "Drag'en"

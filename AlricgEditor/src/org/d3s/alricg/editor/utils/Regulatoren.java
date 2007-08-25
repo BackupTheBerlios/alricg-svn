@@ -15,15 +15,16 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
+import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
-import org.d3s.alricg.store.charElemente.Werte;
 import org.d3s.alricg.store.charElemente.Zauber;
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
+import org.d3s.alricg.store.charElemente.Gottheit.GottheitArt;
 
 /**
  * @author Vincent
@@ -72,6 +73,10 @@ public class Regulatoren {
 			return charElement.getClass();
 		}
 		
+		public CharElement getCharElement() {
+			return charElement;
+		}
+		
 		/* (non-Javadoc)
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
@@ -90,6 +95,7 @@ public class Regulatoren {
 			}
 			return text;
 		}
+
 	}
 	
 	public static final Regulator TalentRegulator = 
@@ -120,7 +126,13 @@ public class Regulatoren {
 		new Regulator() {
 			@Override
 			public Object[] getFirstCategory(CharElement charElement) {
-				return ((Zauber) charElement).getMerkmale();
+				MagieMerkmal[] mm = ((Zauber) charElement).getMerkmale();
+				CharElementWapper[] wapper = new CharElementWapper[mm.length];
+				
+				for (int i = 0; i < wapper.length; i++) {
+					wapper[i] = new CharElementWapper(mm[i]);
+				}
+				return wapper;
 			}
 	
 			@Override
@@ -131,12 +143,19 @@ public class Regulatoren {
 			
 			@Override
 			public Class getFirstCategoryClass() {
-				return Werte.MagieMerkmal.class;
+				return CharElementWapper.class;
 			}
 			
 			@Override
 			public void setFirstCategory(CharElement charElement, Object firstCat) {
-				((Zauber) charElement).setMerkmale(new MagieMerkmal[] {(MagieMerkmal) firstCat });
+				CharElementWapper[] wapper = (CharElementWapper[]) firstCat; 
+				MagieMerkmal[] mm = new MagieMerkmal[wapper.length];
+				
+				for (int i = 0; i < mm.length; i++) {
+					mm[i] = (MagieMerkmal) wapper[i].getCharElement();
+				}
+				
+				((Zauber) charElement).setMerkmale(mm);
 			}
 		};
 		
@@ -323,4 +342,89 @@ public class Regulatoren {
 				// TODO wahrscheinlich die Build-Actions überschreiben (?)
 			}
 		};
+		
+	public static final Regulator RepraesentationRegulator = 
+		new Regulator() {
+			private static final String SCHAMANISCH = "Schamanisch";
+			private static final String MAGISCH = "Magisch";
+		
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				if ( ((Repraesentation) charElement).isSchamanischeRep() ) {
+					return new CharElementWapper[] { 
+							new CharElementWapper(Boolean.class, SCHAMANISCH) };
+				} else {
+					return new CharElementWapper[] { 
+							new CharElementWapper(Boolean.class, MAGISCH) };
+				}
+			}
+
+			@Override
+			public Class getFirstCategoryClass() {
+				return CharElementWapper.class;
+			}
+
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getRepraesentationList();
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				if (((CharElementWapper)firstCat).toString().equals(SCHAMANISCH)) {
+					((Repraesentation) charElement).setSchamanischeRep(true);
+				} else {
+					((Repraesentation) charElement).setSchamanischeRep(false);
+				}
+			} 
+		};
+		
+	public static final Regulator MerkmalRegulator = 
+		new Regulator() {
+		
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[0];
+			}
+
+			@Override
+			public Class getFirstCategoryClass() {
+				return Object.class;
+			}
+
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getMagieMerkmalList();
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				// Noop
+			} 
+		};
+		
+	public static final Regulator GottheitRegulator = 
+		new Regulator() {
+		
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[] { ((Gottheit) charElement).getGottheitArt() };
+			}
+
+			@Override
+			public Class getFirstCategoryClass() {
+				return Gottheit.GottheitArt.class;
+			}
+
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getGottheitList();
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Gottheit) charElement).setGottheitArt((GottheitArt) firstCat);
+			} 
+		};
+
 }

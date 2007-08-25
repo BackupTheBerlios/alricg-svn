@@ -112,6 +112,20 @@
             id="org.d3s.alricg.editor.views.RegionVolkView"
             name="Region / Volk">
       </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.MerkmalView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.MerkmalView"
+            name="Merkmale">
+      </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.GoetterView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.GoetterView"
+            name="Gottheiten">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -132,6 +146,30 @@
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.editors.SchriftEditor"
             name="SchriftEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.SonderfertigkeitEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.SonderfertigkeitEditor"
+            name="SonderfertigkeitEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.VorteilEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.VorteilEditor"
+            name="VorteilEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.NachteilEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.NachteilEditor"
+            name="NachteilEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.ZauberEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.ZauberEditor"
+            name="ZauberEditor">
       </editor>
    </extension>
 

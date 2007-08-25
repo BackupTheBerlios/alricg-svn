@@ -8,28 +8,33 @@
 package org.d3s.alricg.editor.utils;
 
 import org.d3s.alricg.editor.Activator;
+import org.d3s.alricg.editor.editors.NachteilEditor;
 import org.d3s.alricg.editor.editors.SchriftEditor;
+import org.d3s.alricg.editor.editors.SonderfertigkeitEditor;
 import org.d3s.alricg.editor.editors.SpracheEditor;
 import org.d3s.alricg.editor.editors.TalentEditor;
+import org.d3s.alricg.editor.editors.VorteilEditor;
 import org.d3s.alricg.editor.views.charElemente.EigenschaftView;
+import org.d3s.alricg.editor.views.charElemente.GoetterView;
 import org.d3s.alricg.editor.views.charElemente.LiturgieView;
+import org.d3s.alricg.editor.views.charElemente.MerkmalView;
 import org.d3s.alricg.editor.views.charElemente.NachteilView;
+import org.d3s.alricg.editor.views.charElemente.RepraesentationView;
 import org.d3s.alricg.editor.views.charElemente.SonderfertigkeitView;
 import org.d3s.alricg.editor.views.charElemente.SpracheView;
 import org.d3s.alricg.editor.views.charElemente.TalentView;
 import org.d3s.alricg.editor.views.charElemente.VorteilView;
 import org.d3s.alricg.editor.views.charElemente.ZauberView;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.SchriftSprache;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
@@ -55,22 +60,25 @@ public class ViewEditorIdManager {
 	}
 	
 	public static String getEditorID(Class clazz) {
+		
 		if (clazz == Eigenschaft.class) {
+			return "KeinEditor";
+		} else if (clazz == MagieMerkmal.class) {
 			return "KeinEditor";
 		} else if (clazz ==  Talent.class) {
 			return TalentEditor.ID;
 		} else if (clazz ==  Zauber.class) {
 			//return "Zauber";
 		} else if (clazz ==  Repraesentation.class) {
-			//return "Repräsentation";
-		} else if (clazz ==  Gabe.class) {
+			//return RepraesentationEditor.ID;
+		//} else if (clazz ==  Gabe.class) {
 			//return "Gabe";
 		} else if (clazz ==  Vorteil.class) {
-			//return "Vorteil";
+			return VorteilEditor.ID;
 		} else if (clazz ==  Nachteil.class) {
-			//return "Nachteil";
+			return NachteilEditor.ID;
 		} else if (clazz ==  Sonderfertigkeit.class) {
-			//return "Sonderfertigkeit";
+			return SonderfertigkeitEditor.ID;
 		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
 			//return "Rasse";
 		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
@@ -83,7 +91,7 @@ public class ViewEditorIdManager {
 			//return "Liturgie";
 		} else if (clazz ==  RegionVolk.class) {
 			//return "Region/Volk";
-		} else if (clazz ==  RitualKenntnis.class) {
+		//} else if (clazz ==  RitualKenntnis.class) {
 			//return "Ritualkenntnis";
 		} else if (clazz ==  Sprache.class) {
 			return SpracheEditor.ID;
@@ -107,12 +115,14 @@ public class ViewEditorIdManager {
 	public static String getViewID(Class clazz) {
 		if (clazz == Eigenschaft.class) {
 			return EigenschaftView.ID;
+		} else if (clazz == MagieMerkmal.class) {
+			return MerkmalView.ID;
 		} else if (clazz ==  Talent.class) {
 			return TalentView.ID;
 		} else if (clazz ==  Zauber.class) {
 			return ZauberView.ID;
 		} else if (clazz ==  Repraesentation.class) {
-			//return "Repräsentation";
+			return RepraesentationView.ID;
 		//} else if (clazz ==  Gabe.class) {
 			//return "Gabe";
 		} else if (clazz ==  Vorteil.class) {
@@ -128,7 +138,7 @@ public class ViewEditorIdManager {
 		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
 			//return "Profession";
 		} else if (clazz ==  Gottheit.class) {
-			//return "Gottheit";
+			return GoetterView.ID;
 		} else if (clazz ==  Liturgie.class) {
 			return LiturgieView.ID;
 		} else if (clazz ==  RegionVolk.class) {

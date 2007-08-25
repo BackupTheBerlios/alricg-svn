@@ -10,6 +10,7 @@ package org.d3s.alricg.editor.common;
 import org.d3s.alricg.common.CharElementTextService;
 import org.d3s.alricg.common.icons.AbstractIconsLibrary;
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
+import org.d3s.alricg.common.logic.FormelSammlung;
 import org.d3s.alricg.editor.Messages;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
@@ -446,14 +447,15 @@ public class CustomColumnLabelProvider {
 			if (charElem == null) return ""; //$NON-NLS-1$
 			
 			if (charElem instanceof Fertigkeit 
-					&& ((Fertigkeit) charElem).getGpKosten() != CharElement.KEIN_WERT) {
-				return Integer.toString( ((Fertigkeit) charElem).getGpKosten() );
+					&& ((Fertigkeit) charElem).getGpKosten() != CharElement.KEIN_WERT) 
+			{
+				return doubleToString( ((Fertigkeit) charElem).getGpKosten() );
 			}
 			return "-"; //$NON-NLS-1$
 		}
 	}
 	
-	
+	/*
 	public static class VorNachteilVerbilligtProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
@@ -517,8 +519,7 @@ public class CustomColumnLabelProvider {
 			}
 			return strBuilder.toString();
 		}
-		
-	}
+	}*/
 	
 	public static class VorNachteilGpProvider extends ColumnLabelProvider {
 		@Override
@@ -532,21 +533,15 @@ public class CustomColumnLabelProvider {
 			if ( vorNachteil.getGpKosten() != 0 
 					&& vorNachteil.getGpKosten() != CharElement.KEIN_WERT) 
 			{
-				strBuilder.append(vorNachteil.getGpKosten());
+				strBuilder.append( doubleToString(vorNachteil.getGpKosten()) );
 			}
-			if ( vorNachteil.getKostenProSchritt() != 0 
-					&& vorNachteil.getKostenProSchritt() != CharElement.KEIN_WERT) 
+			if ( vorNachteil.getKostenProStufe() != 0 
+					&& vorNachteil.getKostenProStufe() != CharElement.KEIN_WERT) 
 			{
 				if (strBuilder.length() > 0) strBuilder.append(" +");
 				
-				strBuilder.append(vorNachteil.getKostenProSchritt());
-				if(vorNachteil.getStufenSchritt() > 1) {
-					strBuilder.append(" je ")
-						.append(vorNachteil.getStufenSchritt())
-						.append(" St.");
-				} else {
-					strBuilder.append(" je Stufe");
-				}
+				strBuilder.append( doubleToString(vorNachteil.getKostenProStufe()) )
+						.append(" je Stufe");
 			}
 			return strBuilder.toString();
 		}
@@ -563,17 +558,9 @@ public class CustomColumnLabelProvider {
 			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return ""; //$NON-NLS-1$
 			
-			if (charElem instanceof Sonderfertigkeit) {
-				int  kosten = ((Sonderfertigkeit) charElem).getApKosten();
-				if (kosten != CharElement.KEIN_WERT) {
-					return Integer.toString(kosten);
-				}
-			}
-			if (charElem instanceof Fertigkeit) {
-				return Integer.toString( ((Fertigkeit) charElem).getGpKosten() * 50 );
-			}
-			
-			return "-"; //$NON-NLS-1$
+			return Integer.toString(
+					FormelSammlung.getApFromGp( ((Fertigkeit) charElem).getGpKosten() )
+				);
 		}
 	}
 	
@@ -735,7 +722,6 @@ public class CustomColumnLabelProvider {
 			return "";
 		}
 		
-		
 		@Override
 		public Image getImage(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
@@ -800,4 +786,17 @@ public class CustomColumnLabelProvider {
 		}
 	}
 
+	// ---------------------------------------------------------------------------------
+	
+	/**
+	 * Erstellt aus einem double einen String. Dabei wird die Nachkommastelle nur 
+	 * angezeigt, wenn diese auch notwenig ist 
+	 */
+	private static String doubleToString(double d) {
+		if (d % 1 == 0) {
+			return Integer.toString( (int) d );
+		} else {
+			return Double.toString( d );
+		}
+	}
 }

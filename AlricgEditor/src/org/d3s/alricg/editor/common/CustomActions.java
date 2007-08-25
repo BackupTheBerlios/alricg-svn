@@ -167,6 +167,7 @@ public class CustomActions {
 			final IWorkbenchPage page = PlatformUI.getWorkbench()
 											.getActiveWorkbenchWindow().getActivePage();
 			
+			if ( !(treeTableObj.getValue() instanceof CharElement) ) return;
 			final IEditorInput editorInput = new CharElementEditorInput(
 					(CharElement) treeTableObj.getValue(),
 					treeTableObj.getAccessor(),
