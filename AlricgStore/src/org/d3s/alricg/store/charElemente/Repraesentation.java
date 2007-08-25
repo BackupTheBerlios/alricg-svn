@@ -42,8 +42,8 @@ public class Repraesentation extends CharElement {
     /**
      * @param isSchamanischeRep Setzt das Attribut isEchteRep.
      */
-    public void setSchamanischeRep(boolean istEchteRep) {
-        this.isSchamanischeRep = istEchteRep;
+    public void setSchamanischeRep(boolean isSchamanischeRep) {
+        this.isSchamanischeRep = isSchamanischeRep;
     }
 
     /**

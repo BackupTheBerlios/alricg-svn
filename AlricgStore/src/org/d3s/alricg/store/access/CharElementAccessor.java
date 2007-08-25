@@ -2,14 +2,13 @@ package org.d3s.alricg.store.access;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
@@ -36,7 +35,7 @@ public abstract interface CharElementAccessor {
 		Rasse.class, Kultur.class, Profession.class, Gottheit.class, 
 		Liturgie.class, RegionVolk.class, RitualKenntnis.class, Schrift.class, 
 		Sprache.class, SchwarzeGabe.class, Gegenstand.class, DaemonenPakt.class, 
-		MagierAkademie.class};
+		MagierAkademie.class, MagieMerkmal.class};
 	
 	
 	/**
@@ -149,6 +148,11 @@ public abstract interface CharElementAccessor {
 	 * @return the SchwarzeGabeList
 	 */
 	public abstract List<SchwarzeGabe> getSchwarzeGabeList();
+	
+	/**
+	 * @return the SchwarzeGabeList
+	 */
+	public abstract List<MagieMerkmal> getMagieMerkmalList();
 	
 
 }

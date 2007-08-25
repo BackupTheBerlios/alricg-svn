@@ -124,10 +124,12 @@ public class DependecySearcher {
 			checkDependencyMagierAkademie((List<MagierAkademie>) charElemList, toCheck, currentAcc);
 		} else if (firstElement instanceof Sprache) {
 			checkDependencySprache((List<Sprache>) charElemList, toCheck, currentAcc);
+		/*
 		} else if (firstElement instanceof Vorteil) {
 			checkDependencyVorNachteil((List<Vorteil>) charElemList, toCheck, currentAcc);
 		} else if (firstElement instanceof VorNachteil) {
 			checkDependencyVorNachteil((List<? extends VorNachteil>) charElemList, toCheck, currentAcc);
+		*/
 		} else if (firstElement instanceof Herkunft) {
 			checkDependencyHerkunft((List<? extends Herkunft>) charElemList, toCheck, currentAcc);
 		}
@@ -204,7 +206,7 @@ public class DependecySearcher {
 	 * @param vorNachList
 	 * @param toCheck
 	 * @param currentAcc
-	 */
+	 *
 	private void checkDependencyVorNachteil(List<? extends VorNachteil> vorNachList, 
 					CharElement toCheck,  XmlAccessor currentAcc) {
 		
@@ -233,7 +235,7 @@ public class DependecySearcher {
 				}
 			}
 		}
-	}
+	}*/
 	
 	private void checkDependencySprache(List<Sprache> spracheList, CharElement toCheck, XmlAccessor currentAcc) {
 

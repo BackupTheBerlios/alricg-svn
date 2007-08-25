@@ -12,9 +12,8 @@ import java.util.Arrays;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSchemaType;
-
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
 
 
 /**
@@ -35,6 +34,9 @@ public class Zauber extends Faehigkeit {
 	 * @return Liefert das Attribut merkmale.
 	 */
 	@XmlElement(required = true)
+	@XmlList
+	@XmlIDREF
+    @XmlSchemaType(name = "IDREF")
 	public MagieMerkmal[] getMerkmale() {
 		return merkmale;
 	}

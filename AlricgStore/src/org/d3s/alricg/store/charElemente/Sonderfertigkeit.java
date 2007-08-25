@@ -7,7 +7,6 @@
 
 package org.d3s.alricg.store.charElemente;
 
-import javax.xml.bind.annotation.XmlEnum;
 
 
 /**
@@ -16,17 +15,17 @@ import javax.xml.bind.annotation.XmlEnum;
  * @author V.Strelow
  */
 public class Sonderfertigkeit extends Fertigkeit {
-	private int apKosten = KEIN_WERT; // falls sich AP nicht aus GP berechnen lassen
+	//private int apKosten = KEIN_WERT; // falls sich AP nicht aus GP berechnen lassen
 
-	private int permAsp = 0, permKa = 0, permLep = 0; // Permanente Kosten
+	private int permAsp = 0, permKep = 0, permLep = 0; // Permanente Kosten
 	
-	/**
+	/*
 	 * @return Liefert das Attribut ap - die Kosten für diese SF in
 	 * Abenteuerpunkten.
-	 */
+	 *
 	public int getApKosten() {
 		return apKosten;
-	}	
+	}*/
 	
 	/**
 	 * @return Liefert das Attribut permAsp.
@@ -43,14 +42,14 @@ public class Sonderfertigkeit extends Fertigkeit {
 	/**
 	 * @return Liefert das Attribut permKa.
 	 */
-	public int getPermKa() {
-		return permKa;
+	public int getPermKep() {
+		return permKep;
 	}
 	/**
 	 * @param permKa Setzt das Attribut permKa.
 	 */
-	public void setPermKa(int permKa) {
-		this.permKa = permKa;
+	public void setPermKep(int permKep) {
+		this.permKep = permKep;
 	}
 	/**
 	 * @return Liefert das Attribut permLep.
@@ -64,11 +63,11 @@ public class Sonderfertigkeit extends Fertigkeit {
 	public void setPermLep(int permLep) {
 		this.permLep = permLep;
 	}
-	/**
+	/*
 	 * @param apKosten Setzt das Attribut apKosten.
-	 */
+	 *
 	public void setApKosten(int apKosten) {
 		this.apKosten = apKosten;
-	}
+	}*/
 
 }

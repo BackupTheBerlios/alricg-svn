@@ -9,7 +9,6 @@ package org.d3s.alricg.store.charElemente;
 
 import java.util.ArrayList;
 
-import javax.swing.Icon;
 import javax.xml.bind.annotation.XmlEnum;
 
 /**
@@ -68,7 +67,7 @@ public class Werte {
 	};
 
 	@XmlEnum
-	public enum MagieMerkmal {
+	public enum MagieMerkmalEnum {
 		// TODO MagieMerkmal korregieren
 		antimagie("antimagie"),
 		beschwoerung("beschwoerung"),
@@ -111,92 +110,10 @@ public class Werte {
 		umwelt("umwelt"),
 		verstaendigung("verstaendigung");
 
-		/*
-		 * Alle Merkmale sind korrekt eingetragen, jedoch sind die Bilder
-		 * momentan nicht verfügbar. Frage ist auch, ob die Bilder so geladen
-		 * werden sollten
-		 * 
-		 * antimagie("antimagie", ImageAdmin.zauberMerkmalAntimagie,
-		 * ImageAdmin.zauberMerkmalAntimagie24), beschwoerung( "beschwoerung",
-		 * ImageAdmin.zauberMerkmalBeschwoerung,
-		 * ImageAdmin.zauberMerkmalBeschwoerung24), daemonisch( "daemonisch",
-		 * ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischBlakharaz(
-		 * "daemonisch (blakharaz)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischBelhalhar(
-		 * "daemonisch (belhalhar)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischCharyptoroth(
-		 * "daemonisch (charyptoroth)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischLolgramoth(
-		 * "daemonisch (lolgramoth)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischThargunitoth(
-		 * "daemonisch (thargunitoth)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischAmazeroth(
-		 * "daemonisch (amazeroth)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischBelshirash(
-		 * "daemonisch (belshirash)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischAsfaloth(
-		 * "daemonisch (asfaloth)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischTasfarelel(
-		 * "daemonisch (tasfarelel)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischBelzhorash(
-		 * "daemonisch (belzhorash)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischAgrimoth(
-		 * "daemonisch (agrimoth)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), daemonischBelkelel(
-		 * "daemonisch (belkelel)", ImageAdmin.zauberMerkmalDaemonisch,
-		 * ImageAdmin.zauberMerkmalDaemonisch24), eigenschaften(
-		 * "eigenschaften", ImageAdmin.zauberMerkmalEigenschaften,
-		 * ImageAdmin.zauberMerkmalEigenschaften24), einfluss("einfluss",
-		 * ImageAdmin.zauberMerkmalEinfluss,
-		 * ImageAdmin.zauberMerkmalEinfluss24), elementar("elementar",
-		 * ImageAdmin.zauberMerkmalElementar,
-		 * ImageAdmin.zauberMerkmalElementar24), elementarFeuer( "elementar
-		 * (feuer)", ImageAdmin.zauberMerkmalElementarFeuer,
-		 * ImageAdmin.zauberMerkmalElementarFeuer24), elementarWasser(
-		 * "elementar (wasser)", ImageAdmin.zauberMerkmalElementarWasser,
-		 * ImageAdmin.zauberMerkmalElementarWasser24), elementarLuft( "elementar
-		 * (luft)", ImageAdmin.zauberMerkmalElementarLuft,
-		 * ImageAdmin.zauberMerkmalElementarLuft24), elementarErz( "elementar
-		 * (erz)", ImageAdmin.zauberMerkmalElementarErz,
-		 * ImageAdmin.zauberMerkmalElementarErz24), elementarHumus( "elementar
-		 * (humus)", ImageAdmin.zauberMerkmalElementarHumus,
-		 * ImageAdmin.zauberMerkmalElementarHumus24), elementarEis( "elementar
-		 * (eis)", ImageAdmin.zauberMerkmalElementarEis,
-		 * ImageAdmin.zauberMerkmalElementarEis24), form("form",
-		 * ImageAdmin.zauberMerkmalForm, ImageAdmin.zauberMerkmalForm24),
-		 * geisterwesen( "geisterwesen", ImageAdmin.zauberMerkmalGeisterwesen,
-		 * ImageAdmin.zauberMerkmalGeisterwesen24), heilung("heilung",
-		 * ImageAdmin.zauberMerkmalHeilung, ImageAdmin.zauberMerkmalHeilung24),
-		 * hellsicht("hellsicht", ImageAdmin.zauberMerkmalHellsicht,
-		 * ImageAdmin.zauberMerkmalHellsicht24), herbeirufung( "herbeirufung",
-		 * ImageAdmin.zauberMerkmalHerbeirufung,
-		 * ImageAdmin.zauberMerkmalHerbeirufung24), herrschaft( "herrschaft",
-		 * ImageAdmin.zauberMerkmalHerrschaft,
-		 * ImageAdmin.zauberMerkmalHerrschaft24), illusion("illusion",
-		 * ImageAdmin.zauberMerkmalIllusion,
-		 * ImageAdmin.zauberMerkmalIllusion24), kraft("kraft",
-		 * ImageAdmin.zauberMerkmalKraft, ImageAdmin.zauberMerkmalKraft24),
-		 * limbus( "limbus", ImageAdmin.zauberMerkmalLimbus,
-		 * ImageAdmin.zauberMerkmalLimbus24), metamagie("metamagie",
-		 * ImageAdmin.zauberMerkmalMetamagie,
-		 * ImageAdmin.zauberMerkmalMetamagie24), objekt("objekt",
-		 * ImageAdmin.zauberMerkmalObjekt, ImageAdmin.zauberMerkmalObjekt24),
-		 * schaden("schaden", ImageAdmin.zauberMerkmalSchaden,
-		 * ImageAdmin.zauberMerkmalSchaden24), telekinese("telekinese",
-		 * ImageAdmin.zauberMerkmalTelekinese,
-		 * ImageAdmin.zauberMerkmalTelekinese24), temporal("temporal",
-		 * ImageAdmin.zauberMerkmalTemporal,
-		 * ImageAdmin.zauberMerkmalTemporal24), umwelt("umwelt",
-		 * ImageAdmin.zauberMerkmalUmwelt, ImageAdmin.zauberMerkmalUmwelt24),
-		 * verstaendigung( "verstaendigung",
-		 * ImageAdmin.zauberMerkmalVerstaendigung,
-		 * ImageAdmin.zauberMerkmalVerstaendigung24);
-		 */
-		private String value; // ID des Elements
-
-
-		private MagieMerkmal(String value) {
+		private String value;
+		private MagieMerkmal magieMerkmal;
+		
+		private MagieMerkmalEnum(String value) {
 			this.value = value;
 		}
 
@@ -205,6 +122,24 @@ public class Werte {
 		 */
 		public String getValue() {
 			return value;
+		}
+
+		/**
+		 * @return the magieMerkmal
+		 */
+		public MagieMerkmal getMagieMerkmal() {
+			return magieMerkmal;
+		}
+
+		/**
+		 * @param magieMerkmal the magieMerkmal to set
+		 */
+		public void setMagieMerkmal(MagieMerkmal magieMerkmal) {
+			this.magieMerkmal = magieMerkmal;
+		}
+		
+		public String getId() {
+			return "MER-" + super.toString(); 
 		}
 
 	}

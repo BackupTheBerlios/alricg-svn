@@ -15,6 +15,7 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
 /**
  * Fast gemeinsamkeiten von Vor- und Nachteilen zusammen und bildet die Grundlage für diese.
  * 
+ * --> Die Kostenänderungen werde nun komplett über Sonderregeln gehandhabt
  * Die Eingenschaften "ändert..." geben an, dass die Wahl dieses VorNachteils die 
  * Kosten anderer VorNachteile oder Sonderfertigkeiten beeinflussen kann.
  * Der Link gibt als Ziel das zu ändernde CharElement an.   
@@ -22,56 +23,17 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
  * @author V.Strelow
  */
 public abstract class VorNachteil extends Fertigkeit {
-	private int stufenSchritt = 0; // In welchen Schritten gesteigert werden darf
-	private int kostenProSchritt = 0; // wieviele GP pro Stufe (+ feste GPKosten)
-	private int minStufe = 1;
-	private int maxStufe = 1;
+	//private int stufenSchritt = 0; // In welchen Schritten gesteigert werden darf
+	private double kostenProStufe = 0; // wieviele GP pro Stufe (+ feste GPKosten)
+	private int minStufe = 0;
+	private int maxStufe = 0;
 
+	/*
 	private IdLink<Sonderfertigkeit>[] aendertApSf; // Die Kostenänderung hier muss als "AP" angegeben werden!
 	private IdLink<Nachteil>[] aendertGpNachteil;
 	private IdLink<Vorteil>[] aendertGpVorteil;
-
+*/
 	
-    /**
-     * @see org.d3s.alricg.store.charElemente.VorNachteil
-	 * @return the aendertGpNachteil
-	 */
-	public IdLink<Nachteil>[] getAendertGpNachteil() {
-		return aendertGpNachteil;
-	}
-
-	/**
-	 * @see org.d3s.alricg.store.charElemente.VorNachteil
-	 * @param aendertGpNachteil the aendertGpNachteil to set
-	 */
-	public void setAendertGpNachteil(IdLink<Nachteil>[] aendertGpNachteil) {
-		this.aendertGpNachteil = aendertGpNachteil;
-	}
-
-	/**
-	 * @see org.d3s.alricg.store.charElemente.VorNachteil
-	 * @return the aendertGpVorteil
-	 */
-	public IdLink<Vorteil>[] getAendertGpVorteil() {
-		return aendertGpVorteil;
-	}
-
-	/**
-	 * @see org.d3s.alricg.store.charElemente.VorNachteil
-	 * @param aendertGpVorteil the aendertGpVorteil to set
-	 */
-	public void setAendertGpVorteil(IdLink<Vorteil>[] aendertGpVorteil) {
-		this.aendertGpVorteil = aendertGpVorteil;
-	}
-
-	/**
-     * @see org.d3s.alricg.store.charElemente.VorNachteil
-     * @return Liefert das Attribut aendertApSf.
-     */
-    public IdLink<Sonderfertigkeit>[] getAendertApSf() {
-        return aendertApSf;
-    }
-    
     /**
      * @return Liefert das Attribut maxStufe.
      */
@@ -89,14 +51,6 @@ public abstract class VorNachteil extends Fertigkeit {
     }
 
     /**
-     * @see org.d3s.alricg.store.charElemente.VorNachteil
-     * @param aendertApSf Setzt das Attribut aendertApSf.
-     */
-    public void setAendertApSf(IdLink<Sonderfertigkeit>[] aendertApSf) {
-        this.aendertApSf = aendertApSf;
-    }
-
-    /**
      * @param maxStufe Setzt das Attribut maxStufe.
      */
     public void setMaxStufe(int maxStufe) {
@@ -111,32 +65,82 @@ public abstract class VorNachteil extends Fertigkeit {
     }
 
 	/**
-	 * @return the stufenSchritt
-	 */
-    @XmlSchemaType(name = "nonNegativeInteger")
-	public int getStufenSchritt() {
-		return stufenSchritt;
-	}
-
-	/**
-	 * @param stufenSchritt the stufenSchritt to set
-	 */
-	public void setStufenSchritt(int stufenSchritt) {
-		this.stufenSchritt = stufenSchritt;
-	}
-
-	/**
 	 * @return the kostenProStufe
 	 */
 	@XmlSchemaType(name = "nonNegativeInteger")
-	public int getKostenProSchritt() {
-		return kostenProSchritt;
+	public double getKostenProStufe() {
+		return kostenProStufe;
 	}
 
 	/**
 	 * @param kostenProStufe the kostenProStufe to set
 	 */
-	public void setKostenProSchritt(int kostenProSchritt) {
-		this.kostenProSchritt = kostenProSchritt;
+	public void setKostenProStufe(double kostenProSchritt) {
+		this.kostenProStufe = kostenProSchritt;
 	}
+	
+    /*
+     * @see org.d3s.alricg.store.charElemente.VorNachteil
+	 * @return the aendertGpNachteil
+	 *
+	public IdLink<Nachteil>[] getAendertGpNachteil() {
+		return aendertGpNachteil;
+	}
+
+	/*
+	 * @see org.d3s.alricg.store.charElemente.VorNachteil
+	 * @param aendertGpNachteil the aendertGpNachteil to set
+	 *
+	public void setAendertGpNachteil(IdLink<Nachteil>[] aendertGpNachteil) {
+		this.aendertGpNachteil = aendertGpNachteil;
+	}
+
+	/*
+	 * @see org.d3s.alricg.store.charElemente.VorNachteil
+	 * @return the aendertGpVorteil
+	 *
+	public IdLink<Vorteil>[] getAendertGpVorteil() {
+		return aendertGpVorteil;
+	}
+
+	/*
+	 * @see org.d3s.alricg.store.charElemente.VorNachteil
+	 * @param aendertGpVorteil the aendertGpVorteil to set
+	 *
+	public void setAendertGpVorteil(IdLink<Vorteil>[] aendertGpVorteil) {
+		this.aendertGpVorteil = aendertGpVorteil;
+	}
+	
+	/*
+     * @see org.d3s.alricg.store.charElemente.VorNachteil
+     * @param aendertApSf Setzt das Attribut aendertApSf.
+     *
+    public void setAendertApSf(IdLink<Sonderfertigkeit>[] aendertApSf) {
+        this.aendertApSf = aendertApSf;
+    }
+
+	/*
+     * @see org.d3s.alricg.store.charElemente.VorNachteil
+     * @return Liefert das Attribut aendertApSf.
+     *
+    public IdLink<Sonderfertigkeit>[] getAendertApSf() {
+        return aendertApSf;
+    }*/
+    
+	/*
+	 * @return the stufenSchritt
+	 *
+    @XmlSchemaType(name = "nonNegativeInteger")
+	public int getStufenSchritt() {
+		return stufenSchritt;
+	}*/
+
+	/*
+	 * @param stufenSchritt the stufenSchritt to set
+	 *
+	public void setStufenSchritt(int stufenSchritt) {
+		this.stufenSchritt = stufenSchritt;
+	}*/
+
+
 }

@@ -45,7 +45,7 @@ public abstract class Fertigkeit extends CharElement {
 	}
 	
 	private Talent automatischesTalent;
-    private Werte.CharArten[] fuerWelcheChars; // Welche Chars diese Fertigkeit wählen können
+    //private Werte.CharArten[] fuerWelcheChars; // Welche Chars diese Fertigkeit wählen können
 	private FertigkeitArt art;
 	
     private boolean isMitFreienText = false; // Gibt es noch einen frei zu wählenden Text zu der Fertigkeit? (Vorurteile gegen "Orks")
@@ -54,11 +54,11 @@ public abstract class Fertigkeit extends CharElement {
     // in diesem Fall können nur die Vorschläge gewählt werden, nichts anderes
     
     private boolean benoetigtZweitZiel = false; // Gibt es noch ein Element zu dieser Fertigkeit (Unfähigkeit "Schwerter")
-    private boolean isWaehlbar = true; // Nicht wählbare können nur über die Herkunft erlangt werden
+    //private boolean isWaehlbar = true; // Nicht wählbare können nur über die Herkunft erlangt werden
 
     private AdditionsFamilie additionsFamilie; // "Familie" von Fertigkeiten, die aufaddiert werden z.B. Rüstungsgewöhung I und RG II
 
-    private int gpKosten;
+    private double gpKosten;
 
      
     /**
@@ -83,30 +83,30 @@ public abstract class Fertigkeit extends CharElement {
         return isMitFreienText;
     }
 
-    /**
+    /*
      * Fertigkeiten die "Nicht wählbar" sind können nur über die Herkunft erlangt werden! D.h. diese stehen NICHT zur
      * normalen Auswahl.
      * 
      * @return true - Die Fertigkeit ist normal wählbar, ansonsten ist die Fertigk. NICHT wählbar (false)
-     */
+     *
     @XmlAttribute
     public boolean isWaehlbar() {
         return isWaehlbar;
-    }
+    }*/
 
 	/**
 	 * @return the fuerWelcheChars
-	 */
+	 *
 	public Werte.CharArten[] getFuerWelcheChars() {
 		return fuerWelcheChars;
-	}
+	}*/
 
 	/**
 	 * @param fuerWelcheChars the fuerWelcheChars to set
-	 */
+	 *
 	public void setFuerWelcheChars(Werte.CharArten[] fuerWelcheChars) {
 		this.fuerWelcheChars = fuerWelcheChars;
-	}
+	}*/
 
 	/**
 	 * @return the textVorschlaege
@@ -141,7 +141,7 @@ public abstract class Fertigkeit extends CharElement {
 	 * @return the gpKosten
 	 */
 	@XmlAttribute
-	public int getGpKosten() {
+	public double getGpKosten() {
 		return gpKosten;
 	}
 
@@ -161,7 +161,7 @@ public abstract class Fertigkeit extends CharElement {
 	/**
 	 * @param gpKosten the gpKosten to set
 	 */
-	public void setGpKosten(int gpKosten) {
+	public void setGpKosten(double gpKosten) {
 		this.gpKosten = gpKosten;
 	}
 
@@ -172,12 +172,12 @@ public abstract class Fertigkeit extends CharElement {
 		this.isMitFreienText = isMitFreienText;
 	}
 
-	/**
+	/*
 	 * @param isWaehlbar the isWaehlbar to set
-	 */
+	 *
 	public void setWaehlbar(boolean isWaehlbar) {
 		this.isWaehlbar = isWaehlbar;
-	}
+	}*/
 
 	/**
 	 * @param additionsFamilie the additionsFamilie to set

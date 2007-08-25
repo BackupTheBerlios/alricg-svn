@@ -17,7 +17,7 @@ import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.Zauber;
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
+import org.d3s.alricg.store.charElemente.Werte.MagieMerkmalEnum;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 
 
@@ -35,7 +35,7 @@ public class DaemonenPakt extends CharElement {
 	private IdLink<Sonderfertigkeit>[] verbilligteSonderf;
 	private IdLink<Talent>[] verbilligteTalente;
 	private IdLink<Zauber>[] verbilligteZauber;
-	private MagieMerkmal[] magieMerkmal;
+	private MagieMerkmalEnum[] magieMerkmal;
 	private IdLink<SchwarzeGabe>[] schwarzeGaben;
 	private IdLink<Eigenschaft>[] verbilligteEigenschaften;
 	/**
@@ -137,13 +137,13 @@ public class DaemonenPakt extends CharElement {
 	/**
 	 * @return the magieMerkmal
 	 */
-	public MagieMerkmal[] getMagieMerkmal() {
+	public MagieMerkmalEnum[] getMagieMerkmal() {
 		return magieMerkmal;
 	}
 	/**
 	 * @param magieMerkmal the magieMerkmal to set
 	 */
-	public void setMagieMerkmal(MagieMerkmal[] magieMerkmal) {
+	public void setMagieMerkmal(MagieMerkmalEnum[] magieMerkmal) {
 		this.magieMerkmal = magieMerkmal;
 	}
 	/**

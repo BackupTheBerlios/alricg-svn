@@ -13,11 +13,13 @@ import java.util.List;
 
 import org.d3s.alricg.store.access.hide.AbstractCharElementsAccessor;
 import org.d3s.alricg.store.access.hide.XmlVirtualAccessor;
+import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
@@ -69,6 +71,14 @@ public class StoreDataAccessor extends AbstractCharElementsAccessor implements C
 		return virtualAccessor.getXmlAccessor();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.AbstractCharElementsAccessor#getMatchingList(java.lang.Class)
+	 */
+	@Override
+	public List<? extends CharElement> getMatchingList(Class clazz) {
+		return super.getMatchingList(clazz);
+	}
+
 	/**
 	 * Interface um den Algortmus zur Erstellung der nicht Modifizierbaren Listen
 	 * von dem Datenlesen zu trennen.
@@ -373,5 +383,22 @@ public class StoreDataAccessor extends AbstractCharElementsAccessor implements C
 		
 		return getList(listGetter);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getMagieMerkmalList()
+	 */
+	@Override
+	public List<MagieMerkmal> getMagieMerkmalList() {
+		ListGetter<MagieMerkmal> listGetter = new ListGetter<MagieMerkmal>(){
+			@Override
+			public List<MagieMerkmal> getList(CharElementAccessor xmlAccs) {
+				return xmlAccs.getMagieMerkmalList();
+			}
+		};
+		
+		return getList(listGetter);
+	}
+	
+	
 	
 }

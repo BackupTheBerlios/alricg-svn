@@ -20,22 +20,19 @@ import javax.xml.bind.Unmarshaller;
 
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gottheit;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
-import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
 import org.d3s.alricg.store.charElemente.Fertigkeit.FertigkeitArt;
 import org.d3s.alricg.store.charElemente.Rasse.FarbenAngabe;
-import org.d3s.alricg.store.charElemente.Werte.CharArten;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.Werte.Geschlecht;
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
+import org.d3s.alricg.store.charElemente.Werte.MagieMerkmalEnum;
 import org.d3s.alricg.store.charElemente.Zauber.Verbreitung;
 import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.d3s.alricg.store.charElemente.charZusatz.WuerfelSammlung;
@@ -346,17 +343,18 @@ public class UnMarschall {
 		talentList.add(talentArray[2]);
 		
 		// TEST >>>>>>>>>
-		/*
-		List<Schrift> schriftList = new ArrayList<Schrift>();
-		Schrift g = new Schrift();
-		g.setId("SRI-testSchrift");
-		g.setName("Lala-Lumpo schrift");
-		g.setKomplexitaet(10);
-		g.setKostenKlasse(KostenKlasse.B);
-		g.setSammelbegriff("Doofe Schriften");
-		schriftList.add(g);
-		xmlAccessor.setSchriftList(schriftList);
+		List<MagieMerkmal> magieMerkmalList = new ArrayList<MagieMerkmal>();
+		MagieMerkmal g = new MagieMerkmal();
+		g.setMerkmalEnum(MagieMerkmalEnum.einfluss);
+		magieMerkmalList.add(g);
 		
+		g = new MagieMerkmal();
+		g.setMerkmalEnum(MagieMerkmalEnum.objekt);
+		magieMerkmalList.add(g);
+		
+		xmlAccessor.setMagieMerkmalList(magieMerkmalList);
+		
+		/*
 		List<Sprache> spracheList = new ArrayList<Sprache>();
 		Sprache l1 = new Sprache();
 		l1.setId("SPR-testSprache1");
@@ -383,8 +381,7 @@ public class UnMarschall {
 		
 		spracheList.add(l1);
 		spracheList.add(l2);
-		xmlAccessor.setSpracheList(spracheList);
-		*/
+		xmlAccessor.setSpracheList(spracheList);*/
 		// <<<<<<<<<<<<< 
 		
 		xmlAccessor.setTalentList(talentList);
@@ -494,8 +491,12 @@ public class UnMarschall {
 		zauberArray[0].setZiel("Ziel");
 		
 		MagieMerkmal[] merkmalArray = new MagieMerkmal[2];
-		merkmalArray[0] = MagieMerkmal.antimagie;
-		merkmalArray[1] = MagieMerkmal.beschwoerung;
+		merkmalArray[0] = new MagieMerkmal();
+		merkmalArray[0].setId("MM-test1");
+		merkmalArray[0].setMerkmalEnum(MagieMerkmalEnum.antimagie);
+		merkmalArray[1] = new MagieMerkmal();
+		merkmalArray[1].setId("MM-test2");
+		merkmalArray[1].setMerkmalEnum(MagieMerkmalEnum.beschwoerung);
 		zauberArray[0].setMerkmale(merkmalArray);
 		
 		Verbreitung[] verbreitungArray = new Verbreitung[2];
@@ -547,8 +548,8 @@ public class UnMarschall {
 		Assert.assertEquals("ZDauer", zaub.getZauberdauer());
 		Assert.assertEquals("Ziel", zaub.getZiel());
 		Assert.assertEquals(2, zaub.getMerkmale().length);
-		Assert.assertEquals(MagieMerkmal.antimagie, zaub.getMerkmale()[0]);
-		Assert.assertEquals(MagieMerkmal.beschwoerung, zaub.getMerkmale()[1]);
+		Assert.assertEquals(MagieMerkmalEnum.antimagie, zaub.getMerkmale()[0].getMerkmalEnum());
+		Assert.assertEquals(MagieMerkmalEnum.beschwoerung, zaub.getMerkmale()[1].getMerkmalEnum());
 		Assert.assertEquals(2, zaub.getVerbreitung().length);
 		Assert.assertEquals(10, zaub.getVerbreitung()[0].getWert());
 		Assert.assertEquals(
@@ -579,14 +580,13 @@ public class UnMarschall {
 		nachteil[0].setId("Id-Nachteil-1");
 		nachteil[0].setName("Nachteil 1");
 		nachteil[0].setBenoetigtZweitZiel(true);
-		nachteil[0].setFuerWelcheChars(new CharArten[] {CharArten.halbZauberer, CharArten.viertelZauberer});
+		//nachteil[0].setFuerWelcheChars(new CharArten[] {CharArten.halbZauberer, CharArten.viertelZauberer});
 		nachteil[0].setGpKosten(66);
-		nachteil[0].setKostenProSchritt(2);
+		nachteil[0].setKostenProStufe(2);
 		nachteil[0].setMaxStufe(6);
 		nachteil[0].setMinStufe(4);
 		nachteil[0].setMitFreienText(true);
 		nachteil[0].setSchlechteEigen(true);
-		nachteil[0].setStufenSchritt(1);
 		nachteil[0].setTextVorschlaege(new String[] {"la", "li", "lo"});
 		
 		AdditionsFamilie adFam = new AdditionsFamilie();
@@ -605,7 +605,7 @@ public class UnMarschall {
 		linkArray[0].setWert(5);
 		linkArray[0].setQuelle(nachteil[0]);
 		
-		nachteil[0].setAendertGpNachteil(linkArray);
+		//nachteil[0].setAendertGpNachteil(linkArray);
 		
 		// Zusammenfügen
 		nachteilList.add(nachteil[0]);
@@ -640,16 +640,15 @@ public class UnMarschall {
 		Assert.assertEquals("Id-Nachteil-1",nachteil.getId());
 		Assert.assertEquals("Nachteil 1",nachteil.getName());
 		Assert.assertTrue(nachteil.getBenoetigtZweitZiel());
-		Assert.assertEquals(2, nachteil.getFuerWelcheChars().length);
-		Assert.assertEquals(CharArten.halbZauberer, nachteil.getFuerWelcheChars()[0]);
-		Assert.assertEquals(CharArten.viertelZauberer, nachteil.getFuerWelcheChars()[1]);
+		//Assert.assertEquals(2, nachteil.getFuerWelcheChars().length);
+		//Assert.assertEquals(CharArten.halbZauberer, nachteil.getFuerWelcheChars()[0]);
+		//Assert.assertEquals(CharArten.viertelZauberer, nachteil.getFuerWelcheChars()[1]);
 		Assert.assertEquals(66,nachteil.getGpKosten());
-		Assert.assertEquals(2,nachteil.getKostenProSchritt());
+		Assert.assertEquals(2,nachteil.getKostenProStufe());
 		Assert.assertEquals(6,nachteil.getMaxStufe());
 		Assert.assertEquals(4,nachteil.getMinStufe());
 		Assert.assertTrue(nachteil.isMitFreienText());
 		Assert.assertTrue(nachteil.isSchlechteEigen());
-		Assert.assertEquals(1,nachteil.getStufenSchritt());
 		Assert.assertEquals(3,nachteil.getTextVorschlaege().length);
 		Assert.assertEquals("la",nachteil.getTextVorschlaege()[0]);
 		Assert.assertEquals("li",nachteil.getTextVorschlaege()[1]);
@@ -657,8 +656,8 @@ public class UnMarschall {
 		
 		Assert.assertEquals("XYZ",nachteil.getAdditionsFamilie().getAdditionsID());
 		Assert.assertEquals(100,nachteil.getAdditionsFamilie().getAdditionsWert());
-		Assert.assertEquals("Id-Nachteil-2", nachteil.getAendertGpNachteil()[0].getZiel().getId());
-		Assert.assertEquals(xmlAccessor.getNachteilList().get(1), nachteil.getAendertGpNachteil()[0].getZiel());
+		//Assert.assertEquals("Id-Nachteil-2", nachteil.getAendertGpNachteil()[0].getZiel().getId());
+		//Assert.assertEquals(xmlAccessor.getNachteilList().get(1), nachteil.getAendertGpNachteil()[0].getZiel());
 		
 	}
 	
@@ -667,11 +666,10 @@ public class UnMarschall {
 		Sonderfertigkeit sondf = new Sonderfertigkeit();
 		sondf.setId("sfId");
 		sondf.setName("Sonderf");
-		sondf.setApKosten(100);
 		sondf.setArt(FertigkeitArt.waffenloskampf);
 		sondf.setPermAsp(1);
 		sondf.setPermLep(2);
-		sondf.setPermKa(3);
+		sondf.setPermKep(3);
 		
 		List<Sonderfertigkeit> sfList = new ArrayList<Sonderfertigkeit>();
 		sfList.add(sondf);
@@ -701,11 +699,10 @@ public class UnMarschall {
 		Sonderfertigkeit sf = xmlAccessor.getSonderfList().get(0);
 		Assert.assertEquals("sfId", sf.getId());
 		Assert.assertEquals("Sonderf", sf.getName());
-		Assert.assertEquals(100, sf.getApKosten());
 		Assert.assertEquals(FertigkeitArt.waffenloskampf, sf.getArt());
 		Assert.assertEquals(1, sf.getPermAsp());
 		Assert.assertEquals(2, sf.getPermLep());
-		Assert.assertEquals(3, sf.getPermKa());
+		Assert.assertEquals(3, sf.getPermKep());
 	}
 	
 	@Test

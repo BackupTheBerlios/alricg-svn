@@ -22,6 +22,7 @@ import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
@@ -108,6 +109,7 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 	private List<DaemonenPakt> daemonenPaktList = new ArrayList<DaemonenPakt>();
 	private List<MagierAkademie> magierAkademieList = new ArrayList<MagierAkademie>();
 	private List<SchwarzeGabe> schwarzeGabeList = new ArrayList<SchwarzeGabe>();
+	private List<MagieMerkmal> magieMermalList = new ArrayList<MagieMerkmal>();
 	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.store.access.CharElementAccessor#getEigenschaftList()
@@ -368,6 +370,17 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 	 */
 	public void setSchwarzeGabeList(List<SchwarzeGabe> schwarzeGabeList) {
 		this.schwarzeGabeList = schwarzeGabeList;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getMagieMerkmalList()
+	 */
+	public List<MagieMerkmal> getMagieMerkmalList() {
+		return this.magieMermalList;
+	}
+	
+	public void setMagieMerkmalList(List<MagieMerkmal> magieMerkmalList) {
+		this.magieMermalList = magieMerkmalList;
 	}
 	
 	

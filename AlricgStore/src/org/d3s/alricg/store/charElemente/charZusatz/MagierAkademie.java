@@ -10,7 +10,7 @@ package org.d3s.alricg.store.charElemente.charZusatz;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Werte.Gilde;
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
+import org.d3s.alricg.store.charElemente.Werte.MagieMerkmalEnum;
 
 /**
  * <u>Beschreibung:</u><br>
@@ -21,7 +21,7 @@ import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
  */
 public class MagierAkademie extends CharElement {
 	private Gilde gilde;
-	private MagieMerkmal merkmale[];
+	private MagieMerkmalEnum merkmale[];
 	private boolean zweitStudiumMoeglich = true;
 	private boolean drittStudiumMoeglich = false;
 	private String anmerkung;
@@ -41,13 +41,13 @@ public class MagierAkademie extends CharElement {
 	/**
 	 * @return the merkmale
 	 */
-	public MagieMerkmal[] getMerkmale() {
+	public MagieMerkmalEnum[] getMerkmale() {
 		return merkmale;
 	}
 	/**
 	 * @param merkmale the merkmale to set
 	 */
-	public void setMerkmale(MagieMerkmal[] merkmale) {
+	public void setMerkmale(MagieMerkmalEnum[] merkmale) {
 		this.merkmale = merkmale;
 	}
 	/**

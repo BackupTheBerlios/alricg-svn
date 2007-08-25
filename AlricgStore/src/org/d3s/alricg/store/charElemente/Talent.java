@@ -39,7 +39,8 @@ public class Talent extends Faehigkeit {
 		gesellschaft("gesellschaft"), 
 		natur("natur"), 
 		wissen("wissen"), 
-		handwerk("handwerk");
+		handwerk("handwerk"),
+		spezial("spezial");
 		private String name; // XML-Tag des Elements
 		
 		private Sorte(String name) {

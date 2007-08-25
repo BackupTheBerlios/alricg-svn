@@ -16,6 +16,7 @@ import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
@@ -86,6 +87,8 @@ public abstract class AbstractCharElementsAccessor implements CharElementAccesso
 			return getDaemonenPaktList();
 		} else if (clazz ==  MagierAkademie.class) {
 			return getMagierAkademieList();
+		} else if (clazz ==  MagieMerkmal.class) {
+			return getMagieMerkmalList();
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
 					clazz.toString() + " vorhanden.");
