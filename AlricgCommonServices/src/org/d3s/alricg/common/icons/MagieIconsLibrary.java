@@ -7,14 +7,9 @@
  */
 package org.d3s.alricg.common.icons;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
+import org.d3s.alricg.store.charElemente.Werte.MagieMerkmalEnum;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * @author Vincent
@@ -35,18 +30,18 @@ public class MagieIconsLibrary extends AbstractIconsLibrary<MagieMerkmal> {
 	 * @return ImageDescriptor eines 24x24 Bildes für das gewünscht Merkmal
 	 */
 	public ImageDescriptor getImageDescriptor24(MagieMerkmal merkmal) {
-		return getMatchingIcon(merkmal).getImage24();
+		return getMatchingIcon(merkmal.getMerkmalEnum()).getImage24();
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.common.icons.AbstractIconsLibrary#getImageDescriptor16(java.lang.Object)
 	 */
 	@Override
-	protected ImageDescriptor getImageDescriptor16(MagieMerkmal merkmale) {
-		return getMatchingIcon(merkmale).getImage16();
+	protected ImageDescriptor getImageDescriptor16(MagieMerkmal merkmal) {
+		return getMatchingIcon(merkmal.getMerkmalEnum()).getImage16();
 	}
 
-	protected Icons getMatchingIcon(MagieMerkmal merkmale) {
+	protected Icons getMatchingIcon(MagieMerkmalEnum merkmale) {
 		switch(merkmale) {
 			case antimagie: return Icons.antimagie;
 			case beschwoerung: return Icons.beschwoerung;

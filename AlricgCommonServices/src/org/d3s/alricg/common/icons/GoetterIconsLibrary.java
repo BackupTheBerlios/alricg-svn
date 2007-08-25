@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.d3s.alricg.store.charElemente.Gottheit;
-import org.d3s.alricg.store.charElemente.Werte.MagieMerkmal;
+import org.d3s.alricg.store.charElemente.Werte.MagieMerkmalEnum;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
