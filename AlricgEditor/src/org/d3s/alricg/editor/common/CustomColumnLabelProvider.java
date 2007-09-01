@@ -13,30 +13,30 @@ import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.common.logic.FormelSammlung;
 import org.d3s.alricg.editor.Messages;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Schrift;
-import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.VorNachteil;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
-import org.d3s.alricg.store.charElemente.links.IdLink;
+import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.charElemente.links.Option;
 import org.d3s.alricg.store.charElemente.links.OptionAnzahl;
 import org.d3s.alricg.store.charElemente.links.OptionListe;
 import org.d3s.alricg.store.charElemente.links.OptionVerteilung;
 import org.d3s.alricg.store.charElemente.links.OptionVoraussetzung;
-import org.d3s.alricg.store.charElemente.sonderregeln.Sonderregel.ChangeTextContex;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -230,7 +230,7 @@ public class CustomColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
 			CharElement chatEle = ViewUtils.getCharElement(element);
-			if (chatEle == null) return ((TreeObject)element).getValue().toString();
+			if (chatEle == null) return ((TreeOrTableObject) element).getValue().toString();
 			
 			return chatEle.getName();
 		}
@@ -679,6 +679,89 @@ public class CustomColumnLabelProvider {
 		}
 	}
 	
+	public static class GegenstandWertProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			int[] muenzen = FormelSammlung.getWertInMuenzen(((Gegenstand) charElem).getWertInKreuzern());
+			return CharElementTextService.getMuenzenString(muenzen, true);
+		}
+		
+		@Override
+		public String getToolTipText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null)  super.getToolTipText(element);
+			
+			int[] muenzen = FormelSammlung.getWertInMuenzen(((Gegenstand) charElem).getWertInKreuzern());
+			return CharElementTextService.getMuenzenString(muenzen, false);
+		}
+	}
+	
+	public static class GegenstandArtProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			return ((Gegenstand) charElem).getArt().toString();
+		}
+	}
+	
+	public static class GegenstandRegionVolkProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			RegionVolk[] regionVolk = ((Gegenstand) charElem).getHerkunft();
+			if (regionVolk == null) return "unbestimmt";
+			
+			StringBuilder strB = new StringBuilder();
+			for (int i = 0; i < regionVolk.length; i++) {
+				strB.append(regionVolk[i].getAbk());
+				if (i+1 < regionVolk.length) strB.append(", ");
+			}
+			return strB.toString();
+		}
+		
+		@Override
+		public String getToolTipText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null)  super.getToolTipText(element);
+			
+			final RegionVolk[] regionVolk = ((Gegenstand) charElem).getHerkunft();
+			if (regionVolk == null) return "unbestimmt";
+			
+			final StringBuilder strB = new StringBuilder();
+			for (int i = 0; i < regionVolk.length; i++) {
+				strB.append(regionVolk[i].getName());
+				if (i+1 < regionVolk.length) strB.append(", ");
+			}
+			return strB.toString();
+		}
+	}
+	
+	public static class RegionVolkAbkProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			return ((RegionVolk) charElem).getAbk();
+		}
+	}
+	
+	public static class RegionVolkArtProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			return ((RegionVolk) charElem).getArt().toString();
+		}
+	}
 	
 	/**
 	 * Helper für den ImageProvider. Hierrüber wird die Anzeige der Bilder
@@ -690,7 +773,7 @@ public class CustomColumnLabelProvider {
 		public String getName(T obj);
 		public T[] getItems(CharElement obj);
 		public AbstractIconsLibrary<T> getIconsLibrary();
-		public IViewPart getConsumer();
+		public IWorkbenchPart getConsumer();
 	}
 	
 	
@@ -715,6 +798,7 @@ public class CustomColumnLabelProvider {
 		
 			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return "";
+			if (regulator.getItems(charElem) == null) return null;
 			
 			if ( regulator.getItems(charElem).length >= ANZAHL_SPALTEN)  {
 				return "+";
@@ -725,7 +809,8 @@ public class CustomColumnLabelProvider {
 		@Override
 		public Image getImage(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
-			if (charElem == null) return null;
+			if (charElem == null) return null;			
+			if (regulator.getItems(charElem) == null) return null;
 			
 			if (regulator.getItems(charElem).length > index) {
 					return regulator.getIconsLibrary().getImage16(
@@ -739,7 +824,8 @@ public class CustomColumnLabelProvider {
 		public String getToolTipText(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return null;
-					
+			if (regulator.getItems(charElem) == null) return null;
+			
 			String retStr = "";
 			if ( regulator.getItems(charElem).length > index ) {
 				retStr = regulator.getName(regulator.getItems(charElem)[index]);
@@ -764,6 +850,7 @@ public class CustomColumnLabelProvider {
 		public Image getToolTipImage(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return null;
+			if (regulator.getItems(charElem) == null) return null;
 			
 			if ( !(regulator.getItems(charElem).length > index)) {
 				return null;
@@ -774,7 +861,7 @@ public class CustomColumnLabelProvider {
 									regulator.getItems(charElem)[index]).createImage();
 			
 			// Dispose Image
-			final Display d  = regulator.getConsumer().getViewSite().getShell().getDisplay();
+			final Display d  = regulator.getConsumer().getSite().getShell().getDisplay();
 			
 			d.timerExec (100, new Runnable () {
 				public void run () {

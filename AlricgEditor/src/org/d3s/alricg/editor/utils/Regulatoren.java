@@ -17,7 +17,9 @@ import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
+import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -25,6 +27,7 @@ import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Gottheit.GottheitArt;
+import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 
 /**
  * @author Vincent
@@ -84,8 +87,8 @@ public class Regulatoren {
 		public boolean equals(Object obj) {
 			if ( !(obj instanceof CharElementWapper) ) return false;
 			
-			return clazz.equals(((CharElementWapper) obj).getWappedClass())  
-									&& text.equals(obj.toString());
+			return getWappedClass().equals(((CharElementWapper) obj).getWappedClass())  
+									&& toString().equals(obj.toString());
 		}
 
 		@Override
@@ -127,6 +130,8 @@ public class Regulatoren {
 			@Override
 			public Object[] getFirstCategory(CharElement charElement) {
 				MagieMerkmal[] mm = ((Zauber) charElement).getMerkmale();
+				if (mm == null) return new Object[0];
+				
 				CharElementWapper[] wapper = new CharElementWapper[mm.length];
 				
 				for (int i = 0; i < wapper.length; i++) {
@@ -148,14 +153,14 @@ public class Regulatoren {
 			
 			@Override
 			public void setFirstCategory(CharElement charElement, Object firstCat) {
-				CharElementWapper[] wapper = (CharElementWapper[]) firstCat; 
-				MagieMerkmal[] mm = new MagieMerkmal[wapper.length];
-				
-				for (int i = 0; i < mm.length; i++) {
-					mm[i] = (MagieMerkmal) wapper[i].getCharElement();
+				if ( !(firstCat instanceof CharElementWapper) ) {
+					((Zauber) charElement).setMerkmale(null);
+					return;
 				}
-				
-				((Zauber) charElement).setMerkmale(mm);
+				final CharElementWapper wapper = (CharElementWapper) firstCat; 
+
+				((Zauber) charElement).setMerkmale(new MagieMerkmal[] { 
+							(MagieMerkmal) wapper.getCharElement() });
 			}
 		};
 		
@@ -164,6 +169,7 @@ public class Regulatoren {
 			@Override
 			public Object[] getFirstCategory(CharElement charElement) {
 				Gottheit[] gottArray = ((Liturgie) charElement).getGottheit();
+				if (gottArray == null) return new Object[0];
 				CharElementWapper[] wapper = new CharElementWapper[gottArray.length];
 				
 				for (int i = 0; i < wapper.length; i++) {
@@ -174,8 +180,7 @@ public class Regulatoren {
 			}
 	
 			@Override
-			public List<? extends CharElement> getListFromAccessor(
-					XmlAccessor accessor) {
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
 				return accessor.getLiturgieList();
 			}
 			
@@ -186,7 +191,14 @@ public class Regulatoren {
 			
 			@Override
 			public void setFirstCategory(CharElement charElement, Object firstCat) {
-				((Liturgie) charElement).setGottheit(new Gottheit[] {(Gottheit) firstCat });
+				if ( !(firstCat instanceof CharElementWapper) ) {
+					((Liturgie) charElement).setGottheit(null);
+					return;
+				}
+				final CharElementWapper wapper = (CharElementWapper) firstCat; 
+
+				((Liturgie) charElement).setGottheit(new Gottheit[]{
+						(Gottheit) wapper.getCharElement() });
 			}
 		};
 		
@@ -425,6 +437,91 @@ public class Regulatoren {
 			public void setFirstCategory(CharElement charElement, Object firstCat) {
 				((Gottheit) charElement).setGottheitArt((GottheitArt) firstCat);
 			} 
+		};
+		
+	public static final Regulator SchamanenRitualRegulator = 
+		new Regulator() {
+		
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				Repraesentation[] rep = ((SchamanenRitual) charElement).getHerkunft();
+				if (rep == null) return new Object[0];
+				
+				CharElementWapper[] wapper = new CharElementWapper[rep.length];
+				
+				for (int i = 0; i < wapper.length; i++) {
+					wapper[i] = new CharElementWapper(rep[i]);
+				}
+				return wapper;
+			}
+
+			@Override
+			public Class getFirstCategoryClass() {
+				return CharElementWapper.class;
+			}
+
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getSchamanenRitualList();
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				if ( !(firstCat instanceof CharElementWapper) ) {
+					((SchamanenRitual) charElement).setHerkunft(null);
+					return;
+				}
+				final CharElementWapper wapper = (CharElementWapper) firstCat; 
+
+				((SchamanenRitual) charElement).setHerkunft(new Repraesentation[] { 
+							(Repraesentation) wapper.getCharElement() });
+			} 
+		};
+		
+	public static final Regulator GegenstandRegulator = 
+		new Regulator() {
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[] { ((Gegenstand) charElement).getArt() };
+			}
+	
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getGegenstandList();
+			}
+			
+			@Override
+			public Class getFirstCategoryClass() {
+				return Gegenstand.GegenstandArt.class;
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Gegenstand) charElement).setArt( (Gegenstand.GegenstandArt) firstCat);
+			}
+		};
+		
+	public static final Regulator RegionVolkRegulator = 
+		new Regulator() {
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[] { ((RegionVolk) charElement).getArt() };
+			}
+	
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getRegionVolkList();
+			}
+			
+			@Override
+			public Class getFirstCategoryClass() {
+				return RegionVolk.RegionVolkArt.class;
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((RegionVolk) charElement).setArt( (RegionVolk.RegionVolkArt) firstCat);
+			}
 		};
 
 }

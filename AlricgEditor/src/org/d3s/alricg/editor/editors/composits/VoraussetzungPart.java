@@ -117,7 +117,10 @@ public class VoraussetzungPart extends AbstractAuswahlPart {
 		}
 		
 		auswahlDrop.setQuelle(charElem); // Setzt die Quelle für alle neuen Links in der Auswahl
-		auswahlDrop.setAcceptCharElementClazz(CharElement.class); // Alle CharElemente sind möglich
+		auswahlDrop.setAcceptGlobalDropClazz(CharElement.class); // Alle CharElemente sind möglich
+		auswahlDrop.addAcceptColumnClazz(
+				CharElement.class,
+				auswahlDrop.getColumnsToListen()[0]); // Alle CharElemente sind möglich
 		treeViewer.refresh();
 	}
 	

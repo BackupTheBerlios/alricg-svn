@@ -48,15 +48,15 @@ public class CharElementPart extends AbstractElementPart<CharElement> {
 									// nur Berechnet wird, wenn der Name sich 
 									// geändert hat
 	
-	private Group groupBasisDaten;
-	private Text txtID;
-	private Text txtSonderregelKlasse;
-	private Text txtName;
-	private Text txtSammelbegriff;
-	private Text txtBeschreibung;
-	private Text txtRegelAnm;
-	private Button cbxAnzeigen;
-	private Combo cobFile;
+	private final Group groupBasisDaten;
+	private final Text txtID;
+	private final Text txtSonderregelKlasse;
+	private final Text txtName;
+	private final Text txtSammelbegriff;
+	private final Text txtBeschreibung;
+	private final Text txtRegelAnm;
+	private final Button cbxAnzeigen;
+	private final Combo cobFile;
 	
 	private HashMap<String, XmlAccessor> cobFileMap = new HashMap<String, XmlAccessor>();
 	

@@ -42,6 +42,7 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	protected CharElementPart charElementPart;
 	protected VoraussetzungPart voraussetzungsPart;
 	protected ScrolledComposite scrollComp;
+	protected boolean isNewElement;
 	
 	private XmlAccessor currentAccessor;
 	
@@ -106,7 +107,8 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 		super.init(site, input);
 		String name =  getEditedCharElement().getName();
 		currentAccessor = (XmlAccessor) this.getEditorInput().getAdapter(XmlAccessor.class);
-		
+		isNewElement = (Boolean) this.getEditorInput().getAdapter(Boolean.class);
+			
 		this.setPartName(
 				CharElementTextService.getCharElementName(getEditedCharElement().getClass())
 				 + " " + name
@@ -129,15 +131,17 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 		for (int i = 0; i < getElementParts().length; i++) {
 			getElementParts()[i].saveData(monitor, charElement);
 		}
-		
+
 	// Aktualisiere Ansicht
 		// 1. Element aus Ansicht entfernen
-		EditorViewUtils.removeElementFromView(
-				viewPart,
-				charElement);
-		CharElementFactory.getInstance().deleteCharElement(
-				charElement, 
-				oldAccessor);
+		if (!isNewElement) { // Nur wenn das Element nicht neu ist
+			EditorViewUtils.removeElementFromView(
+					viewPart,
+					charElement);
+			CharElementFactory.getInstance().deleteCharElement(
+					charElement, 
+					oldAccessor);
+		}
 		// 2. Element zu Ansicht neu hinzufügen
 		currentAccessor = this.charElementPart.getSelectedXmlAccessor();
 		CharElementFactory.getInstance().addCharElement(charElement, currentAccessor);
@@ -169,6 +173,7 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 		monitor.worked(1);
 		
 		monitor.done();
+		isNewElement = false;
 	}
 
 	/* (non-Javadoc)

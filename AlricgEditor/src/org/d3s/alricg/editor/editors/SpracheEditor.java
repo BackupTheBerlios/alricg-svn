@@ -9,9 +9,10 @@ package org.d3s.alricg.editor.editors;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
-import org.d3s.alricg.editor.common.widgets.DropList;
-import org.d3s.alricg.editor.common.widgets.DropList.DropListRegulator;
+import org.d3s.alricg.editor.common.widgets.DropTable;
+import org.d3s.alricg.editor.common.widgets.DropTable.DropListRegulator;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Schrift;
@@ -49,7 +50,7 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 		private Combo cobSKT;
 		private Combo cobSKTNM;
 		private Button cbxAbweichungMutterSpr;
-		private DropList dropList;
+		private DropTable dropTable;
 		
 		private Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
 		private Image imgUp = ControlIconsLibrary.arrowUp.getImageDescriptor().createImage();
@@ -58,7 +59,6 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 		
 		SprachePart(Composite top) {
 			GridData tmpGData;
-			
 			
 		// Komplexität
 			final Label lblAnzahl = new Label(top, SWT.NONE);
@@ -150,32 +150,21 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 			DropListRegulator regulator = new DropListRegulator() {
 				@Override
 				public boolean canDrop(Object obj) {
-					if (obj == null) return true;
-					if (obj instanceof StructuredSelection
-							&& ((StructuredSelection) obj).getFirstElement() 
-									instanceof TreeOrTableObject 
-							&& ((TreeOrTableObject) ((StructuredSelection) obj).getFirstElement()).getValue() 
-									instanceof Schrift) {
+					if (obj == null) return false;
+					if (obj instanceof Schrift) {
 						return true;
 					}
 					return false;
 				}
 
 				@Override
-				public String getString(Object obj) {
-					return ((Schrift) ((TreeOrTableObject) ((StructuredSelection) obj)
-								.getFirstElement()).getValue()).getName();
-				}
-
-				@Override
-				public Object getValue(Object obj) {
-					return ((Schrift) ((TreeOrTableObject) ((StructuredSelection) obj)
-							.getFirstElement()).getValue());
+				public ImageProviderRegulator getImageProviderRegulator() {
+					return null;
 				}
 
 			};
 			
-			dropList = new DropList(top, SWT.NONE, regulator);
+			dropTable = new DropTable(top, SWT.NONE, regulator, SpracheEditor.this.getSite());
 		}
 
 		/* (non-Javadoc)
@@ -212,18 +201,7 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 			}
 			
 			// Schriften prüfen
-			if (charElem.getZugehoerigeSchrift() == null) {
-				if (dropList.getValueList().size() > 0) return true;
-				
-			} else if (charElem.getZugehoerigeSchrift() != null) {
-				if (charElem.getZugehoerigeSchrift().length != dropList.getValueList().size()) {
-					return true;
-				}
-				
-				for (int i = 0; i < charElem.getZugehoerigeSchrift().length; i++) {
-					isNotDirty &= charElem.getZugehoerigeSchrift()[i].equals(dropList.getValueList().get(i));
-				}
-			}
+			isNotDirty &= compareArrayList(charElem.getZugehoerigeSchrift(), dropTable);
 			
 			return !isNotDirty;
 		}
@@ -251,9 +229,7 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 			// Schriften hinzufügen
 			if (charElem.getZugehoerigeSchrift() != null) {
 				for (int i = 0; i < charElem.getZugehoerigeSchrift().length; i++) {
-					dropList.addValue(
-							charElem.getZugehoerigeSchrift()[i].getName(), 
-							charElem.getZugehoerigeSchrift()[i]);
+					dropTable.addValue(charElem.getZugehoerigeSchrift()[i]);
 				}
 			}
 		}
@@ -298,10 +274,10 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 			}
 			
 			// Liste der Schriften setzen
-			if (dropList.getValueList().size() > 0) {
+			if (dropTable.getValueList().size() > 0) {
 				charElem.setZugehoerigeSchrift( (Schrift[])
-						dropList.getValueList().toArray(
-								new Schrift[dropList.getValueList().size()])
+						dropTable.getValueList().toArray(
+								new Schrift[dropTable.getValueList().size()])
 						);
 			}
 			

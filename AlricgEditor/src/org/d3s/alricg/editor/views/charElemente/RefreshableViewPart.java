@@ -209,7 +209,6 @@ public abstract class RefreshableViewPart extends ViewPart {
 		viewerTree.refresh();
 	}
 	
-	
 	public TableViewer getTableViewer() {
 		return viewerTable;
 	}

@@ -15,6 +15,8 @@ import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.CustomActions.InfoCharElementAction;
+import org.d3s.alricg.editor.common.CustomColumnEditors.LinkTextEditingSupport;
+import org.d3s.alricg.editor.common.CustomColumnEditors.LinkWertEditingSupport;
 import org.d3s.alricg.editor.common.DragAndDropSupport.AuswahlDrag;
 import org.d3s.alricg.editor.common.DragAndDropSupport.AuswahlDrop;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
@@ -42,7 +44,6 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.window.ToolTip;
@@ -108,17 +109,11 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstrac
 		tc.setLabelProvider(new CustomColumnLabelProvider.LinkWertProvider());
 		tc.getColumn().setWidth(100);
 		tc.getColumn().setMoveable(true);
-		tc.setEditingSupport(new EditingSupport(treeViewer) {
-			private ComboBoxCellEditor cellEditor;
-			private final static int MIN_WERT = -10;
-			private final static int MAX_WERT = 20;
-			
+		tc.setEditingSupport(new LinkWertEditingSupport(treeViewer, treeViewer.getTree(), -10, 20) {
+
 			@Override
 			protected boolean canEdit(Object element) {
-				// Nur Links haben eine Stufe bearbeitet werden
-				if ( !(((TreeObject) element).getValue() instanceof Link) ) {
-					return false;
-				} 
+				if (!super.canEdit(element)) return false;
 				
 				// Nur die Modi "Anzahl" und "Voraussetzung" benötigen Stufe für Links
 				final Option tmpOpt = (Option) ((TreeObject) element).getParent().getValue();
@@ -128,102 +123,16 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstrac
 				}
 				return true;
 			}
-
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				if (cellEditor == null) {
-					int toSub = -MIN_WERT;
-					String[] strAr = new String[-MIN_WERT + MAX_WERT + 2];
-					for (int i  = 0; i < strAr.length; i++) {
-						if (i == (-MIN_WERT)+1) {
-							toSub = (-MIN_WERT)+1;
-							strAr[i] = "-"; //$NON-NLS-1$
-							continue;
-						}
-						strAr[i] = Integer.toString(i - toSub);
-					}
-					
-					cellEditor = new ComboBoxCellEditor(treeViewer.getTree(), strAr);
-					((CCombo) cellEditor.getControl()).setVisibleItemCount(8);
-				}
-				
-				int wert = ((Link) ((TreeObject) element).getValue()).getWert();
-				if (wert == Link.KEIN_WERT) {
-					cellEditor.setValue(11);
-				} else if (wert < MIN_WERT || wert > MAX_WERT) {
-					cellEditor.setValue(-MIN_WERT + 1);
-				} else if (wert <= 0){
-					cellEditor.setValue(-MIN_WERT + wert);
-				} else {
-					cellEditor.setValue(-MIN_WERT + 1 + wert);
-				}
-				
-				return cellEditor;
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				int wert = ((Link) ((TreeObject) element).getValue()).getWert();
-				if (wert == Link.KEIN_WERT) {
-					return -MIN_WERT + 1;
-				} else if (wert < MIN_WERT || wert > MAX_WERT) {
-					return 11;
-				} else if (wert <= 0){
-					return (-MIN_WERT + wert);
-				} else {
-					return (-MIN_WERT + 1 + wert);
-				}
-				
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
-				int valueInt = ((Integer) value).intValue();
-				int wert = Link.KEIN_WERT;;
-				
-				if (valueInt <= -MIN_WERT){
-					wert = valueInt  + MIN_WERT;
-				} else if (valueInt > -MIN_WERT+1){
-					wert = valueInt + MIN_WERT - 1;
-				} else {
-					wert = Link.KEIN_WERT;;
-				}
-				
-				((Link)((TreeObject) element).getValue()).setWert(wert);
-				treeViewer.refresh();
-			}});
+		});
 
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
 		tc.getColumn().setText(EditorMessages.AbstractAuswahlPart_Text);
 		tc.setLabelProvider(new CustomColumnLabelProvider.LinkTextProvider());
 		tc.getColumn().setWidth(100);
 		tc.getColumn().setMoveable(true);
-		tc.setEditingSupport(new EditingSupport(treeViewer) {
-			final TextCellEditor tce = new TextCellEditor(treeViewer.getTree());
-			
-			@Override
-			protected boolean canEdit(Object element) {
-				return (((TreeObject) element).getValue() instanceof Link);
-			}
-
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				return tce;
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				return ((Link) ((TreeObject) element).getValue()).getText();
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
-				((Link) ((TreeObject) element).getValue()).setText(value.toString());
-				treeViewer.refresh();
-			}
-			
-		});
-
+		tc.setEditingSupport(new LinkTextEditingSupport(treeViewer, treeViewer.getTree()));
+		
+		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 4);
 		tc.getColumn().setText(EditorMessages.AbstractAuswahlPart_ZweitZiel);
 		tc.setLabelProvider(new CustomColumnLabelProvider.LinkZweitZielProvider());
@@ -298,7 +207,8 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstrac
 					buildNewAuswahl.setEnabled(false);
 					deleteSelected.setEnabled(true);
 					editSelected.setEnabled(false);
-					clearZweitZiel.setEnabled(true);
+					clearZweitZiel.setEnabled(
+							((Link) treeObj.getValue()).getZweitZiel() != null);
 				} else if (treeObj.getValue() instanceof Option){
 					buildNewAlternative.setEnabled(true);
 					buildNewAuswahl.setEnabled(true);
@@ -459,6 +369,7 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstrac
 				if (treeObj.getValue() instanceof Link) {
 					((Link) treeObj.getValue()).setZweitZiel(null);
 				}
+				treeViewer.refresh();
 			}};
 		clearZweitZiel.setText(EditorMessages.AbstractAuswahlPart_DeleteZweitZiel);
 		clearZweitZiel.setToolTipText(EditorMessages.AbstractAuswahlPart_DeleteZweitZiel_TT);

@@ -36,7 +36,7 @@ public class VorteilEditor extends ComposedMultiPageEditorPart {
 	protected void addCharElementSiteParts(Composite mainContainer) {
 		
 		// FertigkeitPart erzeugen
-		fertigkeitPart = new FertigkeitPart(mainContainer, this.scrollComp);
+		fertigkeitPart = new FertigkeitPart(mainContainer);
 		fertigkeitPart.loadData((Vorteil) getEditedCharElement());
 		
 		// VorNachteilPart erzeugen

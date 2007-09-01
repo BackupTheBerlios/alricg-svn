@@ -14,10 +14,12 @@ import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.SchriftSprache;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.VorNachteil;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
+import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.links.Option;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -219,6 +221,44 @@ public class CustomColumnViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
 			return ((SchriftSprache) getCharElement(obj)).getKomplexitaet();
+		}
+	}
+	
+	public static class GegenstandWertSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Gegenstand) getCharElement(obj)).getWertInKreuzern();
+		}
+	}
+	
+	public static class GegenstandHerkunftSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			if ( ((Gegenstand) getCharElement(obj)).getHerkunft() == null) {
+				return 0;
+			}
+			return ((Gegenstand) getCharElement(obj)).getHerkunft().length;
+		}
+	}
+	
+	public static class GegenstandArtSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Gegenstand) getCharElement(obj)).getArt().toString();
+		}
+	}
+	
+	public static class RegionVolkArtSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((RegionVolk) getCharElement(obj)).getArt().toString();
+		}
+	}
+	
+	public static class RegionVolkAbkSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((RegionVolk) getCharElement(obj)).getAbk();
 		}
 	}
 	

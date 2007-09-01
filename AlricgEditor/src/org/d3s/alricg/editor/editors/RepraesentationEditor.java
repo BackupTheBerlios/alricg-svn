@@ -1,5 +1,5 @@
 /*
- * Created 25.08.2007
+ * Created 30.08.2007
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
@@ -8,35 +8,42 @@
 package org.d3s.alricg.editor.editors;
 
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
-import org.d3s.alricg.editor.editors.composits.FertigkeitPart;
-import org.d3s.alricg.editor.editors.composits.VorNachteilPart;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Nachteil;
+import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * @author Vincent
+ *
  */
-public class NachteilEditor extends ComposedMultiPageEditorPart {
-	public static final String ID = "org.d3s.alricg.editor.editors.NachteilEditor";
+public class RepraesentationEditor extends ComposedMultiPageEditorPart {
+	public static final String ID = "org.d3s.alricg.editor.editors.RepraesentationEditor"; //$NON-NLS-1$
 
-	private VorNachteilPart vorNachteilPart;
-	private FertigkeitPart fertigkeitPart;
-	private NachteilPart nachteilPart;
-	
+	private RepraesentationPart repPart;
 	private AbstractElementPart[] elementPartArray;
 	
-	class NachteilPart extends AbstractElementPart<Nachteil> {
-		private final Button cbxIsSchlechteEig;
+	class RepraesentationPart extends AbstractElementPart<Repraesentation> {
+		private final Button cbxIsSchamanisch;
+		private final Text txtAbk;
 		
-		NachteilPart(Composite top) {
-			Label lblFiller = new Label(top, SWT.NONE);
-			cbxIsSchlechteEig = new Button(top, SWT.CHECK);
-			cbxIsSchlechteEig.setText("Dieser Nachteil ist eine schlechte Eigenschaft");
+		RepraesentationPart(Composite top) {
+			final Label filler = new Label(top, SWT.NONE);
+			cbxIsSchamanisch = new Button(top, SWT.CHECK);
+			cbxIsSchamanisch.setText("Ist eine schamanische Repräsentation?");
+			cbxIsSchamanisch.setToolTipText("Schamanische Repräsentationen sind KEINE echten Repräsentation nach DSA4."); 
+		
+			final Label lblAbk = new Label(top, SWT.NONE);
+			lblAbk.setText("Abkürzung:");
+			txtAbk = new Text(top, SWT.BORDER);
+			GridData dg = new GridData();
+			dg.widthHint = 300;
+			txtAbk.setLayoutData(dg);
 		}
 		
 		/* (non-Javadoc)
@@ -44,38 +51,44 @@ public class NachteilEditor extends ComposedMultiPageEditorPart {
 		 */
 		@Override
 		public void dispose() {
-			// TODO Auto-generated method stub
-			
+			// Noop
 		}
 
 		/* (non-Javadoc)
 		 * @see org.d3s.alricg.editor.editors.composits.AbstractElementPart#isDirty(org.d3s.alricg.store.charElemente.CharElement)
 		 */
 		@Override
-		public boolean isDirty(Nachteil charElem) {
-			return cbxIsSchlechteEig.getSelection() != charElem.isSchlechteEigen();
+		public boolean isDirty(Repraesentation charElem) {
+			boolean isNotDirty = true;
+			
+			isNotDirty &= cbxIsSchamanisch.getSelection() == charElem.isSchamanischeRep();
+			isNotDirty &= txtAbk.getText().equals( getStringFromNull(charElem.getAbkuerzung()) );
+			
+			return !isNotDirty;
 		}
 
 		/* (non-Javadoc)
 		 * @see org.d3s.alricg.editor.editors.composits.AbstractElementPart#loadData(org.d3s.alricg.store.charElemente.CharElement)
 		 */
 		@Override
-		public void loadData(Nachteil charElem) {
-			cbxIsSchlechteEig.setSelection(charElem.isSchlechteEigen());
+		public void loadData(Repraesentation charElem) {
+			cbxIsSchamanisch.setSelection(charElem.isSchamanischeRep());
+			txtAbk.setText( getStringFromNull(charElem.getAbkuerzung()) );
 		}
 
 		/* (non-Javadoc)
 		 * @see org.d3s.alricg.editor.editors.composits.AbstractElementPart#saveData(org.eclipse.core.runtime.IProgressMonitor, org.d3s.alricg.store.charElemente.CharElement)
 		 */
 		@Override
-		public void saveData(IProgressMonitor monitor, Nachteil charElem) {
-			monitor.subTask("Save Nachteil-Data"); //$NON-NLS-1$
+		public void saveData(IProgressMonitor monitor, Repraesentation charElem) {
+			monitor.subTask("Save Repräsentation-Data"); //$NON-NLS-1$
 			
-			charElem.setSchlechteEigen(cbxIsSchlechteEig.getSelection());
+			charElem.setSchamanischeRep(cbxIsSchamanisch.getSelection());
+			charElem.setAbkuerzung( getNullFromString(txtAbk.getText()) );
 			
 			monitor.worked(1);
 		}
-
+		
 	}
 	
 	/* (non-Javadoc)
@@ -83,17 +96,9 @@ public class NachteilEditor extends ComposedMultiPageEditorPart {
 	 */
 	@Override
 	protected void addCharElementSiteParts(Composite mainContainer) {
-		// FertigkeitPart erzeugen
-		fertigkeitPart = new FertigkeitPart(mainContainer);
-		fertigkeitPart.loadData((Nachteil) getEditedCharElement());
-		
-		// VorNachteilPart erzeugen
-		vorNachteilPart = new VorNachteilPart(mainContainer);
-		vorNachteilPart.loadData((Nachteil) getEditedCharElement());
-
-		// NachteilPart erzeugen
-		nachteilPart = new NachteilPart(mainContainer);
-		nachteilPart.loadData((Nachteil) getEditedCharElement());
+		// Repraesentation spezifische Elemte erzeugen
+		repPart = this.new RepraesentationPart(mainContainer);
+		repPart.loadData((Repraesentation) getEditedCharElement());	
 	}
 
 	/* (non-Javadoc)
@@ -104,13 +109,8 @@ public class NachteilEditor extends ComposedMultiPageEditorPart {
 		int index = addPage(createCharElementSite());
 		setPageText(index, EditorMessages.Editor_Daten);
 		
-		index = addPage(createVoraussetzungsSite());
-		setPageText(index, EditorMessages.Editor_Voraussetzungen);
-		
 		elementPartArray = new AbstractElementPart[] {
-				charElementPart, fertigkeitPart, vorNachteilPart, 
-								nachteilPart, voraussetzungsPart};
-
+				charElementPart, repPart};	
 	}
 
 	/* (non-Javadoc)
@@ -118,7 +118,7 @@ public class NachteilEditor extends ComposedMultiPageEditorPart {
 	 */
 	@Override
 	protected CharElement getEditedCharElement() {
-		return (Nachteil) this.getEditorInput().getAdapter(Nachteil.class);
+		return (Repraesentation) this.getEditorInput().getAdapter(Repraesentation.class);
 	}
 
 	/* (non-Javadoc)

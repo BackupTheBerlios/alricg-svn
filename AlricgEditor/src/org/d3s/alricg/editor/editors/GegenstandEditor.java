@@ -1,5 +1,5 @@
 /*
- * Created 25.08.2007
+ * Created 31.08.2007
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
@@ -7,36 +7,28 @@
  */
 package org.d3s.alricg.editor.editors;
 
+import org.d3s.alricg.editor.editors.RepraesentationEditor.RepraesentationPart;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
-import org.d3s.alricg.editor.editors.composits.FertigkeitPart;
-import org.d3s.alricg.editor.editors.composits.VorNachteilPart;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Nachteil;
+import org.d3s.alricg.store.charElemente.Repraesentation;
+import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * @author Vincent
+ *
  */
-public class NachteilEditor extends ComposedMultiPageEditorPart {
-	public static final String ID = "org.d3s.alricg.editor.editors.NachteilEditor";
+public class GegenstandEditor extends ComposedMultiPageEditorPart {
+	public static final String ID = "org.d3s.alricg.editor.editors.GegenstandEditor";
 
-	private VorNachteilPart vorNachteilPart;
-	private FertigkeitPart fertigkeitPart;
-	private NachteilPart nachteilPart;
-	
+	private GegenstandPart gegenstandPart;
 	private AbstractElementPart[] elementPartArray;
 	
-	class NachteilPart extends AbstractElementPart<Nachteil> {
-		private final Button cbxIsSchlechteEig;
-		
-		NachteilPart(Composite top) {
-			Label lblFiller = new Label(top, SWT.NONE);
-			cbxIsSchlechteEig = new Button(top, SWT.CHECK);
-			cbxIsSchlechteEig.setText("Dieser Nachteil ist eine schlechte Eigenschaft");
+	class GegenstandPart extends AbstractElementPart<Gegenstand> {
+
+		GegenstandPart(Composite top) {
+			
 		}
 		
 		/* (non-Javadoc)
@@ -52,48 +44,39 @@ public class NachteilEditor extends ComposedMultiPageEditorPart {
 		 * @see org.d3s.alricg.editor.editors.composits.AbstractElementPart#isDirty(org.d3s.alricg.store.charElemente.CharElement)
 		 */
 		@Override
-		public boolean isDirty(Nachteil charElem) {
-			return cbxIsSchlechteEig.getSelection() != charElem.isSchlechteEigen();
+		public boolean isDirty(Gegenstand charElem) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 
 		/* (non-Javadoc)
 		 * @see org.d3s.alricg.editor.editors.composits.AbstractElementPart#loadData(org.d3s.alricg.store.charElemente.CharElement)
 		 */
 		@Override
-		public void loadData(Nachteil charElem) {
-			cbxIsSchlechteEig.setSelection(charElem.isSchlechteEigen());
+		public void loadData(Gegenstand charElem) {
+			// TODO Auto-generated method stub
+			
 		}
 
 		/* (non-Javadoc)
 		 * @see org.d3s.alricg.editor.editors.composits.AbstractElementPart#saveData(org.eclipse.core.runtime.IProgressMonitor, org.d3s.alricg.store.charElemente.CharElement)
 		 */
 		@Override
-		public void saveData(IProgressMonitor monitor, Nachteil charElem) {
-			monitor.subTask("Save Nachteil-Data"); //$NON-NLS-1$
+		public void saveData(IProgressMonitor monitor, Gegenstand charElem) {
+			// TODO Auto-generated method stub
 			
-			charElem.setSchlechteEigen(cbxIsSchlechteEig.getSelection());
-			
-			monitor.worked(1);
 		}
-
+		
 	}
-	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.editor.editors.ComposedMultiPageEditorPart#addCharElementSiteParts(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
 	protected void addCharElementSiteParts(Composite mainContainer) {
-		// FertigkeitPart erzeugen
-		fertigkeitPart = new FertigkeitPart(mainContainer);
-		fertigkeitPart.loadData((Nachteil) getEditedCharElement());
-		
-		// VorNachteilPart erzeugen
-		vorNachteilPart = new VorNachteilPart(mainContainer);
-		vorNachteilPart.loadData((Nachteil) getEditedCharElement());
+		// Repraesentation spezifische Elemte erzeugen
+		gegenstandPart = this.new GegenstandPart(mainContainer);
+		gegenstandPart.loadData((Gegenstand) getEditedCharElement());	
 
-		// NachteilPart erzeugen
-		nachteilPart = new NachteilPart(mainContainer);
-		nachteilPart.loadData((Nachteil) getEditedCharElement());
 	}
 
 	/* (non-Javadoc)
@@ -104,13 +87,8 @@ public class NachteilEditor extends ComposedMultiPageEditorPart {
 		int index = addPage(createCharElementSite());
 		setPageText(index, EditorMessages.Editor_Daten);
 		
-		index = addPage(createVoraussetzungsSite());
-		setPageText(index, EditorMessages.Editor_Voraussetzungen);
-		
 		elementPartArray = new AbstractElementPart[] {
-				charElementPart, fertigkeitPart, vorNachteilPart, 
-								nachteilPart, voraussetzungsPart};
-
+				charElementPart, gegenstandPart};
 	}
 
 	/* (non-Javadoc)
@@ -118,7 +96,7 @@ public class NachteilEditor extends ComposedMultiPageEditorPart {
 	 */
 	@Override
 	protected CharElement getEditedCharElement() {
-		return (Nachteil) this.getEditorInput().getAdapter(Nachteil.class);
+		return (Gegenstand) this.getEditorInput().getAdapter(Gegenstand.class);
 	}
 
 	/* (non-Javadoc)

@@ -25,6 +25,9 @@ import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
@@ -36,6 +39,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IViewPart;
 
 /**
@@ -185,6 +189,36 @@ public class MerkmalView extends RefreshableViewPart {
 		return treeViewer;
 	}
 
+	/**
+	 * Setzt das Context-menu
+	 * Überschrieben, da Eigenschaften nicht Editiert werden können
+	 */
+	@Override
+	protected void hookContextMenu() {
+		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				MerkmalView.this.fillContextMenu(manager);
+			}
+		});
+
+		// For Tree
+		Menu menu = menuMgr.createContextMenu(viewerTree.getControl());
+		viewerTree.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, viewerTree);
+
+		// For Table
+		menu = menuMgr.createContextMenu(viewerTable.getControl());
+		viewerTable.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, viewerTable);
+	}
+	
+	@Override
+	protected void hookDoubleClickAction() {
+		// Noop
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#getRegulator()
 	 */
@@ -193,6 +227,18 @@ public class MerkmalView extends RefreshableViewPart {
 		return Regulatoren.MerkmalRegulator;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#makeActions()
+	 */
+	@Override
+	protected void makeActions() {
+		super.makeActions();
+		
+		buildNew.setEnabled(false);
+		editSelected.setEnabled(false);
+		deleteSelected.setEnabled(false);
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#getViewedClass()
 	 */

@@ -147,7 +147,7 @@ public class SonderfertigkeitEditor extends ComposedMultiPageEditorPart {
 	 */
 	@Override
 	protected void addCharElementSiteParts(Composite mainContainer) {
-		fertigkeitPart = new FertigkeitPart(mainContainer, this.scrollComp);
+		fertigkeitPart = new FertigkeitPart(mainContainer);
 		fertigkeitPart.loadData( (Sonderfertigkeit) getEditedCharElement());
 		
 		sonderfPart = new SonderfertigkeitPart(mainContainer);

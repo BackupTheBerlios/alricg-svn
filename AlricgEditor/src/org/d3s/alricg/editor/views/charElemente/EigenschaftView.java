@@ -236,29 +236,10 @@ public class EigenschaftView extends RefreshableViewPart {
 	 */
 	@Override
 	protected void makeActions() {
-		// Ansichte wechseln Action
-		swapTreeTable = new SwapTreeTableAction(this.parentComp);
-
-		// Tabelle nach File Filtern Action
-		filterAktuellesFile = new FilterCurrentFileAction(getViewedClass());
-
-		// Information anzeigen Action
-		showInfos = new InfoCharElementAction() {
-			public void run() {
-				showMessage("Eigenschaft View", "Noch zu implementieren!"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		};
-
-		// Neues Element Action 
-		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator());
+		super.makeActions();
+		
 		buildNew.setEnabled(false);
-		
-		// Element Bearbeiten Action
-		editSelected = new EditCharElementAction(this.parentComp);
 		editSelected.setEnabled(false);
-		
-		// Element löschen Action
-		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass());
 		deleteSelected.setEnabled(false);
 	}
 

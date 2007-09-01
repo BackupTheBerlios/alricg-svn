@@ -221,12 +221,13 @@ public class CustomActions {
 				MessageDialog.openInformation(
 						((StackLayout) parentComp.getLayout()).topControl.getShell(),
 						Messages.Actions_NewElementErrorDialogTitel, Messages.Actions_NewElementErrorDialogText);
+				return;
 			}
 			
 			XmlAccessor xmlAccessor = 
 				StoreAccessor.getInstance().getXmlAccessor(ViewModel.getMarkedFileForNew());
 			CharElement newCharElem =
-				CharElementFactory.getInstance().buildCharElement(charElementClazz, xmlAccessor);
+				CharElementFactory.getInstance().buildCharElement(charElementClazz);
 			
 			// Falls in einem Tree erstellt, dann 
 			if (ViewUtils.getSelectedObject(parentComp) instanceof TreeObject) {
@@ -264,6 +265,7 @@ public class CustomActions {
 			} else if (treeObj.getValue().getClass() == regulator.getFirstCategoryClass()) {
 				regulator.setFirstCategory(newCharElem, treeObj.getValue());
 			} else if (treeObj.getValue() instanceof String) {
+				if (treeObj.getParent() == null) return; // Dies ist der Root
 				newCharElem.setSammelbegriff(treeObj.getValue().toString());
 				runForTreeView(newCharElem, (TreeObject) treeObj.getParent());
 			}

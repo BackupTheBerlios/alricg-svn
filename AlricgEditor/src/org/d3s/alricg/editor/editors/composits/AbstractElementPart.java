@@ -7,6 +7,9 @@
  */
 package org.d3s.alricg.editor.editors.composits;
 
+import java.util.List;
+
+import org.d3s.alricg.editor.common.widgets.DropTable;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -38,6 +41,30 @@ public abstract class AbstractElementPart<C extends CharElement> {
 			return null;
 		}
 		return str.trim();
+	}
+	
+	/**
+	 * Vergleicht ob ein Array mit allen Elementen einer DropTable übereinstimmt
+	 * @param objArray Das Array
+	 * @param dropTable Die Droptable
+	 * @return true - Alle Element sind identisch, ansonsten false
+	 */
+	protected boolean compareArrayList(Object[] objArray, DropTable dropTable) {
+		
+		List list = dropTable.getValueList();
+		if (objArray == null && list.size() == 0) {
+			// noop
+		} else if (objArray == null) {
+			return false;
+		} else {
+			if (objArray.length != list.size()) return false;
+			
+			for (int i = 0; i < objArray.length; i++) {
+				if ( !objArray[i].equals(list.get(i)) ) return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	/**

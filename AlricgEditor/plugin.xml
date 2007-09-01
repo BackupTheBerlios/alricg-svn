@@ -126,6 +126,13 @@
             id="org.d3s.alricg.editor.views.GoetterView"
             name="Gottheiten">
       </view>
+      <view
+            category="AlricgEditor"
+            class="org.d3s.alricg.editor.views.charElemente.SchamanenRitualView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.views.SchamanenRitualView"
+            name="Schamanen Rituale">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -170,6 +177,42 @@
             icon="icons/sample.gif"
             id="org.d3s.alricg.editor.editors.ZauberEditor"
             name="ZauberEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.LiturgieEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.LiturgieEditor"
+            name="LiturgieEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.RepraesentationEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.RepraesentationEditor"
+            name="RepräsentationEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.GottheitEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.GottheitEditor"
+            name="GottheitEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.SchamanenRitualEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.SchamanenRitualEditor"
+            name="SchamanenRitualEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.GegenstandEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.GegenstandEditor"
+            name="GegenstandEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.RegionVolkEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.RegionVolkEditor"
+            name="RegionVolkEditor">
       </editor>
    </extension>
 

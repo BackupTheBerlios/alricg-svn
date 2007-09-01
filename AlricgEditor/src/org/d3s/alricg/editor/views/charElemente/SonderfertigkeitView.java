@@ -9,7 +9,6 @@ package org.d3s.alricg.editor.views.charElemente;
 
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
-import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitArtProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitFamilieProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitGpProvider;
@@ -26,10 +25,7 @@ import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.Regulatoren;
 import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
-import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;

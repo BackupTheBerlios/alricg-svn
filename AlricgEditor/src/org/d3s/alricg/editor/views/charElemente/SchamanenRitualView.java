@@ -1,5 +1,5 @@
 /*
- * Created 22.08.2007
+ * Created 30.08.2007
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
@@ -9,13 +9,10 @@ package org.d3s.alricg.editor.views.charElemente;
 
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.GegenstandArtProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.GegenstandRegionVolkProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.GegenstandWertProvider;
-import org.d3s.alricg.editor.common.CustomColumnViewerSorter.GegenstandArtSorter;
-import org.d3s.alricg.editor.common.CustomColumnViewerSorter.GegenstandHerkunftSorter;
-import org.d3s.alricg.editor.common.CustomColumnViewerSorter.GegenstandWertSorter;
+import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
+import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
@@ -24,9 +21,14 @@ import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.Regulatoren;
 import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.ViewMessages;
+import org.d3s.alricg.editor.views.charElemente.TalentView.ArtSorter;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
+import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
+import org.d3s.alricg.store.charElemente.Talent;
+import org.d3s.alricg.store.charElemente.Zauber;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -40,10 +42,9 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author Vincent
- *
  */
-public class GegenstandView extends RefreshableViewPart {
-	public static final String ID = "org.d3s.alricg.editor.views.GegenstandView"; //$NON-NLS-1$
+public class SchamanenRitualView extends RefreshableViewPart {
+	public static final String ID = "org.d3s.alricg.editor.views.SchamanenRitualView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#createTable(org.eclipse.swt.widgets.Composite)
@@ -74,7 +75,6 @@ public class GegenstandView extends RefreshableViewPart {
 								new CustomColumnViewerSorter.NameSorter(),
 								tableViewer));
 
-		// Datei
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 1);
 		tc.getColumn().setText(ViewMessages.TalentView_Datei);
 		tc.setLabelProvider(new CustomColumnLabelProvider.DateinameLabelProvider());
@@ -85,36 +85,21 @@ public class GegenstandView extends RefreshableViewPart {
 								new CustomColumnViewerSorter.DateiSorter(),
 								tableViewer));
 		
-		// Art
+		// Herkunft der Rituale
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
-		tc.getColumn().setText("Art");
-		tc.setLabelProvider(new GegenstandArtProvider());
+		tc.getColumn().setText("Herkunft");
+		tc.setLabelProvider(new RitualHerkunftProvider());
 		tc.getColumn().setWidth(100);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-				new ViewerSelectionListener(
-						new GegenstandArtSorter(), tableViewer));
-		
-		// Wert
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
-		tc.getColumn().setText("Wert");
-		tc.setLabelProvider(new GegenstandWertProvider());
-		tc.getColumn().setWidth(100);
-		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-				new ViewerSelectionListener(
-						new GegenstandWertSorter(), tableViewer));
 
-		// Region/ Volk
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
-		tc.getColumn().setText("Region/Volk");
-		tc.setLabelProvider(new GegenstandRegionVolkProvider());
-		tc.getColumn().setWidth(100);
+		// Grad
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
+		tc.getColumn().setText("Grad");
+		tc.setLabelProvider(new RitualGradProvider());
+		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
-						new ViewerSelectionListener(
-								new GegenstandHerkunftSorter(),
-								tableViewer));
+				new ViewerSelectionListener(new GradSorter(), tableViewer));
 		
 		// Inhalt und Sortierung setzen
 		tableViewer.setContentProvider(new TableViewContentProvider());
@@ -167,27 +152,22 @@ public class GegenstandView extends RefreshableViewPart {
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.DateiSorter(),
 								treeViewer));
-
-		// Wert
+		
+		// Herkunft der Rituale
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);
-		tc.getColumn().setText("Wert");
-		tc.setLabelProvider(new GegenstandWertProvider());
-		tc.getColumn().setWidth(75);
+		tc.getColumn().setText("Herkunft");
+		tc.setLabelProvider(new RitualHerkunftProvider());
+		tc.getColumn().setWidth(100);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-				new ViewerSelectionListener(
-						new GegenstandWertSorter(), treeViewer));
 
-		// Region/ Volk
+		// Grad
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
-		tc.getColumn().setText("Region/Volk");
-		tc.setLabelProvider(new GegenstandRegionVolkProvider());
+		tc.getColumn().setText("Grad");
+		tc.setLabelProvider(new RitualGradProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
-						new ViewerSelectionListener(
-								new GegenstandHerkunftSorter(),
-								treeViewer));
+				new ViewerSelectionListener(new GradSorter(), treeViewer));
 		
 		// Inhalt und Sortierung setzen
 		TreeObject root = EditorViewUtils.buildEditorViewTree(
@@ -206,7 +186,7 @@ public class GegenstandView extends RefreshableViewPart {
 	 */
 	@Override
 	public Regulator getRegulator() {
-		return Regulatoren.GegenstandRegulator;
+		return Regulatoren.SchamanenRitualRegulator;
 	}
 
 	/* (non-Javadoc)
@@ -214,7 +194,50 @@ public class GegenstandView extends RefreshableViewPart {
 	 */
 	@Override
 	public Class getViewedClass() {
-		return Gegenstand.class;
+		return SchamanenRitual.class;
+	}
+
+	public static class RitualGradProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if (charElem instanceof SchamanenRitual) {
+				return Integer.toString( ((SchamanenRitual) charElem).getGrad() );
+			}
+			return "";
+		}
 	}
 	
+	public static class RitualHerkunftProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if (charElem instanceof SchamanenRitual) {
+				return ((SchamanenRitual) charElem).getHerkunftText(true);
+			}
+			return "";
+		}
+		
+		@Override
+		public String getToolTipText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if (charElem instanceof SchamanenRitual) {
+				return ((SchamanenRitual) charElem).getHerkunftText(false);
+			}
+			return "";
+		}
+	}
+	
+	public static class GradSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((SchamanenRitual) getCharElement(obj)).getGrad();
+		}
+	}
 }

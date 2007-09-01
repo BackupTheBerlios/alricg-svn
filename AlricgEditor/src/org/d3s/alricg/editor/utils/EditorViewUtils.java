@@ -332,6 +332,9 @@ public class EditorViewUtils {
 		
 		// Alle Kategorien suchen / erzeugen
 		List<TreeObject> catList = findChilds(invisibleRoot, firstCat);
+		if (catList.size() == 0) {
+			catList.add(invisibleRoot);
+		}
 		
 		// Falls Sammelbegriff, diesen in gefundenen Kategorien suchen / erzeugen
 		if (charElement.getSammelbegriff() != null) {

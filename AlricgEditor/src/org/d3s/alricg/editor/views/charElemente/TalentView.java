@@ -135,7 +135,6 @@ public class TalentView extends RefreshableViewPart {
 	 * @param parent
 	 */
 	protected TableViewer createTable(Composite parent) {
-
 		// init Table
 		final TableViewer tableViewer = new TableViewer(parent,
 				SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);

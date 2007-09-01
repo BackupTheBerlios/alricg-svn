@@ -55,7 +55,7 @@ public class FertigkeitPart extends AbstractElementPart<Fertigkeit> {
 	private final TextList textList;
 	private final SpinnerNeg spiGpKosten;
 	
-	public FertigkeitPart(final Composite top, final ScrolledComposite scrollComp) {
+	public FertigkeitPart(final Composite top) {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		

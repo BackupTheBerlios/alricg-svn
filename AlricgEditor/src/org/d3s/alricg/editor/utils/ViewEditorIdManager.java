@@ -8,18 +8,28 @@
 package org.d3s.alricg.editor.utils;
 
 import org.d3s.alricg.editor.Activator;
+import org.d3s.alricg.editor.editors.GegenstandEditor;
+import org.d3s.alricg.editor.editors.GottheitEditor;
+import org.d3s.alricg.editor.editors.LiturgieEditor;
 import org.d3s.alricg.editor.editors.NachteilEditor;
+import org.d3s.alricg.editor.editors.RegionVolkEditor;
+import org.d3s.alricg.editor.editors.RepraesentationEditor;
+import org.d3s.alricg.editor.editors.SchamanenRitualEditor;
 import org.d3s.alricg.editor.editors.SchriftEditor;
 import org.d3s.alricg.editor.editors.SonderfertigkeitEditor;
 import org.d3s.alricg.editor.editors.SpracheEditor;
 import org.d3s.alricg.editor.editors.TalentEditor;
 import org.d3s.alricg.editor.editors.VorteilEditor;
+import org.d3s.alricg.editor.editors.ZauberEditor;
 import org.d3s.alricg.editor.views.charElemente.EigenschaftView;
+import org.d3s.alricg.editor.views.charElemente.GegenstandView;
 import org.d3s.alricg.editor.views.charElemente.GoetterView;
 import org.d3s.alricg.editor.views.charElemente.LiturgieView;
 import org.d3s.alricg.editor.views.charElemente.MerkmalView;
 import org.d3s.alricg.editor.views.charElemente.NachteilView;
+import org.d3s.alricg.editor.views.charElemente.RegionVolkView;
 import org.d3s.alricg.editor.views.charElemente.RepraesentationView;
+import org.d3s.alricg.editor.views.charElemente.SchamanenRitualView;
 import org.d3s.alricg.editor.views.charElemente.SonderfertigkeitView;
 import org.d3s.alricg.editor.views.charElemente.SpracheView;
 import org.d3s.alricg.editor.views.charElemente.TalentView;
@@ -35,6 +45,7 @@ import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.SchriftSprache;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
@@ -65,14 +76,12 @@ public class ViewEditorIdManager {
 			return "KeinEditor";
 		} else if (clazz == MagieMerkmal.class) {
 			return "KeinEditor";
-		} else if (clazz ==  Talent.class) {
+		} else if (clazz == Talent.class) {
 			return TalentEditor.ID;
-		} else if (clazz ==  Zauber.class) {
-			//return "Zauber";
+		} else if (clazz == Zauber.class) {
+			return ZauberEditor.ID;
 		} else if (clazz ==  Repraesentation.class) {
-			//return RepraesentationEditor.ID;
-		//} else if (clazz ==  Gabe.class) {
-			//return "Gabe";
+			return RepraesentationEditor.ID;
 		} else if (clazz ==  Vorteil.class) {
 			return VorteilEditor.ID;
 		} else if (clazz ==  Nachteil.class) {
@@ -86,25 +95,27 @@ public class ViewEditorIdManager {
 		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
 			//return "Profession";
 		} else if (clazz ==  Gottheit.class) {
-			//return "Gottheit";
+			return GottheitEditor.ID;
 		} else if (clazz ==  Liturgie.class) {
-			//return "Liturgie";
-		} else if (clazz ==  RegionVolk.class) {
-			//return "Region/Volk";
-		//} else if (clazz ==  RitualKenntnis.class) {
-			//return "Ritualkenntnis";
+			return LiturgieEditor.ID;
 		} else if (clazz ==  Sprache.class) {
 			return SpracheEditor.ID;
 		} else if (clazz == Schrift.class) {
 			return SchriftEditor.ID;
-		} else if (clazz ==  SchwarzeGabe.class) {
-			//return "Schwarze Gabe";
+		} else if (clazz == SchamanenRitual.class) {
+			return SchamanenRitualEditor.ID;
 		} else if (clazz ==  Gegenstand.class) {
-			//return "Gegenstand";
+			return GegenstandEditor.ID;
+		} else if (clazz ==  RegionVolk.class) {
+			return RegionVolkEditor.ID;
+			
 		} else if (clazz ==  DaemonenPakt.class) {
 			//return "Dämonen Pakt";
 		} else if (clazz ==  MagierAkademie.class) {
 			//return "Magier Akademie";
+		} else if (clazz ==  SchwarzeGabe.class) {
+			//return "Schwarze Gabe";
+
 		}
 		
 		throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
@@ -123,35 +134,34 @@ public class ViewEditorIdManager {
 			return ZauberView.ID;
 		} else if (clazz ==  Repraesentation.class) {
 			return RepraesentationView.ID;
-		//} else if (clazz ==  Gabe.class) {
-			//return "Gabe";
 		} else if (clazz ==  Vorteil.class) {
 			return VorteilView.ID;
 		} else if (clazz ==  Nachteil.class) {
 			return NachteilView.ID;
 		} else if (clazz ==  Sonderfertigkeit.class) {
 			return SonderfertigkeitView.ID;
+		} else if (clazz ==  Gottheit.class) {
+			return GoetterView.ID;
+		} else if (clazz ==  Liturgie.class) {
+			return LiturgieView.ID;
+		} else if (clazz ==  RegionVolk.class) {
+			return RegionVolkView.ID;
+		} else if (clazz == SchriftSprache.class 
+				|| clazz == Schrift.class || clazz ==  Sprache.class) {
+			return SpracheView.ID;
+		} else if (clazz ==  Gegenstand.class) {
+			return GegenstandView.ID;
+		} else if (clazz ==  SchamanenRitual.class) {
+			return SchamanenRitualView.ID;
 		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
 			//return "Rasse";
 		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
 			//return "Kultur";
 		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
 			//return "Profession";
-		} else if (clazz ==  Gottheit.class) {
-			return GoetterView.ID;
-		} else if (clazz ==  Liturgie.class) {
-			return LiturgieView.ID;
-		} else if (clazz ==  RegionVolk.class) {
-			//return "Region/Volk";
-		//} else if (clazz ==  RitualKenntnis.class) {
-			//return "Ritualkenntnis";
-		} else if (clazz == SchriftSprache.class 
-				|| clazz == Schrift.class || clazz ==  Sprache.class) {
-			return SpracheView.ID;
+			
 		} else if (clazz ==  SchwarzeGabe.class) {
 			//return "Schwarze Gabe";
-		} else if (clazz ==  Gegenstand.class) {
-			//return "Gegenstand";
 		} else if (clazz ==  DaemonenPakt.class) {
 			//return "Dämonen Pakt";
 		} else if (clazz ==  MagierAkademie.class) {

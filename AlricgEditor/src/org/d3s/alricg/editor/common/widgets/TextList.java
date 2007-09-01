@@ -10,7 +10,7 @@ package org.d3s.alricg.editor.common.widgets;
 import java.util.ArrayList;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
-import org.d3s.alricg.editor.common.widgets.DropList.DropListRegulator;
+import org.d3s.alricg.editor.common.widgets.DropTable.DropListRegulator;
 import org.d3s.alricg.editor.editors.EditorMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

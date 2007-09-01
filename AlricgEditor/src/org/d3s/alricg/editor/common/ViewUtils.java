@@ -152,7 +152,7 @@ public class ViewUtils {
 				children = tmpList.toArray(new TreeObject[tmpList.size()]);
 				removeChild.parent = null;
 			}
-			if (children.length == 0) {
+			if (children.length == 0 && parent != null) {
 				children = null;
 			}
 		}
@@ -178,7 +178,7 @@ public class ViewUtils {
 		if (topControl instanceof Tree && ((Tree) topControl).getSelection().length > 0) {
 			value = (TreeOrTableObject) ((Tree) topControl).getSelection()[0].getData();
 
-		} else if ( ((Table) topControl).getSelection().length > 0 ) {
+		} else if (topControl instanceof Table && ((Table) topControl).getSelection().length > 0 ) {
 			value = (TreeOrTableObject) ((Table) topControl).getSelection()[0].getData();
 			
 		}

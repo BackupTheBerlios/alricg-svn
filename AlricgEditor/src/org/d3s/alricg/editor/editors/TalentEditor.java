@@ -56,10 +56,7 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 	class TalentPart extends AbstractElementPart<Talent> {
 		private Combo cobArt;
 		private Combo cobSorte;
-		private Text txtSpez;
 		private TextList listSpez;
-		private Button butAdd;
-		private Button butDelete;
 		private Composite container;
 		
 		private Image imgAdd = ControlIconsLibrary.add.getImageDescriptor().createImage();
@@ -239,7 +236,6 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 	 */
 	@Override
 	protected void createPages() {
-
 		int index = addPage(createCharElementSite());
 		setPageText(index, EditorMessages.Editor_Daten);
 		

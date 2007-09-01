@@ -68,6 +68,12 @@ public class AuswahlPart extends AbstractAuswahlPart<Herkunft> {
 		treeViewer.setContentProvider(new TreeViewContentProvider(invisibleRoot));
 		treeViewer.setInput(invisibleRoot);
 		
+		// Setzt die Quelle für alle neuen Links in der Auswahl
+		auswahlDrop.setQuelle(herkunft); 
+		// Setzt die CharElemente, die in der Auswahl als LinkZiel stehen dürfen
+		auswahlDrop.setAcceptGlobalDropClazz(regulator.getCharElementClazz());
+		treeViewer.refresh();
+		
 		// Lade Daten
 		if (regulator.getAuswahl(herkunft) == null 
 				|| regulator.getAuswahl(herkunft).getOptionen() == null) {
@@ -75,12 +81,7 @@ public class AuswahlPart extends AbstractAuswahlPart<Herkunft> {
 		}
 		
 		loadAuswahlList(regulator.getAuswahl(herkunft).getOptionen(), node);
-		
-		// Setzt die Quelle für alle neuen Links in der Auswahl
-		auswahlDrop.setQuelle(herkunft); 
-		// Setzt die CharElemente, die in der Auswahl als LinkZiel stehen dürfen
-		auswahlDrop.setAcceptCharElementClazz(regulator.getCharElementClazz());
-		treeViewer.refresh();
+
 	}
 
 	/**
