@@ -38,4 +38,48 @@ public class FormelSammlung {
 		return gp * GP_ZU_AP_FAKTOR;
 	}
 	
+	/**
+	 * Rechnet einen Wert in Kreuzern in die entsprechenden Münzen um
+	 * @param wertInKreuzern
+	 * @return Ein Array mit den entsprechenden Münzen mit dem Gegenwert
+	 * 		von "wertInKreuzern" 
+	 * [0] - Kreuzer 
+	 * [1] - Heller
+	 * [2] - Silbertaler
+	 * [3] - Dukaten
+	 */
+	public static int[] getWertInMuenzen(int wertInKreuzern) {
+		int[] muenzen = new int[4];
+		
+		// Dukaten
+		muenzen[3] = (int) (wertInKreuzern / 1000);
+		wertInKreuzern -= muenzen[3] * 1000;
+		muenzen[2] = (int) (wertInKreuzern / 100);
+		wertInKreuzern -= muenzen[2] * 100;
+		muenzen[1] = (int) (wertInKreuzern / 10);
+		wertInKreuzern -= muenzen[1] * 10;
+		muenzen[0] = wertInKreuzern;
+		
+		return muenzen;
+	}
+	
+	/**
+	 * Rechnet eine Sammlung von Münzen in den entsprechenden Gegenwert von Kreuzern um
+	 * @param wertInMuenzen 
+	 * [0] - Kreuzer 
+	 * [1] - Heller
+	 * [2] - Silbertaler
+	 * [3] - Dukaten
+	 * @return Der Gegenwert der Münzen in Kreuzern
+	 */
+	public static int getWertInKreuzern(int[] wertInMuenzen) {
+		int kreuzer = 0;
+		
+		kreuzer += wertInMuenzen[3] * 1000; // Dukaten
+		kreuzer += wertInMuenzen[2] * 100; // Silbertaler
+		kreuzer += wertInMuenzen[1] * 10; // Heller
+		kreuzer += wertInMuenzen[0]; 	 // Kreuzer
+		
+		return kreuzer;
+	}
 }

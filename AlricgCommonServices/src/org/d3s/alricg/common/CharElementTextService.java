@@ -10,7 +10,6 @@ package org.d3s.alricg.common;
 import java.util.List;
 
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
@@ -19,7 +18,7 @@ import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -48,8 +47,6 @@ public class CharElementTextService {
 			return "Zauber";
 		} else if (clazz ==  Repraesentation.class) {
 			return "Repräsentation";
-		} else if (clazz ==  Gabe.class) {
-			return "Gabe";
 		} else if (clazz ==  Vorteil.class) {
 			return "Vorteil";
 		} else if (clazz ==  Nachteil.class) {
@@ -68,8 +65,6 @@ public class CharElementTextService {
 			return "Liturgie";
 		} else if (clazz ==  RegionVolk.class) {
 			return "Region/Volk";
-		} else if (clazz ==  RitualKenntnis.class) {
-			return "Ritualkenntnis";
 		} else if (clazz ==  Schrift.class) {
 			return "Schrift";
 		} else if (clazz ==  Sprache.class) {
@@ -82,6 +77,8 @@ public class CharElementTextService {
 			return "Dämonen Pakt";
 		} else if (clazz ==  MagierAkademie.class) {
 			return "Magier Akademie";
+		} else if (clazz ==  SchamanenRitual.class) {
+			return "Ritual";
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
 					clazz.toString() + " vorhanden.");
@@ -219,5 +216,60 @@ public class CharElementTextService {
 		}
 		
 		return returnStr + strB.toString() + wert;
+	}
+	
+	/**
+	 * Liefert den Text zu einer Sammlung von Münzen
+	 * @param muenzen 
+	 * 	[0] - Kreuzer 
+	 * 	[1] - Heller
+	 * 	[2] - Silbertaler
+	 * 	[3] - Dukaten
+	 * @param isAbk true - Es soll nur eine Akürzung angezeigt werden, ansonsten false
+	 * @return Ein Text werde die Münzen wiedergibt
+	 */
+	public static String getMuenzenString(int[] muenzen, boolean isAbk) {
+		StringBuilder strB = new StringBuilder();
+		
+		for (int i = 0; i < muenzen.length; i++) {
+			if (muenzen[i] != 0) {
+				if (strB.length() > 0) strB.append(" ");
+				strB.append(muenzen[i]).append(" ").append(getMuenzenWaehrung(i, isAbk));
+			}
+		}
+		
+		if (strB.length() == 0) {
+			return "0";
+		}
+		return strB.toString();
+	}
+	
+	/**
+	 * Hilfmethode für "getMuenzenString"
+	 * @param idx
+	 * 	[0] - Kreuzer 
+	 * 	[1] - Heller
+	 * 	[2] - Silbertaler
+	 * 	[3] - Dukaten
+	 * @param isAbk true - Es soll nur eine Akürzung angezeigt werden, ansonsten false
+	 * @return Text für eine Waehrung
+	 */
+	private static String getMuenzenWaehrung(int idx, boolean isAbk) {
+		if (isAbk) {
+			switch (idx) {
+			case 0: return "K";
+			case 1: return "H";
+			case 2: return "S";
+			case 3: return "D";
+			default: throw new IllegalArgumentException("Unerwarteter Index");
+			}
+		}
+		switch (idx) {
+		case 0: return "Kreuzer";
+		case 1: return "Heller";
+		case 2: return "Silbertaler";
+		case 3: return "Dukaten";
+		default: throw new IllegalArgumentException("Unerwarteter Index");
+		}
 	}
 }

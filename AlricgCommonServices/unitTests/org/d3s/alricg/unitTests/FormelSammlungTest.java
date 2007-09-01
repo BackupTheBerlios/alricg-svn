@@ -40,4 +40,37 @@ public class FormelSammlungTest {
 		Assert.assertEquals(1.5d, FormelSammlung.getGpFromAp(75));
 		Assert.assertEquals(2, FormelSammlung.getGpFromAp(100));
 	}
+	
+	@Test
+	public void testGetWertInMuenzen() {
+		int[] tmpArray;
+		
+		tmpArray = FormelSammlung.getWertInMuenzen(1234567);
+		Assert.assertEquals(7, tmpArray[0]);
+		Assert.assertEquals(6, tmpArray[1]);
+		Assert.assertEquals(5, tmpArray[2]);
+		Assert.assertEquals(1234, tmpArray[3]);
+		Assert.assertEquals(1234567, FormelSammlung.getWertInKreuzern(tmpArray));
+		
+		tmpArray = FormelSammlung.getWertInMuenzen(12);
+		Assert.assertEquals(2, tmpArray[0]);
+		Assert.assertEquals(1, tmpArray[1]);
+		Assert.assertEquals(0, tmpArray[2]);
+		Assert.assertEquals(0, tmpArray[3]);
+		Assert.assertEquals(12, FormelSammlung.getWertInKreuzern(tmpArray));
+		
+		tmpArray = FormelSammlung.getWertInMuenzen(0);
+		Assert.assertEquals(0, tmpArray[0]);
+		Assert.assertEquals(0, tmpArray[1]);
+		Assert.assertEquals(0, tmpArray[2]);
+		Assert.assertEquals(0, tmpArray[3]);
+		Assert.assertEquals(0, FormelSammlung.getWertInKreuzern(tmpArray));
+		
+		tmpArray = FormelSammlung.getWertInMuenzen(120);
+		Assert.assertEquals(0, tmpArray[0]);
+		Assert.assertEquals(2, tmpArray[1]);
+		Assert.assertEquals(1, tmpArray[2]);
+		Assert.assertEquals(0, tmpArray[3]);
+		Assert.assertEquals(120, FormelSammlung.getWertInKreuzern(tmpArray));
+	}
 }
