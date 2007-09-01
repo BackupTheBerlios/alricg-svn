@@ -7,6 +7,8 @@
 
 package  org.d3s.alricg.store.charElemente;
 
+import javax.xml.bind.annotation.XmlEnum;
+
 
 /**
  * Beschreibt bestimmte Eigenschaften einer Region/Volkes. 
@@ -14,13 +16,38 @@ package  org.d3s.alricg.store.charElemente;
  * @author V.Strelow
  */
 public class RegionVolk extends CharElement {
-    private String bindeWortMann; // Wort zwischen Vor- und Nachnamen
-    private String bindeWortFrau; // Wort zwischen Vor- und Nachnamen
+	
+	@XmlEnum
+	public enum RegionVolkArt {
+		menschlich("Menschlich"), 
+		nichtMenschlich("Nicht Menschlich");
+		
+		private String name; 
+		
+		private RegionVolkArt(String name) {
+			this.name = name;
+		}
+		
+		public String toString() {
+			return name;
+		}
+	}
+	
+	private String abk; // Abk. für die Region/Volk
+	private RegionVolkArt art;
+	
+    private String bindeWortMann; // Wort zwischen Vor- und Nachnamen ("ibn")
+    private String bindeWortFrau; // Wort zwischen Vor- und Nachnamen ("saba")
     private String[] vornamenMann;
     private String[] vornamenFrau;
     private String[] nachnamen;
     private String[] nachnamenEndung; // Wörter die an den Nachnamen gehangen werden
-	/**
+    private String endWortMann; // Wort das hinten an den Nachamen gehängt wird ("son")
+    private String endWortFrau; // Wort das hinten an den Nachamen gehängt wird ("dotter")
+    
+    private boolean vornamenSindNachnamen; // Z.B. bei Thorwallern
+    
+    /**
 	 * @return the bindeWortMann
 	 */
 	public String getBindeWortMann() {
@@ -92,6 +119,65 @@ public class RegionVolk extends CharElement {
 	public void setNachnamenEndung(String[] nachnamenEndung) {
 		this.nachnamenEndung = nachnamenEndung;
 	}
+	/**
+	 * @return the abk
+	 */
+	public String getAbk() {
+		return abk;
+	}
+	/**
+	 * @param abk the abk to set
+	 */
+	public void setAbk(String abk) {
+		this.abk = abk;
+	}
+	/**
+	 * @return the endWortMann
+	 */
+	public String getEndWortMann() {
+		return endWortMann;
+	}
+	/**
+	 * @param endWortMann the endWortMann to set
+	 */
+	public void setEndWortMann(String endWortMann) {
+		this.endWortMann = endWortMann;
+	}
+	/**
+	 * @return the endWortFrau
+	 */
+	public String getEndWortFrau() {
+		return endWortFrau;
+	}
+	/**
+	 * @param endWortFrau the endWortFrau to set
+	 */
+	public void setEndWortFrau(String endWortFrau) {
+		this.endWortFrau = endWortFrau;
+	}
+	/**
+	 * @return the vornamenSindNachnamen
+	 */
+	public boolean isVornamenSindNachnamen() {
+		return vornamenSindNachnamen;
+	}
+	/**
+	 * @param vornamenSindNachnamen the vornamenSindNachnamen to set
+	 */
+	public void setVornamenSindNachnamen(boolean vornamenSindNachnamen) {
+		this.vornamenSindNachnamen = vornamenSindNachnamen;
+	}
+	/**
+	 * @return the art
+	 */
+	public RegionVolkArt getArt() {
+		return art;
+	}
+	/**
+	 * @param art the art to set
+	 */
+	public void setArt(RegionVolkArt art) {
+		this.art = art;
+	}
 
- 
 }

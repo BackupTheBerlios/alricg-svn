@@ -33,7 +33,7 @@ public class Zauber extends Faehigkeit {
 	/**
 	 * @return Liefert das Attribut merkmale.
 	 */
-	@XmlElement(required = true)
+	//@XmlElement(required = true)
 	@XmlList
 	@XmlIDREF
     @XmlSchemaType(name = "IDREF")
@@ -149,7 +149,9 @@ public class Zauber extends Faehigkeit {
 	 */
 	public void setMerkmale(MagieMerkmal[] merkmale) {
 		this.merkmale = merkmale;
-		Arrays.sort(merkmale);
+		if (merkmale != null) {
+			Arrays.sort(merkmale);
+		}
 	}
 	/**
 	 * @param verbreitung Setzt das Attribut verbreitung.
@@ -164,7 +166,7 @@ public class Zauber extends Faehigkeit {
      * @author V. Strelow
      */
     public static class Verbreitung {
-    	private Repraesentation bekanntBei; // Bei welcher Gruppe der Zauber bekannt ist
+    	private Repraesentation bekanntBei; // Bei welcher Gruppe der Zauber bekannt ist (immer gesetzt)
     	private Repraesentation repraesentation; // In welcher Repräsentation der Zauber bekannt ist
     	private int wert; // Der Wert des bekanntheit
        
@@ -216,11 +218,11 @@ public class Zauber extends Faehigkeit {
 		 * @return Den kompleten Text mit den Abkürzungen für die Repräsentationen
 		 */
 		public StringBuffer getVollenText() {
-			StringBuffer buffer = new StringBuffer(repraesentation.getName());
+			StringBuffer buffer = new StringBuffer(bekanntBei.getName());
 			
-			if (bekanntBei != null) {
+			if (repraesentation != null) {
 				buffer.append("(")
-					.append(bekanntBei.getName())
+					.append(repraesentation.getName())
 					.append(")");
 			}
 			buffer.append(" ");
@@ -233,11 +235,11 @@ public class Zauber extends Faehigkeit {
 		 * @return Den kompleten Text mit den Abkürzungen für die Repräsentationen
 		 */
 		public StringBuffer getAbkuerzungText() {
-			StringBuffer buffer = new StringBuffer(repraesentation.getAbkuerzung());
+			StringBuffer buffer = new StringBuffer(bekanntBei.getAbkuerzung());
 			
-			if (bekanntBei != null) {
+			if (repraesentation != null) {
 				buffer.append("(")
-					.append(bekanntBei.getAbkuerzung())
+					.append(repraesentation.getAbkuerzung())
 					.append(")");
 			}
 			buffer.append(" ");

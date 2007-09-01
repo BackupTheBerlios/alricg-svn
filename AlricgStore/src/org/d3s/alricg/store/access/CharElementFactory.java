@@ -15,7 +15,6 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.Kultur;
@@ -28,7 +27,7 @@ import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RasseVariante;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.SchriftSprache;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
@@ -109,6 +108,11 @@ public class CharElementFactory {
 	 * @param accessor Accessor zum Hinzufügen
 	 */
 	public void addCharElement(CharElement toAdd, XmlAccessor accessor) {
+		// List anlegen, falls diese leer ist
+		if (accessor.getMatchingList(toAdd.getClass()) == null) {
+			accessor.setMatchingList(toAdd.getClass(), new ArrayList());
+		}
+		
 		((List) accessor.getMatchingList(toAdd.getClass())).add(toAdd);
 	}
 
@@ -174,7 +178,7 @@ public class CharElementFactory {
 	 * @param clazz Die Klasse des gewünschten zu erzeugenden CharElements
 	 * @return Eine neues CharElement vom typ "clazz"
 	 */
-	public CharElement buildCharElement(Class clazz, XmlAccessor currentAcc) {
+	public CharElement buildCharElement(Class clazz) {
 		CharElement charElem;
 		
 		if (clazz == Talent.class) {
@@ -183,268 +187,62 @@ public class CharElementFactory {
 			((Talent) charElem).setArt(Talent.Art.basis);
 			((Talent) charElem).setSorte(Talent.Sorte.gesellschaft);
 			
-			addToList((Talent) charElem, currentAcc, 			
-				new ListGetter<Talent>() {
-					@Override
-					public List<Talent> getList(XmlAccessor xmlAccs) {
-						return xmlAccs.getTalentList();
-					}
-					@Override
-					public void setList(XmlAccessor xmlAccs, List<Talent> list) {
-						xmlAccs.setTalentList(list);
-					}
-				});
-			
 		} else if (clazz == Zauber.class) {
 			charElem = new Zauber();
 			createFaehigkeit((Zauber) charElem);
 			
-			addToList((Zauber) charElem, currentAcc, 			
-					new ListGetter<Zauber>() {
-						@Override
-						public List<Zauber> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getZauberList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Zauber> list) {
-							xmlAccs.setZauberList(list);
-						}
-					});
-			
 		} else if (clazz == Repraesentation.class) {
 			charElem = new Repraesentation();
-
-			addToList((Repraesentation) charElem, currentAcc, 			
-					new ListGetter<Repraesentation>() {
-						@Override
-						public List<Repraesentation> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getRepraesentationList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Repraesentation> list) {
-							xmlAccs.setRepraesentationList(list);
-						}
-					});
-			
-		} else if (clazz == Gabe.class) {
-			charElem = new Gabe();
-			createFaehigkeit((Gabe) charElem);
-			
-			addToList((Gabe) charElem, currentAcc, 			
-					new ListGetter<Gabe>() {
-						@Override
-						public List<Gabe> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getGabeList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Gabe> list) {
-							xmlAccs.setGabeList(list);
-						}
-					});
 			
 		} else if (clazz == Vorteil.class) {
 			charElem = new Vorteil();
 			((Fertigkeit) charElem).setArt(Fertigkeit.FertigkeitArt.allgemein);
 			
-			addToList((Vorteil) charElem, currentAcc, 			
-					new ListGetter<Vorteil>() {
-						@Override
-						public List<Vorteil> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getVorteilList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Vorteil> list) {
-							xmlAccs.setVorteilList(list);
-						}
-					});
-			
 		} else if (clazz == Nachteil.class) {
 			charElem = new Nachteil();
 			((Fertigkeit) charElem).setArt(Fertigkeit.FertigkeitArt.allgemein);
-			
-			addToList((Nachteil) charElem, currentAcc, 			
-					new ListGetter<Nachteil>() {
-						@Override
-						public List<Nachteil> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getNachteilList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Nachteil> list) {
-							xmlAccs.setNachteilList(list);
-						}
-					});
 			
 		} else if (clazz == Sonderfertigkeit.class) {
 			charElem = new Sonderfertigkeit();
 			((Fertigkeit) charElem).setArt(Fertigkeit.FertigkeitArt.allgemein);
 			
-			addToList((Sonderfertigkeit) charElem, currentAcc, 			
-					new ListGetter<Sonderfertigkeit>() {
-						@Override
-						public List<Sonderfertigkeit> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getSonderfList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Sonderfertigkeit> list) {
-							xmlAccs.setSonderfList(list);
-						}
-					});
-			
 		} else if (clazz == Gottheit.class) {
 			charElem = new Gottheit();
 			((Gottheit) charElem).setGottheitArt(Gottheit.GottheitArt.zwoelfGoettlich);
-			
-			addToList((Gottheit) charElem, currentAcc, 			
-					new ListGetter<Gottheit>() {
-						@Override
-						public List<Gottheit> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getGottheitList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Gottheit> list) {
-							xmlAccs.setGottheitList(list);
-						}
-					});
 			
 		} else if (clazz == Liturgie.class) {
 			charElem = new Liturgie();
 			createFaehigkeit((Liturgie) charElem);
 			
-			addToList((Liturgie) charElem, currentAcc, 			
-					new ListGetter<Liturgie>() {
-						@Override
-						public List<Liturgie> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getLiturgieList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Liturgie> list) {
-							xmlAccs.setLiturgieList(list);
-						}
-					});
-			
 		} else if (clazz == RegionVolk.class) {
 			charElem = new RegionVolk();
-			
-			addToList((RegionVolk) charElem, currentAcc, 			
-					new ListGetter<RegionVolk>() {
-						@Override
-						public List<RegionVolk> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getRegionVolkList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<RegionVolk> list) {
-							xmlAccs.setRegionVolkList(list);
-						}
-					});
-			
-		} else if (clazz == RitualKenntnis.class) {
-			charElem = new RitualKenntnis();
-			createFaehigkeit((RitualKenntnis) charElem);
-			
-			addToList((RitualKenntnis) charElem, currentAcc, 			
-					new ListGetter<RitualKenntnis>() {
-						@Override
-						public List<RitualKenntnis> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getRitualkenntnisList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<RitualKenntnis> list) {
-							xmlAccs.setRitualkenntnisList(list);
-						}
-					});
+			((RegionVolk) charElem).setArt(RegionVolk.RegionVolkArt.menschlich);
 			
 		} else if (clazz == Schrift.class) {
 			charElem = new Schrift();
 			createSchriftSprache((SchriftSprache) charElem);
 			
-			addToList((Schrift) charElem, currentAcc, 			
-					new ListGetter<Schrift>() {
-						@Override
-						public List<Schrift> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getSchriftList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Schrift> list) {
-							xmlAccs.setSchriftList(list);
-						}
-					});
-			
 		} else if (clazz == Sprache.class) {
 			charElem = new Sprache();
 			createSchriftSprache((SchriftSprache) charElem);
 			
-			addToList((Sprache) charElem, currentAcc, 			
-					new ListGetter<Sprache>() {
-						@Override
-						public List<Sprache> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getSpracheList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Sprache> list) {
-							xmlAccs.setSpracheList(list);
-						}
-					});
-			
 		} else if (clazz == Gegenstand.class) {
 			charElem = new Gegenstand();
-			
-			addToList((Gegenstand) charElem, currentAcc, 			
-					new ListGetter<Gegenstand>() {
-						@Override
-						public List<Gegenstand> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getGegenstandList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Gegenstand> list) {
-							xmlAccs.setGegenstandList(list);
-						}
-					});
+			((Gegenstand) charElem).setArt(Gegenstand.GegenstandArt.sonstiges);
 			
 		} else if (clazz == DaemonenPakt.class) {
 			charElem = new DaemonenPakt();
 			
-			addToList((DaemonenPakt) charElem, currentAcc, 			
-					new ListGetter<DaemonenPakt>() {
-						@Override
-						public List<DaemonenPakt> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getDaemonenPaktList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<DaemonenPakt> list) {
-							xmlAccs.setDaemonenPaktList(list);
-						}
-					});
-			
 		} else if (clazz == MagierAkademie.class) {
 			charElem = new MagierAkademie();
 			((MagierAkademie) charElem).setGilde(Gilde.unbekannt);
-			
-			addToList((MagierAkademie) charElem, currentAcc, 			
-					new ListGetter<MagierAkademie>() {
-						@Override
-						public List<MagierAkademie> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getMagierAkademieList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<MagierAkademie> list) {
-							xmlAccs.setMagierAkademieList(list);
-						}
-					});
 		
 		} else if (clazz == SchwarzeGabe.class) {
 			charElem = new SchwarzeGabe();
 			
-			addToList((SchwarzeGabe) charElem, currentAcc, 			
-					new ListGetter<SchwarzeGabe>() {
-						@Override
-						public List<SchwarzeGabe> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getSchwarzeGabeList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<SchwarzeGabe> list) {
-							xmlAccs.setSchwarzeGabeList(list);
-						}
-					});
+		} else if (clazz == SchamanenRitual.class) {
+			charElem = new SchamanenRitual();
+			((SchamanenRitual) charElem).setGrad(1);
 			
 		} else if (clazz == Rasse.class) {
 			charElem = new Rasse();
@@ -464,50 +262,14 @@ public class CharElementFactory {
 			((Rasse) charElem).setGewichtModi(-100);
 			((Rasse) charElem).setGroesseWuerfel(new WuerfelSammlung(new int[] {2}, new int[] {20}, 160));
 			
-			addToList((Rasse) charElem, currentAcc, 			
-					new ListGetter<Rasse>() {
-						@Override
-						public List<Rasse> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getRasseList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Rasse> list) {
-							xmlAccs.setRasseList(list);
-						}
-					});
-			
 		} else if (clazz == Kultur.class) {
 			charElem = new Kultur();
-			
-			addToList((Kultur) charElem, currentAcc, 			
-					new ListGetter<Kultur>() {
-						@Override
-						public List<Kultur> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getKulturList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Kultur> list) {
-							xmlAccs.setKulturList(list);
-						}
-					});
 			
 		} else if (clazz == Profession.class) {
 			charElem = new Profession();
 			
 			((Profession) charElem).setAufwand(Profession.Aufwand.normal);
 			((Profession) charElem).setArt(Profession.ProfArt.gesellschaftlich);
-			
-			addToList((Profession) charElem, currentAcc, 			
-					new ListGetter<Profession>() {
-						@Override
-						public List<Profession> getList(XmlAccessor xmlAccs) {
-							return xmlAccs.getProfessionList();
-						}
-						@Override
-						public void setList(XmlAccessor xmlAccs, List<Profession> list) {
-							xmlAccs.setProfessionList(list);
-						}
-					});
 			
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +

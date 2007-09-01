@@ -12,7 +12,6 @@ import java.util.List;
 import org.d3s.alricg.store.access.CharElementAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
@@ -22,7 +21,7 @@ import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -53,8 +52,6 @@ public abstract class AbstractCharElementsAccessor implements CharElementAccesso
 			return getZauberList();
 		} else if (clazz ==  Repraesentation.class) {
 			return getRepraesentationList();
-		} else if (clazz ==  Gabe.class) {
-			return getGabeList();
 		} else if (clazz ==  Vorteil.class) {
 			return getVorteilList();
 		} else if (clazz ==  Nachteil.class) {
@@ -73,8 +70,6 @@ public abstract class AbstractCharElementsAccessor implements CharElementAccesso
 			return getLiturgieList();
 		} else if (clazz ==  RegionVolk.class) {
 			return getRegionVolkList();
-		} else if (clazz ==  RitualKenntnis.class) {
-			return getRitualkenntnisList();
 		} else if (clazz ==  Schrift.class) {
 			return getSchriftList();
 		} else if (clazz ==  Sprache.class) {
@@ -89,9 +84,12 @@ public abstract class AbstractCharElementsAccessor implements CharElementAccesso
 			return getMagierAkademieList();
 		} else if (clazz ==  MagieMerkmal.class) {
 			return getMagieMerkmalList();
+		} else if (clazz ==  SchamanenRitual.class) {
+			return getSchamanenRitualList();
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
 					clazz.toString() + " vorhanden.");
 		}
 	}
+	
 }

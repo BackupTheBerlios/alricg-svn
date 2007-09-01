@@ -18,7 +18,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.d3s.alricg.store.access.hide.AbstractCharElementsAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
@@ -28,7 +27,7 @@ import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -67,6 +66,56 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 		return super.getMatchingList(clazz);
 	}
 	
+	public void setMatchingList(Class clazz, List list) {
+		
+		if (clazz == Eigenschaft.class) {
+			setEigenschaftList(list);
+		} else if (clazz ==  Talent.class) {
+			setTalentList(list);
+		} else if (clazz ==  Zauber.class) {
+			setZauberList(list);
+		} else if (clazz ==  Repraesentation.class) {
+			setRepraesentationList(list);
+		} else if (clazz ==  Vorteil.class) {
+			setVorteilList(list);
+		} else if (clazz ==  Nachteil.class) {
+			setNachteilList(list);
+		} else if (clazz ==  Sonderfertigkeit.class) {
+			setSonderfList(list);
+		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
+			setRasseList(list);
+		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
+			setKulturList(list);
+		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
+			setProfessionList(list);
+		} else if (clazz ==  Gottheit.class) {
+			setGottheitList(list);
+		} else if (clazz ==  Liturgie.class) {
+			setLiturgieList(list);
+		} else if (clazz ==  RegionVolk.class) {
+			setRegionVolkList(list);
+		} else if (clazz ==  Schrift.class) {
+			setSchriftList(list);
+		} else if (clazz ==  Sprache.class) {
+			setSpracheList(list);
+		} else if (clazz ==  SchwarzeGabe.class) {
+			setSchwarzeGabeList(list);
+		} else if (clazz ==  Gegenstand.class) {
+			setGegenstandList(list);
+		} else if (clazz ==  DaemonenPakt.class) {
+			setDaemonenPaktList(list);
+		} else if (clazz ==  MagierAkademie.class) {
+			setMagierAkademieList(list);
+		} else if (clazz ==  MagieMerkmal.class) {
+			setMagieMerkmalList(list);
+		} else if (clazz ==  SchamanenRitual.class) {
+			setSchamanenRitualList(list);
+		} else {
+			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
+					clazz.toString() + " vorhanden.");
+		}
+	}
+	
 	/**
 	 * @param filePath the filePath to set
 	 */
@@ -92,7 +141,6 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 	private List<Talent> talentList = new ArrayList<Talent>();
 	private List<Zauber> zauberList = new ArrayList<Zauber>();
 	private List<Repraesentation> repraesentationList = new ArrayList<Repraesentation>();
-	private List<Gabe> gabeList = new ArrayList<Gabe>();
 	private List<Vorteil> vorteilList = new ArrayList<Vorteil>();
 	private List<Nachteil> nachteilList = new ArrayList<Nachteil>();
 	private List<Sonderfertigkeit> sonderfList = new ArrayList<Sonderfertigkeit>();
@@ -102,17 +150,17 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 	private List<Gottheit> gottheitList = new ArrayList<Gottheit>();
 	private List<Liturgie> liturgieList = new ArrayList<Liturgie>();
 	private List<RegionVolk> regionVolkList = new ArrayList<RegionVolk>();
-	private List<RitualKenntnis> ritualkenntnisList = new ArrayList<RitualKenntnis>();
 	private List<Schrift> schriftList = new ArrayList<Schrift>();
 	private List<Sprache> spracheList = new ArrayList<Sprache>();
 	private List<Gegenstand> gegenstandList = new ArrayList<Gegenstand>();
 	private List<DaemonenPakt> daemonenPaktList = new ArrayList<DaemonenPakt>();
 	private List<MagierAkademie> magierAkademieList = new ArrayList<MagierAkademie>();
 	private List<SchwarzeGabe> schwarzeGabeList = new ArrayList<SchwarzeGabe>();
-	private List<MagieMerkmal> magieMermalList = new ArrayList<MagieMerkmal>();
+	private List<MagieMerkmal> magieMerkmalList = new ArrayList<MagieMerkmal>();
+	private List<SchamanenRitual> schamanenRitualList = new ArrayList<SchamanenRitual>();
 	
 	/* (non-Javadoc)
-	 * @see org.d3s.alricg.store.access.CharElementAccessor#getEigenschaftList()
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getEigenschaftList(list)
 	 */
 	public List<Eigenschaft> getEigenschaftList() {
 		return eigenschaftList;
@@ -161,19 +209,6 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 	 */
 	public void setRepraesentationList(List<Repraesentation> repraesentationList) {
 		this.repraesentationList = repraesentationList;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.d3s.alricg.store.access.CharElementAccessor#getGabeList()
-	 */
-	public List<Gabe> getGabeList() {
-		return gabeList;
-	}
-	/**
-	 * @param gabeList the gabeList to set
-	 */
-	public void setGabeList(List<Gabe> gabeList) {
-		this.gabeList = gabeList;
 	}
 	
 	/* (non-Javadoc)
@@ -287,18 +322,6 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 		this.regionVolkList = regionVolkList;
 	}
 	/* (non-Javadoc)
-	 * @see org.d3s.alricg.store.access.CharElementAccessor#getRitualkenntnisList()
-	 */
-	public List<RitualKenntnis> getRitualkenntnisList() {
-		return ritualkenntnisList;
-	}
-	/**
-	 * @param ritualkenntnisList the ritualkenntnisList to set
-	 */
-	public void setRitualkenntnisList(List<RitualKenntnis> ritualkenntnisList) {
-		this.ritualkenntnisList = ritualkenntnisList;
-	}
-	/* (non-Javadoc)
 	 * @see org.d3s.alricg.store.access.CharElementAccessor#getSchriftList()
 	 */
 	public List<Schrift> getSchriftList() {
@@ -376,12 +399,27 @@ public class XmlAccessor extends AbstractCharElementsAccessor implements CharEle
 	 * @see org.d3s.alricg.store.access.CharElementAccessor#getMagieMerkmalList()
 	 */
 	public List<MagieMerkmal> getMagieMerkmalList() {
-		return this.magieMermalList;
+		return this.magieMerkmalList;
 	}
 	
 	public void setMagieMerkmalList(List<MagieMerkmal> magieMerkmalList) {
-		this.magieMermalList = magieMerkmalList;
+		this.magieMerkmalList = magieMerkmalList;
 	}
+
+	/**
+	 * @return the schamanenRitualList
+	 */
+	public List<SchamanenRitual> getSchamanenRitualList() {
+		return schamanenRitualList;
+	}
+
+	/**
+	 * @param schamanenRitualList the schamanenRitualList to set
+	 */
+	public void setSchamanenRitualList(List<SchamanenRitual> schamanenRitualList) {
+		this.schamanenRitualList = schamanenRitualList;
+	}
+	
 	
 	
 }

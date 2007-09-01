@@ -14,11 +14,11 @@ import java.util.List;
 
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.KulturVariante;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.ProfessionVariante;
@@ -26,7 +26,7 @@ import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RasseVariante;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -53,7 +53,6 @@ public class IdFactory {
 		classHash.put(Talent.class, "TAL");
 		classHash.put(Zauber.class, "ZAU");
 		classHash.put(Repraesentation.class, "REP");
-		classHash.put(Gabe.class, "GAB");
 		classHash.put(Vorteil.class, "VOR");
 		classHash.put(Nachteil.class, "NAC");
 		classHash.put(Sonderfertigkeit.class, "SFK");
@@ -63,13 +62,14 @@ public class IdFactory {
 		classHash.put(Gottheit.class, "GOT");
 		classHash.put(Liturgie.class, "LIT");
 		classHash.put(RegionVolk.class, "REG");
-		classHash.put(RitualKenntnis.class, "RIT");
 		classHash.put(Schrift.class, "SRI");
 		classHash.put(Sprache.class, "SPR");
 		classHash.put(Gegenstand.class, "GEG");
 		classHash.put(DaemonenPakt.class, "DAM");
 		classHash.put(MagierAkademie.class, "MAG");
 		classHash.put(SchwarzeGabe.class, "SGA");	
+		classHash.put(MagieMerkmal.class, "MAM");
+		classHash.put(SchamanenRitual.class, "SAR");
 		
 		classHash.put(RasseVariante.class, "VRA");
 		classHash.put(KulturVariante.class, "VKU");

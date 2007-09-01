@@ -15,7 +15,6 @@ import org.d3s.alricg.store.access.hide.AbstractCharElementsAccessor;
 import org.d3s.alricg.store.access.hide.XmlVirtualAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
@@ -25,7 +24,7 @@ import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -162,19 +161,6 @@ public class StoreDataAccessor extends AbstractCharElementsAccessor implements C
 		return getList(listGetter);
 	}
 	/**
-	 * @return the gabeList
-	 */
-	public List<Gabe> getGabeList() {
-		ListGetter<Gabe> listGetter = new ListGetter<Gabe>(){
-			@Override
-			public List<Gabe> getList(CharElementAccessor xmlAccs) {
-				return xmlAccs.getGabeList();
-			}
-		};
-		
-		return getList(listGetter);
-	}
-	/**
 	 * @return the vorteilList
 	 */
 	public List<Vorteil> getVorteilList() {
@@ -292,19 +278,6 @@ public class StoreDataAccessor extends AbstractCharElementsAccessor implements C
 		return getList(listGetter);
 	}
 	/**
-	 * @return the ritualkenntnisList
-	 */
-	public List<RitualKenntnis> getRitualkenntnisList() {
-		ListGetter<RitualKenntnis> listGetter = new ListGetter<RitualKenntnis>(){
-			@Override
-			public List<RitualKenntnis> getList(CharElementAccessor xmlAccs) {
-				return xmlAccs.getRitualkenntnisList();
-			}
-		};
-		
-		return getList(listGetter);
-	}
-	/**
 	 * @return the schriftList
 	 */
 	public List<Schrift> getSchriftList() {
@@ -399,6 +372,19 @@ public class StoreDataAccessor extends AbstractCharElementsAccessor implements C
 		return getList(listGetter);
 	}
 	
-	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.access.CharElementAccessor#getSchamanenRitualList()
+	 */
+	@Override
+	public List<SchamanenRitual> getSchamanenRitualList() {
+		ListGetter<SchamanenRitual> listGetter = new ListGetter<SchamanenRitual>(){
+			@Override
+			public List<SchamanenRitual> getList(CharElementAccessor xmlAccs) {
+				return xmlAccs.getSchamanenRitualList();
+			}
+		};
+		
+		return getList(listGetter);
+	}
 	
 }

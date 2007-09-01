@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
@@ -14,7 +13,7 @@ import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.RitualKenntnis;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -31,11 +30,11 @@ public abstract interface CharElementAccessor {
 
 	public static final Class[] ALL_STORED_CLASSES = new Class [] {
 		Eigenschaft.class, Talent.class, Zauber.class, Repraesentation.class, 
-		Gabe.class, Vorteil.class, Nachteil.class, Sonderfertigkeit.class,
+		Vorteil.class, Nachteil.class, Sonderfertigkeit.class,
 		Rasse.class, Kultur.class, Profession.class, Gottheit.class, 
-		Liturgie.class, RegionVolk.class, RitualKenntnis.class, Schrift.class, 
+		Liturgie.class, RegionVolk.class, Schrift.class, 
 		Sprache.class, SchwarzeGabe.class, Gegenstand.class, DaemonenPakt.class, 
-		MagierAkademie.class, MagieMerkmal.class};
+		MagierAkademie.class, MagieMerkmal.class, SchamanenRitual.class};
 	
 	
 	/**
@@ -63,11 +62,6 @@ public abstract interface CharElementAccessor {
 	 * @return the repraesentationList
 	 */
 	public abstract List<Repraesentation> getRepraesentationList();
-
-	/**
-	 * @return the gabeList
-	 */
-	public abstract List<Gabe> getGabeList();
 
 	/**
 	 * @return the vorteilList
@@ -115,11 +109,6 @@ public abstract interface CharElementAccessor {
 	public abstract List<RegionVolk> getRegionVolkList();
 
 	/**
-	 * @return the ritualkenntnisList
-	 */
-	public abstract List<RitualKenntnis> getRitualkenntnisList();
-
-	/**
 	 * @return the schriftList
 	 */
 	public abstract List<Schrift> getSchriftList();
@@ -150,9 +139,13 @@ public abstract interface CharElementAccessor {
 	public abstract List<SchwarzeGabe> getSchwarzeGabeList();
 	
 	/**
-	 * @return the SchwarzeGabeList
+	 * @return the MagieMerkmalList
 	 */
 	public abstract List<MagieMerkmal> getMagieMerkmalList();
 	
+	/**
+	 * @return the MagieMerkmalList
+	 */
+	public abstract List<SchamanenRitual> getSchamanenRitualList();
 
 }

@@ -15,16 +15,16 @@ import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
+import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.Kultur;
-import org.d3s.alricg.store.charElemente.Nachteil;
+import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.Schrift;
-import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
-import org.d3s.alricg.store.charElemente.VorNachteil;
-import org.d3s.alricg.store.charElemente.Vorteil;
+import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.charZusatz.DaemonenPakt;
 import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
 import org.d3s.alricg.store.charElemente.links.Auswahl;
@@ -124,6 +124,11 @@ public class DependecySearcher {
 			checkDependencyMagierAkademie((List<MagierAkademie>) charElemList, toCheck, currentAcc);
 		} else if (firstElement instanceof Sprache) {
 			checkDependencySprache((List<Sprache>) charElemList, toCheck, currentAcc);
+		} else if (firstElement instanceof Liturgie) {
+			checkDependencyLiturgie((List<Liturgie>) charElemList, toCheck, currentAcc);
+		} else if (firstElement instanceof Zauber) {
+			checkDependencyZauber((List<Zauber>) charElemList, toCheck, currentAcc);
+			
 		/*
 		} else if (firstElement instanceof Vorteil) {
 			checkDependencyVorNachteil((List<Vorteil>) charElemList, toCheck, currentAcc);
@@ -236,6 +241,39 @@ public class DependecySearcher {
 			}
 		}
 	}*/
+	
+	private void checkDependencyZauber(List<Zauber> zauberList, CharElement toCheck, XmlAccessor currentAcc) {
+		if ( !(toCheck instanceof MagieMerkmal) ) return;
+		
+		for (int i1 = 0; i1 < zauberList.size(); i1++) {
+			MagieMerkmal[] merkmalArray = zauberList.get(i1).getMerkmale();
+			
+			if (merkmalArray == null) continue;
+			for (int i2 = 0; i2 < merkmalArray.length; i2++) {
+				if (merkmalArray[i2].equals(toCheck)) {
+					errorList.add(new DependencyTableObject(zauberList.get(i1), currentAcc, "Merkmal"));
+				}
+			}
+		}
+		
+	}
+	
+	private void checkDependencyLiturgie(List<Liturgie> liturgieList, CharElement toCheck, XmlAccessor currentAcc) {
+		if ( !(toCheck instanceof Gottheit) ) return;
+		
+		for (int i1 = 0; i1 < liturgieList.size(); i1++) {
+			Gottheit[] gottArray = liturgieList.get(i1).getGottheit();
+			
+			if (gottArray == null) continue;
+			for (int i2 = 0; i2 < gottArray.length; i2++) {
+				if (gottArray[i2].equals(toCheck)) {
+					errorList.add(new DependencyTableObject(liturgieList.get(i1), currentAcc, "Gottheit"));
+				}
+			}
+		}
+		
+	}
+	
 	
 	private void checkDependencySprache(List<Sprache> spracheList, CharElement toCheck, XmlAccessor currentAcc) {
 

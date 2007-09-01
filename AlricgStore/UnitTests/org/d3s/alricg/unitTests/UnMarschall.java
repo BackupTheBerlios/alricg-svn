@@ -448,6 +448,7 @@ public class UnMarschall {
 		List<Zauber> zauberList = new ArrayList<Zauber>();
 		List<Eigenschaft> eigenschaftList = new ArrayList<Eigenschaft>();
 		List<Repraesentation> repraesentationList = new ArrayList<Repraesentation>();
+		List<MagieMerkmal> merkmalList = new ArrayList<MagieMerkmal>();
 		
 		// Eigenschaften
 		Eigenschaft[] eigArray = new Eigenschaft[3];
@@ -497,15 +498,20 @@ public class UnMarschall {
 		merkmalArray[1] = new MagieMerkmal();
 		merkmalArray[1].setId("MM-test2");
 		merkmalArray[1].setMerkmalEnum(MagieMerkmalEnum.beschwoerung);
+		
+		merkmalList.add(merkmalArray[0]);
+		merkmalList.add(merkmalArray[1]);
+		xmlAccessor.setMagieMerkmalList(merkmalList);
+		
 		zauberArray[0].setMerkmale(merkmalArray);
 		
 		Verbreitung[] verbreitungArray = new Verbreitung[2];
 		verbreitungArray[0] = new Verbreitung();
-		verbreitungArray[0].setBekanntBei(repArray[0]);
-		verbreitungArray[0].setRepraesentation(repArray[1]);
+		verbreitungArray[0].setBekanntBei(repArray[1]);
+		verbreitungArray[0].setRepraesentation(repArray[0]);
 		verbreitungArray[0].setWert(10);
 		verbreitungArray[1] = new Verbreitung();
-		verbreitungArray[1].setRepraesentation(repArray[0]);
+		verbreitungArray[1].setBekanntBei(repArray[1]);
 		verbreitungArray[1].setWert(11);
 		
 		zauberArray[0].setVerbreitung(verbreitungArray);
@@ -553,22 +559,22 @@ public class UnMarschall {
 		Assert.assertEquals(2, zaub.getVerbreitung().length);
 		Assert.assertEquals(10, zaub.getVerbreitung()[0].getWert());
 		Assert.assertEquals(
-				xmlAccessor.getRepraesentationList().get(0), 
+				xmlAccessor.getRepraesentationList().get(1), 
 				zaub.getVerbreitung()[0].getBekanntBei());
 		Assert.assertEquals(
-				xmlAccessor.getRepraesentationList().get(1), 
+				xmlAccessor.getRepraesentationList().get(0), 
 				zaub.getVerbreitung()[0].getRepraesentation());
 		Assert.assertEquals(
 				"Rep2 Abk(Rep1 Abk) 10", 
 				zaub.getVerbreitung()[0].getAbkuerzungText().toString());
 		Assert.assertEquals(
-				"Rep2 Abk(Rep1 Abk) 10, Rep1 Abk 11", 
+				"Rep2 Abk(Rep1 Abk) 10, Rep2 Abk 11", 
 				zaub.getVerbreitungText(true));
 		
 		Assert.assertEquals(11, zaub.getVerbreitung()[1].getWert());
 		Assert.assertEquals(
 				zaub.getVerbreitung()[0].getBekanntBei(), 
-				zaub.getVerbreitung()[1].getRepraesentation());
+				zaub.getVerbreitung()[1].getBekanntBei());
 	}
 	
 	@Test

@@ -18,7 +18,6 @@ import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Gabe;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.KulturVariante;
 import org.d3s.alricg.store.charElemente.Liturgie;
@@ -72,7 +71,8 @@ public class CharElementFactoryTest {
 				continue; // Kann nicht vom User erzeugt werden
 			}
 			
-			CharElement newCharElem = factory.buildCharElement(clazz, xmlAcc);
+			CharElement newCharElem = factory.buildCharElement(clazz);
+			factory.addCharElement(newCharElem, xmlAcc);
 			
 			Assert.assertEquals(clazz, newCharElem.getClass());
 			Assert.assertTrue(
@@ -94,7 +94,8 @@ public class CharElementFactoryTest {
 				continue; // Kann nicht vom User gelöscht werden
 			}
 			
-			CharElement newCharElem = factory.buildCharElement(clazz, xmlAcc);
+			CharElement newCharElem = factory.buildCharElement(clazz);
+			factory.addCharElement(newCharElem, xmlAcc);
 			Assert.assertTrue(
 					StoreDataAccessor.getInstance().getMatchingList(clazz).contains(newCharElem)
 				);
@@ -112,12 +113,17 @@ public class CharElementFactoryTest {
 
 		
 		// Erstelle Elemente und eine Voraussetzung
-		Talent talent1 = (Talent) factory.buildCharElement(Talent.class, xmlAcc);
-		Talent talent2 = (Talent) factory.buildCharElement(Talent.class, xmlAcc);
-		Gabe gabe1 = (Gabe) factory.buildCharElement(Gabe.class, xmlAcc2);
-		Sonderfertigkeit sfk1 = (Sonderfertigkeit) factory.buildCharElement(Sonderfertigkeit.class, xmlAcc2);
-		Vorteil vorteil1 = (Vorteil) factory.buildCharElement(Vorteil.class, xmlAcc2);
-		Nachteil nachteil1 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc2);
+		Talent talent1 = (Talent) factory.buildCharElement(Talent.class);
+		Talent talent2 = (Talent) factory.buildCharElement(Talent.class);
+		Sonderfertigkeit sfk1 = (Sonderfertigkeit) factory.buildCharElement(Sonderfertigkeit.class);
+		Vorteil vorteil1 = (Vorteil) factory.buildCharElement(Vorteil.class);
+		Nachteil nachteil1 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		
+		factory.addCharElement(talent1, xmlAcc);
+		factory.addCharElement(talent2, xmlAcc);
+		factory.addCharElement(sfk1, xmlAcc2);
+		factory.addCharElement(vorteil1, xmlAcc2);
+		factory.addCharElement(nachteil1, xmlAcc2);
 		
 		// Erstelle Link Listen
 		List<IdLink>[] idLinkListArray = new ArrayList[3];
@@ -139,7 +145,6 @@ public class CharElementFactoryTest {
 		link = new IdLink();
 		link.setQuelle(talent1);
 		link.setZiel(talent2);
-		link.setZweitZiel(gabe1);
 		idLinkListArray[1].add(link);
 		
 		link = new IdLink();
@@ -187,6 +192,7 @@ public class CharElementFactoryTest {
 		Assert.assertEquals("Positive Voraussetzungen", depList.get(0).getText());
 		Assert.assertEquals(xmlAcc, depList.get(0).getAccessor());
 		
+		/*
 		depList = factory.checkDependencies(
 				gabe1, 
 				StoreDataAccessor.getInstance().getXmlAccessors(), 
@@ -195,6 +201,7 @@ public class CharElementFactoryTest {
 		Assert.assertEquals(talent1, depList.get(0).getCharElement());
 		Assert.assertEquals("Positive Voraussetzungen", depList.get(0).getText());
 		Assert.assertEquals(xmlAcc, depList.get(0).getAccessor());
+		*/
 		
 		depList = factory.checkDependencies(
 				sfk1, 
@@ -215,7 +222,8 @@ public class CharElementFactoryTest {
 		Assert.assertEquals(xmlAcc, depList.get(0).getAccessor());
 		
 		// Negative Tests
-		Talent talent3 = (Talent) factory.buildCharElement(Talent.class, xmlAcc);
+		Talent talent3 = (Talent) factory.buildCharElement(Talent.class);
+		factory.addCharElement(talent3, xmlAcc);
 		
 		depList = factory.checkDependencies(
 				talent3, 
@@ -235,12 +243,18 @@ public class CharElementFactoryTest {
 	public void testCheckDependecyAuswahl() {
 		
 		// Erstelle CharElemente
-		Rasse rasse1 = (Rasse) factory.buildCharElement(Rasse.class, xmlAcc);
-		Nachteil nachteil1 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc);
-		Nachteil nachteil2 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc);
-		Nachteil nachteil3 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc);
-		Nachteil nachteil4 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc);
-		Nachteil nachteil5 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc);
+		Rasse rasse1 = (Rasse) factory.buildCharElement(Rasse.class);
+		Nachteil nachteil1 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		Nachteil nachteil2 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		Nachteil nachteil3 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		Nachteil nachteil4 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		Nachteil nachteil5 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		factory.addCharElement(rasse1, xmlAcc);
+		factory.addCharElement(nachteil1, xmlAcc);
+		factory.addCharElement(nachteil2, xmlAcc);
+		factory.addCharElement(nachteil3, xmlAcc);
+		factory.addCharElement(nachteil4, xmlAcc);
+		factory.addCharElement(nachteil5, xmlAcc);
 		
 		// Erstelle Link Listen
 		List<IdLink>[] idLinkListArray = new ArrayList[3];
@@ -343,11 +357,16 @@ public class CharElementFactoryTest {
 	@Test
 	public void testCheckDependecySimple() {
 	// Szenario 1
-		Nachteil nachteil1 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc);
-		Nachteil nachteil2 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc2);
-		Nachteil nachteil3 = (Nachteil) factory.buildCharElement(Nachteil.class, xmlAcc);
+		Nachteil nachteil1 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		Nachteil nachteil2 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		Nachteil nachteil3 = (Nachteil) factory.buildCharElement(Nachteil.class);
+		Vorteil vorteil1 = (Vorteil) factory.buildCharElement(Vorteil.class);
 		
-		Vorteil vorteil1 = (Vorteil) factory.buildCharElement(Vorteil.class, xmlAcc);
+		factory.addCharElement(nachteil1, xmlAcc);
+		factory.addCharElement(nachteil2, xmlAcc2);
+		factory.addCharElement(nachteil3, xmlAcc);
+		factory.addCharElement(vorteil1, xmlAcc);
+		
 		List<DependencyTableObject> depList;
 		/*
 		nachteil1.setAendertGpNachteil(
@@ -391,8 +410,11 @@ public class CharElementFactoryTest {
 		*/
 		
 	// Szenario 2
-		Kultur kultur1 = (Kultur) factory.buildCharElement(Kultur.class, xmlAcc);
-		RegionVolk regionVolk1 = (RegionVolk) factory.buildCharElement(RegionVolk.class, xmlAcc2);
+		Kultur kultur1 = (Kultur) factory.buildCharElement(Kultur.class);
+		RegionVolk regionVolk1 = (RegionVolk) factory.buildCharElement(RegionVolk.class);
+		factory.addCharElement(kultur1, xmlAcc);
+		factory.addCharElement(regionVolk1, xmlAcc2);
+		
 		
 		kultur1.setRegionVolk(regionVolk1);
 		
@@ -407,7 +429,9 @@ public class CharElementFactoryTest {
 		
 	// Senario 3
 		KulturVariante kv = (KulturVariante) factory.buildHerkunftVariante(KulturVariante.class, kultur1);
-		Liturgie liturgie = (Liturgie) factory.buildCharElement(Liturgie.class, xmlAcc);
+		Liturgie liturgie = (Liturgie) factory.buildCharElement(Liturgie.class);
+		factory.addCharElement(liturgie, xmlAcc);
+		
 		kv.setVerbilligteLiturgien(new IdLink[]{new IdLink(kv, liturgie, null, Link.KEIN_WERT, null)});
 		kultur1.setVarianten(new KulturVariante[]{kv});
 		
