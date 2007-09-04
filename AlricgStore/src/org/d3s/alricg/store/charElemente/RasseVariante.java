@@ -8,8 +8,6 @@
  */
 package org.d3s.alricg.store.charElemente;
 
-import java.util.List;
-
 import org.d3s.alricg.store.charElemente.links.IdLink;
 
 
@@ -28,11 +26,6 @@ public class RasseVariante extends Rasse implements HerkunftVariante {
 	/** Gibt die original-Rasse an.*/
 	private Rasse varianteVon;
 	
-	/** Liste von Elementen die aus der original-Rasse "entfernt" (also nicht beachtet) 
-	 * werden sollen, z.B. SF, Vorteile, Nachteile. 
-	 * KEINE Elemente die in einer Auswahl stehen! */
-	private IdLink[] entferneElement;
-	
 	/** Liste von XML-Tags die aus der original-Rasse "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. sonderfertigkeiten, vorteile.*/
 	private String[] entferneXmlTag;
@@ -48,18 +41,6 @@ public class RasseVariante extends Rasse implements HerkunftVariante {
 	 * true - Es ist eine AdditionsVariante, ansonsten false	 */
 	private boolean isAdditionsVariante;
 	
-	/**
-	 * @return Liefert das Attribut entferneElement.
-	 */
-	public  IdLink[]  getEntferneElement() {
-		return entferneElement;
-	}
-	/**
-	 * @param entferneElement Setzt das Attribut entferneElement.
-	 */
-	public void setEntferneElement(IdLink[]  entferneElement) {
-		this.entferneElement = entferneElement;
-	}
 	/**
 	 * @return Liefert das Attribut entferneXmlTag.
 	 */

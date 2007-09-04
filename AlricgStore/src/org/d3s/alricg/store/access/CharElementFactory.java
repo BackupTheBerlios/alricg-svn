@@ -132,16 +132,21 @@ public class CharElementFactory {
 		
 		// TODO Auch im parent muß die variante natürlich gesetzt werden -
 		// entweder hier ober je nach GUI auch im Editor
-		if (clazz == RasseVariante.class) {
+		if (clazz == RasseVariante.class || clazz == Rasse.class) {
 			charElem = new RasseVariante();
 			((RasseVariante) charElem).setVarianteVon(parent);
+			((RasseVariante) charElem).setAdditionsVariante(true);
 			
-		} else if (clazz == KulturVariante.class) {
+		} else if (clazz == KulturVariante.class || clazz == Kultur.class) {
 			charElem = new KulturVariante();
 			((KulturVariante) charElem).setVarianteVon(parent);
-		} else if (clazz == ProfessionVariante.class) {
+			((KulturVariante) charElem).setAdditionsVariante(true);
+			
+		} else if (clazz == ProfessionVariante.class || clazz == Profession.class) {
 			charElem = new ProfessionVariante();
 			((ProfessionVariante) charElem).setVarianteVon(parent);
+			((ProfessionVariante) charElem).setAdditionsVariante(true);
+			
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
 				clazz.toString() + " vorhanden.");
@@ -247,7 +252,9 @@ public class CharElementFactory {
 		} else if (clazz == Rasse.class) {
 			charElem = new Rasse();
 			
-			((Rasse) charElem).setAlterWuerfel(new WuerfelSammlung(new int[] {1}, new int[] {2}, 15));
+			((Rasse) charElem).setArt(Rasse.RasseArt.menschlich);
+			((Rasse) charElem).setAlterWuerfel(new WuerfelSammlung(new int[] {1}, new int[] {3}, 15));
+			/*
 			((Rasse) charElem).setHaarfarbe(
 					new FarbenAngabe[]{
 						new FarbenAngabe("Schwarz", 20),
@@ -256,14 +263,17 @@ public class CharElementFactory {
 					new FarbenAngabe[]{
 						new FarbenAngabe("Schwarz", 20),
 					});
+			*/
 			((Rasse) charElem).setGeschlecht(Geschlecht.mannOderFrau);
-			((Rasse) charElem).setKannGewaehltWerden(true);
+			//((Rasse) charElem).setKannGewaehltWerden(true);
 			((Rasse) charElem).setGeschwindigk(8);
-			((Rasse) charElem).setGewichtModi(-100);
+			((Rasse) charElem).setGewichtModi(100);
 			((Rasse) charElem).setGroesseWuerfel(new WuerfelSammlung(new int[] {2}, new int[] {20}, 160));
 			
 		} else if (clazz == Kultur.class) {
 			charElem = new Kultur();
+			
+			((Kultur) charElem).setArt(Kultur.KulturArt.menschlich);
 			
 		} else if (clazz == Profession.class) {
 			charElem = new Profession();

@@ -45,7 +45,7 @@ public class Profession extends Herkunft {
 	public enum Aufwand {
 		erstprof("erstprofession"),
 		zeitaufw("zeitaufwendig"),
-		normal("-");
+		normal("standard");
 
 		private String value; // Value des Elements
 

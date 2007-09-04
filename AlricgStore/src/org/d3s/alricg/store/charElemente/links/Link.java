@@ -11,7 +11,6 @@ package org.d3s.alricg.store.charElemente.links;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
 
 import org.d3s.alricg.store.charElemente.CharElement;
 

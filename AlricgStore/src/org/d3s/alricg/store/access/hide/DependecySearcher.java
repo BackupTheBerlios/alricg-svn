@@ -372,28 +372,25 @@ public class DependecySearcher {
 			// magische Auswahlen
 			if(herkunft.getMagieEigenschaften() != null) {
 				checkDependencyOption(
-						herkunft.getMagieEigenschaften().getAktivierbareZauber(),
-						herkunft,
-						toCheck,
-						currentAcc,
-						"Aktivierbare Zauber");
-				
-				checkDependencyOption(
 						herkunft.getMagieEigenschaften().getHauszauber(),
 						herkunft,
 						toCheck,
 						currentAcc,
-						"Aktivierbare Zauber");
+						"Hauszauber");
 				
 				checkDependencyOption(
 						herkunft.getMagieEigenschaften().getZauber(),
 						herkunft,
 						toCheck,
 						currentAcc,
-						"Aktivierbare Zauber");
+						"Modifizierte Zauber");
 				
-				if ( !checkDependencyLinkArray(herkunft.getMagieEigenschaften().getZauberNichtBeginn(), toCheck)) {
-					errorList.add(new DependencyTableObject(herkunft, currentAcc, "Nicht zu begin wählbare Zauber"));
+				if ( !checkDependencyLinkArray(herkunft.getMagieEigenschaften().getZusaetzlichAktivierbareZauber(), toCheck)) {
+					errorList.add(new DependencyTableObject(herkunft, currentAcc, "Zusätzlich aktivierbare Zauber"));
+				}
+				
+				if ( !checkDependencyLinkArray(herkunft.getMagieEigenschaften().getFehlendeAktivierbareZauber(), toCheck)) {
+					errorList.add(new DependencyTableObject(herkunft, currentAcc, "Nicht aktivierbare Zauber"));
 				}
 			}
 			
@@ -409,12 +406,6 @@ public class DependecySearcher {
 			}
 			if ( !checkDependencyLinkArray(herkunft.getUngeNachteile(),toCheck)) {
 				errorList.add(new DependencyTableObject(herkunft, currentAcc, "Ungeeignete Nachteile"));
-			}
-			if ( !checkDependencyLinkArray(herkunft.getVerbilligteVort(),toCheck)) {
-				errorList.add(new DependencyTableObject(herkunft, currentAcc, "Verbilligte Vorteile"));
-			}
-			if ( !checkDependencyLinkArray(herkunft.getVerbilligteNacht(),toCheck)) {
-				errorList.add(new DependencyTableObject(herkunft, currentAcc, "Verbilligte Nachteile"));
 			}
 			if ( !checkDependencyLinkArray(herkunft.getVerbilligteSonderf(),toCheck)) {
 				errorList.add(new DependencyTableObject(herkunft, currentAcc, "Verbilligte Sonderfertigkeiten"));
@@ -437,7 +428,6 @@ public class DependecySearcher {
 	
 	
 	private void checkDependencyRasse(List<Rasse> rasseList, CharElement toCheck, XmlAccessor currentAcc) {
-
 
 		if (toCheck instanceof Kultur) {
 			for (int i1 = 0; i1 < rasseList.size(); i1++) {
@@ -462,15 +452,6 @@ public class DependecySearcher {
 				
 				// Für Varianten
 				if (rasse.getVarianten() != null) {
-					for (int i2 = 0; i2 < rasse.getVarianten().length; i2++) {
-						if ( !checkDependencyLinkArray(rasse.getVarianten()[i2].getEntferneElement(),toCheck)) {
-							errorList.add(new DependencyTableObject(
-									rasse.getVarianten()[i2], 
-									currentAcc, 
-									"Zu ignorierende Elemente"));
-						}
-					}
-					
 					checkDependencyCharElement(Arrays.asList(rasse.getVarianten()), toCheck, currentAcc);
 				}
 			}
@@ -552,15 +533,6 @@ public class DependecySearcher {
 			
 			// Für Varianten
 			if (kult.getVarianten() != null) {
-				for (int i2 = 0; i2 < kult.getVarianten().length; i2++) {
-					if ( !checkDependencyLinkArray(kult.getVarianten()[i2].getEntferneElement(),toCheck)) {
-						errorList.add(new DependencyTableObject(
-								kult.getVarianten()[i2], 
-								currentAcc, 
-								"Zu ignorierende Elemente"));
-					}
-				}
-				
 				checkDependencyCharElement(Arrays.asList(kult.getVarianten()), toCheck, currentAcc);
 			}
 
@@ -606,15 +578,6 @@ public class DependecySearcher {
 			
 			// Für Varianten
 			if (prof.getVarianten() != null) {
-				for (int i2 = 0; i2 < prof.getVarianten().length; i2++) {
-					if ( !checkDependencyLinkArray(prof.getVarianten()[i2].getEntferneElement(),toCheck)) {
-						errorList.add(new DependencyTableObject(
-								prof.getVarianten()[i2], 
-								currentAcc, 
-								"Zu ignorierende Elemente"));
-					}
-				}
-				
 				checkDependencyCharElement(Arrays.asList(prof.getVarianten()), toCheck, currentAcc);
 			}
 		}

@@ -8,8 +8,6 @@
  */
 package org.d3s.alricg.store.charElemente;
 
-import java.util.List;
-
 import org.d3s.alricg.store.charElemente.links.IdLink;
 
 
@@ -27,11 +25,7 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
 public class KulturVariante extends Kultur implements HerkunftVariante {
 	/** Gibt die original-Kultur an.*/
 	private Kultur varianteVon;
-	
-	/** Liste von Elementen die aus der original-Kultur "entfernt" (also nicht beachtet) 
-	 * werden sollen, z.B. SF, Vorteile, Nachteile. 
-	 * KEINE Elemente die in einer Auswahl stehen! */
-	public IdLink[] entferneElement;
+
 	
 	/** Liste von XML-Tags die aus der original-Kultur "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. sonderfertigkeiten, vorteile.*/
@@ -60,20 +54,6 @@ public class KulturVariante extends Kultur implements HerkunftVariante {
 	 */
 	public void setVarianteVon(Herkunft varianteVon) {
 		this.varianteVon = (Kultur) varianteVon;
-	}
-
-	/**
-	 * @return the entferneElement
-	 */
-	public IdLink[] getEntferneElement() {
-		return entferneElement;
-	}
-
-	/**
-	 * @param entferneElement the entferneElement to set
-	 */
-	public void setEntferneElement(IdLink[] entferneElement) {
-		this.entferneElement = entferneElement;
 	}
 
 	/**

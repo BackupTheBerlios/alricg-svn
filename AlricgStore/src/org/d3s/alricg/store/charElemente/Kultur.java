@@ -7,7 +7,8 @@
 
 package org.d3s.alricg.store.charElemente;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlEnum;
 
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.links.Auswahl;
@@ -18,6 +19,25 @@ import org.d3s.alricg.store.charElemente.links.Auswahl;
  * @author V.Strelow
  */
 public class Kultur extends Herkunft {
+	
+	@XmlEnum
+	public enum KulturArt {
+		menschlich("Menschlich"), 
+		nichtMenschlich("Nicht Menschlich");
+		
+		private String name; 
+		
+		private KulturArt(String name) {
+			this.name = name;
+		}
+		
+		public String toString() {
+			return name;
+		}
+	}
+	
+	private KulturArt art;
+	private boolean professionenSindNegativListe;
     private Profession[] professionMoeglich;
     private Profession[] professionUeblich;
     private Auswahl<Sprache> muttersprache;
@@ -149,6 +169,31 @@ public class Kultur extends Herkunft {
 	 */
 	public void setVarianten(KulturVariante[] varianten) {
 		this.varianten = varianten;
+	}
+	/**
+	 * @return the art
+	 */
+	@XmlAttribute
+	public KulturArt getArt() {
+		return art;
+	}
+	/**
+	 * @param art the art to set
+	 */
+	public void setArt(KulturArt art) {
+		this.art = art;
+	}
+	/**
+	 * @return the professionenSindNegativListe
+	 */
+	public boolean isProfessionenSindNegativListe() {
+		return professionenSindNegativListe;
+	}
+	/**
+	 * @param professionenSindNegativListe the professionenSindNegativListe to set
+	 */
+	public void setProfessionenSindNegativListe(boolean professionenSindNegativListe) {
+		this.professionenSindNegativListe = professionenSindNegativListe;
 	}
     
     

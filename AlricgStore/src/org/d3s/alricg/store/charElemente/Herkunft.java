@@ -7,7 +7,6 @@
 
 package org.d3s.alricg.store.charElemente;
 
-import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.Werte.Geschlecht;
 import org.d3s.alricg.store.charElemente.links.Auswahl;
 import org.d3s.alricg.store.charElemente.links.IdLink;
@@ -21,15 +20,18 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
  * @author V.Strelow
  */
 public abstract class Herkunft extends CharElement {
+	public static int SO_MIN_DEFAULT = 1;
+	public static int SO_MAX_DEFAULT = 21;
 	
-	public static int SO_MIN_DEFAULT = 0;
-	public static int SO_MAX_DEFAULT = 100;
+	// Dafür gibt es das Feld beim CharElement
+    //private boolean kannGewaehltWerden; // Eine Herkunft kann auch nur als Basis
+										  // für Varianten dienen
+	
 	private int gpKosten;
-    private boolean kannGewaehltWerden; // Eine Herkunft kann auch nur als Basis
-                                        // für Varianten dienen
     private Geschlecht geschlecht;
     private int soMin = SO_MIN_DEFAULT;
     private int soMax = SO_MAX_DEFAULT;
+    
     private Auswahl<Eigenschaft> eigenschaftModis;
     private Auswahl<Vorteil> vorteile;
     private Auswahl<Nachteil> nachteile;
@@ -40,8 +42,6 @@ public abstract class Herkunft extends CharElement {
     private IdLink<Nachteil>[] empfNachteile;
     private IdLink<Vorteil>[] ungeVorteile;
     private IdLink<Nachteil>[] ungeNachteile;
-    private IdLink<Vorteil>[] verbilligteVort;
-    private IdLink<Nachteil>[] verbilligteNacht;
     private IdLink<Sonderfertigkeit>[] verbilligteSonderf;
     private IdLink<Liturgie>[] verbilligteLiturgien;
     private MagieEigenschaften magieEigenschaften;
@@ -51,8 +51,12 @@ public abstract class Herkunft extends CharElement {
     public static class MagieEigenschaften {
 	    private Auswahl<Zauber> zauber;
 	    private Auswahl<Zauber> hauszauber;
-	    private Auswahl<Zauber> aktivierbareZauber;
-	    private IdLink<Zauber>[] ZauberNichtBeginn;
+	    
+	    // I.d.r. können alle Zuaber mit einer Bekanntheit von 4 oder 
+	    // mehr in der Repräsentation gelernt werden. Abweichungen davon
+	    // werden hier festgehalten
+	    private IdLink<Zauber>[] zusaetzlichAktivierbareZauber;
+	    private IdLink<Zauber>[] fehlendeAktivierbareZauber;
 		/**
 		 * @return the zauber
 		 */
@@ -78,30 +82,31 @@ public abstract class Herkunft extends CharElement {
 			this.hauszauber = hauszauber;
 		}
 		/**
-		 * @return the aktivierbareZauber
+		 * @return the zusaetzlichAktivierbareZauber
 		 */
-		public Auswahl<Zauber> getAktivierbareZauber() {
-			return aktivierbareZauber;
+		public IdLink<Zauber>[] getZusaetzlichAktivierbareZauber() {
+			return zusaetzlichAktivierbareZauber;
 		}
 		/**
-		 * @param aktivierbareZauber the aktivierbareZauber to set
+		 * @param zusaetzlichAktivierbareZauber the zusaetzlichAktivierbareZauber to set
 		 */
-		public void setAktivierbareZauber(Auswahl<Zauber> aktivierbareZauber) {
-			this.aktivierbareZauber = aktivierbareZauber;
+		public void setZusaetzlichAktivierbareZauber(
+				IdLink<Zauber>[] zusaetzlichAktivierbareZauber) {
+			this.zusaetzlichAktivierbareZauber = zusaetzlichAktivierbareZauber;
 		}
 		/**
-		 * @return the zauberNichtBeginn
+		 * @return the fehlendeAktivierbareZauber
 		 */
-		public IdLink<Zauber>[] getZauberNichtBeginn() {
-			return ZauberNichtBeginn;
+		public IdLink<Zauber>[] getFehlendeAktivierbareZauber() {
+			return fehlendeAktivierbareZauber;
 		}
 		/**
-		 * @param zauberNichtBeginn the zauberNichtBeginn to set
+		 * @param fehlendeAktivierbareZauber the fehlendeAktivierbareZauber to set
 		 */
-		public void setZauberNichtBeginn(IdLink<Zauber>[] zauberNichtBeginn) {
-			ZauberNichtBeginn = zauberNichtBeginn;
+		public void setFehlendeAktivierbareZauber(
+				IdLink<Zauber>[] fehlendeAktivierbareZauber) {
+			this.fehlendeAktivierbareZauber = fehlendeAktivierbareZauber;
 		}
-		
     }
 
     
@@ -123,7 +128,7 @@ public abstract class Herkunft extends CharElement {
 
 	/**
 	 * @return the kannGewaehltWerden
-	 */
+	 *
 	public boolean isKannGewaehltWerden() {
 		return kannGewaehltWerden;
 	}
@@ -131,10 +136,10 @@ public abstract class Herkunft extends CharElement {
 
 	/**
 	 * @param kannGewaehltWerden the kannGewaehltWerden to set
-	 */
+	 *
 	public void setKannGewaehltWerden(boolean kannGewaehltWerden) {
 		this.kannGewaehltWerden = kannGewaehltWerden;
-	}
+	}*/
 
 
 	/**
@@ -342,39 +347,6 @@ public abstract class Herkunft extends CharElement {
 	public void setUngeNachteile(IdLink<Nachteil>[] ungeNachteile) {
 		this.ungeNachteile = ungeNachteile;
 	}
-
-
-	/**
-	 * @return the verbilligteVort
-	 */
-	public IdLink<Vorteil>[] getVerbilligteVort() {
-		return verbilligteVort;
-	}
-
-
-	/**
-	 * @param verbilligteVort the verbilligteVort to set
-	 */
-	public void setVerbilligteVort(IdLink<Vorteil>[] verbilligteVort) {
-		this.verbilligteVort = verbilligteVort;
-	}
-
-
-	/**
-	 * @return the verbilligteNacht
-	 */
-	public IdLink<Nachteil>[] getVerbilligteNacht() {
-		return verbilligteNacht;
-	}
-
-
-	/**
-	 * @param verbilligteNacht the verbilligteNacht to set
-	 */
-	public void setVerbilligteNacht(IdLink<Nachteil>[] verbilligteNacht) {
-		this.verbilligteNacht = verbilligteNacht;
-	}
-
 
 	/**
 	 * @return the verbilligteSonderf

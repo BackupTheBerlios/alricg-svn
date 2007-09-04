@@ -8,33 +8,36 @@
  */
 package org.d3s.alricg.store.charElemente;
 
-import java.util.List;
-
+import org.d3s.alricg.store.charElemente.links.Auswahl;
 import org.d3s.alricg.store.charElemente.links.IdLink;
+import org.d3s.alricg.store.charElemente.links.Voraussetzung;
 
 
 /**
  * <u>Beschreibung:</u><br> 
  * Dieses Interface Beschreibt die Strucktur der Varianten von Rasse, Kultur und
- * Profession. Alle drei Varianten-Klassen implementieren dieses interface. 
+ * Profession. Alle drei Varianten-Klassen implementieren dieses Interface. 
  *
  * @author V. Strelow
  */
 public interface HerkunftVariante {
 	
-	/**
-	 * @return Liste von Elementen die aus der original-Kultur "entfernt" (also nicht beachtet) 
-	 * werden sollen, z.B. SF, Vorteile, Nachteile. 
-	 * KEINE Elemente die in einer Auswahl stehen!.
-	 */
-	public IdLink[] getEntferneElement();
-	
-	/**
-	 * @param entferneElement Liste von Elementen die aus der original-Kultur "entfernt"
-	 * (also nicht beachtet) werden sollen, z.B. SF, Vorteile, Nachteile. 
-	 * KEINE Elemente die in einer Auswahl stehen!.
-	 */
-	public void setEntferneElement(IdLink[] entferneElement);
+	public final static String VORAUSS = "Voraussetzungen";
+	public final static String EIGEN_MODIS = "Modis Eigenschaften";
+	public final static String VORTEILE = "Vorteile";
+	public final static String NACHTEILE = "Nachteile";
+	public final static String SONDERF = "Sonderfertigkeiten";
+	public final static String LITURGIEN = "Liturgien";
+	public final static String EMPF_VORTEILE = "Empf. Vorteile";
+	public final static String EMPF_NACHTEILE = "Empf. Nachteile";
+	public final static String UNGE_VORTEILE = "Unge. Vorteile";
+	public final static String UNGE_NACHTEILE = "Unge. Nachteil";
+	public final static String VERB_SONDERF = "Verb. Sonderfertigkeiten";
+	public final static String VERB_LITURGIEN = "Verb. Liturgien";
+	public final static String ZAUBER = "Zauber";
+	public final static String HAUSZAUBER = "Hauszauber";
+	public final static String ZUS_AKT_ZAUBER = "Zus. aktivierbare Zauber";
+	public final static String NICHT_AKT_ZAUBER = "Nicht aktivierbare Zauber";
 	
 	/**
 	 * @return Liste von XML-Tags die aus der original-Kultur "entfernt" (also nicht beachtet) 

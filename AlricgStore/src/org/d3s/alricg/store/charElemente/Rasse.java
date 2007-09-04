@@ -7,13 +7,10 @@
 
 package org.d3s.alricg.store.charElemente;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlEnum;
 
 import org.d3s.alricg.store.charElemente.charZusatz.WuerfelSammlung;
-import org.d3s.alricg.store.charElemente.links.IdLink;
 
 
 /**
@@ -23,16 +20,35 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
  * @author V.Strelow
  */
 public class Rasse extends Herkunft {
-    private IdLink<Kultur>[] kulturMoeglich;
-    private IdLink<Kultur>[] kulturUeblich;
+	
+	@XmlEnum
+	public enum RasseArt {
+		menschlich("Menschlich"), 
+		nichtMenschlich("Nicht Menschlich");
+		
+		private String name; 
+		
+		private RasseArt(String name) {
+			this.name = name;
+		}
+		
+		public String toString() {
+			return name;
+		}
+	}
+	
+	private boolean kulturenSindNegativListe;
+    private Kultur[] kulturMoeglich;
+    private Kultur[] kulturUeblich;
 
     private FarbenAngabe[] haarfarbe;
     private FarbenAngabe[] augenfarbe;
 
     private WuerfelSammlung groesseWuerfel;
     private WuerfelSammlung alterWuerfel;
+    private RasseArt art;
     private int gewichtModi;
-    private int geschwindigk = 8;
+    private int geschwindigk;
     
     private RasseVariante[] varianten;
 
@@ -41,26 +57,26 @@ public class Rasse extends Herkunft {
 	/**
 	 * @return the kulturMoeglich
 	 */
-	public IdLink<Kultur>[] getKulturMoeglich() {
+	public Kultur[] getKulturMoeglich() {
 		return kulturMoeglich;
 	}
 
 	/**
 	 * @param kulturMoeglich the kulturMoeglich to set
 	 */
-	public void setKulturMoeglich(IdLink<Kultur>[] kulturMoeglich) {
+	public void setKulturMoeglich(Kultur[] kulturMoeglich) {
 		this.kulturMoeglich = kulturMoeglich;
 	}
 	/**
 	 * @return the kulturUeblich
 	 */
-	public IdLink<Kultur>[] getKulturUeblich() {
+	public Kultur[] getKulturUeblich() {
 		return kulturUeblich;
 	}
 	/**
 	 * @param kulturUeblich the kulturUeblich to set
 	 */
-	public void setKulturUeblich(IdLink<Kultur>[] kulturUeblich) {
+	public void setKulturUeblich(Kultur[] kulturUeblich) {
 		this.kulturUeblich = kulturUeblich;
 	}
 
@@ -171,7 +187,8 @@ public class Rasse extends Herkunft {
 		}
 		
 		public FarbenAngabe(String farbe, int wahrscheinlichkeit) {
-			// Empty Consructor for JaxB
+			this.farbe = farbe;
+			this.wahrscheinlichkeit = wahrscheinlichkeit;
 		}
 		
 		/**
@@ -203,6 +220,35 @@ public class Rasse extends Herkunft {
 		}
 		
 		
+	}
+
+	/**
+	 * @return the art
+	 */
+	@XmlAttribute
+	public RasseArt getArt() {
+		return art;
+	}
+
+	/**
+	 * @param art the art to set
+	 */
+	public void setArt(RasseArt art) {
+		this.art = art;
+	}
+
+	/**
+	 * @return the kulturenSindNegativListe
+	 */
+	public boolean isKulturenSindNegativListe() {
+		return kulturenSindNegativListe;
+	}
+
+	/**
+	 * @param kulturenSindNegativListe the kulturenSindNegativListe to set
+	 */
+	public void setKulturenSindNegativListe(boolean kulturenSindNegativListe) {
+		this.kulturenSindNegativListe = kulturenSindNegativListe;
 	}
     
 }
