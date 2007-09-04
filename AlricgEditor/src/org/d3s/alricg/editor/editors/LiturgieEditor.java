@@ -7,12 +7,13 @@
  */
 package org.d3s.alricg.editor.editors;
 
-import java.util.List;
+import java.util.Arrays;
 
 import org.d3s.alricg.common.icons.AbstractIconsLibrary;
 import org.d3s.alricg.common.icons.GoetterIconsLibrary;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
 import org.d3s.alricg.editor.common.widgets.DropTable;
+import org.d3s.alricg.editor.common.widgets.IntegerList;
 import org.d3s.alricg.editor.common.widgets.DropTable.DropListRegulator;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
@@ -40,6 +41,7 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 
 	class LiturgiePart extends AbstractElementPart<Liturgie> {
 		private DropTable dropTableGottheiten;
+		private final IntegerList spiGrad;
 		
 		LiturgiePart(Composite top) {
 			GridData tmpGData;
@@ -82,6 +84,15 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 			};
 			
 			dropTableGottheiten = new DropTable(top, SWT.NONE, regulator, LiturgieEditor.this.getSite());
+			
+			// Grad
+			final Label lblGrad = new Label(top, SWT.NONE);
+			lblGrad.setText("Grad:");
+			tmpGData = new GridData(); 
+			tmpGData.verticalAlignment = GridData.BEGINNING;
+			tmpGData.verticalIndent = 10;
+			lblGrad.setLayoutData(tmpGData);
+			spiGrad = new IntegerList (top, SWT.NONE, 1, 6, 1);
 		}
 		
 		/* (non-Javadoc)
@@ -97,7 +108,12 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 		 */
 		@Override
 		public boolean isDirty(Liturgie charElem) {
-			return !compareArrayList(charElem.getGottheit(), dropTableGottheiten);
+			boolean isNotDirty = true;
+			
+			isNotDirty &= Arrays.equals(spiGrad.getValueList(), charElem.getGrad());
+			isNotDirty &= compareArrayList(charElem.getGottheit(), dropTableGottheiten.getValueList());
+			
+			return !isNotDirty;
 		}
 
 		/* (non-Javadoc)
@@ -105,7 +121,11 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 		 */
 		@Override
 		public void loadData(Liturgie charElem) {
+			if (charElem.getGrad() != null) {
+				spiGrad.setValues(charElem.getGrad());
+			}
 			if (charElem.getGottheit() == null) return;
+			
 			for (int i = 0; i < charElem.getGottheit().length; i++) {
 				dropTableGottheiten.addValue(charElem.getGottheit()[i]);
 			}
@@ -118,14 +138,20 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 		public void saveData(IProgressMonitor monitor, Liturgie charElem) {
 			monitor.subTask("Save Liturgie-Data"); //$NON-NLS-1$
 			
-			if (dropTableGottheiten.getValueList().size() == 0) {
-				charElem.setGottheit(null);
+			if (spiGrad.getValueList().length == 0) {
+				charElem.setGrad(null);
+			} else {
+				charElem.setGrad(spiGrad.getValueList());
 			}
 			
-			charElem.setGottheit( (Gottheit[])
-					dropTableGottheiten.getValueList().toArray(
-							new Gottheit[dropTableGottheiten.getValueList().size()])
-			);
+			if (dropTableGottheiten.getValueList().size() == 0) {
+				charElem.setGottheit(null);
+			} else {
+				charElem.setGottheit( (Gottheit[])
+						dropTableGottheiten.getValueList().toArray(
+								new Gottheit[dropTableGottheiten.getValueList().size()])
+				);
+			}
 			
 			monitor.worked(1);
 		}

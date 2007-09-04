@@ -14,6 +14,7 @@ import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.SchriftSprache;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
@@ -259,6 +260,20 @@ public class CustomColumnViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
 			return ((RegionVolk) getCharElement(obj)).getAbk();
+		}
+	}
+	
+	public static class HerkunftGpSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Herkunft) getCharElement(obj)).getGpKosten();
+		}
+	}
+	
+	public static class HerkunftEigenschaftModiSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Herkunft) getCharElement(obj)).getEigenschaftModis() == null;
 		}
 	}
 	

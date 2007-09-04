@@ -197,7 +197,7 @@ public class CustomActions {
 	 */
 	public static class BuildNewCharElementAction extends Action {
 		protected Class charElementClazz;
-		private final Regulator regulator;
+		protected final Regulator regulator;
 		private final Composite parentComp;
 		
 		/**
@@ -336,9 +336,9 @@ public class CustomActions {
 				final boolean b = MessageDialog.openConfirm(
 						parentComp.getShell(), 
 						Messages.Actions_DeleteConfirmDialog, 
-						"Möchten sie das Element "  //$NON-NLS-1$
+						"Möchten sie das Element "
 						+ charElement.getName()
-						+ " wirklich löschen?"); //$NON-NLS-1$
+						+ " wirklich löschen?");
 				
 				// Löschen
 				if (!b) return;

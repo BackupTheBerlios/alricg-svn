@@ -37,7 +37,7 @@ public class SchamanenRitualEditor extends ComposedMultiPageEditorPart {
 		
 		SchamanenRitualPart(Composite top) {
 			
-			// Komplexität
+			// Grad
 			final Label lblGrad = new Label(top, SWT.NONE);
 			lblGrad.setText("Grad:");
 			spiGrad = new Spinner (top, SWT.BORDER);
@@ -90,7 +90,7 @@ public class SchamanenRitualEditor extends ComposedMultiPageEditorPart {
 			boolean isNotDirty = true;
 			
 			isNotDirty &= charElem.getGrad() == spiGrad.getSelection();
-			isNotDirty &= compareArrayList(charElem.getHerkunft(), dropTableRep);
+			isNotDirty &= compareArrayList(charElem.getHerkunft(), dropTableRep.getValueList());
 
 			return !isNotDirty;
 		}
@@ -118,10 +118,11 @@ public class SchamanenRitualEditor extends ComposedMultiPageEditorPart {
 			charElem.setGrad(spiGrad.getSelection());
 			if (dropTableRep.getValueList().size() == 0) {
 				charElem.setHerkunft(null);
+			} else {
+				Repraesentation[] repAr = (Repraesentation[]) dropTableRep.getValueList()
+													.toArray(new Repraesentation[0]);
+				charElem.setHerkunft(repAr);
 			}
-			Repraesentation[] repAr = (Repraesentation[]) dropTableRep.getValueList()
-																.toArray(new Repraesentation[0]);
-			charElem.setHerkunft(repAr);
 			
 			monitor.worked(1);
 		}

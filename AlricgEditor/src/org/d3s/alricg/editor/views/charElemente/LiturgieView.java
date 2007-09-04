@@ -138,14 +138,19 @@ public class LiturgieView extends RefreshableViewPart {
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
-
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 6);
+		tc.getColumn().setText("Grade");
+		tc.setLabelProvider(new CustomColumnLabelProvider.LiturgieGradProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 7);
 		tc.getColumn().setText(ViewMessages.TalentView_Probe);
 		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 7);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 8);
 		tc.getColumn().setText(ViewMessages.TalentView_SKT);
 		tc.setLabelProvider(new CustomColumnLabelProvider.SKTLabelProvider());
 		tc.getColumn().setWidth(50);
@@ -154,7 +159,7 @@ public class LiturgieView extends RefreshableViewPart {
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.SktSorter(), tableViewer));
 		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 8);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 9);
 		tc.getColumn().setText(ViewMessages.TalentView_Voraussetzung);
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
@@ -247,14 +252,19 @@ public class LiturgieView extends RefreshableViewPart {
 		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
 		
-
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 6);
+		tc.getColumn().setText("Grade");
+		tc.setLabelProvider(new CustomColumnLabelProvider.LiturgieGradProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 7);
 		tc.getColumn().setText(ViewMessages.TalentView_Probe);
 		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 7);
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 8);
 		tc.getColumn().setText(ViewMessages.TalentView_SKT);
 		tc.setLabelProvider(new CustomColumnLabelProvider.SKTLabelProvider());
 		tc.getColumn().setWidth(50);
@@ -263,7 +273,7 @@ public class LiturgieView extends RefreshableViewPart {
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.SktSorter(), treeViewer));
 		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 8);
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 9);
 		tc.getColumn().setText(ViewMessages.TalentView_Voraussetzung);
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
@@ -272,7 +282,6 @@ public class LiturgieView extends RefreshableViewPart {
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.CharElementVoraussetzungSorter(),
 						treeViewer));
-		
 		
 		
 		// Inhalt und Sortierung setzen

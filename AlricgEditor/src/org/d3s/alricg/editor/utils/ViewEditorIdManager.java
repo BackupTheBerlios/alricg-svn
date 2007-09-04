@@ -10,8 +10,11 @@ package org.d3s.alricg.editor.utils;
 import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.editors.GegenstandEditor;
 import org.d3s.alricg.editor.editors.GottheitEditor;
+import org.d3s.alricg.editor.editors.KulturEditor;
 import org.d3s.alricg.editor.editors.LiturgieEditor;
 import org.d3s.alricg.editor.editors.NachteilEditor;
+import org.d3s.alricg.editor.editors.ProfessionEditor;
+import org.d3s.alricg.editor.editors.RasseEditor;
 import org.d3s.alricg.editor.editors.RegionVolkEditor;
 import org.d3s.alricg.editor.editors.RepraesentationEditor;
 import org.d3s.alricg.editor.editors.SchamanenRitualEditor;
@@ -24,9 +27,12 @@ import org.d3s.alricg.editor.editors.ZauberEditor;
 import org.d3s.alricg.editor.views.charElemente.EigenschaftView;
 import org.d3s.alricg.editor.views.charElemente.GegenstandView;
 import org.d3s.alricg.editor.views.charElemente.GoetterView;
+import org.d3s.alricg.editor.views.charElemente.KulturView;
 import org.d3s.alricg.editor.views.charElemente.LiturgieView;
 import org.d3s.alricg.editor.views.charElemente.MerkmalView;
 import org.d3s.alricg.editor.views.charElemente.NachteilView;
+import org.d3s.alricg.editor.views.charElemente.ProfessionView;
+import org.d3s.alricg.editor.views.charElemente.RasseView;
 import org.d3s.alricg.editor.views.charElemente.RegionVolkView;
 import org.d3s.alricg.editor.views.charElemente.RepraesentationView;
 import org.d3s.alricg.editor.views.charElemente.SchamanenRitualView;
@@ -89,11 +95,11 @@ public class ViewEditorIdManager {
 		} else if (clazz ==  Sonderfertigkeit.class) {
 			return SonderfertigkeitEditor.ID;
 		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
-			//return "Rasse";
+			return RasseEditor.ID;
 		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
-			//return "Kultur";
+			return KulturEditor.ID;
 		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
-			//return "Profession";
+			return ProfessionEditor.ID;
 		} else if (clazz ==  Gottheit.class) {
 			return GottheitEditor.ID;
 		} else if (clazz ==  Liturgie.class) {
@@ -154,11 +160,11 @@ public class ViewEditorIdManager {
 		} else if (clazz ==  SchamanenRitual.class) {
 			return SchamanenRitualView.ID;
 		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
-			//return "Rasse";
+			return RasseView.ID;
 		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
-			//return "Kultur";
+			return KulturView.ID;
 		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
-			//return "Profession";
+			return ProfessionView.ID;
 			
 		} else if (clazz ==  SchwarzeGabe.class) {
 			//return "Schwarze Gabe";

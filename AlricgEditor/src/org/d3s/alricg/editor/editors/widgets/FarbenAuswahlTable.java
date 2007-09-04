@@ -1,41 +1,36 @@
 /*
- * Created 23.08.2007
+ * Created 03.09.2007
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
  * For more information see "http://www.alricg.de/".
  */
-package org.d3s.alricg.editor.common.widgets;
+package org.d3s.alricg.editor.editors.widgets;
 
 import java.util.ArrayList;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
-import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
-import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
-import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
+import org.d3s.alricg.store.charElemente.Rasse.FarbenAngabe;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.ViewerDropAdapter;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -49,38 +44,25 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPartSite;
 
 /**
- * Erstellt eine List mit der Möglichkeit:
- * 	- 
+ * Ermöglicht die Angabe von Farben und die Wahrscheinlichkeit das eine
+ * Farbe gewählt wird
  * @author Vincent
  */
-public class DropTable extends Composite {
-	protected final DropListRegulator regulator;
-	protected final int NUMBER_OF_LINES = 5;
-	protected final IWorkbenchPartSite site;
+public class FarbenAuswahlTable extends Composite {
+	private static int NUMBER_OF_LINES = 5;
 	protected TableViewer tableViewer;
+	private IWorkbenchPartSite site;
+	private int gesamtGewaehlt = 0;
 	
+	private final Image imgAdd = ControlIconsLibrary.add.getImageDescriptor().createImage();
 	private final Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
 	private final Image imgUp = ControlIconsLibrary.arrowUp.getImageDescriptor().createImage();
 	private final Image imgDown = ControlIconsLibrary.arrowDown.getImageDescriptor().createImage();
 
+	protected Action addElement;
 	protected Action deleteElement;
 	protected Action upElement;
 	protected Action downElement;
-	
-	/**
-	 * Interface um die DropList zu steuern
-	 * @author Vincent
-	 */
-	public static interface DropListRegulator {
-		
-		/**
-		 * @param obj Object von der "Drop" Opteration
-		 * @return true - "obj" kann zu der Liste hinzugefügt werden, ansonsten false
-		 */
-		public boolean canDrop(Object obj);
-		
-		public ImageProviderRegulator getImageProviderRegulator();
-	}
 	
 	/**
 	 * Konstruktor
@@ -88,99 +70,13 @@ public class DropTable extends Composite {
 	 * @param style SWT Style
 	 * @param regulator Regulator zum Steuern dieser DropList
 	 */
-	public DropTable(Composite parent, int style, DropListRegulator regulator, IWorkbenchPartSite site) {
+	public FarbenAuswahlTable(Composite parent, int style, IWorkbenchPartSite site) {
 		super(parent, style);
-		this.regulator = regulator;
 		this.site = site;
-		
-		if (regulator.getImageProviderRegulator() != null) {
-			regulator.getImageProviderRegulator().getIconsLibrary().addConsumer(
-					regulator.getImageProviderRegulator().getConsumer());
-		}
-		
 		createWidget(parent);
 		
 		makeActions();
 		hookContextMenu();
-	}
-	
-	protected Table createTable(Composite parent) {
-		// init Table
-		tableViewer = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
-		tableViewer.getTable().setLinesVisible(false);
-		tableViewer.getTable().setHeaderVisible(false);
-		ColumnViewerToolTipSupport.enableFor(tableViewer, ToolTip.NO_RECREATE);
-		
-		// Drag and Drop
-		tableViewer.addDragSupport(
-				DND.DROP_COPY | DND.DROP_MOVE, 
-				new Transfer[] { LocalSelectionTransfer.getTransfer() }, 
-				new CharElementDragSourceListener(tableViewer));
-		
-		TableViewerColumn tc;
-		int colIdx = 0;
-		
-		// Columns setzen
-		if (regulator.getImageProviderRegulator() != null) {
-			tc = new TableViewerColumn(tableViewer, SWT.LEFT, colIdx++);
-			tc.getColumn().setToolTipText("Symbol");
-			tc.setLabelProvider(new ImageProvider(0, regulator.getImageProviderRegulator()));
-			tc.getColumn().setWidth(24);
-			tc.getColumn().setMoveable(true);
-		}
-		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, colIdx);
-		tc.setLabelProvider(new CustomColumnLabelProvider.NameLabelProvider());
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
-		
-		// Inhalt setzen
-		tableViewer.setContentProvider(new TableViewContentProvider());
-		tableViewer.setInput(new ArrayList());
-
-		// Drop unterstützung
-		ViewerDropAdapter viewerDrop = new ViewerDropAdapter(tableViewer) {
-			@Override
-			public void drop(DropTargetEvent event) {
-				
-				if ( !performDrop(event.data) )	{
-					event.feedback = DND.ERROR_INVALID_DATA;
-					event.detail = DND.DROP_NONE;
-					return;
-				}
-				final TreeOrTableObject source = (TreeOrTableObject) ((StructuredSelection) event.data).getFirstElement();
-				
-				// Prüfen ob doppelt
-				for (int i = 0; i < tableViewer.getTable().getItemCount(); i++) {
-					if ( ((TableObject) tableViewer.getElementAt(i)).getValue().equals(source.getValue()) ) {
-						return; // schon vorhanden!
-					}
-				}
-				
-				final TableObject tablObj = new TableObject(source.getValue());
-				tableViewer.add(tablObj);
-			}
-
-			@Override
-			public boolean performDrop(Object data) {
-				return regulator.canDrop(	
-						((TreeOrTableObject) ((StructuredSelection) data).getFirstElement()).getValue() );
-			}
-
-			@Override
-			public boolean validateDrop(Object target, int operation, TransferData transferType) {
-				return true;
-			}
-		};
-		
-		// Unterstützung für DROP
-		int ops = DND.DROP_COPY | DND.DROP_MOVE;
-		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer
-				.getTransfer() };
-		tableViewer.addDropSupport(ops, transfers, viewerDrop);
-
-		return tableViewer.getTable();
 	}
 	
 	private void createWidget(Composite parent) {
@@ -211,6 +107,18 @@ public class DropTable extends Composite {
 		tmpGData.verticalAlignment = GridData.BEGINNING;
 		compButtons.setLayout(gridLayout);
 		compButtons.setLayoutData(tmpGData);
+		
+		// Buttons
+		final Button butAdd = new Button(compButtons, SWT.NONE);
+		butAdd.setImage(imgAdd);
+		tmpGData = new GridData(imgAdd.getImageData().width+4, imgAdd.getImageData().height+4);
+		tmpGData.verticalAlignment = GridData.BEGINNING;
+		butAdd.setLayoutData(tmpGData);
+		butAdd.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				addElement.run();
+			}
+		});
 		
 		final Button butDelete = new Button(compButtons, SWT.NONE);
 		tmpGData = new GridData(imgDelete.getImageData().width+4, imgDelete.getImageData().height+4); 
@@ -244,50 +152,68 @@ public class DropTable extends Composite {
 			}
 		});
 	}
+	
+	protected Table createTable(Composite parent) {
+		// init Table
+		tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+		tableViewer.getTable().setLinesVisible(true);
+		tableViewer.getTable().setHeaderVisible(true);
+		ColumnViewerToolTipSupport.enableFor(tableViewer, ToolTip.NO_RECREATE);
+		
+		TableViewerColumn tc;
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 0);
+		tc.setLabelProvider(new FarbenProzentProvider());
+		tc.getColumn().setText("%");
+		tc.getColumn().setToolTipText("Wahrscheinlichkeit in Prozent");
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+		tc.setEditingSupport(new ProzentEditor(tableViewer));
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 1);
+		tc.setLabelProvider(new FarbenTextProvider());
+		tc.getColumn().setText("Farbe");
+		tc.getColumn().setToolTipText("Augenzahl der Würfel");
+		tc.getColumn().setWidth(125);
+		tc.getColumn().setMoveable(true);
+		tc.setEditingSupport(new FarbenTextEditor(tableViewer));
+		
+		// Inhalt setzen
+		tableViewer.setContentProvider(new TableViewContentProvider());
+		tableViewer.setInput(new ArrayList());
 
+		return tableViewer.getTable();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.swt.widgets.Widget#dispose()
 	 */
 	@Override
 	public void dispose() {
-		if (regulator.getImageProviderRegulator() != null) {
-			regulator.getImageProviderRegulator().getIconsLibrary().removeConsumer(
-					regulator.getImageProviderRegulator().getConsumer());
-		}
-		imgDelete.dispose();
-		imgDown.dispose();
-		imgUp.dispose();
 		super.dispose();
-	}
-	
-	/**
-	 * @return Eine Liste von Werte welche in der List gespeichert sind.
-	 * 	Die Liste darf bearbeitet werden, da sie Kopiert wird.
-	 */
-	public java.util.List getValueList() {
-		java.util.List list = new ArrayList();
-		
-		for (int i = 0 ; i < tableViewer.getTable().getItemCount(); i++) {
-			list.add( ((TableObject) tableViewer.getElementAt(i)).getValue()); 
-		}
-
-		return list;
-	}
-	
-	/**
-	 * Fügt einen Wert an das Ende der Liste hinzu
-	 * @param text Der Text für die List
-	 * @param value Der Wert für die ValueList
-	 */
-	public void addValue(Object value) {
-		this.tableViewer.add(new TableObject(value));
+		imgAdd.dispose();
+		imgDelete.dispose();
+		imgUp.dispose();
+		imgDown.dispose();
 	}
 	
 	protected void makeActions() {
 		
+		addElement = new Action() {
+			@Override
+			public void run() {
+				tableViewer.add(new FarbenAngabe("Bitte eingeben", 0));
+			}
+		};
+		addElement.setText("Element hinzufügen");
+		addElement.setImageDescriptor(ControlIconsLibrary.add.getImageDescriptor());
+		
 		deleteElement = new Action() {
 			@Override
 			public void run() {
+				Object obj = ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+				gesamtGewaehlt -= ((FarbenAngabe) obj).getWahrscheinlichkeit();
 				tableViewer.getTable().remove(tableViewer.getTable().getSelectionIndices());
 			}
 		};
@@ -355,7 +281,7 @@ public class DropTable extends Composite {
 		};
 		downElement.setText("Element nach unten");
 		downElement.setImageDescriptor(ControlIconsLibrary.arrowDown.getImageDescriptor());
-		
+
 	}
 	
 	/**
@@ -366,7 +292,7 @@ public class DropTable extends Composite {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				DropTable.this.fillContextMenu(manager);
+				FarbenAuswahlTable.this.fillContextMenu(manager);
 			}
 		});
 		
@@ -374,21 +300,14 @@ public class DropTable extends Composite {
 			
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
-				boolean isEnabled;
+				boolean isEnabled = true;
 				
 				if (tableViewer.getSelection().isEmpty()) {
 					isEnabled = false;
-				} else {
-					isEnabled = true;
-				}
-				
-				for (int i = 0; i < manager.getItems().length; i++) {
-					if (!(manager.getItems()[i] instanceof ActionContributionItem)) {
-						continue;
-					}
-					ActionContributionItem item = (ActionContributionItem) manager.getItems()[i];
-					item.getAction().setEnabled(isEnabled);
-				}
+				} 
+				upElement.setEnabled(isEnabled);
+				downElement.setEnabled(isEnabled);
+				deleteElement.setEnabled(isEnabled);
 			}
 		});
 
@@ -400,6 +319,7 @@ public class DropTable extends Composite {
 	
 	// Das Context Menu beim Rechts-klick
 	protected void fillContextMenu(IMenuManager manager) {
+		manager.add(this.addElement);
 		manager.add(this.deleteElement);
 		manager.add(new Separator());
 		manager.add(this.upElement);
@@ -408,5 +328,129 @@ public class DropTable extends Composite {
 		 * Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'
 		 * im Log zu verhindern */ 
 		manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+
+	/**
+	 * @return Die Farben dieses Widgets
+	 */
+	public FarbenAngabe[] getValues() {
+		FarbenAngabe[] farben = new FarbenAngabe[tableViewer.getTable().getItemCount()];
+		for (int i = 0; i < tableViewer.getTable().getItemCount(); i++) {
+			farben[i] = (FarbenAngabe) tableViewer.getElementAt(i);
+		}
+		return farben;
+	}
+	
+	/**
+	 * Setzt alle Werte dieses Widgets neu
+	 * @param farben Werte zum setzen
+	 */
+	public void setValues(FarbenAngabe[] farben) {
+		tableViewer.getTable().removeAll();
+		if (farben == null) return;
+		
+		tableViewer.add(farben);
+	}
+	
+	// Editor für die Angabe von Farben
+	class FarbenTextEditor extends EditingSupport {
+		private final TextCellEditor tce;
+		private final ColumnViewer viewer;
+		
+		public FarbenTextEditor(TableViewer viewer) {
+			super(viewer);
+			this.viewer = viewer;
+			tce = new TextCellEditor(viewer.getTable());
+		}
+		
+		@Override
+		protected boolean canEdit(Object element) {
+			return true;
+		}
+
+		@Override
+		protected CellEditor getCellEditor(Object element) {
+			return tce;
+		}
+
+		@Override
+		protected Object getValue(Object element) {
+			return ((FarbenAngabe) element).getFarbe();
+		}
+
+		@Override
+		protected void setValue(Object element, Object value) {
+			((FarbenAngabe) element).setFarbe(value.toString());
+			viewer.update(element, null);
+		}
+	}
+	
+	// Editor für die wahrscheinlichkeit das eine Farbe ausgewählt wird
+	class ProzentEditor extends EditingSupport {
+		private ComboBoxCellEditor cellEditor;
+		
+		ProzentEditor(TableViewer viewer) {
+			super(viewer);
+			
+			String[] initValues = new String[21];
+			for (int i = 0; i < initValues.length; i++) {
+				initValues[i] = ( i * 5 ) + "%";
+			}
+			cellEditor = new ComboBoxCellEditor(viewer.getTable(), initValues, SWT.READ_ONLY);
+			((CCombo) cellEditor.getControl()).setVisibleItemCount(8);
+		}
+		
+
+		@Override
+		protected boolean canEdit(Object element) {
+			return true;
+		}
+
+		@Override
+		protected CellEditor getCellEditor(Object element) {
+			cellEditor.setValue(getValue(element));
+			
+			String[] initValues = new String[21
+			                                 - gesamtGewaehlt
+			                                 + ((FarbenAngabe) element).getWahrscheinlichkeit()];
+			for (int i = 0; i < initValues.length; i++) {
+				initValues[i] = ( i * 5 ) + "%";
+			}
+			cellEditor.setItems(initValues);
+			
+			return cellEditor;
+		}
+
+		@Override
+		protected Object getValue(Object element) {
+			return ((FarbenAngabe) element).getWahrscheinlichkeit();
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object, java.lang.Object)
+		 */
+		@Override
+		protected void setValue(Object element, Object value) {
+			
+			gesamtGewaehlt -= ((FarbenAngabe) element).getWahrscheinlichkeit();
+			((FarbenAngabe) element).setWahrscheinlichkeit( (Integer) value );
+			gesamtGewaehlt += ((FarbenAngabe) element).getWahrscheinlichkeit();
+			
+			this.getViewer().update(element, null);
+		}
+	}
+	
+	public static class FarbenProzentProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			return (((FarbenAngabe) element).getWahrscheinlichkeit() * 5 ) + "%";
+		}
+	}
+	
+	public static class FarbenTextProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			return ((FarbenAngabe) element).getFarbe();
+		}
 	}
 }

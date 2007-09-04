@@ -196,41 +196,6 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 		
 	}
 	
-	// TEST zu entfernen, gehört hier nicht hin
-	private Composite createTestTalent() {
-		Herkunft herk = new Rasse();
-		
-		AuswahlPart auswahlPart = new AuswahlPart(
-				getContainer(), 
-				this.getSite(),
-				new HerkunftAuswahlRegulator() {
-
-					@Override
-					public Auswahl getAuswahl(Herkunft herkunft) {
-						return herkunft.getTalente();
-					}
-
-					@Override
-					public Class getCharElementClazz() {
-						return Talent.class;
-					}
-
-					@Override
-					public String getRootNoteName() {
-						return EditorMessages.TalentEditor_Talente;
-					}
-
-					@Override
-					public void setAuswahl(Herkunft herkunft, Auswahl auswahl) {
-						herkunft.setTalente(auswahl);
-					}
-					
-				});
-		auswahlPart.loadData(herk);
-		
-		return auswahlPart.getTree();
-	}
-	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.MultiPageEditorPart#createPages()
 	 */
@@ -241,10 +206,6 @@ public class TalentEditor extends ComposedMultiPageEditorPart {
 		
 		index = addPage(createVoraussetzungsSite());
 		setPageText(index, EditorMessages.Editor_Voraussetzungen);
-		
-		// TEST zu entfernen, gehört hier nicht hin
-		index = addPage(createTestTalent());
-		setPageText(index, "Talente wählen"); //$NON-NLS-1$
 		
 		elementPartArray = new AbstractElementPart[] {
 				charElementPart, faehigkeitPart, talentPart, voraussetzungsPart};

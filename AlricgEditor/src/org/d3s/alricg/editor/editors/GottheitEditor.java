@@ -99,7 +99,7 @@ public class GottheitEditor extends ComposedMultiPageEditorPart {
 			}
 			
 			// Bild speichern
-			charElem.setGottheitImage( this.getNullFromString(charElem.getGottheitImage()) );
+			charElem.setGottheitImage( this.getNullFromString(txtImage.getText()) );
 			
 			monitor.worked(1);
 		}

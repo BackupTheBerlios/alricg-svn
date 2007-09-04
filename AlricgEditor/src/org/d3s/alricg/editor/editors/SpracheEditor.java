@@ -201,7 +201,7 @@ public class SpracheEditor extends ComposedMultiPageEditorPart {
 			}
 			
 			// Schriften prüfen
-			isNotDirty &= compareArrayList(charElem.getZugehoerigeSchrift(), dropTable);
+			isNotDirty &= compareArrayList(charElem.getZugehoerigeSchrift(), dropTable.getValueList());
 			
 			return !isNotDirty;
 		}

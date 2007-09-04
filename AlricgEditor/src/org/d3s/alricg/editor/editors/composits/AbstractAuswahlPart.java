@@ -40,15 +40,11 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
@@ -490,18 +486,17 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstrac
 			currentOpt = new OptionVerteilung();
 			currentOpt.setAnzahl( originalOption.getAnzahl() );
 			currentOpt.setWert( originalOption.getWert() );
-			currentOpt.setWert( originalOption.getMax() );
+			currentOpt.setMax( originalOption.getMax() );
 		}
 		TreeObject treeObj = new TreeObject(currentOpt, root);
 		root.addChildren(treeObj);
 		
-		// CharElemente setzen
+		// Link setzen
 		for (int i2 = 0; i2 < originalOption.getLinkList().size(); i2++) {
 			TreeObject linkTreeObj = new TreeObject(
 					((IdLink) originalOption.getLinkList().get(i2)).copyLink(), 
 					treeObj);
 			treeObj.addChildren(linkTreeObj);
-			linkTreeObj.setParent(treeObj);
 		}
 		
 		if (originalOption.getAlternativOption() != null) {
@@ -635,7 +630,6 @@ public abstract class AbstractAuswahlPart<C extends CharElement> extends Abstrac
 		} else if (option.getClass() == OptionListe.class) {
 			if (option.getWerteListe() == null || option.getWerteListe().length == 0) {
 				// TODO den User auf den Fehler Hinweisen?
-				//isSensless = true;
 			}
 			
 		} else if (option.getClass() == OptionVerteilung.class) {

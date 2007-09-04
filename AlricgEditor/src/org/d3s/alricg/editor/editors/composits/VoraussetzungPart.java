@@ -8,18 +8,14 @@
 package org.d3s.alricg.editor.editors.composits;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.editors.EditorMessages;
+import org.d3s.alricg.editor.utils.EditorViewUtils.AuswahlTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.charElemente.links.Option;
-import org.d3s.alricg.store.charElemente.links.OptionAnzahl;
-import org.d3s.alricg.store.charElemente.links.OptionListe;
-import org.d3s.alricg.store.charElemente.links.OptionVerteilung;
 import org.d3s.alricg.store.charElemente.links.OptionVoraussetzung;
 import org.d3s.alricg.store.charElemente.links.Voraussetzung;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,7 +26,7 @@ import org.eclipse.ui.IWorkbenchPartSite;
  * Diese Klasse ermöglicht das Darstellen und bearbeiten von Voraussetzungen!
  * @author Vincent
  */
-public class VoraussetzungPart extends AbstractAuswahlPart {
+public class VoraussetzungPart extends AbstractAuswahlPart<CharElement> {
     private TreeObject invisibleRoot;
     
 	private final static String POSITIVE_VORAUS = EditorMessages.VoraussetzungPart_PositiveVoraussetzungen;
@@ -95,9 +91,17 @@ public class VoraussetzungPart extends AbstractAuswahlPart {
 		// "Grund-Tree" aufbauen
 		invisibleRoot = new TreeObject("invisibleRoot", null); //$NON-NLS-1$
 
-		final TreeObject positivTree = new TreeObject(POSITIVE_VORAUS, invisibleRoot);
+		final TreeObject positivTree = new AuswahlTreeObject(
+				CharElement.class, 
+				invisibleRoot, 
+				POSITIVE_VORAUS,
+				0);
 		invisibleRoot.addChildren(positivTree);
-		final TreeObject negativTree = new TreeObject(NEGATIVE_VORAUS, invisibleRoot);
+		final TreeObject negativTree = new AuswahlTreeObject(
+				CharElement.class, 
+				invisibleRoot, 
+				NEGATIVE_VORAUS,
+				1);
 		invisibleRoot.addChildren(negativTree);
 
 		treeViewer.setContentProvider(new TreeViewContentProvider(invisibleRoot));
@@ -117,7 +121,7 @@ public class VoraussetzungPart extends AbstractAuswahlPart {
 		}
 		
 		auswahlDrop.setQuelle(charElem); // Setzt die Quelle für alle neuen Links in der Auswahl
-		auswahlDrop.setAcceptGlobalDropClazz(CharElement.class); // Alle CharElemente sind möglich
+		auswahlDrop.setAcceptGlobalDropClazz(new Class[] {CharElement.class} ); // Alle CharElemente sind möglich
 		auswahlDrop.addAcceptColumnClazz(
 				CharElement.class,
 				auswahlDrop.getColumnsToListen()[0]); // Alle CharElemente sind möglich
@@ -146,7 +150,7 @@ public class VoraussetzungPart extends AbstractAuswahlPart {
 			
 			if (optList.size() == 0) continue;
 			
-			if (invisibleRoot.getChildren()[i1].getValue().equals(POSITIVE_VORAUS)) {
+			if (((AuswahlTreeObject) invisibleRoot.getChildren()[i1]).getText().equals(POSITIVE_VORAUS)) {
 				voraus.setPosVoraussetzung(optList);
 			} else {
 				voraus.setNegVoraussetzung(optList);

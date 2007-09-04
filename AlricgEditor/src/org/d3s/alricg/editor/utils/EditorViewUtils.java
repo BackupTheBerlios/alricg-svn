@@ -73,6 +73,43 @@ public class EditorViewUtils {
 	}
 	
 	/**
+	 * Spezielles TreeObject für den Editor, um neben dem Value noch einen Text und Index 
+	 * angeben zu können. Wird von den Trees in "AuswahlPart", "IdLinkPart" und 
+	 * "VoraussetzungsPart" benötigt.
+	 * @author Vincent
+	 */
+	public static class AuswahlTreeObject extends TreeObject implements TreeOrTableObject {
+		private final String text;
+		private final int index;
+		
+		/**
+		 * @param value Inhalt des Knotens
+		 * @param parent Parent-Knoten
+		 * @param text Text auf dem Knoten
+		 * @param index Angabe für das Modell
+		 */
+		public AuswahlTreeObject(Object value, TreeObject parent, String text, int index) {
+			super(value, parent);
+			this.text = text;
+			this.index = index;
+		}
+
+		/**
+		 * @return Der Text der auf den Knoten angeziegt werden soll
+		 */
+		public String getText() {
+			return text;
+		}
+		
+		/**
+		 * @return Identifikator um die Verbindungen zum Model zu erleichtern 
+		 */
+		public int getIndex() {
+			return index;
+		}
+	}
+	
+	/**
 	 * Spezielles TableObject für den Editor, um noch einen FilePath angeben zu können
 	 * @author Vincent
 	 */

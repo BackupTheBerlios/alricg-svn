@@ -37,11 +37,13 @@ public class TextList extends Composite {
 	private List listSpez;
 	private Button butAdd;
 	private Button butDelete;
+	private Button butDown;
+	private Button butUp;
 	
-	private Image imgAdd = ControlIconsLibrary.add.getImageDescriptor().createImage();
-	private Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
-	private Image imgUp = ControlIconsLibrary.arrowUp.getImageDescriptor().createImage();
-	private Image imgDown = ControlIconsLibrary.arrowDown.getImageDescriptor().createImage();
+	private final Image imgAdd = ControlIconsLibrary.add.getImageDescriptor().createImage();
+	private final Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
+	private final Image imgUp = ControlIconsLibrary.arrowUp.getImageDescriptor().createImage();
+	private final Image imgDown = ControlIconsLibrary.arrowDown.getImageDescriptor().createImage();
 	
 	/**
 	 * Konstruktor
@@ -82,6 +84,7 @@ public class TextList extends Composite {
 		gridLayout.marginWidth = 0;
 		GridData tmpGData = new GridData();
 		tmpGData.verticalSpan = 2;
+		tmpGData.verticalAlignment = GridData.BEGINNING;
 		compButtons.setLayout(gridLayout);
 		compButtons.setLayoutData(tmpGData);
 		
@@ -112,7 +115,7 @@ public class TextList extends Composite {
 			}
 		});
 
-		final Button butUp = new Button(compButtons, SWT.NONE);
+		butUp = new Button(compButtons, SWT.NONE);
 		butUp.setImage(imgUp);
 		tmpGData = new GridData(imgUp.getImageData().width+4, imgDelete.getImageData().height+4); 
 		tmpGData.verticalIndent = 5;
@@ -149,7 +152,7 @@ public class TextList extends Composite {
 			}
 		});
 		
-		final Button butDown = new Button(compButtons, SWT.NONE);
+		butDown = new Button(compButtons, SWT.NONE);
 		butDown.setImage(imgDown);
 		butDown.setLayoutData(new GridData(imgDown.getImageData().width+4, imgDelete.getImageData().height+4));
 		butDown.addSelectionListener(new SelectionAdapter() {

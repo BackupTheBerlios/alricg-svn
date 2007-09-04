@@ -160,7 +160,7 @@ public class ZauberEditor extends ComposedMultiPageEditorPart {
 			boolean isNotDirty = true;
 			
 			// Prüfe Merkmale
-			isNotDirty &= compareArrayList(charElem.getMerkmale(), dropListMerkmal);
+			isNotDirty &= compareArrayList(charElem.getMerkmale(), dropListMerkmal.getValueList());
 			
 			// Prüfe verbreitung
 			if (charElem.getVerbreitung() == null 
@@ -404,7 +404,7 @@ public class ZauberEditor extends ComposedMultiPageEditorPart {
 					VerbreitungDropTable.this.addValue(verb);
 				}
 			};
-			selectDrop.setAcceptGlobalDropClazz(Repraesentation.class);
+			selectDrop.setAcceptGlobalDropClazz(new Class[] {Repraesentation.class});
 			selectDrop.addAcceptColumnClazz(Repraesentation.class, dropColumn);
 			
 			

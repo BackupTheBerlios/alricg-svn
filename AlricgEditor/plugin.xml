@@ -214,6 +214,24 @@
             id="org.d3s.alricg.editor.editors.RegionVolkEditor"
             name="RegionVolkEditor">
       </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.RasseEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.RasseEditor"
+            name="RasseEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.KulturEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.KulturEditor"
+            name="KulturEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.ProfessionEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.ProfessionEditor"
+            name="ProfessionEditor">
+      </editor>
    </extension>
 
 </plugin>

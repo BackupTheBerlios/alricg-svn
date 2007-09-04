@@ -14,12 +14,15 @@ import org.d3s.alricg.common.logic.FormelSammlung;
 import org.d3s.alricg.editor.Messages;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
+import org.d3s.alricg.editor.utils.EditorViewUtils.AuswahlTreeObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sprache;
@@ -70,9 +73,11 @@ public class CustomColumnLabelProvider {
 	public static class OptionNameProvider extends NameLabelProvider {
 		@Override
 		public String getText(Object element) {
-			if ( !(((TreeObject)element).getValue() instanceof Option) ) {
+			if ( element instanceof AuswahlTreeObject ) {
+				return ((AuswahlTreeObject) element).getText();
+			} else if ( !(((TreeObject)element).getValue() instanceof Option) ) {
 				return super.getText(element);
-			}
+			} 
 			
 			final StringBuilder strBuilder = new StringBuilder();
 			final StringBuilder strBuilderZustaz = new StringBuilder();
@@ -156,7 +161,8 @@ public class CustomColumnLabelProvider {
 		@Override
 		public Image getImage(Object obj) {
 			if (((TreeObject)obj).getValue() instanceof Option
-					|| ((TreeObject)obj).getValue() instanceof String) {
+					|| ((TreeObject)obj).getValue() instanceof String
+					|| obj instanceof AuswahlTreeObject) {
 				return PlatformUI.getWorkbench().getSharedImages().getImage(
 						ISharedImages.IMG_OBJ_FOLDER);
 			}
@@ -760,6 +766,52 @@ public class CustomColumnLabelProvider {
 			if (charElem == null) return ""; //$NON-NLS-1$
 			
 			return ((RegionVolk) charElem).getArt().toString();
+		}
+	}
+	
+	public static class LiturgieGradProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			CharElement chatEle = ViewUtils.getCharElement(element);
+			if (chatEle == null) return ""; //$NON-NLS-1$
+			
+			StringBuilder strB = new StringBuilder();
+			for (int i = 0; i < ((Liturgie) chatEle).getGrad().length; i++) {
+				strB.append(((Liturgie) chatEle).getGrad()[i]);
+				if (i+1 < ((Liturgie) chatEle).getGrad().length) {
+					strB.append(", "); 
+				}
+			}
+			
+			return strB.toString();
+		}
+	}
+	
+	public static class HerkunftGpProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			CharElement chatEle = ViewUtils.getCharElement(element);
+			if (chatEle == null) return ""; //$NON-NLS-1$
+			
+			return Integer.toString( ((Herkunft) chatEle).getGpKosten() );
+		}
+	}
+	
+	public static class HerkunftEigenschaftModiProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			CharElement chatEle = ViewUtils.getCharElement(element);
+			if (chatEle == null) return ""; //$NON-NLS-1$
+			
+			return CharElementTextService.getAuswahlText(((Herkunft) chatEle).getEigenschaftModis());
+		}
+		
+		@Override
+		public String getToolTipText(Object element) {
+			CharElement chatEle = ViewUtils.getCharElement(element);
+			if (chatEle == null) return null;
+			
+			return CharElementTextService.getAuswahlText(((Herkunft) chatEle).getEigenschaftModis());
 		}
 	}
 	

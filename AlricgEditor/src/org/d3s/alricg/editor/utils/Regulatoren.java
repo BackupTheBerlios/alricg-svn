@@ -14,9 +14,12 @@ import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Gottheit;
+import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
+import org.d3s.alricg.store.charElemente.Profession;
+import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.d3s.alricg.store.charElemente.SchamanenRitual;
@@ -523,5 +526,73 @@ public class Regulatoren {
 				((RegionVolk) charElement).setArt( (RegionVolk.RegionVolkArt) firstCat);
 			}
 		};
+		
+	public static final Regulator RasseRegulator = 
+		new Regulator() {
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[] { ((Rasse) charElement).getArt() };
+			}
+	
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getRasseList();
+			}
+			
+			@Override
+			public Class getFirstCategoryClass() {
+				return Rasse.RasseArt.class;
+			}
 
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Rasse) charElement).setArt( (Rasse.RasseArt) firstCat);
+			}
+		};
+		
+	public static final Regulator KulturRegulator = 
+		new Regulator() {
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[] { ((Kultur) charElement).getArt() };
+			}
+	
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getKulturList();
+			}
+			
+			@Override
+			public Class getFirstCategoryClass() {
+				return Kultur.KulturArt.class;
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Kultur) charElement).setArt( (Kultur.KulturArt) firstCat);
+			}
+		};
+		
+	public static final Regulator ProfessionRegulator = 
+		new Regulator() {
+			@Override
+			public Object[] getFirstCategory(CharElement charElement) {
+				return new Object[] { ((Profession) charElement).getArt() };
+			}
+	
+			@Override
+			public List<? extends CharElement> getListFromAccessor(XmlAccessor accessor) {
+				return accessor.getProfessionList();
+			}
+			
+			@Override
+			public Class getFirstCategoryClass() {
+				return Profession.ProfArt.class;
+			}
+
+			@Override
+			public void setFirstCategory(CharElement charElement, Object firstCat) {
+				((Profession) charElement).setArt( (Profession.ProfArt) firstCat);
+			}
+		};
 }

@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 /**
  * @author Vincent
  */
-public abstract class AbstractElementPart<C extends CharElement> {
+public abstract class AbstractElementPart<C> {
 
 	/**
 	 * Wandelt ein Object in einen String um. Dabei wird ein "null" Object zu
@@ -49,9 +49,8 @@ public abstract class AbstractElementPart<C extends CharElement> {
 	 * @param dropTable Die Droptable
 	 * @return true - Alle Element sind identisch, ansonsten false
 	 */
-	protected boolean compareArrayList(Object[] objArray, DropTable dropTable) {
+	protected boolean compareArrayList(Object[] objArray, List list) {
 		
-		List list = dropTable.getValueList();
 		if (objArray == null && list.size() == 0) {
 			// noop
 		} else if (objArray == null) {
