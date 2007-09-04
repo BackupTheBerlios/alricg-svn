@@ -13,6 +13,7 @@ import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
 import org.d3s.alricg.store.charElemente.Rasse;
@@ -29,7 +30,12 @@ import org.d3s.alricg.store.charElemente.charZusatz.DaemonenPakt;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
 import org.d3s.alricg.store.charElemente.charZusatz.SchwarzeGabe;
+import org.d3s.alricg.store.charElemente.links.Auswahl;
 import org.d3s.alricg.store.charElemente.links.Link;
+import org.d3s.alricg.store.charElemente.links.Option;
+import org.d3s.alricg.store.charElemente.links.OptionAnzahl;
+import org.d3s.alricg.store.charElemente.links.OptionListe;
+import org.d3s.alricg.store.charElemente.links.OptionVerteilung;
 import org.d3s.alricg.store.charElemente.links.OptionVoraussetzung;
 import org.d3s.alricg.store.charElemente.links.Voraussetzung;
 
@@ -79,6 +85,8 @@ public class CharElementTextService {
 			return "Magier Akademie";
 		} else if (clazz ==  SchamanenRitual.class) {
 			return "Ritual";
+		} else if (clazz ==  MagieMerkmal.class) {
+			return "Merkmal";
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +
 					clazz.toString() + " vorhanden.");
@@ -93,8 +101,8 @@ public class CharElementTextService {
 	public static String getVoraussetzungsText(Voraussetzung voraus) {
 		if (voraus == null) return "keine";
 		
-		final String positiv = getVoraussetzungsText(voraus.getPosVoraussetzung());
-		String negativ = getVoraussetzungsText(voraus.getNegVoraussetzung());
+		final String positiv = getOptionListText(voraus.getPosVoraussetzung());
+		String negativ = getOptionListText(voraus.getNegVoraussetzung());
 
 		if (negativ.length() > 0) {
 			negativ = "NICHT: " + negativ;
@@ -110,24 +118,116 @@ public class CharElementTextService {
 	}
 	
 	/**
-	 * Helper für "getVoraussetzungsText(Voraussetzung)"
+	 * Berechnet einen aus einer Voraussetzung einen Text für den User 
+	 * @param voraus Die Voraussetzung, deren Text dargestellt werden soll
+	 * @return Der Text
 	 */
-	private static String getVoraussetzungsText(List<OptionVoraussetzung> voraus) {
-		if (voraus == null) return "";
+	public static String getAuswahlText(Auswahl auswahl) {
+		if (auswahl == null) return "keine";
+		return getOptionListText(auswahl.getOptionen());
+	}
+	
+	/**
+	 * Berechnet einen aus einer Voraussetzung einen Text für den User 
+	 * @param voraus Die Voraussetzung, deren Text dargestellt werden soll
+	 * @return Der Text
+	 */
+	public static String getOptionListText(List<? extends Option> list) {
+		if (list == null) return "keine";
 		final StringBuilder strB = new StringBuilder();
 		
-		for (int i = 0; i < voraus.size(); i++) {
-			if (voraus.size() > 1) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.size() > 1) {
 				strB.append("(");
 			}
-			strB.append(getVoraussetzungsText(voraus.get(i)));
-			if (voraus.size() > 1) {
+			strB.append(getOptionText(list.get(i)));
+			if (list.size() > 1) {
 				strB.append(")");
 			}
-			if (i+1 < voraus.size()) {
+			if (i+1 < list.size()) {
 				strB.append(" und ");
 			}
 		}
+
+		if (strB.length() == 0) return "keine";
+		return strB.toString();
+	}
+	
+	private static String getOptionText(Option option) {
+		StringBuilder strB = new StringBuilder();
+		
+		// Option auswerten
+		if (option instanceof OptionVoraussetzung) {
+			strB.append( getVoraussetzungsText((OptionVoraussetzung) option) );
+		} else if (option instanceof OptionAnzahl) {
+			strB.append( getOptionAnzahlText((OptionAnzahl) option) );
+		} else if (option instanceof OptionListe) {
+			strB.append( getOptionListeText((OptionListe) option) );
+		} else if (option instanceof OptionVerteilung) {
+			strB.append( getOptionVerteilungText((OptionVerteilung) option) );
+		} else {
+			throw new IllegalArgumentException("Keine Behandlung für eine Option des Typs "
+					+ option.getClass() + " vorhanden!");
+		}
+		
+		// Alternativen
+		if (option.getAlternativOption() != null) {
+			strB.insert(0, "(");
+			strB.append(") oder (");
+			strB.append(getOptionText(option.getAlternativOption()));
+			strB.append(")");
+		}
+		
+		return strB.toString();
+	}
+	
+	private static String getOptionAnzahlText(OptionAnzahl option) {
+		if (option == null) return "";
+		final StringBuilder strB = new StringBuilder();
+		
+		// Optionales Prefix:
+		if (option.getAnzahl() > 0) {
+			strB.append(option.getAnzahl()).append(" aus:");
+		}
+		
+		// Text der Links berechnen
+		addLinkText(strB, option);
+		
+		return strB.toString();
+	}
+	
+	private static String getOptionListeText(OptionListe option) {
+		if (option == null) return "";
+		final StringBuilder strB = new StringBuilder();
+		
+		strB.append("Die Werte ");
+		for (int i = 0; i < option.getWerteListe().length; i++) {
+			strB.append(option.getWerteListe()[i]);
+			if (i+1 < option.getWerteListe().length) strB.append(",");
+		}
+		strB.append(" verteilen auf: ");
+		
+		// Text der Links berechnen
+		addLinkText(strB, option);
+		
+		return strB.toString();
+	}
+	
+	private static String getOptionVerteilungText(OptionVerteilung option) {
+		if (option == null) return "";
+		final StringBuilder strB = new StringBuilder();
+		
+		// 7 Punkte verteilen auf max.3 aus: Bogen, Schwert
+		strB.append(option.getWert()).append(" Punkte verteilen auf ");
+		if (option.getAnzahl() > 0) {
+			strB.append("auf max.").append(option.getAnzahl()).append(" ");
+		} else {
+			strB.append("beliebige ");
+		}
+		strB.append("aus: ");
+
+		// Text der Links berechnen
+		addLinkText(strB, option);
 		
 		return strB.toString();
 	}
@@ -159,16 +259,19 @@ public class CharElementTextService {
 			}
 		}
 		
-		// Alternativen
-		if (voraus.getAlternativOption() != null) {
-			strB.insert(0, "(");
-			strB.append(") oder (");
-			strB.append(getVoraussetzungsText((OptionVoraussetzung) voraus.getAlternativOption()));
-			strB.append(")");
-		}
-		
 		return strB.toString();
 	}
+	
+	private static void addLinkText(StringBuilder strB, Option option) {
+		for (int i = 0; i < option.getLinkList().size(); i++) {
+			strB.append(getLinkText((Link) option.getLinkList().get(i)));
+			if (i+1 < option.getLinkList().size()) {
+				strB.append(",");
+			}
+		}
+	}
+	
+
 	
 	/**
 	 * Berechnet zu einem Link einen Text, der dem User angezeigt werden kann.
