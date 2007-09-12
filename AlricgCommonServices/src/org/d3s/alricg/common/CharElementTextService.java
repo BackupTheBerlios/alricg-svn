@@ -12,11 +12,14 @@ import java.util.List;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
+import org.d3s.alricg.store.charElemente.KulturVariante;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
+import org.d3s.alricg.store.charElemente.ProfessionVariante;
 import org.d3s.alricg.store.charElemente.Rasse;
+import org.d3s.alricg.store.charElemente.RasseVariante;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.d3s.alricg.store.charElemente.SchamanenRitual;
@@ -59,12 +62,19 @@ public class CharElementTextService {
 			return "Nachteil";
 		} else if (clazz ==  Sonderfertigkeit.class) {
 			return "Sonderfertigkeit";
-		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
+		} else if (clazz ==  Rasse.class) {
 			return "Rasse";
-		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
+		} else if (clazz ==  Kultur.class) {
 			return "Kultur";
-		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
+		} else if (clazz ==  Profession.class) {
 			return "Profession";
+		} else if (clazz ==  RasseVariante.class) {
+			return "RassenVariante";
+		} else if (clazz ==  KulturVariante.class) {
+			return "KulturVariante";
+		} else if (clazz ==  ProfessionVariante.class) {
+			return "ProfessionVariante";
+			
 		} else if (clazz ==  Gottheit.class) {
 			return "Gottheit";
 		} else if (clazz ==  Liturgie.class) {
