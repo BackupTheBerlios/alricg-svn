@@ -279,6 +279,10 @@ public class WuerfelSammlungTable extends Composite {
 		
 		sammlung.setFestWert(spiPlus.getSelection());
 		
+		if (tableViewer.getTable().getItemCount() == 0 && spiPlus.getSelection() == 0) {
+			return null;
+		}
+		
 		int[] anzahlW = new int[tableViewer.getTable().getItemCount()];
 		int[] augenW = new int[tableViewer.getTable().getItemCount()];
 		for (int i = 0 ; i < tableViewer.getTable().getItemCount(); i++) {

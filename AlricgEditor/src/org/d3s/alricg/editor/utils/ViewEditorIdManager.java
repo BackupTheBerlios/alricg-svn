@@ -15,6 +15,7 @@ import org.d3s.alricg.editor.editors.LiturgieEditor;
 import org.d3s.alricg.editor.editors.NachteilEditor;
 import org.d3s.alricg.editor.editors.ProfessionEditor;
 import org.d3s.alricg.editor.editors.RasseEditor;
+import org.d3s.alricg.editor.editors.RasseVarianteEditor;
 import org.d3s.alricg.editor.editors.RegionVolkEditor;
 import org.d3s.alricg.editor.editors.RepraesentationEditor;
 import org.d3s.alricg.editor.editors.SchamanenRitualEditor;
@@ -44,11 +45,14 @@ import org.d3s.alricg.editor.views.charElemente.ZauberView;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
+import org.d3s.alricg.store.charElemente.KulturVariante;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
+import org.d3s.alricg.store.charElemente.ProfessionVariante;
 import org.d3s.alricg.store.charElemente.Rasse;
+import org.d3s.alricg.store.charElemente.RasseVariante;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.d3s.alricg.store.charElemente.SchamanenRitual;
@@ -100,6 +104,12 @@ public class ViewEditorIdManager {
 			return KulturEditor.ID;
 		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
 			return ProfessionEditor.ID;
+		} else if (clazz ==  RasseVariante.class) {
+			return RasseVarianteEditor.ID;
+		} else if (clazz ==  KulturVariante.class) {
+			
+		} else if (clazz ==  ProfessionVariante.class) {
+			
 		} else if (clazz ==  Gottheit.class) {
 			return GottheitEditor.ID;
 		} else if (clazz ==  Liturgie.class) {

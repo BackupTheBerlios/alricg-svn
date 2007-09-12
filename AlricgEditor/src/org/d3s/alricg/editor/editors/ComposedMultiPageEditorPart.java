@@ -44,7 +44,7 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	protected ScrolledComposite scrollComp;
 	protected boolean isNewElement;
 	
-	private XmlAccessor currentAccessor;
+	protected XmlAccessor currentAccessor;
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.part.MultiPageEditorPart#createPages()

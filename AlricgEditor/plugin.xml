@@ -232,6 +232,12 @@
             id="org.d3s.alricg.editor.editors.ProfessionEditor"
             name="ProfessionEditor">
       </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.RasseVarianteEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.RasseVarianteEditor"
+            name="RasseVarianteEditor">
+      </editor>
    </extension>
 
 </plugin>

@@ -56,7 +56,7 @@ public class CharElementPart extends AbstractElementPart<CharElement> {
 	private final Text txtBeschreibung;
 	private final Text txtRegelAnm;
 	private final Button cbxAnzeigen;
-	private final Combo cobFile;
+	public final Combo cobFile;
 	
 	private HashMap<String, XmlAccessor> cobFileMap = new HashMap<String, XmlAccessor>();
 	

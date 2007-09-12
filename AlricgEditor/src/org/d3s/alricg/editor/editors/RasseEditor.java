@@ -7,8 +7,11 @@
  */
 package org.d3s.alricg.editor.editors;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.xml.bind.JAXBException;
 
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
 import org.d3s.alricg.editor.common.widgets.DropTable;
@@ -17,6 +20,12 @@ import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.editor.editors.composits.HerkunftPart;
 import org.d3s.alricg.editor.editors.widgets.FarbenAuswahlTable;
 import org.d3s.alricg.editor.editors.widgets.WuerfelSammlungTable;
+import org.d3s.alricg.editor.utils.EditorViewUtils;
+import org.d3s.alricg.editor.utils.ViewEditorIdManager;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.store.access.CharElementFactory;
+import org.d3s.alricg.store.access.StoreAccessor;
+import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.Kultur;
@@ -31,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.ui.IWorkbenchPartSite;
 
 /**
  * @author Vincent
@@ -42,19 +52,19 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 	private RassePart rassePart;
 	private AbstractElementPart[] elementPartArray;
 
-	class RassePart extends AbstractElementPart<Rasse> {
+	static class RassePart extends AbstractElementPart<Rasse> {
 		private final DropTable dropTableKulturMoeglich;
 		private final DropTable dropTableKulturUeblich;
 		private final WuerfelSammlungTable wstGroesse;
 		private final WuerfelSammlungTable wstAlter;
 		private final FarbenAuswahlTable fatHaarfarbe;
 		private final FarbenAuswahlTable fatAugenfarbe;
-		private final Combo cobArt;
+		protected final Combo cobArt;
 		private final Spinner spiGewicht;
 		private final Spinner spiGs;
-		private final Button cbxIsNegativListe;
+		protected final Button cbxIsNegativListe;
 		
-		RassePart(Composite top) {
+		RassePart(Composite top, IWorkbenchPartSite site, int alterStart, int groesseStart) {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			
@@ -98,7 +108,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblUeblich.setLayoutData(tmpGData);
 			
-			dropTableKulturUeblich = new DropTable(groupKultur, SWT.NONE, regulator, RasseEditor.this.getSite());
+			dropTableKulturUeblich = new DropTable(groupKultur, SWT.NONE, regulator, site);
 
 			// Mögliche Kulturen
 			final Label lblMoeglich = new Label(groupKultur, SWT.NONE);
@@ -108,7 +118,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblMoeglich.setLayoutData(tmpGData);
 			
-			dropTableKulturMoeglich = new DropTable(groupKultur, SWT.NONE, regulator, RasseEditor.this.getSite());
+			dropTableKulturMoeglich = new DropTable(groupKultur, SWT.NONE, regulator, site);
 
 			final Label lblGroesse = new Label(top, SWT.NONE);
 			lblGroesse.setText("Grösse:");
@@ -117,7 +127,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblGroesse.setLayoutData(tmpGData);
 			
-			wstGroesse = new WuerfelSammlungTable(top, SWT.NONE, RasseEditor.this.getSite(), 150, "cm");
+			wstGroesse = new WuerfelSammlungTable(top, SWT.NONE, site, groesseStart, "cm");
 			
 			final Label lblAlter = new Label(top, SWT.NONE);
 			lblAlter.setText("Alter:");
@@ -126,8 +136,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblAlter.setLayoutData(tmpGData);
 			
-			wstAlter = new WuerfelSammlungTable(top, SWT.NONE, RasseEditor.this.getSite(), 15, "Jahre");
-			
+			wstAlter = new WuerfelSammlungTable(top, SWT.NONE, site, alterStart, "Jahre");
 			
 			final Label lblHaarfarbe = new Label(top, SWT.NONE);
 			lblHaarfarbe.setText("Haarfarbe:");
@@ -136,7 +145,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblHaarfarbe.setLayoutData(tmpGData);
 			
-			fatHaarfarbe = new FarbenAuswahlTable(top, SWT.NONE, RasseEditor.this.getSite());
+			fatHaarfarbe = new FarbenAuswahlTable(top, SWT.NONE, site);
 
 			final Label lblAugenfarbe = new Label(top, SWT.NONE);
 			lblAugenfarbe.setText("Augenfarbe:");
@@ -145,7 +154,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblAugenfarbe.setLayoutData(tmpGData);
 			
-			fatAugenfarbe = new FarbenAuswahlTable(top, SWT.NONE, RasseEditor.this.getSite());
+			fatAugenfarbe = new FarbenAuswahlTable(top, SWT.NONE, site);
 			
 			final Label lblArt = new Label(top, SWT.NONE);
 			lblArt.setText("Art:");
@@ -168,7 +177,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			comPlus.setLayoutData(tmpGData);
 			
 			final Label lblPlus = new Label(comPlus, SWT.NONE);
-			lblPlus.setText("Gewicht - ");
+			lblPlus.setText("Grösse - ");
 			spiGewicht = new Spinner(comPlus, SWT.BORDER);
 			spiGewicht.setValues(100, 0, 200, 0, 1, 20);
 			
@@ -215,23 +224,31 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 			}
 			
 			// Würfel
-			isNotDirty &= Arrays.equals(
+			if ( charElem.getGroesseWuerfel() == null) {
+				isNotDirty &= wstGroesse.getValues() == null;
+			} else {
+				isNotDirty &= Arrays.equals(
 					wstGroesse.getValues().getAnzahlWuerfel(), 
 					charElem.getGroesseWuerfel().getAnzahlWuerfel());
-			isNotDirty &= Arrays.equals(
+				isNotDirty &= Arrays.equals(
 					wstGroesse.getValues().getAugenWuerfel(), 
 					charElem.getGroesseWuerfel().getAugenWuerfel());
-			isNotDirty &= wstGroesse.getValues().getFestWert() 
-							== charElem.getGroesseWuerfel().getFestWert();
+				isNotDirty &= wstGroesse.getValues().getFestWert() 
+								== charElem.getGroesseWuerfel().getFestWert();
+			}
 			
-			isNotDirty &= Arrays.equals(
+			if ( charElem.getAlterWuerfel() == null) {
+				isNotDirty &= wstAlter.getValues() == null;
+			} else {
+				isNotDirty &= Arrays.equals(
 					wstAlter.getValues().getAnzahlWuerfel(), 
 					charElem.getAlterWuerfel().getAnzahlWuerfel());
-			isNotDirty &= Arrays.equals(
+				isNotDirty &= Arrays.equals(
 					wstAlter.getValues().getAugenWuerfel(), 
 					charElem.getAlterWuerfel().getAugenWuerfel());
-			isNotDirty &= wstAlter.getValues().getFestWert() 
-							== charElem.getAlterWuerfel().getFestWert();
+				isNotDirty &= wstAlter.getValues().getFestWert() 
+								== charElem.getAlterWuerfel().getFestWert();
+			}
 
 			isNotDirty &= cobArt.getText().equals(charElem.getArt().toString());
 			isNotDirty &= spiGewicht.getSelection() == charElem.getGewichtModi();
@@ -334,7 +351,7 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 		herkunftPart.loadData((Herkunft) getEditedCharElement());
 		herkunftPart.loadHerkunftTrees(this.getContainer(), this.getSite(), (Herkunft) getEditedCharElement());
 
-		rassePart = new RassePart(mainContainer);
+		rassePart = new RassePart(mainContainer, this.getSite(), 15, 150);
 		rassePart.loadData((Rasse) getEditedCharElement());
 	}
 	
@@ -387,4 +404,5 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 	protected AbstractElementPart[] getElementParts() {
 		return elementPartArray;
 	}
+	
 }

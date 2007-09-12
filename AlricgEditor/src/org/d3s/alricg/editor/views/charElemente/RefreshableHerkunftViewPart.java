@@ -17,12 +17,14 @@ import org.d3s.alricg.editor.common.CustomActions.DeleteCharElementAction;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.editors.composits.CharElementEditorInput;
+import org.d3s.alricg.editor.editors.composits.HerkunftVarianteEditorInput;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.HerkunftVariante;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
@@ -54,20 +56,23 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPart {
 		buildNewVariante = new Action(){
 			@Override
 			public void run() {
-				EditorTreeOrTableObject editObj = 
+				EditorTreeOrTableObject newObjParent = 
 					(EditorTreeOrTableObject) ViewUtils.getSelectedObject(parentComp);
 				
-				XmlAccessor xmlAccessor = editObj.getAccessor();
-				CharElement newCharElem =
+				XmlAccessor xmlAccessor = newObjParent.getAccessor();
+				HerkunftVariante newCharElem = (HerkunftVariante)
 					CharElementFactory.getInstance().buildHerkunftVariante(
-							editObj.getValue().getClass(),
-							(Herkunft) editObj);
+							newObjParent.getValue().getClass(),
+							(Herkunft) newObjParent.getValue());
 				
 				// Öffnen Editor mit neuem CharElement
 				final IWorkbenchPage page = PlatformUI.getWorkbench()
 											.getActiveWorkbenchWindow().getActivePage();
-				final IEditorInput editorInput = new CharElementEditorInput(newCharElem, xmlAccessor, true);
-				
+				//final IEditorInput editorInput2 = new CharElementEditorInput(newCharElem, xmlAccessor, true);
+				final IEditorInput editorInput = new HerkunftVarianteEditorInput(
+						newCharElem, 
+						(Herkunft) newObjParent.getValue(), 
+						xmlAccessor, true);
 				try {
 					page.openEditor(editorInput, ViewEditorIdManager.getEditorID(newCharElem.getClass()), true);
 				} catch (PartInitException e) {

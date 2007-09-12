@@ -1,5 +1,5 @@
 /*
- * Created 23.08.2007
+ * Created 05.09.2007
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
@@ -15,30 +15,25 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * @author Vincent
- *
  */
-public class TextList extends Composite {
-	private final int NUMBER_OF_LINES = 5;
+public class ComboTextList extends Composite {
+	private final int NUMBER_OF_LINES = 3;
 	
-	private Text txtSpez;
+	private Combo cobText;
 	private List listSpez;
 	private Button butAdd;
 	private Button butDelete;
-	private Button butDown;
-	private Button butUp;
 	
 	private final Image imgAdd = ControlIconsLibrary.add.getImageDescriptor().createImage();
 	private final Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
-	private final Image imgUp = ControlIconsLibrary.arrowUp.getImageDescriptor().createImage();
-	private final Image imgDown = ControlIconsLibrary.arrowDown.getImageDescriptor().createImage();
 	
 	/**
 	 * Konstruktor
@@ -46,12 +41,12 @@ public class TextList extends Composite {
 	 * @param style SWT Style
 	 * @param regulator Regulator zum Steuern dieser DropList
 	 */
-	public TextList(Composite parent, int style) {
+	public ComboTextList(Composite parent, int style, String[] comboItems) {
 		super(parent, style);
-		createTextList(parent);
+		createTextList(comboItems);
 	}
 	
-	private void createTextList(Composite parent) {
+	private void createTextList(String[] comboItems) {
 		GridData containerGridData = new GridData(GridData.GRAB_HORIZONTAL);
 		containerGridData.widthHint = 300;
 
@@ -64,9 +59,11 @@ public class TextList extends Composite {
 		this.setLayoutData(containerGridData);
 		
 		// Spalte 1 der containerGridData
-		txtSpez = new Text(this, SWT.BORDER);
-		txtSpez.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		txtSpez.addListener (SWT.DefaultSelection, new Listener () {
+		cobText = new Combo(this, SWT.READ_ONLY);
+		cobText.setItems(comboItems);
+		GridData tmpGData = new GridData(GridData.FILL_HORIZONTAL);
+		cobText.setLayoutData(tmpGData);
+		cobText.addListener (SWT.DefaultSelection, new Listener () {
 			public void handleEvent (Event e) {
 				addToList();
 			}
@@ -77,7 +74,7 @@ public class TextList extends Composite {
 		gridLayout.verticalSpacing = 1;
 		gridLayout.marginHeight = 0;
 		gridLayout.marginWidth = 0;
-		GridData tmpGData = new GridData();
+		tmpGData = new GridData();
 		tmpGData.verticalSpan = 2;
 		tmpGData.verticalAlignment = GridData.BEGINNING;
 		compButtons.setLayout(gridLayout);
@@ -109,86 +106,12 @@ public class TextList extends Composite {
 				listSpez.remove(listSpez.getSelectionIndices());
 			}
 		});
-
-		butUp = new Button(compButtons, SWT.NONE);
-		butUp.setImage(imgUp);
-		tmpGData = new GridData(imgUp.getImageData().width+4, imgDelete.getImageData().height+4); 
-		tmpGData.verticalIndent = 5;
-		butUp.setLayoutData(tmpGData);
-		butUp.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				
-				// Prüfung
-				if (listSpez.getSelectionIndices().length == 0	
-						|| listSpez.getSelectionIndices()[0] == 0) {
-					return;
-				}
-				
-				// Tauschen
-				for (int i = 0; i < listSpez.getSelectionIndices().length; i++) {
-					int selectedIdx = listSpez.getSelectionIndices()[i];
-					final String selectedString = listSpez.getItem(selectedIdx);
-					
-					// View
-					listSpez.setItem(
-							selectedIdx, 
-							listSpez.getItem(selectedIdx-1));
-					listSpez.setItem(
-							selectedIdx-1, 
-							selectedString);
-				}
-				
-				// Selektion neu setzen
-				int[] newSelIdx = new int[listSpez.getSelectionIndices().length];
-				for (int i = 0; i < listSpez.getSelectionIndices().length; i++) {
-					newSelIdx[i] = listSpez.getSelectionIndices()[i] - 1;
-				}
-				listSpez.setSelection(newSelIdx);
-			}
-		});
-		
-		butDown = new Button(compButtons, SWT.NONE);
-		butDown.setImage(imgDown);
-		butDown.setLayoutData(new GridData(imgDown.getImageData().width+4, imgDelete.getImageData().height+4));
-		butDown.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				
-				// Prüfung
-				if (listSpez.getSelectionIndices().length == 0	
-						|| listSpez.getSelectionIndices()[listSpez.getSelectionIndices().length-1] 
-						                                  == listSpez.getItemCount()-1) {
-					return;
-				}
-				
-				// Tauschen
-				for (int i = listSpez.getSelectionIndices().length-1; i >= 0; i--) {
-					int selectedIdx = listSpez.getSelectionIndices()[i];
-					final String selectedString = listSpez.getItem(selectedIdx);
-					
-					// View
-					listSpez.setItem(
-							selectedIdx, 
-							listSpez.getItem(selectedIdx+1));
-					listSpez.setItem(
-							selectedIdx+1, 
-							selectedString);
-				}
-				
-				// Selektion neu setzen
-				int[] newSelIdx = new int[listSpez.getSelectionIndices().length];
-				for (int i = 0; i < listSpez.getSelectionIndices().length; i++) {
-					newSelIdx[i] = listSpez.getSelectionIndices()[i] + 1;
-				}
-				listSpez.setSelection(newSelIdx);
-			}
-		});
-
 	}
 	
 	// Fügt den aktuellen Text im txtSpez nach Prüfung zur List hinzu 
 	private void addToList() {
 		// Prüfe ob leer
-		String text = txtSpez.getText().trim();
+		String text = cobText.getText().trim();
 		if (text.length() == 0) return;
 		
 		// Prüfe ob doppelt
@@ -199,7 +122,6 @@ public class TextList extends Composite {
 		
 		// Wert hinzufügen
 		listSpez.add(text);
-		txtSpez.setText(""); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -209,8 +131,6 @@ public class TextList extends Composite {
 	public void dispose() {
 		this.imgAdd.dispose();
 		this.imgDelete.dispose();
-		this.imgDown.dispose();
-		this.imgUp.dispose();
 		
 		super.dispose();
 	}
@@ -224,7 +144,25 @@ public class TextList extends Composite {
 	}
 	
 	public void setValues(String[] strings) {
-		listSpez.setItems(strings);
+		if (strings == null) {
+			listSpez.setItems(new String[0]);
+		} else {
+			listSpez.setItems(strings);
+		}
 	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
+	 */
+	@Override
+	public void setEnabled(boolean enabled) {
+		cobText.setEnabled(enabled);
+		listSpez.setEnabled(enabled);
+		butAdd.setEnabled(enabled);
+		butDelete.setEnabled(enabled);
+		
+		super.setEnabled(enabled);
+	}
+	
 	
 }
