@@ -136,6 +136,7 @@ public class CharElementFactory {
 			charElem = new RasseVariante();
 			((RasseVariante) charElem).setVarianteVon(parent);
 			((RasseVariante) charElem).setAdditionsVariante(true);
+			((RasseVariante) charElem).setGeschwindigk(((Rasse) parent).getGeschwindigk());
 			
 		} else if (clazz == KulturVariante.class || clazz == Kultur.class) {
 			charElem = new KulturVariante();

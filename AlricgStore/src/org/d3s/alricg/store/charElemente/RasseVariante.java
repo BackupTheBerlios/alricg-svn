@@ -8,7 +8,7 @@
  */
 package org.d3s.alricg.store.charElemente;
 
-import org.d3s.alricg.store.charElemente.links.IdLink;
+
 
 
 /**
@@ -25,6 +25,12 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
 public class RasseVariante extends Rasse implements HerkunftVariante {
 	/** Gibt die original-Rasse an.*/
 	private Rasse varianteVon;
+	
+	// Tags für "entferneXmlTag"
+	public final static String KULTUR_UEBLICH = "Kultur üblich";
+	public final static String KULTUR_MOEGLICH = "Kultur möglich";
+	public final static String[] ALLE_TAGS = new String[] {
+		KULTUR_UEBLICH, KULTUR_MOEGLICH };
 	
 	/** Liste von XML-Tags die aus der original-Rasse "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. sonderfertigkeiten, vorteile.*/
@@ -91,4 +97,21 @@ public class RasseVariante extends Rasse implements HerkunftVariante {
 	public void setAdditionsVariante(boolean isAdditionsVariante) {
 		this.isAdditionsVariante = isAdditionsVariante;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.charElemente.Rasse#getArt()
+	 */
+	@Override
+	public RasseArt getArt() {
+		return varianteVon.getArt();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.charElemente.Rasse#isKulturenSindNegativListe()
+	 */
+	@Override
+	public boolean isKulturenSindNegativListe() {
+		return varianteVon.isKulturenSindNegativListe();
+	}
+	
 }

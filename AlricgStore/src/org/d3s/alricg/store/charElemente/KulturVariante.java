@@ -8,7 +8,6 @@
  */
 package org.d3s.alricg.store.charElemente;
 
-import org.d3s.alricg.store.charElemente.links.IdLink;
 
 
 /**
@@ -26,6 +25,18 @@ public class KulturVariante extends Kultur implements HerkunftVariante {
 	/** Gibt die original-Kultur an.*/
 	private Kultur varianteVon;
 
+	// Tags für "entferneXmlTag"
+	public final static String PROF_MOEGLICH = "Profession möglich";
+	public final static String PROF_UEBLICH = "Profession üblich";
+	public final static String MUTTERSPR = "Muttersprache";
+	public final static String ZWEITSPR = "Zweitsprache";
+	public final static String LEHRSPR = "Lehrsprache";
+	public final static String SPRACHEN = "Sprachen";
+	public final static String SCHRIFTEN = "Schriften";
+	public final static String AUSRUESTUNG = "Ausrüstung";
+	public final static String[] ALLE_TAGS = new String[] {
+		PROF_MOEGLICH, PROF_UEBLICH, MUTTERSPR, ZWEITSPR, LEHRSPR,
+		SPRACHEN, SCHRIFTEN, AUSRUESTUNG};
 	
 	/** Liste von XML-Tags die aus der original-Kultur "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. sonderfertigkeiten, vorteile.*/
@@ -97,6 +108,23 @@ public class KulturVariante extends Kultur implements HerkunftVariante {
 	public void setAdditionsVariante(boolean isAdditionsVariante) {
 		this.isAdditionsVariante = isAdditionsVariante;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.charElemente.Kultur#getArt()
+	 */
+	@Override
+	public KulturArt getArt() {
+		return varianteVon.getArt();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.charElemente.Kultur#isProfessionenSindNegativListe()
+	 */
+	@Override
+	public boolean isProfessionenSindNegativListe() {
+		return varianteVon.isProfessionenSindNegativListe();
+	}
+	
 	
 
 }

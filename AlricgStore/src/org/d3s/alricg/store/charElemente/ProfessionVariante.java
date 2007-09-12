@@ -8,7 +8,6 @@
  */
 package org.d3s.alricg.store.charElemente;
 
-import org.d3s.alricg.store.charElemente.links.IdLink;
 
 
 /**
@@ -26,6 +25,13 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
 public class ProfessionVariante extends Profession implements HerkunftVariante {
 	/** Gibt die original-Profession an.*/
 	private Profession varianteVon;
+	
+	public final static String SPRACHEN = "Sprachen";
+	public final static String SCHRIFTEN = "Schriften";
+	public final static String AUSRUESTUNG = "Ausrüstung";
+	public final static String BESOND_BESITZ = "Ausrüstung";
+	public final static String[] ALLE_TAGS = new String[] {
+		SPRACHEN, SCHRIFTEN, AUSRUESTUNG, BESOND_BESITZ};
 	
 	/** Liste von XML-Tags die aus der original-Profession "entfernt" (also nicht beachtet) 
 	 * werden sollen, z.B. sonderfertigkeiten, vorteile.*/
@@ -93,4 +99,13 @@ public class ProfessionVariante extends Profession implements HerkunftVariante {
 	public void setAdditionsVariante(boolean isAdditionsVariante) {
 		this.isAdditionsVariante = isAdditionsVariante;
 	}
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.store.charElemente.Profession#getArt()
+	 */
+	@Override
+	public ProfArt getArt() {
+		return varianteVon.getArt();
+	}
+	
+	
 }

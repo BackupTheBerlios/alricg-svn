@@ -8,9 +8,6 @@
  */
 package org.d3s.alricg.store.charElemente;
 
-import org.d3s.alricg.store.charElemente.links.Auswahl;
-import org.d3s.alricg.store.charElemente.links.IdLink;
-import org.d3s.alricg.store.charElemente.links.Voraussetzung;
 
 
 /**
@@ -22,6 +19,7 @@ import org.d3s.alricg.store.charElemente.links.Voraussetzung;
  */
 public interface HerkunftVariante {
 	
+	// Tags für "entferneXmlTag"
 	public final static String VORAUSS = "Voraussetzungen";
 	public final static String EIGEN_MODIS = "Modis Eigenschaften";
 	public final static String VORTEILE = "Vorteile";
@@ -38,6 +36,11 @@ public interface HerkunftVariante {
 	public final static String HAUSZAUBER = "Hauszauber";
 	public final static String ZUS_AKT_ZAUBER = "Zus. aktivierbare Zauber";
 	public final static String NICHT_AKT_ZAUBER = "Nicht aktivierbare Zauber";
+	public final static String[] ALLE_TAGS = new String[] {
+		VORAUSS, EIGEN_MODIS, VORTEILE, NACHTEILE, SONDERF, LITURGIEN, 
+		EMPF_VORTEILE, EMPF_NACHTEILE, UNGE_VORTEILE, UNGE_NACHTEILE,
+		VERB_SONDERF, VERB_LITURGIEN, ZAUBER, HAUSZAUBER, ZUS_AKT_ZAUBER,
+		NICHT_AKT_ZAUBER };
 	
 	/**
 	 * @return Liste von XML-Tags die aus der original-Kultur "entfernt" (also nicht beachtet) 
