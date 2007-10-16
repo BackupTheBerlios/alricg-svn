@@ -8,6 +8,8 @@
  */
 package org.d3s.alricg.store.charElemente;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 
 
 /**
@@ -21,7 +23,7 @@ package org.d3s.alricg.store.charElemente;
  * 
  * @author V. Strelow
  */
-public class KulturVariante extends Kultur implements HerkunftVariante {
+public class KulturVariante extends Kultur implements HerkunftVariante<Kultur> {
 	/** Gibt die original-Kultur an.*/
 	private Kultur varianteVon;
 
@@ -56,6 +58,7 @@ public class KulturVariante extends Kultur implements HerkunftVariante {
 	/**
 	 * @return the varianteVon
 	 */
+	@XmlTransient
 	public Kultur getVarianteVon() {
 		return varianteVon;
 	}
@@ -63,8 +66,8 @@ public class KulturVariante extends Kultur implements HerkunftVariante {
 	/**
 	 * @param varianteVon the varianteVon to set
 	 */
-	public void setVarianteVon(Herkunft varianteVon) {
-		this.varianteVon = (Kultur) varianteVon;
+	public void setVarianteVon(Kultur varianteVon) {
+		this.varianteVon = varianteVon;
 	}
 
 	/**

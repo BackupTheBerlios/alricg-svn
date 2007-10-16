@@ -14,11 +14,14 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Kultur;
+import org.d3s.alricg.store.charElemente.KulturVariante;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Profession;
+import org.d3s.alricg.store.charElemente.ProfessionVariante;
 import org.d3s.alricg.store.charElemente.Rasse;
+import org.d3s.alricg.store.charElemente.RasseVariante;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.d3s.alricg.store.charElemente.SchamanenRitual;
@@ -58,11 +61,11 @@ public abstract class AbstractCharElementsAccessor implements CharElementAccesso
 			return getNachteilList();
 		} else if (clazz ==  Sonderfertigkeit.class) {
 			return getSonderfList();
-		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
+		} else if (clazz ==  Rasse.class || clazz == RasseVariante.class) {
 			return getRasseList();
-		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
+		} else if (clazz ==  Kultur.class || clazz == KulturVariante.class) {
 			return getKulturList();
-		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
+		} else if (clazz ==  Profession.class|| clazz == ProfessionVariante.class) {
 			return getProfessionList();
 		} else if (clazz ==  Gottheit.class) {
 			return getGottheitList();

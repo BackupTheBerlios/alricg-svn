@@ -393,6 +393,30 @@ public class DependecySearcher {
 					errorList.add(new DependencyTableObject(herkunft, currentAcc, "Nicht aktivierbare Zauber"));
 				}
 			}
+			// Alternative magische Auswahl
+			if (herkunft.getAlternativMagieEigenschaften() != null) {
+				for (int i2 = 0; i2 < herkunft.getAlternativMagieEigenschaften().getEmpfHauszauber().length; i2++) {
+					if (herkunft.getAlternativMagieEigenschaften().getEmpfHauszauber()[i2].equals(toCheck)) {
+						errorList.add(new DependencyTableObject(
+								herkunft.getAlternativMagieEigenschaften().getEmpfHauszauber()[i2], 
+								currentAcc, "Empfohlene Hauszauber"));
+					}
+				}
+				for (int i2 = 0; i2 < herkunft.getAlternativMagieEigenschaften().getEmpfZauber().length; i2++) {
+					if (herkunft.getAlternativMagieEigenschaften().getEmpfZauber()[i2].equals(toCheck)) {
+						errorList.add(new DependencyTableObject(
+								herkunft.getAlternativMagieEigenschaften().getEmpfZauber()[i2], 
+								currentAcc, "Empfohlene Zauber"));
+					}
+				}
+				for (int i2 = 0; i2 < herkunft.getAlternativMagieEigenschaften().getMoeglichZauber().length; i2++) {
+					if (herkunft.getAlternativMagieEigenschaften().getMoeglichZauber()[i2].equals(toCheck)) {
+						errorList.add(new DependencyTableObject(
+								herkunft.getAlternativMagieEigenschaften().getMoeglichZauber()[i2], 
+								currentAcc, "Wählbare Zauber"));
+					}
+				}
+			}
 			
 			// Empfohlen/ungeeignet und verbilligt
 			if ( !checkDependencyLinkArray(herkunft.getEmpfVorteile(),toCheck)) {

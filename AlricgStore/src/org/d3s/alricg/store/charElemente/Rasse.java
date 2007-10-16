@@ -7,8 +7,13 @@
 
 package org.d3s.alricg.store.charElemente;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlSchemaType;
 
 import org.d3s.alricg.store.charElemente.charZusatz.WuerfelSammlung;
 
@@ -19,7 +24,7 @@ import org.d3s.alricg.store.charElemente.charZusatz.WuerfelSammlung;
  * 
  * @author V.Strelow
  */
-public class Rasse extends Herkunft {
+public class Rasse extends Herkunft<RasseVariante> {
 	
 	@XmlEnum
 	public enum RasseArt {
@@ -57,6 +62,9 @@ public class Rasse extends Herkunft {
 	/**
 	 * @return the kulturMoeglich
 	 */
+	@XmlList
+	@XmlIDREF
+    @XmlSchemaType(name = "IDREF")
 	public Kultur[] getKulturMoeglich() {
 		return kulturMoeglich;
 	}
@@ -70,6 +78,9 @@ public class Rasse extends Herkunft {
 	/**
 	 * @return the kulturUeblich
 	 */
+	@XmlList
+	@XmlIDREF
+    @XmlSchemaType(name = "IDREF")
 	public Kultur[] getKulturUeblich() {
 		return kulturUeblich;
 	}
@@ -163,19 +174,24 @@ public class Rasse extends Herkunft {
 	public void setGeschwindigk(int geschwindigk) {
 		this.geschwindigk = geschwindigk;
 	}
-
+	
 	/**
 	 * @return the varianten
 	 */
 	public RasseVariante[] getVarianten() {
 		return varianten;
 	}
-
+	
 	/**
 	 * @param varianten the varianten to set
 	 */
 	public void setVarianten(RasseVariante[] varianten) {
 		this.varianten = varianten;
+		
+		if (varianten == null) return;
+		for (int i = 0; i < varianten.length;i++) {
+			varianten[i].setVarianteVon(this);
+		}
 	}
     
 	public static class FarbenAngabe {

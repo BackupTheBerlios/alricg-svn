@@ -7,6 +7,10 @@
 
 package org.d3s.alricg.store.charElemente;
 
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlSchemaType;
+
 import org.d3s.alricg.store.charElemente.Werte.Geschlecht;
 import org.d3s.alricg.store.charElemente.links.Auswahl;
 import org.d3s.alricg.store.charElemente.links.IdLink;
@@ -19,7 +23,7 @@ import org.d3s.alricg.store.charElemente.links.IdLink;
  * 
  * @author V.Strelow
  */
-public abstract class Herkunft extends CharElement {
+public abstract class Herkunft<VARIANTE extends HerkunftVariante> extends CharElement implements HerkunftInterface<VARIANTE> {
 	public static int SO_MIN_DEFAULT = 1;
 	public static int SO_MAX_DEFAULT = 21;
 	
@@ -45,8 +49,137 @@ public abstract class Herkunft extends CharElement {
     private IdLink<Sonderfertigkeit>[] verbilligteSonderf;
     private IdLink<Liturgie>[] verbilligteLiturgien;
     private MagieEigenschaften magieEigenschaften;
+    private AlternativMagieEigenschaften alternativMagieEigenschaften;
     
-    public abstract HerkunftVariante[] getVarianten();
+    /**
+	 * @return the alternativMagieEigenschaften
+	 */
+	public AlternativMagieEigenschaften getAlternativMagieEigenschaften() {
+		return alternativMagieEigenschaften;
+	}
+
+
+	/**
+	 * @param alternativMagieEigenschaften the alternativMagieEigenschaften to set
+	 */
+	public void setAlternativMagieEigenschaften(
+			AlternativMagieEigenschaften alternativMagieEigenschaften) {
+		this.alternativMagieEigenschaften = alternativMagieEigenschaften;
+	}
+
+
+	//public abstract void setVarianten(VARIANTE[] varianten);
+	
+    /**
+     * Eine alternative Methode zum angeben der Zauber!
+     * Siehe:
+     * - WDH S.163, gilt fuer alle elfischische Professionen
+     * - WDH S.172, Kristallomant
+     * @author Vincent
+     */
+    public static class AlternativMagieEigenschaften {
+    	 private int anzZauberGesamt; // Wie viele können insgesamt gewählt werden
+    	 private int anzHauszauber; // Davon Hauszauber
+    	 private int anzLeitzauber; // Davon Leitzauber
+    	 private int punkte;
+    	 private Zauber[] empfHauszauber;
+    	 private Zauber[] empfZauber;
+    	 private Zauber[] moeglichZauber;
+		/**
+		 * @return the anzZauberGesamt
+		 */
+		public int getAnzZauberGesamt() {
+			return anzZauberGesamt;
+		}
+		/**
+		 * @param anzZauberGesamt the anzZauberGesamt to set
+		 */
+		public void setAnzZauberGesamt(int anzZauberGesamt) {
+			this.anzZauberGesamt = anzZauberGesamt;
+		}
+		/**
+		 * @return the punkte
+		 */
+		public int getPunkte() {
+			return punkte;
+		}
+		/**
+		 * @param punkte the punkte to set
+		 */
+		public void setPunkte(int punkte) {
+			this.punkte = punkte;
+		}
+		/**
+		 * @return the anzHauszauber
+		 */
+		public int getAnzHauszauber() {
+			return anzHauszauber;
+		}
+		/**
+		 * @param anzHauszauber the anzHauszauber to set
+		 */
+		public void setAnzHauszauber(int anzHauszauber) {
+			this.anzHauszauber = anzHauszauber;
+		}
+		/**
+		 * @return the anzLeitzauber
+		 */
+		public int getAnzLeitzauber() {
+			return anzLeitzauber;
+		}
+		/**
+		 * @param anzLeitzauber the anzLeitzauber to set
+		 */
+		public void setAnzLeitzauber(int anzLeitzauber) {
+			this.anzLeitzauber = anzLeitzauber;
+		}
+		/**
+		 * @return the empfHauszauber
+		 */
+		@XmlList
+		@XmlIDREF
+	    @XmlSchemaType(name = "IDREF")
+		public Zauber[] getEmpfHauszauber() {
+			return empfHauszauber;
+		}
+		/**
+		 * @param empfHauszauber the empfHauszauber to set
+		 */
+		public void setEmpfHauszauber(Zauber[] empfHauszauber) {
+			this.empfHauszauber = empfHauszauber;
+		}
+		/**
+		 * @return the empfZauber
+		 */
+		@XmlList
+		@XmlIDREF
+	    @XmlSchemaType(name = "IDREF")
+		public Zauber[] getEmpfZauber() {
+			return empfZauber;
+		}
+		/**
+		 * @param empfZauber the empfZauber to set
+		 */
+		public void setEmpfZauber(Zauber[] empfZauber) {
+			this.empfZauber = empfZauber;
+		}
+		/**
+		 * @return the moeglichZauber
+		 */
+		@XmlList
+		@XmlIDREF
+	    @XmlSchemaType(name = "IDREF")
+		public Zauber[] getMoeglichZauber() {
+			return moeglichZauber;
+		}
+		/**
+		 * @param moeglichZauber the moeglichZauber to set
+		 */
+		public void setMoeglichZauber(Zauber[] moeglichZauber) {
+			this.moeglichZauber = moeglichZauber;
+		}
+
+    }
     
     public static class MagieEigenschaften {
 	    private Auswahl<Zauber> zauber;

@@ -7,8 +7,13 @@
 
 package org.d3s.alricg.store.charElemente;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlSchemaType;
 
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.links.Auswahl;
@@ -18,7 +23,7 @@ import org.d3s.alricg.store.charElemente.links.Auswahl;
  * 
  * @author V.Strelow
  */
-public class Kultur extends Herkunft {
+public class Kultur extends Herkunft<KulturVariante> {
 	
 	@XmlEnum
 	public enum KulturArt {
@@ -53,6 +58,9 @@ public class Kultur extends Herkunft {
 	/**
 	 * @return the professionMoeglich
 	 */
+	@XmlList
+	@XmlIDREF
+    @XmlSchemaType(name = "IDREF")
 	public Profession[] getProfessionMoeglich() {
 		return professionMoeglich;
 	}
@@ -65,6 +73,9 @@ public class Kultur extends Herkunft {
 	/**
 	 * @return the professionUeblich
 	 */
+	@XmlList
+	@XmlIDREF
+    @XmlSchemaType(name = "IDREF")
 	public Profession[] getProfessionUeblich() {
 		return professionUeblich;
 	}
@@ -149,6 +160,8 @@ public class Kultur extends Herkunft {
 	/**
 	 * @return the regionVolk
 	 */
+	@XmlIDREF
+    @XmlSchemaType(name = "IDREF")
 	public RegionVolk getRegionVolk() {
 		return regionVolk;
 	}
@@ -158,6 +171,7 @@ public class Kultur extends Herkunft {
 	public void setRegionVolk(RegionVolk regionVolk) {
 		this.regionVolk = regionVolk;
 	}
+	
 	/**
 	 * @return the varianten
 	 */
@@ -169,6 +183,10 @@ public class Kultur extends Herkunft {
 	 */
 	public void setVarianten(KulturVariante[] varianten) {
 		this.varianten = varianten;
+		if (varianten == null) return;
+		for (int i = 0; i < varianten.length;i++) {
+			varianten[i].setVarianteVon(this);
+		}
 	}
 	/**
 	 * @return the art

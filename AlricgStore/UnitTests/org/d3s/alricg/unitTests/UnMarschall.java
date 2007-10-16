@@ -23,6 +23,7 @@ import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Rasse;
+import org.d3s.alricg.store.charElemente.RasseVariante;
 import org.d3s.alricg.store.charElemente.Repraesentation;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
@@ -30,6 +31,7 @@ import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
 import org.d3s.alricg.store.charElemente.Fertigkeit.FertigkeitArt;
 import org.d3s.alricg.store.charElemente.Rasse.FarbenAngabe;
+import org.d3s.alricg.store.charElemente.Rasse.RasseArt;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.Werte.Geschlecht;
 import org.d3s.alricg.store.charElemente.Werte.MagieMerkmalEnum;
@@ -718,7 +720,7 @@ public class UnMarschall {
 		ras.setId("Rasse-1");
 		ras.setName("Rasse1");
 		ras.setBeschreibung("Ää Üü Öö ß ?! <> () &");
-		
+		ras.setArt(RasseArt.nichtMenschlich);
 		
 		WuerfelSammlung ws = new WuerfelSammlung();
 		ws.setAnzahlWuerfel(new int[]{1,3});
@@ -837,6 +839,16 @@ public class UnMarschall {
 		auswahlT.setOptionen(optListe);
 		ras.setTalente(auswahlT);
 
+		// Variante
+		RasseVariante rasV = new RasseVariante();
+		rasV.setId("new V-Ras");
+
+		RasseVariante[] rasVArray = new RasseVariante[1];
+		rasVArray[0] = rasV;
+		rasVArray[0].setVarianteVon(ras);
+		
+		ras.setVarianten(rasVArray);
+		
 		
 		// Rasse setzen und Testen
 		List<Rasse> rasList = new ArrayList<Rasse>();

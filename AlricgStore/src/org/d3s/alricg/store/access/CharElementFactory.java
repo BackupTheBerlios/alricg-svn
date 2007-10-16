@@ -35,7 +35,7 @@ import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.Zauber;
-import org.d3s.alricg.store.charElemente.Rasse.FarbenAngabe;
+import org.d3s.alricg.store.charElemente.Profession.Aufwand;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.Werte.Geschlecht;
 import org.d3s.alricg.store.charElemente.Werte.Gilde;
@@ -134,19 +134,20 @@ public class CharElementFactory {
 		// entweder hier ober je nach GUI auch im Editor
 		if (clazz == RasseVariante.class || clazz == Rasse.class) {
 			charElem = new RasseVariante();
-			((RasseVariante) charElem).setVarianteVon(parent);
+			((RasseVariante) charElem).setVarianteVon((Rasse) parent);
 			((RasseVariante) charElem).setAdditionsVariante(true);
 			((RasseVariante) charElem).setGeschwindigk(((Rasse) parent).getGeschwindigk());
 			
 		} else if (clazz == KulturVariante.class || clazz == Kultur.class) {
 			charElem = new KulturVariante();
-			((KulturVariante) charElem).setVarianteVon(parent);
+			((KulturVariante) charElem).setVarianteVon((Kultur) parent);
 			((KulturVariante) charElem).setAdditionsVariante(true);
 			
 		} else if (clazz == ProfessionVariante.class || clazz == Profession.class) {
 			charElem = new ProfessionVariante();
-			((ProfessionVariante) charElem).setVarianteVon(parent);
+			((ProfessionVariante) charElem).setVarianteVon((Profession) parent);
 			((ProfessionVariante) charElem).setAdditionsVariante(true);
+			((ProfessionVariante) charElem).setAufwand(((Profession) parent).getAufwand());
 			
 		} else {
 			throw new IllegalArgumentException("Keine Behandlung für ein Element des Typs " +

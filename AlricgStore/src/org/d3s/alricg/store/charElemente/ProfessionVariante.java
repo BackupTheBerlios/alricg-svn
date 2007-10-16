@@ -8,6 +8,8 @@
  */
 package org.d3s.alricg.store.charElemente;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 
 
 /**
@@ -22,7 +24,7 @@ package org.d3s.alricg.store.charElemente;
  * @author V. Strelow
  */
 
-public class ProfessionVariante extends Profession implements HerkunftVariante {
+public class ProfessionVariante extends Profession implements HerkunftVariante<Profession> {
 	/** Gibt die original-Profession an.*/
 	private Profession varianteVon;
 	
@@ -76,14 +78,15 @@ public class ProfessionVariante extends Profession implements HerkunftVariante {
 	/**
 	 * @return Liefert das Attribut varianteVon.
 	 */
+	@XmlTransient
 	public Profession getVarianteVon() {
 		return varianteVon;
 	}
 	/**
 	 * @param varianteVon Setzt das Attribut varianteVon.
 	 */
-	public void setVarianteVon(Herkunft varianteVon) {
-		this.varianteVon = (Profession) varianteVon;
+	public void setVarianteVon(Profession varianteVon) {
+		this.varianteVon = varianteVon;
 	}
 
 	/* (non-Javadoc) Methode überschrieben

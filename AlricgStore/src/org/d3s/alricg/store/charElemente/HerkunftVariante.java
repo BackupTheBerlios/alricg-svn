@@ -17,7 +17,7 @@ package org.d3s.alricg.store.charElemente;
  *
  * @author V. Strelow
  */
-public interface HerkunftVariante {
+public interface HerkunftVariante<TYPE extends Herkunft> {
 	
 	// Tags für "entferneXmlTag"
 	public final static String VORAUSS = "Voraussetzungen";
@@ -33,13 +33,14 @@ public interface HerkunftVariante {
 	public final static String VERB_SONDERF = "Verb. Sonderfertigkeiten";
 	public final static String VERB_LITURGIEN = "Verb. Liturgien";
 	public final static String ZAUBER = "Zauber";
+	public final static String ALTERNATIV_ZAUBER = "Alternativ Zauber";
 	public final static String HAUSZAUBER = "Hauszauber";
 	public final static String ZUS_AKT_ZAUBER = "Zus. aktivierbare Zauber";
 	public final static String NICHT_AKT_ZAUBER = "Nicht aktivierbare Zauber";
 	public final static String[] ALLE_TAGS = new String[] {
 		VORAUSS, EIGEN_MODIS, VORTEILE, NACHTEILE, SONDERF, LITURGIEN, 
 		EMPF_VORTEILE, EMPF_NACHTEILE, UNGE_VORTEILE, UNGE_NACHTEILE,
-		VERB_SONDERF, VERB_LITURGIEN, ZAUBER, HAUSZAUBER, ZUS_AKT_ZAUBER,
+		VERB_SONDERF, VERB_LITURGIEN, ALTERNATIV_ZAUBER, ZAUBER, HAUSZAUBER, ZUS_AKT_ZAUBER,
 		NICHT_AKT_ZAUBER };
 	
 	/**
@@ -74,12 +75,12 @@ public interface HerkunftVariante {
 	/**
 	 * @return Die Herkunft, von der diese "abstammt". Kann auch wiederum eine Variante sein.
 	 */
-	public Herkunft getVarianteVon();
+	public TYPE getVarianteVon();
 	
 	/**
 	 * @param varianteVon Die Herkunft, von der diese "abstammt". Kann auch wiederum eine Variante sein.
 	 */
-	public void setVarianteVon(Herkunft varianteVon);
+	public void setVarianteVon(TYPE varianteVon);
 	
 	/**
 	 * Bei einer AdditionsVariante (=true) werden alle Werte/ Elemente der Varinate zu der 

@@ -8,6 +8,8 @@
  */
 package org.d3s.alricg.store.charElemente;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 
 
 
@@ -22,7 +24,7 @@ package org.d3s.alricg.store.charElemente;
  * 
  * @author V. Strelow
  */
-public class RasseVariante extends Rasse implements HerkunftVariante {
+public class RasseVariante extends Rasse implements HerkunftVariante<Rasse> {
 	/** Gibt die original-Rasse an.*/
 	private Rasse varianteVon;
 	
@@ -76,14 +78,15 @@ public class RasseVariante extends Rasse implements HerkunftVariante {
 	/**
 	 * @return Liefert das Attribut varianteVon.
 	 */
+	@XmlTransient
 	public Rasse getVarianteVon() {
 		return varianteVon;
 	}
 	/**
 	 * @param varianteVon Setzt das Attribut varianteVon.
 	 */
-	public void setVarianteVon(Herkunft varianteVon) {
-		this.varianteVon = (Rasse) varianteVon;
+	public void setVarianteVon(Rasse varianteVon) {
+		this.varianteVon = varianteVon;
 	}
 	/**
 	 * @return Liefert das Attribut isAdditionsVariante.

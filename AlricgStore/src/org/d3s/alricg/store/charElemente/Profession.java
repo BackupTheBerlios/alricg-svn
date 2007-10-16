@@ -7,6 +7,8 @@
 
 package org.d3s.alricg.store.charElemente;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlEnum;
 
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
@@ -18,7 +20,7 @@ import org.d3s.alricg.store.charElemente.links.Auswahl;
  * 
  * @author V.Strelow
  */
-public class Profession extends Herkunft {
+public class Profession extends Herkunft<ProfessionVariante> {
 
 	@XmlEnum
 	public enum ProfArt {
@@ -176,8 +178,7 @@ public class Profession extends Herkunft {
 	public void setBesondererBesitz(Auswahl<Gegenstand> besondererBesitz) {
 		this.besondererBesitz = besondererBesitz;
 	}
-
-
+	
 	/**
 	 * @return the varianten
 	 */
@@ -185,13 +186,15 @@ public class Profession extends Herkunft {
 		return varianten;
 	}
 
-
 	/**
 	 * @param varianten the varianten to set
 	 */
 	public void setVarianten(ProfessionVariante[] varianten) {
 		this.varianten = varianten;
-	}
-	
-	
+		
+		if (varianten == null) return;
+		for (int i = 0; i < varianten.length;i++) {
+			varianten[i].setVarianteVon(this);
+		}
+	}	
 }
