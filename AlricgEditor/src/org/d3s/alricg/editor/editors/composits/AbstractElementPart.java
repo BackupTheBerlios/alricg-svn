@@ -9,8 +9,6 @@ package org.d3s.alricg.editor.editors.composits;
 
 import java.util.List;
 
-import org.d3s.alricg.editor.common.widgets.DropTable;
-import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**

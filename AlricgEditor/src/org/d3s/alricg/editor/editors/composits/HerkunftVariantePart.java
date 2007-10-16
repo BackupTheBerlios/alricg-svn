@@ -42,7 +42,6 @@ public abstract class HerkunftVariantePart extends AbstractElementPart<HerkunftV
 	private final Button cbxIsErsetztOriginal;
 	private final Button cbxIsMultible;
 	private final Label lblParent;
-	private Herkunft parent;
 	private XmlAccessor parentXmlAccessor;
 	
 	public HerkunftVariantePart(Composite top, String[] comboItems) {
@@ -87,12 +86,14 @@ public abstract class HerkunftVariantePart extends AbstractElementPart<HerkunftV
 		
 		cobTextList = new ComboTextList(groupEntferne, SWT.NONE, comboItems);
 		
-		final Label lblFiller2 = new Label(top, SWT.NONE);
 		cbxIsMultible = new Button(top, SWT.CHECK);
 		cbxIsMultible.setText("Ist Zusatzvariante");
 		cbxIsMultible.setToolTipText("Zusatzvarianten können zusätzlich zu anderen Zusatzvarianten " +
 									"gewählt werden. Die Varianten addieren sich dann."); 
+		final Label lblFiller2 = new Label(top, SWT.NONE);
 		
+		final Label lblParentTxt = new Label(top, SWT.NONE);
+		lblParentTxt.setText("Eine Variante von:");
 		lblParent = new Label(top, SWT.BORDER);
 		lblParent.setText("Per Drag and Drop wählen");
 		lblParent.setSize(120, lblParent.getSize().y);
@@ -115,15 +116,14 @@ public abstract class HerkunftVariantePart extends AbstractElementPart<HerkunftV
 	        if ( !canDropCharElement(charElem) ) return;
 	        
 	        lblParent.setText(charElem.getName());
-	        parent = (Herkunft) treeObj.getValue();
+	        lblParent.setData((Herkunft) treeObj.getValue());
 	        parentXmlAccessor = treeObj.getAccessor();
 	      }
 	    });
-
 	}
 	
-	public Herkunft getParten() {
-		return this.parent;
+	public Herkunft getParent() {
+		return (Herkunft) lblParent.getData();
 	}
 	
 	public XmlAccessor getParentXmlAccessor () {
@@ -149,7 +149,7 @@ public abstract class HerkunftVariantePart extends AbstractElementPart<HerkunftV
 		if (charElem.getEntferneXmlTag() == null) {
 			isNotDirty &= cobTextList.getValueList().length == 0;
 		} else {
-			isNotDirty &= Arrays.equals(charElem.getEntferneXmlTag(), cobTextList.getValueList());
+
 		}
 		isNotDirty &= charElem.isAdditionsVariante() == !cbxIsErsetztOriginal.getSelection();
 		isNotDirty &= charElem.isMultibel() == cbxIsMultible.getSelection();

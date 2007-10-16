@@ -366,6 +366,9 @@ public class RasseEditor extends ComposedMultiPageEditorPart {
 		index = addPage(herkunftPart.getModisAuswahl().getTree());
 		setPageText(index, "Modifikationen");
 		
+		index = addPage(herkunftPart.getAltervativeZauberPart().getControl());
+		setPageText(index, "Alternative Zauberauswahl");
+		
 		index = addPage(herkunftPart.getVerbilligtPart().getTree());
 		setPageText(index, "Verbilligungen");
 		

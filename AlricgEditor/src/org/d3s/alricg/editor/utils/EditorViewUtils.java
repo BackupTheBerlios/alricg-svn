@@ -25,6 +25,8 @@ import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.HerkunftVariante;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -225,11 +227,15 @@ public class EditorViewUtils {
 						}
 					}
 					
-					// Element
-					parent.addChildren(new EditorTreeObject(
-							charElementList.get(i2), 
-							parent,
-							accessorList.get(i1)));
+					// Add Element
+					if (charElementList.get(i2) instanceof Herkunft) {
+						buildHerkunftViewHelper(parent, (Herkunft) charElementList.get(i2), accessorList.get(i1));
+					} else {
+						parent.addChildren(new EditorTreeObject(
+								charElementList.get(i2), 
+								parent,
+								accessorList.get(i1)));
+					}
 				}
 			}
 		}
@@ -257,15 +263,56 @@ public class EditorViewUtils {
 			if (charElementList == null) continue;
 			
 			for (int i2 = 0; i2 < charElementList.size(); i2++) {
-				
-				returnList.add(
+				if (charElementList.get(i2) instanceof Herkunft) {
+					buildHerkunftTableViewHelper(
+							returnList, 
+							(Herkunft) charElementList.get(i2), 
+							accessorList.get(i1));
+				} else {
+					returnList.add(
 						new EditorTableObject(
 								charElementList.get(i2), 
 								accessorList.get(i1))
 						);
+				}
 			}
 		}
 		return returnList;
+	}
+	
+	/**
+	 * Erstellt rekursiv für alle Varianten der Herkunft "herk" einträge in "returnList"
+	 * @param returnList Liste mit allen EditorTableObjects die erzeugt wurden
+	 * @param herk Herkunft für die ein EditorTableObjects erzeugt wird
+	 * @param accessor Aktueller accesssor
+	 */
+	private static void buildHerkunftTableViewHelper(List<EditorTableObject> returnList, Herkunft herk, XmlAccessor accessor) {
+		returnList.add(
+				new EditorTableObject(
+						herk, 
+						accessor)
+				);		
+		if (herk.getVarianten() == null) return;
+		for (int i = 0; i < herk.getVarianten().length; i++) {
+			buildHerkunftTableViewHelper(returnList, (Herkunft) herk.getVarianten()[i], accessor);
+		}
+	}
+	
+	/**
+	 * Erstellt rekursiv für alle Varianten der Herkunft "herk" neue Nodes
+	 * @param node Der aktuelle Node, an dem das neue TreeObject "angehangen" wird
+	 * @param herk Herkunft für die ein neues TreeObject erstellt wird
+	 * @param accessor Aktueller accesssor
+	 */
+	private static void buildHerkunftViewHelper(TreeObject node, Herkunft herk, XmlAccessor accessor) {
+		TreeObject newNode = new EditorTreeObject(herk, node, accessor);
+		node.addChildren(newNode);
+		newNode.setParent(node);
+			
+		if (herk.getVarianten() == null) return;
+		for (int i = 0; i < herk.getVarianten().length; i++) {
+			buildHerkunftViewHelper(newNode, (Herkunft) herk.getVarianten()[i], accessor);
+		}
 	}
 	
 	/**
@@ -307,7 +354,7 @@ public class EditorViewUtils {
 	private static boolean removeElementFromTree(TreeObject node, Object toRemoveValue) {
 		boolean hasDeletedFlag = false;
 		
-		if (node.getValue().equals(toRemoveValue) && node.getChildren() == null) {
+		if (node.getValue().equals(toRemoveValue)) { //(&& node.getChildren() == null)) {
 			// Entferne Child
 			TreeObject parent = node.getParent();
 			parent.removeChildren(node);
@@ -347,11 +394,46 @@ public class EditorViewUtils {
 		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
 		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
 		
-		// Setze neues Element und aktualisiere
+		// Setze neues Element
 		tabList.add(new EditorTableObject(element, xmlAccessor));
 		EditorViewUtils.addElementToTree(root, viewer.getRegulator(), element, xmlAccessor);
 	}
 
+	public static void addAndRemoveHerkunftToView(
+			RefreshableViewPart viewer, 
+			HerkunftVariante element, 
+			XmlAccessor xmlAccessor,
+			boolean isNew) {
+		
+		// "Daten-Modelle" holen
+		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
+		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
+
+		if (isNew) {
+			// Zu Tabelle hinzufügen, wenn nicht schon vorhanden
+			tabList.add(new EditorTableObject(element, xmlAccessor));
+			
+			final TreeObject node = findeNode(root, element.getVarianteVon());
+			node.addChildren(
+				new EditorTreeObject(
+					element, 
+					node,
+					xmlAccessor));
+		} else {
+			final TreeObject newParent = findeNode(root, element.getVarianteVon());
+			final TreeObject node = findeNode(root, element);
+			
+			if (newParent.equals(node) ) {
+				// nix zu tun
+				return;
+			}
+			
+			node.getParent().removeChildren(node); // Vom alten Parent entfernen
+			newParent.addChildren(node); // Zum neuen hinzufügen
+			node.setParent(newParent);
+		}
+	}
+	
 	/**
 	 * Fügt ein CharElement zu einem Tree hinzu. (Hilfsmethode von addElementToView)
 	 * @param invisibleRoot Wurzel des Baumes zum hinzufügen
@@ -399,12 +481,12 @@ public class EditorViewUtils {
 		
 		// In jeder Kategorie Element hinzufügen
 		for (int i = 0; i < catList.size(); i++) {
-			catList.get(i).addChildren(
-				new EditorTreeObject(
-					charElement, 
-					catList.get(i),
-					xmlAccessor)
-			);
+			if (charElement instanceof Herkunft) {
+				buildHerkunftViewHelper(catList.get(i), (Herkunft) charElement, xmlAccessor);
+			} else {
+				catList.get(i).addChildren(new EditorTreeObject(
+						charElement, catList.get(i), xmlAccessor));
+			}
 		}
 	}
 	
@@ -433,5 +515,18 @@ public class EditorViewUtils {
 		}
 		
 		return returnList;
+	}
+	
+	private static TreeObject findeNode(TreeObject node, Object toFind) {
+
+		if (toFind.equals(node.getValue())) return node;
+
+		 if (node.getChildren() != null) {
+			for (int i = 0; i < node.getChildren().length; i++) {
+				final TreeObject founded = findeNode(node.getChildren()[i], toFind);
+				if (founded != null) return founded;
+			}
+		}
+		return null;
 	}
 }

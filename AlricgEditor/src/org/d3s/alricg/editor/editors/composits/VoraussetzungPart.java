@@ -41,8 +41,6 @@ public class VoraussetzungPart extends AbstractAuswahlPart<CharElement> {
 		super(top, partSite);
 	}
 	
-
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.d3s.alricg.editor.editors.composits.AbstarctElementPart#dispose()
@@ -50,7 +48,6 @@ public class VoraussetzungPart extends AbstractAuswahlPart<CharElement> {
 	@Override
 	public void dispose() {
 		treeViewer.getTree().dispose();
-
 	}
 
 	/*

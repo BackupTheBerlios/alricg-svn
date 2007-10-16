@@ -23,6 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IWorkbenchPartSite;
 
 /**
  * @author Vincent
@@ -38,8 +39,8 @@ public class ProfessionEditor extends ComposedMultiPageEditorPart {
 
 	private AbstractElementPart[] elementPartArray;
 	
-	class ProfessionPart extends AbstractElementPart<Profession> {
-		private final Combo cobArt;
+	static class ProfessionPart extends AbstractElementPart<Profession> {
+		protected Combo cobArt;
 		private final Combo cobAufwand;
 		
 		ProfessionPart(Composite top) {
@@ -53,7 +54,7 @@ public class ProfessionEditor extends ComposedMultiPageEditorPart {
 			cobArt.select(0);
 			
 			final Label lblAufwand = new Label(top, SWT.NONE);
-			lblAufwand.setText("lblAufwand:");
+			lblAufwand.setText("Aufwand:");
 			cobAufwand = new Combo(top, SWT.READ_ONLY);
 			for (int i = 0; i < Profession.Aufwand.values().length; i++) {
 				cobAufwand.add(Profession.Aufwand.values()[i].getValue());
@@ -155,6 +156,9 @@ public class ProfessionEditor extends ComposedMultiPageEditorPart {
 		
 		index = addPage(schriftenPart.getTree());
 		setPageText(index, "Sprachen");
+		
+		index = addPage(herkunftPart.getAltervativeZauberPart().getControl());
+		setPageText(index, "Alternative Zauberauswahl");
 		
 		index = addPage(herkunftPart.getVerbilligtPart().getTree());
 		setPageText(index, "Verbilligungen");

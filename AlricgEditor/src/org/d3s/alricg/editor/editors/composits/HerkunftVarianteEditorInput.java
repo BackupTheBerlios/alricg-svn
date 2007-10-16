@@ -18,11 +18,12 @@ import org.eclipse.ui.IEditorInput;
  *
  */
 public class HerkunftVarianteEditorInput extends CharElementEditorInput implements IEditorInput {
-	HerkunftVariante variante;
+	private HerkunftVariante variante;
 	
 	public HerkunftVarianteEditorInput(HerkunftVariante variante, Herkunft parent,  
 			XmlAccessor xmlAccessor,  boolean isNew) {
 		super(parent, xmlAccessor, isNew);
+		this.variante = variante;
 	}
 	
 	@Override
@@ -32,7 +33,7 @@ public class HerkunftVarianteEditorInput extends CharElementEditorInput implemen
 	
 	@Override
 	public Object getAdapter(Class adapter) {
-		if (adapter == HerkunftVariante.class) {
+		if (HerkunftVariante.class.isAssignableFrom(adapter)) {
 			return variante;
 		}
 		return super.getAdapter(adapter);

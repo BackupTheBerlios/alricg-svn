@@ -11,9 +11,11 @@ import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.editors.GegenstandEditor;
 import org.d3s.alricg.editor.editors.GottheitEditor;
 import org.d3s.alricg.editor.editors.KulturEditor;
+import org.d3s.alricg.editor.editors.KulturVarianteEditor;
 import org.d3s.alricg.editor.editors.LiturgieEditor;
 import org.d3s.alricg.editor.editors.NachteilEditor;
 import org.d3s.alricg.editor.editors.ProfessionEditor;
+import org.d3s.alricg.editor.editors.ProfessionVarianteEditor;
 import org.d3s.alricg.editor.editors.RasseEditor;
 import org.d3s.alricg.editor.editors.RasseVarianteEditor;
 import org.d3s.alricg.editor.editors.RegionVolkEditor;
@@ -98,18 +100,18 @@ public class ViewEditorIdManager {
 			return NachteilEditor.ID;
 		} else if (clazz ==  Sonderfertigkeit.class) {
 			return SonderfertigkeitEditor.ID;
-		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
+		} else if (clazz ==  Rasse.class) { 
 			return RasseEditor.ID;
-		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
+		} else if (clazz ==  Kultur.class) { 
 			return KulturEditor.ID;
-		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
+		} else if (clazz ==  Profession.class) {
 			return ProfessionEditor.ID;
 		} else if (clazz ==  RasseVariante.class) {
 			return RasseVarianteEditor.ID;
 		} else if (clazz ==  KulturVariante.class) {
-			
+			return KulturVarianteEditor.ID;
 		} else if (clazz ==  ProfessionVariante.class) {
-			
+			return ProfessionVarianteEditor.ID;
 		} else if (clazz ==  Gottheit.class) {
 			return GottheitEditor.ID;
 		} else if (clazz ==  Liturgie.class) {
@@ -169,11 +171,11 @@ public class ViewEditorIdManager {
 			return GegenstandView.ID;
 		} else if (clazz ==  SchamanenRitual.class) {
 			return SchamanenRitualView.ID;
-		} else if (clazz ==  Rasse.class) { //|| clazz == RasseVariante.class) {
+		} else if (clazz ==  Rasse.class || clazz == RasseVariante.class) {
 			return RasseView.ID;
-		} else if (clazz ==  Kultur.class) { //|| clazz == KulturVariante.class) {
+		} else if (clazz ==  Kultur.class || clazz == KulturVariante.class) {
 			return KulturView.ID;
-		} else if (clazz ==  Profession.class) { //|| clazz == ProfessionVariante.class) {
+		} else if (clazz ==  Profession.class || clazz == ProfessionVariante.class) {
 			return ProfessionView.ID;
 			
 		} else if (clazz ==  SchwarzeGabe.class) {

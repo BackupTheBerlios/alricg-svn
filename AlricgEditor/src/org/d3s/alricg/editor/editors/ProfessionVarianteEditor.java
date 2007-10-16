@@ -1,5 +1,5 @@
 /*
- * Created 05.09.2007
+ * Created 15.10.2007
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
@@ -7,37 +7,29 @@
  */
 package org.d3s.alricg.editor.editors;
 
-import org.d3s.alricg.editor.editors.RasseEditor.RassePart;
+import org.d3s.alricg.editor.editors.ProfessionEditor.ProfessionPart;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
-import org.d3s.alricg.editor.editors.composits.HerkunftPart;
-import org.d3s.alricg.editor.editors.composits.HerkunftVariantePart;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.HerkunftVariante;
-import org.d3s.alricg.store.charElemente.Rasse;
-import org.d3s.alricg.store.charElemente.RasseVariante;
-import org.eclipse.swt.SWT;
+import org.d3s.alricg.store.charElemente.Profession;
+import org.d3s.alricg.store.charElemente.ProfessionVariante;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author Vincent
  */
-public class RasseVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart {
-	public static final String ID = "org.d3s.alricg.editor.editors.RasseVarianteEditor";
+public class ProfessionVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart {
+	public static final String ID = "org.d3s.alricg.editor.editors.ProfessionVarianteEditor";
 	
-	private RassePart rassePart;
+	private ProfessionPart professionPart;
 	private AbstractElementPart[] elementPartArray;
 
 	@Override
-	protected void createHerkunftPart(Composite rassenComp) {
-		rassePart = new RassePart(rassenComp, this.getSite(), 0, 0);
-		rassePart.loadData((RasseVariante) getEditedCharElement());
-		rassePart.cobArt.setEnabled(false);
-		rassePart.cbxIsNegativListe.setEnabled(false);
+	protected void createHerkunftPart(Composite herkunftComp) {
+		professionPart = new ProfessionPart(herkunftComp);
+		professionPart.loadData((ProfessionVariante) getEditedCharElement());
+		professionPart.cobArt.setEnabled(false);
 	}
 
 	/* (non-Javadoc)
@@ -49,7 +41,7 @@ public class RasseVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart
 		setPageText(index, EditorMessages.Editor_Daten);
 		
 		index = addPage(herkunftDatenScroll);
-		setPageText(index, "Rassen Daten");
+		setPageText(index, "Profession Daten");
 		
 		index = addPage(herkunftPart.getModisAuswahl().getTree());
 		setPageText(index, "Modifikationen");
@@ -73,7 +65,7 @@ public class RasseVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart
 				charElementPart,
 				herkunftVariantePart,
 				herkunftPart,
-				rassePart,
+				professionPart,
 				herkunftPart.getModisAuswahl(),
 				herkunftPart.getAltervativeZauberPart(),
 				herkunftPart.getVerbilligtPart(),
@@ -87,7 +79,7 @@ public class RasseVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart
 	 */
 	@Override
 	protected CharElement getEditedCharElement() {
-		return (RasseVariante) this.getEditorInput().getAdapter(RasseVariante.class);
+		return (ProfessionVariante) this.getEditorInput().getAdapter(ProfessionVariante.class);
 	}
 
 	/* (non-Javadoc)
@@ -103,7 +95,7 @@ public class RasseVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart
 	 */
 	@Override
 	protected HerkunftVariante[] getHerkunftVariante(int length) {
-		return new RasseVariante[length];
+		return new ProfessionVariante[length];
 	}
 	
 	/* (non-Javadoc)
@@ -111,7 +103,7 @@ public class RasseVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart
 	 */
 	@Override
 	protected boolean canDropElement(CharElement charElem) {
-		return charElem instanceof Rasse;
+		return charElem instanceof Profession;
 	}
 
 	/* (non-Javadoc)
@@ -119,6 +111,6 @@ public class RasseVarianteEditor extends ComposedMulitHerkunftVarianteEditorPart
 	 */
 	@Override
 	protected String[] getSpezifischeTags() {
-		return RasseVariante.ALLE_TAGS;
+		return ProfessionVariante.ALLE_TAGS;
 	}
 }

@@ -41,6 +41,7 @@ public class HerkunftPart extends AbstractElementPart<Herkunft> {
 	private IdLinkArrayPart aktivierbareZauberPart;
 	private IdLinkArrayPart empfehlungenPart;
 	private IdLinkArrayPart verbilligtPart;
+	private AlternativeZauberAuswahlPart altervativeZauberPart;
 	
 	private final Spinner spiSoMin;
 	private final Spinner spiSoMax;
@@ -56,11 +57,11 @@ public class HerkunftPart extends AbstractElementPart<Herkunft> {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		
-	// Sonzial-Status
 		GridData tmpGData = new GridData(GridData.GRAB_HORIZONTAL);
 		tmpGData.widthHint = 600;
 		tmpGData.horizontalSpan = 2; // nimm 2 Spalten Platz ein
 		
+	// Sozial-Status
 		final Group groupSozial = new Group(top, SWT.SHADOW_IN);
 		groupSozial.setText("Sozialstatus");
 		groupSozial.setLayout(gridLayout);
@@ -206,6 +207,7 @@ public class HerkunftPart extends AbstractElementPart<Herkunft> {
 				new HerkunftIdLinkAktivierbareZauberRegulator());
 		aktivierbareZauberPart.loadData(herkunft);
 
+		altervativeZauberPart = new AlternativeZauberAuswahlPart(container, partSite);
 	}
 	
 	/**
@@ -222,6 +224,13 @@ public class HerkunftPart extends AbstractElementPart<Herkunft> {
 		return aktivierbareZauberPart;
 	}
 
+	/**
+	 * @return the altervativeZauberPart
+	 */
+	public AlternativeZauberAuswahlPart getAltervativeZauberPart() {
+		return altervativeZauberPart;
+	}
+	
 	/**
 	 * @return the empfehlungenPart
 	 */

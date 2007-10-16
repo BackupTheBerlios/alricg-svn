@@ -238,6 +238,18 @@
             id="org.d3s.alricg.editor.editors.RasseVarianteEditor"
             name="RasseVarianteEditor">
       </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.KulturVarianteEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.KulturVarianteEditor"
+            name="KulturVarianteEditor">
+      </editor>
+      <editor
+            class="org.d3s.alricg.editor.editors.ProfessionVarianteEditor"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.editor.editors.ProfessionVarianteEditor"
+            name="ProfessionVarianteEditor">
+      </editor>
    </extension>
 
 </plugin>

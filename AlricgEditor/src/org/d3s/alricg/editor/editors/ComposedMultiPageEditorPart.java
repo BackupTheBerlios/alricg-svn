@@ -92,7 +92,7 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 		return scrollComp;
 	}
 	
-	protected Composite createVoraussetzungsSite() {
+	protected Composite createVoraussetzungsSite() {		
 		voraussetzungsPart = new VoraussetzungPart(getContainer(), this.getSite());
 		voraussetzungsPart.loadData(getEditedCharElement());
 		

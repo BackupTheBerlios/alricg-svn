@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPartSite;
 
 /**
- * Auswahl der Talente für eine Herkunft
+ * Auswahl der CharElemente für eine Herkunft
  * @author Vincent
  */
 public class AuswahlPart extends AbstractAuswahlPart<Herkunft> {

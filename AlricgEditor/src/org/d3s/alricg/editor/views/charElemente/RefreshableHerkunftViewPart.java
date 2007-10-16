@@ -102,33 +102,7 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPart {
 			}};
 			
 		// Element löschen Action
-		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass()) {
-
-			/* (non-Javadoc)
-			 * @see org.d3s.alricg.editor.common.CustomActions.DeleteCharElementAction#run()
-			 */
-			@Override
-			public void run() {
-				TreeOrTableObject obj = ViewUtils.getSelectedObject(parentComp);
-				if (!(obj instanceof EditorTreeOrTableObject)) {
-					return;
-				}
-				if (obj instanceof Herkunft) {
-					if ( ((Herkunft) obj).getVarianten() != null 
-							&& ((Herkunft) obj).getVarianten().length > 0) 
-					{
-						MessageDialog.openError(
-								parentComp.getShell(), 
-								"Löschen nicht möglich", 
-								"Bitte löschen sie zuerst alle Varianten des Elements."); //$NON-NLS-1$
-						return;
-					}
-				}
-				super.run();
-			}
-			
-		};
-
+		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass());
 	}
 	
 	// Das Context Menu beim Rechts-klick
@@ -174,8 +148,6 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPart {
 				showInfos.setEnabled(isEnabled);
 				editSelected.setEnabled(isEnabled);
 				deleteSelected.setEnabled(isEnabled);
-				
-				
 				showInfos.setEnabled(isEnabled);
 				showInfos.setEnabled(isEnabled);
 				
@@ -183,6 +155,14 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPart {
 					buildNewVariante.setEnabled(true);
 				} else {
 					buildNewVariante.setEnabled(false);
+				}
+				if (treeTableObj != null 
+						&& treeTableObj.getValue() instanceof Herkunft
+						&& ((Herkunft) treeTableObj.getValue()).getVarianten() != null
+						&& ((Herkunft) treeTableObj.getValue()).getVarianten().length > 0) {
+					deleteSelected.setEnabled(false);
+				} else {
+					deleteSelected.setEnabled(isEnabled);
 				}
 			}
 		});

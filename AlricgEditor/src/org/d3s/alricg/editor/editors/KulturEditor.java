@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IWorkbenchPartSite;
 
 /**
  * @author Vincent
@@ -60,18 +61,18 @@ public class KulturEditor extends ComposedMultiPageEditorPart {
 	private AuswahlPart schriftenPart;
 	private AuswahlPart ausruestungPart;
 	
-	private final Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
+	private static final Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
 
 	private AbstractElementPart[] elementPartArray;
 
-	class KulturPart extends AbstractElementPart<Kultur> {
+	static class KulturPart extends AbstractElementPart<Kultur> {
 		private final DropTable dropTableProfMoeglich;
 		private final DropTable dropTableProfUeblich;
-		private final Combo cobArt;
+		protected Combo cobArt;
+		protected Button cbxIsNegativListe;
 		private final Label lblRegionVolkDND;
-		private final Button cbxIsNegativListe;
 		
-		KulturPart(Composite top) {
+		KulturPart(Composite top, IWorkbenchPartSite site) {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			
@@ -115,7 +116,7 @@ public class KulturEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblUeblich.setLayoutData(tmpGData);
 			
-			dropTableProfUeblich = new DropTable(groupProfs, SWT.NONE, regulator, KulturEditor.this.getSite());
+			dropTableProfUeblich = new DropTable(groupProfs, SWT.NONE, regulator, site);
 
 			// Mögliche Kulturen
 			final Label lblMoeglich = new Label(groupProfs, SWT.NONE);
@@ -125,7 +126,7 @@ public class KulturEditor extends ComposedMultiPageEditorPart {
 			tmpGData.verticalIndent = 10;
 			lblMoeglich.setLayoutData(tmpGData);
 			
-			dropTableProfMoeglich = new DropTable(groupProfs, SWT.NONE, regulator, KulturEditor.this.getSite());
+			dropTableProfMoeglich = new DropTable(groupProfs, SWT.NONE, regulator, site);
 
 			
 			final Label lblArt = new Label(top, SWT.NONE);
@@ -312,7 +313,7 @@ public class KulturEditor extends ComposedMultiPageEditorPart {
 				new KulturAusruestungRegulator());
 		ausruestungPart.loadData((Herkunft) getEditedCharElement());
 		
-		kulturPart = new KulturPart(mainContainer);
+		kulturPart = new KulturPart(mainContainer, this.getSite());
 		kulturPart.loadData((Kultur) getEditedCharElement());
 		
 	}
@@ -330,6 +331,9 @@ public class KulturEditor extends ComposedMultiPageEditorPart {
 		
 		index = addPage(schriftenPart.getTree());
 		setPageText(index, "Sprachen");
+		
+		index = addPage(herkunftPart.getAltervativeZauberPart().getControl());
+		setPageText(index, "Alternative Zauberauswahl");
 		
 		index = addPage(herkunftPart.getVerbilligtPart().getTree());
 		setPageText(index, "Verbilligungen");
