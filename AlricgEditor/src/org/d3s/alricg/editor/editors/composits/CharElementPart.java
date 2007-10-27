@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.d3s.alricg.editor.editors.ComposedMultiPageEditorPart;
 import org.d3s.alricg.editor.editors.EditorMessages;
 import org.d3s.alricg.store.access.IdFactory;
 import org.d3s.alricg.store.access.StoreDataAccessor;
@@ -73,7 +74,6 @@ public class CharElementPart extends AbstractElementPart<CharElement> {
 		groupBasisDaten.setLayoutData(gridData);
 		groupBasisDaten.setLayout(gridLayout);
 		
-		
 		// ID
 		Label lblID = new Label(groupBasisDaten, SWT.NONE);
 		lblID.setText(EditorMessages.CharElementPart_ID);
@@ -98,7 +98,7 @@ public class CharElementPart extends AbstractElementPart<CharElement> {
 			
 			txtName.addFocusListener( new FocusListener() {
 				@Override
-			    public void focusLost(FocusEvent event) {	
+			    public void focusLost(FocusEvent event) {
 					if (!txtName.getText().equalsIgnoreCase(lastFocusedName) 
 							&& charElementClass != null) {
 						txtID.setText(

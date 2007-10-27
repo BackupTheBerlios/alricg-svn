@@ -189,6 +189,8 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	 */
 	@Override
 	public boolean isSaveAsAllowed() {
+		// TODO Keine gute Lösung...
+		firePropertyChange(PROP_DIRTY);
 		return false;
 	}
 	
@@ -200,7 +202,9 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 		final CharElement charElem = getEditedCharElement();
 		
 		for (int i = 0; i < getElementParts().length; i++) {
-			if (getElementParts()[i].isDirty(charElem)) return true;
+			if (getElementParts()[i].isDirty(charElem)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -221,4 +225,5 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	protected abstract CharElement getEditedCharElement();
 	
 	protected abstract void addCharElementSiteParts(Composite mainContainer);
+	
 }

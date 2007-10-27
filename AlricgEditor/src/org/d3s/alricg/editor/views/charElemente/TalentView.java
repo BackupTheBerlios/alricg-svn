@@ -2,7 +2,6 @@ package org.d3s.alricg.editor.views.charElemente;
 
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
-import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
@@ -15,7 +14,6 @@ import org.d3s.alricg.editor.utils.Regulatoren;
 import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -203,14 +201,7 @@ public class TalentView extends RefreshableViewPart {
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
-								new CreatableViewerSorter() {
-									@Override
-									public Comparable getComparable(Object obj) {
-										return ((Talent) getCharElement(obj))
-														.getSorte().toString();
-									}
-								},
-								tableViewer));
+								new SorteSorter(), tableViewer));
 
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
 		tc.getColumn().setText(ViewMessages.TalentView_Probe);
@@ -268,6 +259,13 @@ public class TalentView extends RefreshableViewPart {
 		@Override
 		public Comparable getComparable(Object obj) {
 			return ((Talent) getCharElement(obj)).getArt().toString();
+		}
+	}
+	
+	public static class SorteSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Talent) getCharElement(obj)).getSorte().toString();
 		}
 	}
 	
