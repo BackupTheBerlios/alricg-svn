@@ -14,12 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
-import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.XmlAccessor;
@@ -97,7 +97,7 @@ public class EditorViewUtils {
 		}
 
 		/**
-		 * @return Der Text der auf den Knoten angeziegt werden soll
+		 * @return Der Text der auf den Knoten angezeigt werden soll
 		 */
 		public String getText() {
 			return text;
@@ -180,7 +180,7 @@ public class EditorViewUtils {
 	 * @param regulator Regualtor um mit verschiedenen Objekten umgehen zu können
 	 * @return Root Element es neuen Trees
 	 */
-	public static EditorTreeObject buildEditorViewTree(List<XmlAccessor> accessorList, Regulator regulator) {
+	public static EditorTreeObject buildEditorTreeView(List<XmlAccessor> accessorList, Regulator regulator) {
 		// init HashMap und Root
 		final HashMap<String, TreeObject> map = new HashMap<String, TreeObject>();
 		final EditorTreeObject invisibleRoot = new EditorTreeObject("invisibleRoot", null, null);
@@ -252,7 +252,7 @@ public class EditorViewUtils {
 	 * @param regulator Regualtor um mit verschiedenen Objekten umgehen zu können
 	 * @return Root Liste mit allen Elementen für die Tabelle
 	 */
-	public static List<? extends TableObject> buildTableView(
+	public static List<? extends TableObject> buildEditorTableView(
 			List<XmlAccessor> accessorList, 
 			Regulator regulator) 
 	{
@@ -313,220 +313,5 @@ public class EditorViewUtils {
 		for (int i = 0; i < herk.getVarianten().length; i++) {
 			buildHerkunftViewHelper(newNode, (Herkunft) herk.getVarianten()[i], accessor);
 		}
-	}
-	
-	/**
-	 * Entfernd ein Element (CharElement oder Link) von einem View. Dadurch wird das Element
-	 * NICHT von der Datenbasis entfernd!
-	 * @param viewer Der Viewer von dem das Element entfernd werden soll
-	 * @param element Das zu entferndene Element
-	 */
-	public static void removeElementFromView(
-			RefreshableViewPart viewer, 
-			Object element)
-	{
-		if (viewer == null) return;
-		
-		// "Daten-Modelle" holen
-		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
-		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
-		
-		// Aus Table entfernen
-		for (int i = 0; i < tabList.size(); i++) {
-			if ( ((TableObject) tabList.get(i)).getValue().equals(element) ) {
-				tabList.remove(i);
-				break;
-			}
-		}
-		
-		// Aus Tree entfernen
-		EditorViewUtils.removeElementFromTree(root, element);
-	}
-	
-	/**
-	 * Entfernt ab "node" alle Nodes mit dem value "toRemoveValue". Wenn durch das
-	 * entfernen ein "ordner" des Baumes leer wird, wird dieser ebenfalls entfernt
-	 * @param node Aktuell zu durchsuchender Knoten
-	 * @param toRemoveValue Alle Knoten mit diesem Wert werden gelöscht
-	 * @return true Der Knoten "node" wurde gelöscht, ansonsten false (dies sagt nichts 
-	 * 		darüber aus, ob evtl. unterknoten von "node" gelöscht wurden oder nicht)
-	 */
-	private static boolean removeElementFromTree(TreeObject node, Object toRemoveValue) {
-		boolean hasDeletedFlag = false;
-		
-		if (node.getValue().equals(toRemoveValue)) { //(&& node.getChildren() == null)) {
-			// Entferne Child
-			TreeObject parent = node.getParent();
-			parent.removeChildren(node);
-			hasDeletedFlag = true;
-			
-			// Entferne Parent, wenn dieser keine Kinder mehr hat
-			if (parent.getChildren() == null && parent.getParent() != null) {
-				removeElementFromTree(parent, parent.getValue());
-			}
-		}
-		
-		int idx = 0; 
-		while (node.getChildren() != null && idx < node.getChildren().length) {
-			if (!removeElementFromTree(node.getChildren()[idx], toRemoveValue)) {
-				idx++;
-			}
-		}
-		
-		return hasDeletedFlag;
-	}
-	
-	/**
-	 * Fügt ein Element (CharElement oder Link) zu einem View hinzu.
-	 * Das Element wird mit dieser Methode NICHT zu der Datenbasis hinzugefügt
-	 * @param viewer Der view zu dem das Element hinzugefügt werden soll
-	 * @param element Das Element welches hinzugefügt werden soll
-	 * @param xmlAccessor Der Accessor, zu dem das Element gehört
-	 */
-	public static void addElementToView(
-			RefreshableViewPart viewer, 
-			Object element, 
-			XmlAccessor xmlAccessor) 
-	{
-		if (viewer == null) return;
-		
-		// "Daten-Modelle" holen
-		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
-		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
-		
-		// Setze neues Element
-		tabList.add(new EditorTableObject(element, xmlAccessor));
-		EditorViewUtils.addElementToTree(root, viewer.getRegulator(), element, xmlAccessor);
-	}
-
-	public static void addAndRemoveHerkunftToView(
-			RefreshableViewPart viewer, 
-			HerkunftVariante element, 
-			XmlAccessor xmlAccessor,
-			boolean isNew) {
-		
-		// "Daten-Modelle" holen
-		List tabList = (List) ((TableViewContentProvider) viewer.getTableViewer().getContentProvider()).getElementList();
-		TreeObject root = ((TreeViewContentProvider) viewer.getTreeViewer().getContentProvider()).getRoot();
-
-		if (isNew) {
-			// Zu Tabelle hinzufügen, wenn nicht schon vorhanden
-			tabList.add(new EditorTableObject(element, xmlAccessor));
-			
-			final TreeObject node = findeNode(root, element.getVarianteVon());
-			node.addChildren(
-				new EditorTreeObject(
-					element, 
-					node,
-					xmlAccessor));
-		} else {
-			final TreeObject newParent = findeNode(root, element.getVarianteVon());
-			final TreeObject node = findeNode(root, element);
-			
-			if (newParent.equals(node) ) {
-				// nix zu tun
-				return;
-			}
-			
-			node.getParent().removeChildren(node); // Vom alten Parent entfernen
-			newParent.addChildren(node); // Zum neuen hinzufügen
-			node.setParent(newParent);
-		}
-	}
-	
-	/**
-	 * Fügt ein CharElement zu einem Tree hinzu. (Hilfsmethode von addElementToView)
-	 * @param invisibleRoot Wurzel des Baumes zum hinzufügen
-	 * @param regulator Der Regulator für den entsprechenen View
-	 * @param element Das Element (link oder CharElement), welches hinzugefügt werden soll
-	 * @param xmlAccessor der zugehörige XmlAccessor
-	 */
-	private static void addElementToTree(
-			TreeObject invisibleRoot, Regulator regulator, 
-			Object element, XmlAccessor xmlAccessor) 
-	{
-		CharElement charElement = ViewUtils.getCharElement(element);
-		
-		final Object[] firstCat = regulator.getFirstCategory(charElement);
-		
-		// Alle Kategorien suchen / erzeugen
-		List<TreeObject> catList = findChilds(invisibleRoot, firstCat);
-		if (catList.size() == 0) {
-			catList.add(invisibleRoot);
-		}
-		
-		// Falls Sammelbegriff, diesen in gefundenen Kategorien suchen / erzeugen
-		if (charElement.getSammelbegriff() != null) {
-			String[] tmpStrArray = new String[] {charElement.getSammelbegriff()};
-			List<TreeObject> tmpCatList = new ArrayList<TreeObject>();
-			
-			for (int i1 = 0; i1 < catList.size(); i1++) {
-				List<TreeObject> tmpList = findChilds(catList.get(i1), tmpStrArray);
-				
-				if (tmpList.size() == 0) {
-					// Erzeugen
-					for (int i2 = 0; i2 < catList.size(); i2++) {
-						TreeObject newChild = new TreeObject(
-								charElement.getSammelbegriff(), 
-								catList.get(i2));
-						newChild.setParent(catList.get(i2));
-						catList.get(i2).addChildren(newChild);
-						tmpList.add(newChild);
-					}
-				}
-				tmpCatList.addAll(tmpList);
-			}
-			catList = tmpCatList;
-		}
-		
-		// In jeder Kategorie Element hinzufügen
-		for (int i = 0; i < catList.size(); i++) {
-			if (charElement instanceof Herkunft) {
-				buildHerkunftViewHelper(catList.get(i), (Herkunft) charElement, xmlAccessor);
-			} else {
-				catList.get(i).addChildren(new EditorTreeObject(
-						charElement, catList.get(i), xmlAccessor));
-			}
-		}
-	}
-	
-	/**
-	 * Durchsucht die direkten Kinder von "node" nach den Objekten aus "category".
-	 * Wird eine "category" nicht gefunden, wird sie angelegt.
-	 * @param node Node um die Kinder zu durchsuchen
-	 * @param category Zu findene/anzulegende Objekte
-	 * @return Liste von TreeObjects, welche die "category"-Objekte enthalten
-	 */
-	private static List<TreeObject> findChilds(TreeObject node, Object[] category) {
-		List<TreeObject> returnList = new ArrayList<TreeObject>();
-		
-		for (int i2 = 0; i2 < category.length; i2++) {
-			if (node.getChildren() == null) continue;
-			for (int i1 = 0; i1 < node.getChildren().length; i1++) {
-				if (node.getChildren()[i1].getValue().equals(category[i2])) {
-					returnList.add(node.getChildren()[i1]);
-				}
-			}
-			if (returnList.size() <= i2) {
-				TreeObject newChild = new TreeObject(category[i2], node);
-				node.addChildren(newChild);
-				returnList.add(newChild);
-			}
-		}
-		
-		return returnList;
-	}
-	
-	private static TreeObject findeNode(TreeObject node, Object toFind) {
-
-		if (toFind.equals(node.getValue())) return node;
-
-		 if (node.getChildren() != null) {
-			for (int i = 0; i < node.getChildren().length; i++) {
-				final TreeObject founded = findeNode(node.getChildren()[i], toFind);
-				if (founded != null) return founded;
-			}
-		}
-		return null;
 	}
 }

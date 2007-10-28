@@ -5,7 +5,7 @@
  * protected and under the GNU General Public License.
  * For more information see "http://www.alricg.de/".
  */
-package org.d3s.alricg.editor.common;
+package org.d3s.alricg.editor.utils;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -13,15 +13,14 @@ import java.util.logging.Level;
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.Messages;
+import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomFilter.CurrentFileFilter;
+import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.editors.composits.CharElementEditorInput;
 import org.d3s.alricg.editor.editors.dialoge.ShowDependenciesDialog;
-import org.d3s.alricg.editor.utils.EditorViewUtils;
-import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.EditorViewUtils.DependencyProgressMonitor;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
-import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.ViewModel;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.CharElementFactory;
@@ -342,7 +341,7 @@ public class CustomActions {
 				// Löschen
 				if (!b) return;
 				
-				EditorViewUtils.removeElementFromView(
+				ViewUtils.removeElementFromView(
 						view,
 						charElement);
 				CharElementFactory.getInstance().deleteCharElement(

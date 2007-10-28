@@ -12,11 +12,16 @@ import java.io.IOException;
 import javax.xml.bind.JAXBException;
 
 import org.d3s.alricg.common.CharElementTextService;
+import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.ViewUtils.ObjectCreator;
+import org.d3s.alricg.editor.common.ViewUtils.TableObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.editor.editors.composits.CharElementPart;
 import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
-import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
+import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
+import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
@@ -135,7 +140,7 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 	// Aktualisiere Ansicht
 		// 1. Element aus Ansicht entfernen
 		if (!isNewElement) { // Nur wenn das Element nicht neu ist
-			EditorViewUtils.removeElementFromView(
+			ViewUtils.removeElementFromView(
 					viewPart,
 					charElement);
 			CharElementFactory.getInstance().deleteCharElement(
@@ -145,10 +150,24 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 		// 2. Element zu Ansicht neu hinzufügen
 		currentAccessor = this.charElementPart.getSelectedXmlAccessor();
 		CharElementFactory.getInstance().addCharElement(charElement, currentAccessor);
-		EditorViewUtils.addElementToView(
+		
+		final ObjectCreator objCreator = new ObjectCreator() {
+			
+			@Override
+			public TableObject createTableObject(Object element) {
+				return new EditorTableObject(element, currentAccessor);
+			}
+
+			@Override
+			public TreeObject createTreeObject(Object element, TreeObject parentNode) {
+				return new EditorTreeObject(element, parentNode, currentAccessor);
+			}
+		};
+		
+		ViewUtils.addElementToView(
 				viewPart, 
 				charElement, 
-				currentAccessor);
+				objCreator);
 		// 3. Ansicht aktualisieren
 		if (viewPart != null) viewPart.refresh();
 		

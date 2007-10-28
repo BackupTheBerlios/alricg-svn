@@ -255,7 +255,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.d3s.alricg.editor.rcp.StandradPerspective"
-            icon="icons/sample.gif"
+            icon="/"
             id="org.d3s.alricg.editor.rcp.StandradPerspective"
             name="Standrad Ansicht">
       </perspective>

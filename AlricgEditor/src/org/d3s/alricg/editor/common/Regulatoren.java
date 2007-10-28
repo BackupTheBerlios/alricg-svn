@@ -5,7 +5,7 @@
  * protected and under the GNU General Public License.
  * For more information see "http://www.alricg.de/".
  */
-package org.d3s.alricg.editor.utils;
+package org.d3s.alricg.editor.common;
 
 import java.util.ArrayList;
 import java.util.List;

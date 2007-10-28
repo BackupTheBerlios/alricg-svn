@@ -9,16 +9,16 @@ package org.d3s.alricg.editor.views.charElemente;
 
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
+import org.d3s.alricg.editor.common.Regulatoren;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.RegionVolkAbkSorter;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.RegionVolkArtSorter;
+import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
-import org.d3s.alricg.editor.utils.Regulatoren;
-import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
 import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.RegionVolk;
@@ -104,7 +104,7 @@ public class RegionVolkView extends RefreshableViewPart {
 		tableViewer.getTable().setSortDirection(SWT.UP);
 		tableViewer.setSorter(new CustomColumnViewerSorter.NameSorter());
 		tableViewer.setInput(
-				EditorViewUtils.buildTableView(
+				EditorViewUtils.buildEditorTableView(
 					StoreDataAccessor.getInstance().getXmlAccessors(), 
 					getRegulator())
 				);
@@ -161,7 +161,7 @@ public class RegionVolkView extends RefreshableViewPart {
 						new RegionVolkAbkSorter(), treeViewer));
 		
 		// Inhalt und Sortierung setzen
-		TreeObject root = EditorViewUtils.buildEditorViewTree(
+		TreeObject root = EditorViewUtils.buildEditorTreeView(
 				StoreDataAccessor.getInstance().getXmlAccessors(), 
 				getRegulator());
 		treeViewer.setContentProvider(new TreeViewContentProvider(root));

@@ -11,10 +11,15 @@ import java.io.IOException;
 
 import javax.xml.bind.JAXBException;
 
+import org.d3s.alricg.editor.common.ViewUtils;
+import org.d3s.alricg.editor.common.ViewUtils.ObjectCreator;
+import org.d3s.alricg.editor.common.ViewUtils.TableObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.editors.composits.HerkunftPart;
 import org.d3s.alricg.editor.editors.composits.HerkunftVariantePart;
-import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
+import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
+import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
 import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
@@ -143,11 +148,24 @@ public abstract class ComposedMulitHerkunftVarianteEditorPart extends ComposedMu
 			newParent.setVarianten(varianten);
 		}
 		
+		final ObjectCreator objCreator = new ObjectCreator() {
+			
+			@Override
+			public TableObject createTableObject(Object element) {
+				return new EditorTableObject(element, currentAccessor);
+			}
+
+			@Override
+			public TreeObject createTreeObject(Object element, TreeObject parentNode) {
+				return new EditorTreeObject(element, parentNode, currentAccessor);
+			}
+		};
+		
 		// Aktualisiere Ansicht
-		EditorViewUtils.addAndRemoveHerkunftToView(
+		ViewUtils.addAndRemoveHerkunftToView(
 				viewPart, 
 				(HerkunftVariante) charElement, 
-				currentAccessor,
+				objCreator,
 				isNewElement);
 		
 		// Refresh

@@ -1,17 +1,10 @@
 package org.d3s.alricg.editor;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.d3s.alricg.store.access.StoreAccessor;
-import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.loggingService.LoggerManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.xml.sax.SAXException;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -31,24 +24,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Activator() {
 		logger = LoggerManager.getLogger(PLUGIN_ID, this);
-		
-		// >>> TEST Laden der Daten, aber nur zum Testen
-		try {
-			StoreAccessor.getInstance().loadFiles();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// <<<<
 	}
 	
 	/*

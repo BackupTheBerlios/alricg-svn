@@ -8,14 +8,14 @@
 package org.d3s.alricg.editor.views.charElemente;
 
 import org.d3s.alricg.editor.common.ViewUtils;
-import org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.DeleteCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.EditCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.FilterCurrentFileAction;
-import org.d3s.alricg.editor.common.CustomActions.InfoCharElementAction;
-import org.d3s.alricg.editor.common.CustomActions.SwapTreeTableAction;
+import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
-import org.d3s.alricg.editor.utils.Regulatoren.Regulator;
+import org.d3s.alricg.editor.utils.CustomActions.BuildNewCharElementAction;
+import org.d3s.alricg.editor.utils.CustomActions.DeleteCharElementAction;
+import org.d3s.alricg.editor.utils.CustomActions.EditCharElementAction;
+import org.d3s.alricg.editor.utils.CustomActions.FilterCurrentFileAction;
+import org.d3s.alricg.editor.utils.CustomActions.InfoCharElementAction;
+import org.d3s.alricg.editor.utils.CustomActions.SwapTreeTableAction;
 import org.d3s.alricg.editor.views.FileView;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.eclipse.jface.action.Action;
