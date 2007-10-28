@@ -8,6 +8,7 @@
  */
 package org.d3s.alricg.store.held;
 
+import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.links.Link;
 
 
@@ -19,7 +20,7 @@ import org.d3s.alricg.store.charElemente.links.Link;
  * 
  * @author V. Strelow
  */
-public class HeldenLink extends Link {
+public class HeldenLink<ZIEL extends CharElement> extends Link<ZIEL> {
 	
     /**
      * @return Die aktuellen kosten für dieses Element (Od GP oder TalentGP ergibt 

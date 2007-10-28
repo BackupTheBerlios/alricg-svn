@@ -10,7 +10,7 @@ package org.d3s.alricg.store.charElemente.sonderregeln;
 
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.links.Link;
-import org.d3s.alricg.store.held.Held;
+import org.d3s.alricg.store.held.CharakterDaten;
 
 /**
  * <u>Beschreibung:</u><br> 
@@ -54,7 +54,7 @@ public interface Sonderregel extends BasisSonderregel {
 	 * 		Wert, Text oder zweitZiel ausgelesen werden
 	 * @return true - Die SR kann zum Helden hinzugefügt werden, andernfalls false.
 	 */
-	public boolean canAddSelf(Held held, boolean ok, Link srLink);
+	public boolean canAddSelf(CharakterDaten held, boolean ok, Link srLink);
 	
 	/**
 	 * Wird aufgerufen wenn diese Sonderregel zum Helden hinzugefügt wurde.
@@ -65,7 +65,7 @@ public interface Sonderregel extends BasisSonderregel {
 	 * 		mit dem Vorteil "Herausragende Eigenschaft". Aus diesem können evtl.
 	 * 		Wert, Text oder zweitZiel ausgelesen werden.
 	 */
-	public void initSonderregel(Held held, Link srLink);
+	public void initSonderregel(CharakterDaten held, Link srLink);
 	// Evtl. Änderungen von Werten sollten hier vorgenommen werden
 	
 	/**

@@ -35,6 +35,7 @@ import org.d3s.alricg.store.charElemente.charZusatz.DaemonenPakt;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.charZusatz.MagierAkademie;
 import org.d3s.alricg.store.charElemente.charZusatz.SchwarzeGabe;
+import org.d3s.alricg.store.held.CharakterDaten;
 
 /**
  * Diese Klasse bietet zugriff auf alle aktuell geladenen Elemente.
@@ -68,6 +69,14 @@ public class StoreDataAccessor extends AbstractCharElementsAccessor implements C
 	 */
 	public List<XmlAccessor> getXmlAccessors() {
 		return virtualAccessor.getXmlAccessor();
+	}
+	
+	/**
+	 * Liefert alle Helden, die geladen wurden
+	 * @return
+	 */
+	public List<CharakterDaten> getHelden() {
+		return virtualAccessor.getCharDaten();
 	}
 	
 	/* (non-Javadoc)

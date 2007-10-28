@@ -11,7 +11,7 @@ package org.d3s.alricg.store.charElemente.sonderregeln;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.d3s.alricg.store.charElemente.links.Link;
-import org.d3s.alricg.store.held.Held;
+import org.d3s.alricg.store.held.CharakterDaten;
 import org.d3s.alricg.store.held.HeldenLink;
 
 /**
@@ -31,14 +31,14 @@ public abstract class SonderregelAdapter extends CharElement implements Sonderre
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.sonderregeln.SonderregelInterface#canAddSelf(boolean, org.d3s.alricg.charKomponenten.links.Link)
 	 */
-	public boolean canAddSelf(Held held, boolean ok, Link srLink) {
+	public boolean canAddSelf(CharakterDaten held, boolean ok, Link srLink) {
 		return ok;
 	}
 	
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.sonderregeln.SonderregelInterface#initSonderregel(org.d3s.alricg.held.Held, org.d3s.alricg.charKomponenten.links.Link)
 	 */
-	public void initSonderregel(Held held, Link srLink) {
+	public void initSonderregel(CharakterDaten held, Link srLink) {
 		// Noop!
 	}
 	

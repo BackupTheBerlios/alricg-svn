@@ -26,6 +26,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.d3s.alricg.store.Activator;
 import org.d3s.alricg.store.access.hide.XmlVirtualAccessor;
+import org.d3s.alricg.store.held.CharakterDaten;
+import org.d3s.alricg.store.rules.RegelConfig;
 import org.eclipse.core.runtime.Platform;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,6 +44,8 @@ public class StoreAccessor {
 	private static String ORIGINAL_FILES_PATH; 
 	private static String USER_FILES_PATH;
 	private static String CHARS_PATH;
+	private static String RULES_PATH;
+	
 	private static StoreAccessor instance;
 	
 	private StoreAccessor() {
@@ -49,12 +53,14 @@ public class StoreAccessor {
 			ORIGINAL_FILES_PATH = Platform.getLocation().append(File.separatorChar + "original").toOSString();
 			USER_FILES_PATH = Platform.getLocation().append(File.separatorChar + "user").toOSString();
 			CHARS_PATH = Platform.getLocation().append(File.separatorChar + "chars").toOSString();
+			RULES_PATH = Platform.getLocation().append(File.separatorChar + "rulesConfig.xml").toOSString();
 		} catch(org.eclipse.core.runtime.AssertionFailedException e) {
-			// TEST dies ist lediglich zum testen
+			// TEST dies ist lediglich zum testen, auch für Unit-Tests
 			File f = new File("testDir");
 			ORIGINAL_FILES_PATH = f.getAbsolutePath() + File.separatorChar + File.separatorChar + "original" + File.separatorChar;
 			USER_FILES_PATH = f.getAbsolutePath() + File.separatorChar + File.separatorChar + "user" + File.separatorChar;
 			CHARS_PATH = f.getAbsolutePath() + File.separatorChar + File.separatorChar + "chars" + File.separatorChar;
+			RULES_PATH = f.getAbsolutePath() + File.separatorChar + File.separatorChar + "rulesConfig.xml";
 		}
 		proveDir(ORIGINAL_FILES_PATH);
 		proveDir(USER_FILES_PATH);
@@ -111,6 +117,7 @@ public class StoreAccessor {
 		List<File> files = new ArrayList<File>();
 		find( ORIGINAL_FILES_PATH, "(.*\\.xml$)", files );
 		find( USER_FILES_PATH, "(.*\\.xml$)", files );
+		find( CHARS_PATH, "(.*\\.xml$)", files );
 		
 	// DefaultCreateAccessor festlegen
 		
@@ -153,6 +160,29 @@ public class StoreAccessor {
 	}
 
 	/**
+	 * Läd alle XML-Files aus den Verzeichnisen ORIGINAL_FILES_PATH und USER_FILES_PATH
+	 * und speichert das Ergebnis im XmlVirtualAccessor.
+	 * @return
+	 * @throws JAXBException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public RegelConfig loadRegelConfig() throws JAXBException, ParserConfigurationException, SAXException, IOException {
+		
+		// Unmarshal
+		final JAXBContext ctx = JAXBContext.newInstance(RegelConfig.class);
+		final Unmarshaller unmarshaller = ctx.createUnmarshaller();
+		final RegelConfig regelConfig = (RegelConfig) unmarshaller.unmarshal(new File(RULES_PATH));
+
+		Activator.logger.log(
+				Level.INFO, 
+				"RegelConfig geladen.");
+		
+		return regelConfig;
+	}
+	
+	/**
 	 * Fügt einen neues File, zum Datenbestand hinzu. (Die Datei wird erst mit "save" abgelegt")
 	 * @param file File welches hinzugefügt werden soll
 	 * @return Der neue XmlAccessor zu dem File
@@ -188,6 +218,31 @@ public class StoreAccessor {
 		marshaller.marshal(
 				xmlAccessor, 
 				new FileWriter(xmlAccessor.getFilePath())
+			);
+	}
+	
+	/**
+	 * Speichert den Helden in ein File wie im "filePath" Attribut des 
+	 * Helden angegeben.
+	 * @param virtuelAccessor Held der gespeichert werden soll
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public void saveHeld(CharakterDaten held) throws JAXBException, IOException {
+		final JAXBContext ctx = JAXBContext.newInstance(XmlAccessor.class);
+		final Marshaller marshaller = ctx.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "ISO-8859-1");
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		
+		if (held.getFilePath() == null) {
+				throw new IOException("Es wurde für mindestes ein XML-File kein " +
+						"Speicherort (konkreter FileName als filePath im XmlAccessor) " +
+						"angegeben! Entsprechende Files wurden nicht gespeichert.");
+		}
+		
+		marshaller.marshal(
+				held, 
+				new FileWriter(held.getFilePath())
 			);
 	}
 	

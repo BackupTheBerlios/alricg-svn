@@ -46,6 +46,8 @@ import org.d3s.alricg.store.charElemente.links.OptionListe;
 import org.d3s.alricg.store.charElemente.links.OptionVerteilung;
 import org.d3s.alricg.store.charElemente.links.OptionVoraussetzung;
 import org.d3s.alricg.store.charElemente.links.Voraussetzung;
+import org.d3s.alricg.store.rules.RegelConfig;
+import org.d3s.alricg.store.rules.RegelConfig.SktZeile;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -958,8 +960,87 @@ public class UnMarschall {
 		Assert.assertEquals(
 				5, 
 				rasse.getTalente().getOptionen().get(1).getAlternativOption().getAnzahl());
-
-
+	}
+	
+	@Test
+	public void testRegelConfig() {
+		RegelConfig config = new RegelConfig();
+		
+		config.setDiffKlugheitMuttersprache(-3);
+		config.setDiffKlugheitZweitsprache(-2);
+		config.setFaktorTalentGp(-1);
+		config.setMaxDiffAT_PA(0);
+		config.setMaxEigenschafWert(1);
+		config.setMaxGpEigenschaften(2);
+		config.setMaxNachteilGp(3);
+		config.setMaxSchlechteEingenschaftGp(4);
+		config.setMaxSchlechtEigenchafWert(5);
+		config.setMaxSozialstatus(6);
+		config.setMaxTalentAktivierung(7);
+		config.setMaxZauberAktivierungHZ(8);
+		config.setMinEigenschafWert(9);
+		config.setMinSchelchtEigenchafWert(10);
+		config.setStartGp(11);
+		
+		List<SktZeile> list = new ArrayList<SktZeile>();
+		list.add(new SktZeile(0, 2, 3, 4, 5, 6, 7, 8, 9));
+		list.add(new SktZeile(10, 2, 3, 4, 5, 6, 7, 8, 9));
+		list.add(new SktZeile(20, 25, 35, 45, 55, 65, 75, 85, 95));
+		list.add(new SktZeile(30, 26, 36, 46, 56, 66, 76, 86, 96));	
+		
+		config.setSktZeilen(list);
+		
+		testRegelConfigAsserts(config);
+		
+		// Speichern und wieder auslesen
+		try {
+			Marshaller marshaller;
+			Unmarshaller unmarshaller;
+			JAXBContext ctx = JAXBContext.newInstance(RegelConfig.class);
+			
+			marshaller = ctx.createMarshaller();
+			// sonst scheint "ß" nicht zu gehen
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "ISO-8859-1"); 
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			unmarshaller = ctx.createUnmarshaller();
+			marshaller.marshal(config, new FileWriter(testFile));
+			
+			config = null;
+			config = (RegelConfig) unmarshaller.unmarshal(testFile);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		testRegelConfigAsserts(config);
+	}
+	
+	private void testRegelConfigAsserts(RegelConfig config) {
+		Assert.assertEquals(-3, config.getDiffKlugheitMuttersprache());
+		Assert.assertEquals(-2, config.getDiffKlugheitZweitsprache());
+		Assert.assertEquals(-1, config.getFaktorTalentGp());
+		Assert.assertEquals(0, config.getMaxDiffAT_PA());
+		Assert.assertEquals(1, config.getMaxEigenschafWert());
+		Assert.assertEquals(2, config.getMaxGpEigenschaften());
+		Assert.assertEquals(3, config.getMaxNachteilGp());
+		Assert.assertEquals(4, config.getMaxSchlechteEingenschaftGp());
+		Assert.assertEquals(5, config.getMaxSchlechtEigenchafWert());
+		Assert.assertEquals(6, config.getMaxSozialstatus());
+		Assert.assertEquals(7, config.getMaxTalentAktivierung());
+		Assert.assertEquals(8, config.getMaxZauberAktivierungHZ());
+		Assert.assertEquals(9, config.getMinEigenschafWert());
+		Assert.assertEquals(10, config.getMinSchelchtEigenchafWert());
+		Assert.assertEquals(11, config.getStartGp());
+		
+		Assert.assertEquals(0, config.getSktZeilen().get(0).getNr());
+		Assert.assertEquals(10, config.getSktZeilen().get(1).getNr());
+		Assert.assertEquals(20, config.getSktZeilen().get(2).getNr());
+		Assert.assertEquals(30, config.getSktZeilen().get(3).getNr());
+		Assert.assertEquals(2, config.getSktZeilen().get(0).getA());
+		Assert.assertEquals(2, config.getSktZeilen().get(1).getA());
+		Assert.assertEquals(25, config.getSktZeilen().get(2).getA());
+		Assert.assertEquals(26, config.getSktZeilen().get(3).getA());
 	}
 	
 	@Before
