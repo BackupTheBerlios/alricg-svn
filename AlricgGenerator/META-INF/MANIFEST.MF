@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AlricgGenerator Plug-in
+Bundle-SymbolicName: org.d3s.alricg.generator; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.d3s.alricg.generator.Activator
+Bundle-Vendor: D3S
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.d3s.alricg.commonServices,
+ org.d3s.alricg.editor,
+ org.d3s.alricg.store,
+ org.d3s.LoggingService
+Eclipse-LazyStart: true

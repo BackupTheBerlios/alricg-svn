@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Allgemein"
+            id="org.d3s.alricg.generator.views.general">
+      </category>
+      <view
+            name="Talente"
+            icon="icons/sample.gif"
+            category="org.d3s.alricg.generator.views.general"
+            class="org.d3s.alricg.generator.views.general.TalentView"
+            id="org.d3s.alricg.generator.views.general.TalentView">
+      </view>
+      <view
+            class="org.d3s.alricg.generator.views.held.TalentView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.generator.views.held.TalentView"
+            name="Talente (Held)">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.d3s.alricg.generator.rcp.StandardPerspective"
+            id="org.d3s.alricg.generator.rcp.StandardPerspective"
+            name="Standard Ansicht">
+      </perspective>
+   </extension>
+
+</plugin>
