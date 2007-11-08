@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.d3s.alricg.store.charElemente.links.Link;
+import org.d3s.alricg.store.charElemente.sonderregeln.BasisSonderregel;
 import org.d3s.alricg.store.charElemente.sonderregeln.Sonderregel;
 import org.d3s.alricg.store.held.CharakterDaten;
 import org.d3s.alricg.store.held.HeldenLink;
@@ -25,7 +26,7 @@ import org.d3s.alricg.store.held.HeldenLink;
  * 
  * @author V.Strelow
  */
-public class SonderregelAdmin implements BasisSonderregelInterface  {
+public class SonderregelAdmin implements BasisSonderregel  {
     
     /** <code>SonderregelAdmin</code>'s logger */
     private static final Logger LOG = Logger.getLogger(SonderregelAdmin.class.getName());
@@ -61,7 +62,7 @@ public class SonderregelAdmin implements BasisSonderregelInterface  {
 			LOG.warning("Dieser Link ist bereits im SonderregelAmdin registriert!");
 		}
 		
-		if (link.getZiel().hasSonderregel()) {
+		if (link.getZiel().getSonderregelKlasse() != null) {
 			Sonderregel sr = link.getZiel().createSonderregel();
 			sonderRegelMap.put(link, sr ); // SR zum Admin hinzufügen
 			sr.initSonderregel(held, link); // SR initialisieren
@@ -192,7 +193,7 @@ public class SonderregelAdmin implements BasisSonderregelInterface  {
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.charKomponenten.sonderregeln.SonderregelInterface#changeKosten(int, org.d3s.alricg.charKomponenten.links.Link)
 	 */
-	public int changeKosten(int kosten, Link link) {
+	public double changeKosten(double kosten, Link link) {
 		iterator = sonderRegelMap.values().iterator();
 		
 		// Alle Sonderregeln durchlaufen und entsprechend aufrufen

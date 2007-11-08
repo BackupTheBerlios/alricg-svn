@@ -83,7 +83,7 @@ public class VerbilligteFertigkeitAdmin {
 	 * @param fertigkeit Die Fertigkeit für die die Kosten errechnet werden
 	 * @return Die GP-Kosten für die Fertigkeit
 	 */
-	public int changeKostenGP(int kosten, Fertigkeit fertigkeit) {
+	public double changeKostenGP(double kosten, Fertigkeit fertigkeit) {
 		// TODO implement
 		return kosten;
 	}

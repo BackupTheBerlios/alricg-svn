@@ -7,13 +7,12 @@
  */
 package org.d3s.alricg.common.charakter;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.d3s.alricg.common.logic.FormelSammlung;
+import org.d3s.alricg.common.logic.Prozessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
-import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.held.CharakterDaten;
@@ -31,32 +30,29 @@ public class Charakter {
 	
 	// Die Eigenschaften, wegen ihrer besonderen Bedeutung nochmal hier
 	private HashMap<EigenschaftEnum, Link> eigenschaftHash;
+	private HashMap<Class, Prozessor> prozessorHash;
 	
 	public Charakter(CharakterDaten charData) {
 		this.charData = charData;
 		
-		// init EigenschaftHash
-		for (int i = 0; i < charData.getEigenschaften().size(); i++) {
-			Link<Eigenschaft> link = charData.getEigenschaften().get(i);
-			eigenschaftHash.put(link.getZiel().getEigenschaftEnum(), link);
-		}
+		sonderregelAdmin = new SonderregelAdmin(charData);
+		verbFertigkeitenAdmin = new VerbilligteFertigkeitAdmin(charData);
+		vorausAdmin = new VoraussetzungenAdmin(charData);
 	}
 	
 	/**
-	 * VORSICHT: Manche Eigenschaften werden ausgerechnet und 
+	 * VORSICHT: Manche Eigenschaften werden ausgerechnet und sollten über 
+	 * "getEigenschaftsWert" abgerufen werden!
 	 * @param clazz Die Klasse des gewünschten Elements (Talent, Zauber, usw.)
-	 * @return Liefert eine Liste von Links mit den gewünschten Elementen des Charakters
+	 * @return Liefert eine unmodifizierbare Liste von Links mit den gewünschten
+	 * 			 Elementen des Charakters
 	 */
-	public List getElemente(Class clazz) {
-		
-		// TODO weiter ergänzen
-		if (clazz.equals(Talent.class)) {
-			return Collections.unmodifiableList(charData.getEigenschaften());
-		} else if (clazz.equals(Talent.class)) {
-			return Collections.unmodifiableList(charData.getTalente());
-		}
-		
-		return null;
+	public List getElementListe(Class clazz) {
+		return prozessorHash.get(clazz).getUnmodifiableList();
+	}
+	
+	public Prozessor getProzessor(Class clazz) {
+		return prozessorHash.get(clazz);
 	}
 	
 	/**
@@ -132,6 +128,20 @@ public class Charakter {
 		default: // Es handelt sich um MU - KK, KE, GS oder SO
 			// Da hier nicht errechnet werden muß, werden die Werte direkt geliefert
 			return eigenschaftHash.get(eigen).getWert();
+		}
+	}
+	
+	/**
+	 * @param prozessorHash the prozessorHash to set
+	 */
+	public void setProzessorHash(HashMap<Class, Prozessor> prozessorHash) {
+		this.prozessorHash = prozessorHash;
+		
+		final List<Link<Eigenschaft>> tmpEig = prozessorHash.get(Eigenschaft.class).getUnmodifiableList();
+		eigenschaftHash = new HashMap<EigenschaftEnum, Link>();
+		
+		for (int i = 0; i < tmpEig.size(); i++) {
+			eigenschaftHash.put(tmpEig.get(i).getZiel().getEigenschaftEnum(), tmpEig.get(i));
 		}
 	}
 
