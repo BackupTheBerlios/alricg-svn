@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Vincent
  *
  */
-public class RepraesentationView extends RefreshableViewPart {
+public class RepraesentationView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.RepraesentationView"; //$NON-NLS-1$
 	
 	/**

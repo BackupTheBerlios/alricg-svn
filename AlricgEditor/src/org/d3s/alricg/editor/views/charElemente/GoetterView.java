@@ -47,7 +47,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Vincent
  *
  */
-public class GoetterView extends RefreshableViewPart {
+public class GoetterView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.GoetterView"; //$NON-NLS-1$
 	
 	// Über diesen Regulator wird die Darstellung von Images gesteuert

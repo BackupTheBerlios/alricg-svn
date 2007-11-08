@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Vincent
  *
  */
-public class GegenstandView extends RefreshableViewPart {
+public class GegenstandView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.GegenstandView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)

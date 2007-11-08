@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Vincent
  *
  */
-public class VorteilView extends RefreshableViewPart {
+public class VorteilView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.VorteilView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)

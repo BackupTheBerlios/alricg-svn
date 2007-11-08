@@ -15,6 +15,12 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -113,37 +119,70 @@ public class CustomColumnEditors {
 	public static class LinkWertEditingSupport extends EditingSupport {
 		private final ColumnViewer viewer;
 		private ComboBoxCellEditor cellEditor;
-		private final int MIN_WERT;
-		private final int MAX_WERT;
+		private int MIN_WERT;
+		private int MAX_WERT;
+		private final boolean withNoValue;
 		
+
 		/**
 		 * @param viewer Zugehöriger Viewer
 		 * @param parent zugehöriger Tree oder Table
-		 * @param minWert Dieser Wert muss negativ sein!
-		 * @param maxWert Dieser Wert muss positiv sein!
+		 * @param minWert Minimal auswählbarer Wert
+		 * @param maxWert Maximal auswählbare Wert
+		 * @param withNoValue true Es gibt auch einen "-" (Kein Wert) Eintrag, ansonsten false
 		 */
-		public LinkWertEditingSupport(ColumnViewer viewer, Composite parent, int minWert, int maxWert) {
+		public LinkWertEditingSupport(ColumnViewer viewer, Composite parent, int minWert, int maxWert, boolean withNoValue) {
 			super(viewer);
 			this.viewer = viewer;
+			this.withNoValue = withNoValue;
+
+			cellEditor = new ComboBoxCellEditor(parent, new String[0]);
+			((CCombo) cellEditor.getControl()).setVisibleItemCount(8);
+			((CCombo) cellEditor.getControl()).addSelectionListener(new SelectionListener() {
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					// TODO Auto-generated method stub
+					System.out.println("widgetDefaultSelected");
+				}
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					// TODO Auto-generated method stub
+					System.out.println("widgetSelected");
+				}});
+			
+			
+			changeMinMax(minWert, maxWert);
+		}
+		
+		protected void changeMinMax(int minWert, int maxWert) {
 			MIN_WERT = minWert;
 			MAX_WERT = maxWert;
 			
-			// Build Editor
-			int toSub = -MIN_WERT;
-			String[] strAr = new String[-MIN_WERT + MAX_WERT + 2];
+			int toSub = MIN_WERT;
+			int arrayCount = -MIN_WERT + MAX_WERT + 1;
+			if (withNoValue) arrayCount++; // einer mehr für "-" (kein Wert)
+			
+			String[] strAr = new String[arrayCount];
 			for (int i  = 0; i < strAr.length; i++) {
-				if (i == (-MIN_WERT)+1) {
-					toSub = (-MIN_WERT)+1;
-					strAr[i] = "-"; //$NON-NLS-1$
-					continue;
+				if (withNoValue) {
+					if (MIN_WERT >= 0 && i == 0) {
+						toSub = MIN_WERT+1;
+						strAr[i] = "-"; //$NON-NLS-1$
+						continue;
+					} else if (MIN_WERT < 0 && i == (-MIN_WERT)) {
+						toSub = MIN_WERT-1;
+						strAr[i] = "-"; //$NON-NLS-1$
+						continue;
+					}
 				}
-				strAr[i] = Integer.toString(i - toSub);
+				strAr[i] = Integer.toString(i + toSub);
 			}
 			
-			cellEditor = new ComboBoxCellEditor(parent, strAr);
-			((CCombo) cellEditor.getControl()).setVisibleItemCount(8);
+			cellEditor.setItems(strAr);
 		}
-			
+		
 		@Override
 		protected boolean canEdit(Object element) {
 			// Nur Links haben eine Stufe und können bearbeitet werden
@@ -155,19 +194,6 @@ public class CustomColumnEditors {
 
 		@Override
 		protected CellEditor getCellEditor(Object element) {
-			
-			/*
-			int wert = ((Link) ((TreeOrTableObject) element).getValue()).getWert();
-			if (wert == Link.KEIN_WERT) {
-				cellEditor.setValue(11);
-			} else if (wert < MIN_WERT || wert > MAX_WERT) {
-				cellEditor.setValue(-MIN_WERT + 1);
-			} else if (wert <= 0){
-				cellEditor.setValue(-MIN_WERT + wert);
-			} else {
-				cellEditor.setValue(-MIN_WERT + 1 + wert);
-			}*/
-			
 			cellEditor.setValue(getValue(element));
 			return cellEditor;
 		}
@@ -175,33 +201,59 @@ public class CustomColumnEditors {
 		@Override
 		protected Object getValue(Object element) {
 			int wert = ((Link) ((TreeOrTableObject) element).getValue()).getWert();
-			if (wert == Link.KEIN_WERT) {
-				return -MIN_WERT + 1;
-			} else if (wert < MIN_WERT || wert > MAX_WERT) {
-				return 11;
-			} else if (wert <= 0){
-				return (-MIN_WERT + wert);
-			} else {
-				return (-MIN_WERT + 1 + wert);
-			}
 			
+			if (withNoValue) {
+				if (wert == Link.KEIN_WERT &&
+						MIN_WERT < 0) {
+					return -MIN_WERT;
+				} else if (wert == Link.KEIN_WERT) {
+					return 0;
+				} else if (wert > 0){
+					return (1 + wert - MIN_WERT);
+				}
+			}
+			return (wert - MIN_WERT);
 		}
 
 		@Override
 		protected void setValue(Object element, Object value) {
+
+			((Link)((TreeOrTableObject) element).getValue()).setWert(
+					getWertForSet(value)
+			);
+			viewer.cancelEditing();
+			viewer.update(element, null);
+		}
+		
+		
+		
+		/**
+		 * Bestimmt den neuen Wert, der für das setzen des Wertes ausgewählt wurde
+		 * @param value Objekt aus dem Array der ComboBox, welche Gewählt wurde
+		 * @return Zugehöriger Zahlenwert
+		 */
+		protected int getWertForSet(Object value) {
 			int valueInt = ((Integer) value).intValue();
-			int wert = Link.KEIN_WERT;;
+			int wert;
 			
-			if (valueInt <= -MIN_WERT){
-				wert = valueInt  + MIN_WERT;
-			} else if (valueInt > -MIN_WERT+1){
-				wert = valueInt + MIN_WERT - 1;
-			} else {
-				wert = Link.KEIN_WERT;;
+			wert = valueInt + MIN_WERT;
+			if (withNoValue) {
+				if (MIN_WERT >= 0) {
+					if (valueInt == 0) {
+						wert = Link.KEIN_WERT;
+					} else {
+						wert--;
+					}
+				} else {
+					if (wert == 0) {
+						wert = Link.KEIN_WERT;
+					} else if (wert > 0) {
+						wert--;
+					}
+				}
 			}
 			
-			((Link)((TreeOrTableObject) element).getValue()).setWert(wert);
-			viewer.update(element, null);
+			return wert;
 		}
 	}
 	

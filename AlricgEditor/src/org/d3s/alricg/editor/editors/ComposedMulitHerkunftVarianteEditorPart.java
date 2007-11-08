@@ -20,7 +20,7 @@ import org.d3s.alricg.editor.editors.composits.HerkunftVariantePart;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
@@ -111,8 +111,8 @@ public abstract class ComposedMulitHerkunftVarianteEditorPart extends ComposedMu
 		final CharElement charElement = getEditedCharElement();
 		final Herkunft oldParent = (Herkunft) ((HerkunftVariante) charElement).getVarianteVon();
 		final Herkunft newParent = (Herkunft) herkunftVariantePart.getParent();
-		final RefreshableViewPart viewPart = 
-				(RefreshableViewPart) ViewEditorIdManager.getView(getEditedCharElement().getClass());
+		final RefreshableViewPartImpl viewPart = 
+				(RefreshableViewPartImpl) ViewEditorIdManager.getView(getEditedCharElement().getClass());
 		
 		// Save to Charelement
 		for (int i = 0; i < getElementParts().length; i++) {

@@ -7,6 +7,7 @@
  */
 package org.d3s.alricg.editor.views.charElemente;
 
+import org.d3s.alricg.editor.common.RefreshableViewPart;
 import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
@@ -43,7 +44,7 @@ import org.eclipse.ui.part.ViewPart;
  * @author Vincent
  *
  */
-public abstract class RefreshableViewPart extends ViewPart {
+public abstract class RefreshableViewPartImpl extends ViewPart implements RefreshableViewPart {
 	protected TableViewer viewerTable;
 	protected TreeViewer viewerTree;
 	protected Composite parentComp;
@@ -89,7 +90,7 @@ public abstract class RefreshableViewPart extends ViewPart {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				RefreshableViewPart.this.fillContextMenu(manager);
+				RefreshableViewPartImpl.this.fillContextMenu(manager);
 			}
 		});
 		

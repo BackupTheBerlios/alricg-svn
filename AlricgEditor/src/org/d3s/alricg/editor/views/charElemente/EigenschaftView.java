@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Menu;
 /**
  * @author Vincent
  */
-public class EigenschaftView extends RefreshableViewPart {
+public class EigenschaftView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.EigenschaftView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)

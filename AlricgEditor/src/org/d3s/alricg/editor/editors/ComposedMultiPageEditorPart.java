@@ -22,7 +22,7 @@ import org.d3s.alricg.editor.editors.composits.VoraussetzungPart;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTableObject;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeObject;
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
@@ -129,8 +129,8 @@ public abstract class ComposedMultiPageEditorPart extends MultiPageEditorPart {
 		monitor.beginTask("Save CharElement and File", 5); //$NON-NLS-1$
 		final XmlAccessor oldAccessor = currentAccessor;
 		final CharElement charElement = getEditedCharElement();
-		final RefreshableViewPart viewPart = 
-				(RefreshableViewPart) ViewEditorIdManager.getView(getEditedCharElement().getClass());
+		final RefreshableViewPartImpl viewPart = 
+				(RefreshableViewPartImpl) ViewEditorIdManager.getView(getEditedCharElement().getClass());
 		
 		// Save to Charelement
 		for (int i = 0; i < getElementParts().length; i++) {

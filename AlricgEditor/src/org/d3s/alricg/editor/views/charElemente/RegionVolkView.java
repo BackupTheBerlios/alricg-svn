@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * Evtl. RegionVolk, 
  * @author Vincent
  */
-public class RegionVolkView extends RefreshableViewPart {
+public class RegionVolkView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.RegionVolkView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)

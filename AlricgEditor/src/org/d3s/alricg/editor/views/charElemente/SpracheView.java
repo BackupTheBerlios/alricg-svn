@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Menu;
 /**
  * @author Vincent
  */
-public class SpracheView extends RefreshableViewPart {
+public class SpracheView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.SpracheSchriftView";
 
 	/* (non-Javadoc)

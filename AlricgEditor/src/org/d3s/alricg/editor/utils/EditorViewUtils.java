@@ -20,7 +20,7 @@ import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.access.CharElementFactory.DependencyTableObject;

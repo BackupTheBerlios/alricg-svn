@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * @author Vincent
  */
-public class SonderfertigkeitView extends RefreshableViewPart {
+public class SonderfertigkeitView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.SonderfertigkeitView"; //$NON-NLS-1$
 	
 	/* (non-Javadoc)

@@ -42,7 +42,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * @author Vincent
  */
-public abstract class RefreshableHerkunftViewPart extends RefreshableViewPart {
+public abstract class RefreshableHerkunftViewPart extends RefreshableViewPartImpl {
 
 	protected Action buildNewVariante;
 	

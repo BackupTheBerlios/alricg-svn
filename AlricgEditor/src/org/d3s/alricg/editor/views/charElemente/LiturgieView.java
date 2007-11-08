@@ -44,7 +44,7 @@ import org.eclipse.ui.IViewPart;
  * 
  * @author Vincent
  */
-public class LiturgieView extends RefreshableViewPart {
+public class LiturgieView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.LiturgieView";
 	
 	// Über diesen Regulator wird die Darstellung von Images gesteuert

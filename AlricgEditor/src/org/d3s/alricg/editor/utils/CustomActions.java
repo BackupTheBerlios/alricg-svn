@@ -22,7 +22,7 @@ import org.d3s.alricg.editor.editors.dialoge.ShowDependenciesDialog;
 import org.d3s.alricg.editor.utils.EditorViewUtils.DependencyProgressMonitor;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
 import org.d3s.alricg.editor.views.ViewModel;
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
@@ -95,8 +95,8 @@ public class CustomActions {
 		
 		@Override
 		public void run() {
-			final RefreshableViewPart view = 
-				(RefreshableViewPart) ViewEditorIdManager.getView(clazz);
+			final RefreshableViewPartImpl view = 
+				(RefreshableViewPartImpl) ViewEditorIdManager.getView(clazz);
 			if (view == null) return;
 			
 			if (this.isChecked()) {
@@ -112,8 +112,8 @@ public class CustomActions {
 		// und set das entsprechende File im Filter 
 		@Override
 		public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-			final RefreshableViewPart view = 
-				(RefreshableViewPart) ViewEditorIdManager.getView(clazz);
+			final RefreshableViewPartImpl view = 
+				(RefreshableViewPartImpl) ViewEditorIdManager.getView(clazz);
 			if (view == null) return;
 			
 			if (selection.isEmpty()) {
@@ -298,8 +298,8 @@ public class CustomActions {
 			if (!(ViewUtils.getSelectedObject(parentComp) instanceof EditorTreeOrTableObject)) {
 				return;
 			}
-			final RefreshableViewPart view = 
-						(RefreshableViewPart) ViewEditorIdManager.getView(clazz);
+			final RefreshableViewPartImpl view = 
+						(RefreshableViewPartImpl) ViewEditorIdManager.getView(clazz);
 			final EditorTreeOrTableObject treeTableObj = 
 						(EditorTreeOrTableObject) ViewUtils.getSelectedObject(parentComp);
 			final DependencyProgressMonitor monitor = new DependencyProgressMonitor((CharElement) treeTableObj.getValue());

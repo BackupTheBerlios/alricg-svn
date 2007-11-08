@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Herkunft;
@@ -619,7 +619,7 @@ public class ViewUtils {
 	 * @param element Das zu entferndene Element
 	 */
 	public static void removeElementFromView(
-			RefreshableViewPart viewer, 
+			RefreshableViewPartImpl viewer, 
 			Object element)
 	{
 		if (viewer == null) return;
@@ -697,7 +697,7 @@ public class ViewUtils {
 	}
 
 	public static void addAndRemoveHerkunftToView(
-			RefreshableViewPart viewer, 
+			RefreshableViewPartImpl viewer, 
 			HerkunftVariante element, 
 			ObjectCreator objCreator,
 			boolean isNew) {
@@ -778,7 +778,7 @@ public class ViewUtils {
 				buildHerkunftViewHelper(catList.get(i), (Herkunft) charElement, objCreator);
 			} else {
 				catList.get(i).addChildren(
-						objCreator.createTreeObject(charElement, catList.get(i)));
+						objCreator.createTreeObject(element, catList.get(i)));
 			}
 		}
 	}

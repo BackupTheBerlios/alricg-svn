@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * @author Vincent
  */
-public class SchamanenRitualView extends RefreshableViewPart {
+public class SchamanenRitualView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.SchamanenRitualView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)

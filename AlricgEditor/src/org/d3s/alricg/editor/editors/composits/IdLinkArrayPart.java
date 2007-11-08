@@ -79,7 +79,7 @@ public class IdLinkArrayPart extends AbstractElementPart<Herkunft> {
 		tc.setLabelProvider(new CustomColumnLabelProvider.LinkWertProvider());
 		tc.getColumn().setWidth(100);
 		tc.getColumn().setMoveable(true);
-		tc.setEditingSupport(new LinkWertEditingSupport(treeViewer, treeViewer.getTree(), -10, 20) {
+		tc.setEditingSupport(new LinkWertEditingSupport(treeViewer, treeViewer.getTree(), -10, 20, true) {
 
 			@Override
 			protected boolean canEdit(Object element) {

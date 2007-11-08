@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * @author Vincent
  */
-public class NachteilView extends RefreshableViewPart {
+public class NachteilView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.NachteilView"; //$NON-NLS-1$
 
 	/* (non-Javadoc)

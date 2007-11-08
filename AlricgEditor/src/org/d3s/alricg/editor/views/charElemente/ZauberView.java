@@ -45,7 +45,7 @@ import org.eclipse.ui.IViewPart;
  * @author Vincent
  *
  */
-public class ZauberView extends RefreshableViewPart {
+public class ZauberView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.ZauberView"; 
 	
 	// Über diesen Regulator wird die Darstellung von Images gesteuert

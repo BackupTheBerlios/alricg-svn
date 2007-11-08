@@ -45,7 +45,7 @@ import org.eclipse.ui.IViewPart;
 /**
  * @author Vincent
  */
-public class MerkmalView extends RefreshableViewPart {
+public class MerkmalView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.MerkmalView"; //$NON-NLS-1$
 
 	// Über diesen Regulator wird die Darstellung von Images gesteuert

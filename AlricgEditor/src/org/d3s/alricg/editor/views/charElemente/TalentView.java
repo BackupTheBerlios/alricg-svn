@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * Zeig eine ansicht der verfügbaren Talente.
  * @author Vincent 
  */
-public class TalentView extends RefreshableViewPart {
+public class TalentView extends RefreshableViewPartImpl {
 	public static final String ID = "org.d3s.alricg.editor.views.TalentView"; //$NON-NLS-1$
 	
 	/**

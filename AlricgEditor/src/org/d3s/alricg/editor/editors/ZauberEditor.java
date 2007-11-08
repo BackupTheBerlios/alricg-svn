@@ -395,13 +395,15 @@ public class ZauberEditor extends ComposedMultiPageEditorPart {
 				}
 
 				@Override
-				protected void dropToTreeTable(TreeOrTableObject sourceObj, TreeOrTableObject targetObj) {
+				protected boolean dropToTreeTable(TreeOrTableObject sourceObj, TreeOrTableObject targetObj) {
 					// Build new Verbreitung and add
 					Verbreitung verb = new Verbreitung();
 					verb.setBekanntBei((Repraesentation) sourceObj.getValue());
 					verb.setWert(7);
 					
 					VerbreitungDropTable.this.addValue(verb);
+					
+					return true;
 				}
 			};
 			selectDrop.setAcceptGlobalDropClazz(new Class[] {Repraesentation.class});

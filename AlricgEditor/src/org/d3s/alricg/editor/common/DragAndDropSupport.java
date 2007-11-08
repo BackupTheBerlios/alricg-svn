@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.MouseEvent;
@@ -33,6 +34,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -41,7 +43,9 @@ import org.eclipse.swt.widgets.TreeItem;
  *
  */
 public class DragAndDropSupport {
-
+	private static TreeViewer globalTreeViewer;
+	private static TreeObject globalTreeObj;
+	
 	public static class AuswahlDrag implements DragSourceListener {
 		private final TreeViewer treeViewer;
 		
@@ -76,8 +80,12 @@ public class DragAndDropSupport {
 			final TreeObject treeObj = (TreeObject) ((StructuredSelection) treeViewer
 					.getSelection()).getFirstElement();
 			
+			globalTreeViewer = treeViewer;
+			globalTreeObj = treeObj;
+			/*
 			treeObj.getParent().removeChildren(treeObj);
 			treeViewer.refresh();
+			*/
 		}
 	}
 	
@@ -173,7 +181,7 @@ public class DragAndDropSupport {
 		 * @param sourceObj Das Objekt, welches "gedropt" wird. Die Quelle.
 		 * @param targetObj Das Objekt, auf welches das zu "Dropende" gezogen wurde. Das Ziel. 
 		 */
-		protected abstract void dropToTreeTable(TreeOrTableObject sourceObj, TreeOrTableObject targetObj);
+		protected abstract boolean dropToTreeTable(TreeOrTableObject sourceObj, TreeOrTableObject targetObj);
 		
 		private boolean validateToTreeDrop(TreeOrTableObject data) {
 			if (acceptDropClasses == null) return true;
@@ -230,19 +238,28 @@ public class DragAndDropSupport {
 			}
 
 			boolean foundFlag = false;
+			boolean dropedFlag = false;
 			for (int i = 0; i < columnToListen.length; i++) {
 				if ( columnToListen[i].equals(currentColumn) ) {
 					foundFlag = true;
 					if (validateDropToColumn(sourceObj, columnToListen[i])) {
 						dropToColumn(i, sourceObj, targetObj);
+						dropedFlag = true;
 					}
 				}
 			}
 			if (!foundFlag) {
 				if (validateToTreeDrop(sourceObj)) {
-					dropToTreeTable(sourceObj, targetObj);
-				}
+					dropedFlag = dropToTreeTable(sourceObj, targetObj);
+				} 
 			}
+			
+			if(dropedFlag && globalTreeObj != null) {
+				globalTreeObj.getParent().removeChildren(globalTreeObj);
+				globalTreeViewer.refresh();
+			} 
+			globalTreeObj = null;
+			globalTreeViewer = null;
 			
 			if (foundFlag && this.getViewer() instanceof TreeViewer) {
 				((TreeViewer) this.getViewer()).update(targetObj, null);
@@ -304,10 +321,10 @@ public class DragAndDropSupport {
 		 * @see org.d3s.alricg.editor.common.DragAndDropSupport.SelectDrop#dropToTree()
 		 */
 		@Override
-		protected void dropToTreeTable(TreeOrTableObject sourceObj, TreeOrTableObject targetObj) {
+		protected boolean dropToTreeTable(TreeOrTableObject sourceObj, TreeOrTableObject targetObj) {
 			// Prüfen ob das source zum Target passt
 			if ( !validDropClass( (TreeObject) targetObj, sourceObj) ) {
-				return;
+				return false;
 			}
 			
 			if (targetObj.getValue() instanceof Link) {
@@ -342,6 +359,8 @@ public class DragAndDropSupport {
 			}
 			TreeObject newObject = new TreeObject(valueObj, ((TreeObject) targetObj));
 			((TreeObject) targetObj).addChildren(newObject);
+			
+			return true;
 		}
 	}
 	
@@ -353,7 +372,10 @@ public class DragAndDropSupport {
 	 * @return
 	 */
 	private static boolean validDropClass(TreeObject node, TreeOrTableObject sourceObj) {
-		if (node instanceof AuswahlTreeObject) {
+		if (node == null || sourceObj.equals(node)) {
+			return false;
+		} else if (node instanceof AuswahlTreeObject) {
+			if (sourceObj.getValue() instanceof Link) return true;
 			return ((Class) ((AuswahlTreeObject) node).getValue()).isAssignableFrom(
 								sourceObj.getValue().getClass());
 		} else if (node.getParent() == null) {

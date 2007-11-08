@@ -22,7 +22,7 @@ import org.d3s.alricg.editor.editors.widgets.FarbenAuswahlTable;
 import org.d3s.alricg.editor.editors.widgets.WuerfelSammlungTable;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPart;
+import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
 import org.d3s.alricg.store.access.CharElementFactory;
 import org.d3s.alricg.store.access.StoreAccessor;
 import org.d3s.alricg.store.access.XmlAccessor;
