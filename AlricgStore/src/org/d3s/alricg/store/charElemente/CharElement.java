@@ -33,9 +33,6 @@ public abstract class CharElement implements Comparable<CharElement> {
     private String regelAnmerkung; // Anmerkungen für den User!
     private Voraussetzung voraussetzung; // Voraussetzungen die erfüllt sein müssen, um diese CharElement hinzuzufügen
 
-    @XmlTransient
-    private Sonderregel sonderregel; // Zu beachtende Sonderreglen
-    
     private String SonderregelKlasse;
     
     /**
@@ -194,9 +191,9 @@ public abstract class CharElement implements Comparable<CharElement> {
         return null;
     }*/
     
-	@XmlTransient
-    public Sonderregel getSonderregel() {
-        return sonderregel;
+    public Sonderregel createSonderregel() {
+        // TODO eine Sonderregel erzeugen
+		return null;
     }
 
     /**

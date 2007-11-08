@@ -26,7 +26,7 @@ public class HeldenLink<ZIEL extends CharElement> extends Link<ZIEL> {
      * @return Die aktuellen kosten für dieses Element (Od GP oder TalentGP ergibt 
      * sich aus dem Kontext)
      */
-    public int getKosten() {
+    public double getKosten() {
     	return 0;
     }
 	

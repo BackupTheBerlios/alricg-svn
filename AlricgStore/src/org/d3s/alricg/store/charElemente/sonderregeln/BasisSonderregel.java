@@ -59,7 +59,7 @@ public interface BasisSonderregel {
 	 * @param link Der Link zu dem die Kosten errechnet wurden
 	 * @return Die resultierenden Kosten
 	 */
-	public abstract int changeKosten(int kosten, Link link);
+	public abstract double changeKosten(double kosten, Link link);
 
 	
 	/**
