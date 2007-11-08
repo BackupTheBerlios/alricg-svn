@@ -38,11 +38,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		if (true) {
 			final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	        final IPerspectiveRegistry reg = PlatformUI.getWorkbench().getPerspectiveRegistry();
-	        //if (window.getActivePage().getPerspective() == null) {
-	        	window.getActivePage().setPerspective(
-	        			reg.findPerspectiveWithId(reg.getDefaultPerspective())
-	        		);
-	        //}
+	        
+	        window.getActivePage().closeAllPerspectives(true, false);
+	        window.getActivePage().setPerspective(
+	        		reg.findPerspectiveWithId(reg.getDefaultPerspective())
+	        	);
+
 			
 			final IIntroManager mgr = PlatformUI.getWorkbench().getIntroManager();
 			IIntroPart iPart = mgr.showIntro(null, false);

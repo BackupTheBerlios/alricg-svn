@@ -9,8 +9,5 @@ public class Perspective implements IPerspectiveFactory {
 		String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(true);
 		layout.setFixed(false);
-
-		layout.addView("org.d3s.alricg.editor.views.TalentView",
-				IPageLayout.TOP, 1.0f, editorArea);		
 	}
 }

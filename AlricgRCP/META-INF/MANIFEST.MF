@@ -6,5 +6,6 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.d3s.alricg.alricgrcp.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.ui.intro
+ org.eclipse.ui.intro,
+ org.d3s.alricg.store
 Eclipse-LazyStart: true

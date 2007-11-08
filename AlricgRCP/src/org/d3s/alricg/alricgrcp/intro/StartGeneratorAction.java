@@ -8,10 +8,32 @@
 package org.d3s.alricg.alricgrcp.intro;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.ui.IPerspectiveRegistry;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.intro.IIntroManager;
 
 /**
  * @author Vincent
  */
 public class StartGeneratorAction extends Action {
-
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.action.Action#run()
+	 */
+	@Override
+	public void run() {
+		final IIntroManager mgr = PlatformUI.getWorkbench().getIntroManager();
+		mgr.closeIntro(mgr.getIntro());
+		
+		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        final IPerspectiveRegistry reg = PlatformUI.getWorkbench().getPerspectiveRegistry();
+        
+        if (window.getActivePage().getPerspective() != null) {
+        	window.getActivePage().closePerspective(
+        			window.getActivePage().getPerspective(), false, false);
+        }
+        window.getActivePage().setPerspective(
+        		reg.findPerspectiveWithId("org.d3s.alricg.generator.rcp.StandardPerspective")
+        	);
+	}
 }

@@ -1,8 +1,16 @@
 package org.d3s.alricg.alricgrcp;
 
+import java.io.IOException;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.d3s.alricg.store.access.StoreAccessor;
+import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.xml.sax.SAXException;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -19,6 +27,24 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
+		// TODO Laden der Daten evtl. verbessern
+		try {
+			StoreAccessor.getInstance().loadFiles();
+			StoreAccessor.getInstance().loadRegelConfig();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// <<<<
 	}
 
 	/*
