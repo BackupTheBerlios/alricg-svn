@@ -7,8 +7,6 @@
  */
 package org.d3s.alricg.editor.editors.composits;
 
-import java.util.Arrays;
-
 import org.d3s.alricg.editor.common.widgets.ComboTextList;
 import org.d3s.alricg.editor.utils.EditorViewUtils.EditorTreeOrTableObject;
 import org.d3s.alricg.store.access.XmlAccessor;

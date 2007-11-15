@@ -59,6 +59,12 @@ public class CreateAuswahlDialog extends Dialog {
 	}
 	
 	@Override
+	protected void configureShell(Shell shell) {
+		super.configureShell(shell);
+		shell.setText("Auswahl erzeugen");
+	}
+	
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;

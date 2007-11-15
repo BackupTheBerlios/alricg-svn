@@ -26,7 +26,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.MouseEvent;
@@ -34,7 +33,6 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -80,12 +78,9 @@ public class DragAndDropSupport {
 			final TreeObject treeObj = (TreeObject) ((StructuredSelection) treeViewer
 					.getSelection()).getFirstElement();
 			
+			// Setzt die Objecte, die im "SelectDrop.mouseMovemouseMove()" benutzt werden
 			globalTreeViewer = treeViewer;
 			globalTreeObj = treeObj;
-			/*
-			treeObj.getParent().removeChildren(treeObj);
-			treeViewer.refresh();
-			*/
 		}
 	}
 	
@@ -254,6 +249,7 @@ public class DragAndDropSupport {
 				} 
 			}
 			
+			//Die global Objekte wurden zuvor im "AuswahlDrop.dragFinshed()" gesetzt
 			if(dropedFlag && globalTreeObj != null) {
 				globalTreeObj.getParent().removeChildren(globalTreeObj);
 				globalTreeViewer.refresh();

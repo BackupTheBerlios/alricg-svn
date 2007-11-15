@@ -37,11 +37,8 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Vincent

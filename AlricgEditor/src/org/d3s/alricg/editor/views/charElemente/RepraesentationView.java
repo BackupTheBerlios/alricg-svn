@@ -7,7 +7,6 @@
  */
 package org.d3s.alricg.editor.views.charElemente;
 
-import org.d3s.alricg.common.CharElementTextService;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
@@ -15,18 +14,15 @@ import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
-import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.views.ViewMessages;
-import org.d3s.alricg.editor.views.charElemente.TalentView.ArtSorter;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Repraesentation;
-import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;

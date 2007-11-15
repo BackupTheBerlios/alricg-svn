@@ -22,7 +22,6 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Profession;
-import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sprache;

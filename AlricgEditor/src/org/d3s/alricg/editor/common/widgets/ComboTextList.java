@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 
 /**
+ * Eine Liste, der mittels einer ComboBox Werte hinzugefügt werden können
  * @author Vincent
  */
 public class ComboTextList extends Composite {

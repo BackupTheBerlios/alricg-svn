@@ -8,7 +8,6 @@
 package org.d3s.alricg.editor.views.charElemente;
 
 import org.d3s.alricg.editor.common.RefreshableViewPart;
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.utils.CustomActions.BuildNewCharElementAction;
@@ -34,7 +33,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -99,7 +101,7 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Refres
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				boolean isEnabled = true;
-				final TreeOrTableObject treeTableObj = ViewUtils.getSelectedObject(parentComp);
+				final TreeOrTableObject treeTableObj = getSelectedElement();
 				
 				if (treeTableObj != null && treeTableObj.getValue() instanceof CharElement) {
 					isEnabled = true;
@@ -237,18 +239,44 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Refres
 		};
 
 		// Neues Element Action 
-		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator());
+		buildNew = new BuildNewCharElementAction(this, getViewedClass(), getRegulator());
 		
 		// Element Bearbeiten Action
-		editSelected = new EditCharElementAction(this.parentComp);
+		editSelected = new EditCharElementAction(this);
 		
 		// Element löschen Action
-		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass());
+		deleteSelected = new DeleteCharElementAction(this, getViewedClass());
 	}
 	
 	public abstract Regulator getRegulator();
 	
 	public abstract Class getViewedClass();
 	
-	//public abstract BuildNewCharElementAction getBuildNewAction();
+	/**
+	 * @return Liefert das gerade selektierte Object vom Tree oder Table
+	 */
+	@Override
+	public TreeOrTableObject getSelectedElement() {
+		final Control topControl = ((StackLayout) parentComp.getLayout()).topControl;
+		TreeOrTableObject value = null;
+		
+		if (topControl instanceof Tree && ((Tree) topControl).getSelection().length > 0) {
+			value = (TreeOrTableObject) ((Tree) topControl).getSelection()[0].getData();
+
+		} else if (topControl instanceof Table && ((Table) topControl).getSelection().length > 0 ) {
+			value = (TreeOrTableObject) ((Table) topControl).getSelection()[0].getData();
+		}
+		
+		return value;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.editor.common.RefreshableViewPart#getTopControl()
+	 */
+	@Override
+	public Control getTopControl() {
+		return ((StackLayout) parentComp.getLayout()).topControl;
+	}
+	
+	
 }

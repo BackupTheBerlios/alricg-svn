@@ -7,7 +7,6 @@
  */
 package org.d3s.alricg.editor.editors;
 
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Schrift;

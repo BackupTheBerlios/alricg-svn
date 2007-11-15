@@ -22,7 +22,6 @@ import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.views.ViewMessages;
-import org.d3s.alricg.editor.views.charElemente.ZauberView.ZauberVerbreitungProvider;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Gottheit;

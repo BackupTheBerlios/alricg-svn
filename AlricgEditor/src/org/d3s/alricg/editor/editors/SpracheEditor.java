@@ -8,9 +8,7 @@
 package org.d3s.alricg.editor.editors;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
-import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.editor.common.widgets.DropTable;
 import org.d3s.alricg.editor.common.widgets.DropTable.DropListRegulator;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
@@ -19,13 +17,11 @@ import org.d3s.alricg.store.charElemente.Schrift;
 import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;

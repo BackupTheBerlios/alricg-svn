@@ -7,13 +7,10 @@
  */
 package org.d3s.alricg.editor.editors;
 
-import org.d3s.alricg.editor.editors.TalentEditor.TalentPart;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
-import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
 import org.d3s.alricg.editor.editors.composits.FertigkeitPart;
 import org.d3s.alricg.editor.editors.composits.VorNachteilPart;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
 import org.eclipse.swt.widgets.Composite;
 

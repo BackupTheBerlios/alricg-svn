@@ -347,7 +347,7 @@ public class ViewUtils {
 	 * Liefert zu einem Parent-Composite von einem Tree/Table View das selektierte Element.
 	 * @param parentComp Der Parent von einem Tree/Table View
 	 * @return Das selektierte Element oder "null" wenn nichts selektiert ist
-	 */
+	 *
 	public static TreeOrTableObject getSelectedObject(Composite parentComp) {
 		final Control topControl = ((StackLayout) parentComp.getLayout()).topControl;
 		TreeOrTableObject value = null;
@@ -361,7 +361,7 @@ public class ViewUtils {
 		}
 		
 		return value;
-	}
+	}*/
 	
 	/**
 	 * Erzeugt aus einem Liste von Accessoren und zugehörigem Regulator einen Tree 
@@ -619,7 +619,7 @@ public class ViewUtils {
 	 * @param element Das zu entferndene Element
 	 */
 	public static void removeElementFromView(
-			RefreshableViewPartImpl viewer, 
+			RefreshableViewPart viewer, 
 			Object element)
 	{
 		if (viewer == null) return;

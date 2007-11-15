@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.d3s.alricg.editor.editors.ComposedMultiPageEditorPart;
 import org.d3s.alricg.editor.editors.EditorMessages;
 import org.d3s.alricg.store.access.IdFactory;
 import org.d3s.alricg.store.access.StoreDataAccessor;

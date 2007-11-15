@@ -7,11 +7,8 @@
  */
 package org.d3s.alricg.editor.editors;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
 
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
 import org.d3s.alricg.editor.common.widgets.DropTable;
@@ -20,12 +17,6 @@ import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.editor.editors.composits.HerkunftPart;
 import org.d3s.alricg.editor.editors.widgets.FarbenAuswahlTable;
 import org.d3s.alricg.editor.editors.widgets.WuerfelSammlungTable;
-import org.d3s.alricg.editor.utils.EditorViewUtils;
-import org.d3s.alricg.editor.utils.ViewEditorIdManager;
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
-import org.d3s.alricg.store.access.CharElementFactory;
-import org.d3s.alricg.store.access.StoreAccessor;
-import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.Kultur;

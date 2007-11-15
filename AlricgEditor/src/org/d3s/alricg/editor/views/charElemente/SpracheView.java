@@ -269,7 +269,7 @@ public class SpracheView extends RefreshableViewPartImpl {
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				boolean isEnabled = true;
-				final TreeOrTableObject treeTableObj = ViewUtils.getSelectedObject(parentComp);
+				final TreeOrTableObject treeTableObj = getSelectedElement();
 				
 				if (treeTableObj != null && treeTableObj.getValue() instanceof CharElement) {
 					isEnabled = true;
@@ -312,14 +312,14 @@ public class SpracheView extends RefreshableViewPartImpl {
 	protected void makeActions() {
 		super.makeActions();
 		
-		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator()) {
+		buildNew = new BuildNewCharElementAction(this, getViewedClass(), getRegulator()) {
 
 			/* (non-Javadoc)
 			 * @see org.d3s.alricg.editor.common.CustomActions.BuildNewCharElementAction#run()
 			 */
 			@Override
 			public void run() {
-				TreeOrTableObject treeObj = ViewUtils.getSelectedObject(parentComp);
+				TreeOrTableObject treeObj = getSelectedElement();
 				if (treeObj == null) {
 					return;
 				}

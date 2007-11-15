@@ -8,8 +8,10 @@
 package org.d3s.alricg.editor.common;
 
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
+import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * @author Vincent
@@ -28,4 +30,14 @@ public interface RefreshableViewPart {
 	public TableViewer getTableViewer();
 	
 	public TreeViewer getTreeViewer();
+	
+	/**
+	 * @return Liefert das gerade selektierte Object vom Tree oder Table
+	 */
+	public TreeOrTableObject getSelectedElement();
+	
+	/**
+	 * @return Liefert das gerade selektierte Object vom Tree oder Table
+	 */
+	public Control getTopControl();
 }

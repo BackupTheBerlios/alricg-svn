@@ -11,7 +11,6 @@ import org.d3s.alricg.editor.common.widgets.SpinnerNeg;
 import org.d3s.alricg.store.charElemente.VorNachteil;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;

@@ -12,7 +12,6 @@ import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitArtProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitFamilieProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitGpProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitTextNoetigProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitZweitZielNoetigProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.VorNachteilGpProvider;

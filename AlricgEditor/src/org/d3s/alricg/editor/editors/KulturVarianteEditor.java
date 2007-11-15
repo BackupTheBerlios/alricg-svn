@@ -13,7 +13,6 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.HerkunftVariante;
 import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.KulturVariante;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**

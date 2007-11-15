@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 
-/*
+/**
  * Spinner mit der möglichkeit auch negative Werte darzustellen
  */
 public class SpinnerNeg extends Composite {

@@ -14,7 +14,6 @@ import org.d3s.alricg.editor.common.widgets.DropTable.DropListRegulator;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.RegionVolk;
-import org.d3s.alricg.store.charElemente.RegionVolk.RegionVolkArt;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand.GegenstandArt;
 import org.eclipse.core.runtime.IProgressMonitor;

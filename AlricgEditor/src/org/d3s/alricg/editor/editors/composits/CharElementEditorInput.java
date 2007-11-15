@@ -7,7 +7,6 @@
  */
 package org.d3s.alricg.editor.editors.composits;
 
-import org.d3s.alricg.editor.views.charElemente.RefreshableViewPartImpl;
 import org.d3s.alricg.store.access.IdFactory;
 import org.d3s.alricg.store.access.XmlAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;

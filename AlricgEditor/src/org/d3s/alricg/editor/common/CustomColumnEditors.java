@@ -14,14 +14,13 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 /**
  * @author Vincent
@@ -138,21 +137,7 @@ public class CustomColumnEditors {
 
 			cellEditor = new ComboBoxCellEditor(parent, new String[0]);
 			((CCombo) cellEditor.getControl()).setVisibleItemCount(8);
-			((CCombo) cellEditor.getControl()).addSelectionListener(new SelectionListener() {
 
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-					System.out.println("widgetDefaultSelected");
-				}
-
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-					System.out.println("widgetSelected");
-				}});
-			
-			
 			changeMinMax(minWert, maxWert);
 		}
 		
@@ -217,22 +202,6 @@ public class CustomColumnEditors {
 
 		@Override
 		protected void setValue(Object element, Object value) {
-
-			((Link)((TreeOrTableObject) element).getValue()).setWert(
-					getWertForSet(value)
-			);
-			viewer.cancelEditing();
-			viewer.update(element, null);
-		}
-		
-		
-		
-		/**
-		 * Bestimmt den neuen Wert, der für das setzen des Wertes ausgewählt wurde
-		 * @param value Objekt aus dem Array der ComboBox, welche Gewählt wurde
-		 * @return Zugehöriger Zahlenwert
-		 */
-		protected int getWertForSet(Object value) {
 			int valueInt = ((Integer) value).intValue();
 			int wert;
 			
@@ -253,7 +222,17 @@ public class CustomColumnEditors {
 				}
 			}
 			
-			return wert;
+			setWertInElement(element, wert);
+		}
+		
+		/**
+		 * Bestimmt den neuen Wert, der für das setzen des Wertes ausgewählt wurde
+		 * @param value Objekt aus dem Array der ComboBox, welche Gewählt wurde
+		 * @return Zugehöriger Zahlenwert
+		 */
+		protected void setWertInElement(Object element, int wert) {
+			((Link)((TreeOrTableObject) element).getValue()).setWert(wert);
+			viewer.update(element, null);
 		}
 	}
 	

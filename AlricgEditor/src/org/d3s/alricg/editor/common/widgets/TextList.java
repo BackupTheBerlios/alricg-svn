@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
+ * Eine Liste mit Text. Es können neue Einträge hinzugefügt werden und die Einträge verschoben werden.
  * @author Vincent
- *
  */
 public class TextList extends Composite {
 	private final int NUMBER_OF_LINES = 5;

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.Messages;
+import org.d3s.alricg.editor.common.RefreshableViewPart;
 import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomFilter.CurrentFileFilter;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
@@ -140,15 +141,15 @@ public class CustomActions {
 	 * @author Vincent
 	 */
 	public static class EditCharElementAction extends Action {
-		private final Composite parentComp;
+		private final RefreshableViewPart refreshablePart;
 		
 		/**
 		 * Konstruktor
 		 * @param parentComp Das Parent Composite von einem Tree/Table View
 		 * @param Class clazz Die Klasse des Elements welche beareitet werden sollen
 		 */
-		public EditCharElementAction(Composite parentComp) {
-			this.parentComp = parentComp;
+		public EditCharElementAction(RefreshableViewPart refreshablePart) {
+			this.refreshablePart = refreshablePart;
 			
 			this.setText(Messages.Actions_Edit);
 			this.setToolTipText(Messages.Actions_Edit_TT);
@@ -156,12 +157,12 @@ public class CustomActions {
 		}
 		
 		public void run() {
-			if (!(ViewUtils.getSelectedObject(parentComp) instanceof EditorTreeOrTableObject)) {
+			if (!(refreshablePart.getSelectedElement() instanceof EditorTreeOrTableObject)) {
 				return;
 			}
 			
 			final EditorTreeOrTableObject treeTableObj =  
-						(EditorTreeOrTableObject) ViewUtils.getSelectedObject(parentComp);
+						(EditorTreeOrTableObject) refreshablePart.getSelectedElement();
 			final IWorkbenchPage page = PlatformUI.getWorkbench()
 											.getActiveWorkbenchWindow().getActivePage();
 			
@@ -196,18 +197,18 @@ public class CustomActions {
 	public static class BuildNewCharElementAction extends Action {
 		protected Class charElementClazz;
 		protected final Regulator regulator;
-		private final Composite parentComp;
+		private final RefreshableViewPart refreshablePart;
 		
 		/**
 		 * Konstruktor
 		 */
 		public BuildNewCharElementAction(
-				Composite parentComp, 
+				RefreshableViewPart refreshablePart, 
 				Class charElementClazz,
 				Regulator regulator) {
 			this.charElementClazz = charElementClazz;
 			this.regulator = regulator;
-			this.parentComp = parentComp;
+			this.refreshablePart = refreshablePart;
 			
 			this.setText(Messages.Actions_NewElement);
 			this.setToolTipText(Messages.Actions_NewElement_TT);
@@ -217,7 +218,7 @@ public class CustomActions {
 		public void run() {
 			if (ViewModel.getMarkedFileForNew() == null) {
 				MessageDialog.openInformation(
-						((StackLayout) parentComp.getLayout()).topControl.getShell(),
+						refreshablePart.getTopControl().getShell(),
 						Messages.Actions_NewElementErrorDialogTitel, Messages.Actions_NewElementErrorDialogText);
 				return;
 			}
@@ -228,8 +229,8 @@ public class CustomActions {
 				CharElementFactory.getInstance().buildCharElement(charElementClazz);
 			
 			// Falls in einem Tree erstellt, dann 
-			if (ViewUtils.getSelectedObject(parentComp) instanceof TreeObject) {
-				runForTreeView(newCharElem, (TreeObject) ViewUtils.getSelectedObject(parentComp));
+			if (refreshablePart.getSelectedElement() instanceof TreeObject) {
+				runForTreeView(newCharElem, (TreeObject) refreshablePart.getSelectedElement());
 			}
 			
 			// Öffnen Editor mit neuem CharElement
@@ -275,14 +276,14 @@ public class CustomActions {
 	 * @author Vincent
 	 */
 	public static class DeleteCharElementAction extends Action {
-		private final Composite parentComp;
+		private final RefreshableViewPart refreshPart;
 		private final Class clazz;
 		
 		/**
 		 * Konstruktor
 		 */
-		public DeleteCharElementAction(Composite parentComp, Class clazz) {
-			this.parentComp = parentComp;
+		public DeleteCharElementAction(RefreshableViewPart refreshPart, Class clazz) {
+			this.refreshPart = refreshPart;
 			this.clazz = clazz;
 			
 			this.setText(Messages.Actions_Delete);
@@ -295,19 +296,17 @@ public class CustomActions {
 		 */
 		@Override
 		public void run() {
-			if (!(ViewUtils.getSelectedObject(parentComp) instanceof EditorTreeOrTableObject)) {
+			if (!(refreshPart.getSelectedElement() instanceof EditorTreeOrTableObject)) {
 				return;
 			}
-			final RefreshableViewPartImpl view = 
-						(RefreshableViewPartImpl) ViewEditorIdManager.getView(clazz);
 			final EditorTreeOrTableObject treeTableObj = 
-						(EditorTreeOrTableObject) ViewUtils.getSelectedObject(parentComp);
+						(EditorTreeOrTableObject) refreshPart.getSelectedElement();
 			final DependencyProgressMonitor monitor = new DependencyProgressMonitor((CharElement) treeTableObj.getValue());
 			
 			if (treeTableObj.getValue() instanceof CharElement) {
 				// 1. Prüfen
 			    try {
-					new ProgressMonitorDialog(parentComp.getShell()).run(true, true, monitor);
+					new ProgressMonitorDialog(refreshPart.getTopControl().getShell()).run(true, true, monitor);
 				} catch (Exception e) {
 					Activator.logger.log(
 							Level.SEVERE, 
@@ -322,7 +321,7 @@ public class CustomActions {
 				} else if (monitor.getDepList().size() > 0) {
 					// Kann nicht gelöscht werden, da Abhängigkeiten bestehen
 					final ShowDependenciesDialog depDialog = new ShowDependenciesDialog(
-							parentComp.getShell(),
+							refreshPart.getTopControl().getShell(),
 							(CharElement) treeTableObj.getValue(),
 							monitor.getDepList() );
 					depDialog.open();
@@ -332,7 +331,7 @@ public class CustomActions {
 				// CharElement kann gelöscht werden: Sicherheitsabfrage
 				final CharElement charElement = (CharElement) treeTableObj.getValue();
 				final boolean b = MessageDialog.openConfirm(
-						parentComp.getShell(), 
+						refreshPart.getTopControl().getShell(), 
 						Messages.Actions_DeleteConfirmDialog, 
 						"Möchten sie das Element "
 						+ charElement.getName()
@@ -342,12 +341,12 @@ public class CustomActions {
 				if (!b) return;
 				
 				ViewUtils.removeElementFromView(
-						view,
+						refreshPart,
 						charElement);
 				CharElementFactory.getInstance().deleteCharElement(
 						charElement,
 						treeTableObj.getAccessor());
-				if (view != null) view.refresh();
+				if (refreshPart != null) refreshPart.refresh();
 				
 				try {
 					StoreAccessor.getInstance().saveFile( treeTableObj.getAccessor() );
@@ -359,7 +358,7 @@ public class CustomActions {
 							e);
 					
 					MessageDialog.openError(
-							parentComp.getShell(), 
+							refreshPart.getTopControl().getShell(), 
 							Messages.Actions_SaveErrorDialogTitle, 
 							Messages.bind(
 									Messages.Actions_SaveErrorDialogTitle, 

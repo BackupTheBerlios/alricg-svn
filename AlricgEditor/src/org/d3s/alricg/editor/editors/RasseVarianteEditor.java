@@ -9,18 +9,10 @@ package org.d3s.alricg.editor.editors;
 
 import org.d3s.alricg.editor.editors.RasseEditor.RassePart;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
-import org.d3s.alricg.editor.editors.composits.HerkunftPart;
-import org.d3s.alricg.editor.editors.composits.HerkunftVariantePart;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.HerkunftVariante;
 import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.RasseVariante;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**

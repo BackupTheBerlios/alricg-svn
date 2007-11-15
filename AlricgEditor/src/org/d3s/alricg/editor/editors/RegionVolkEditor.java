@@ -9,7 +9,6 @@ package org.d3s.alricg.editor.editors;
 
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.RegionVolk;
 import org.d3s.alricg.store.charElemente.RegionVolk.RegionVolkArt;
 import org.eclipse.core.runtime.IProgressMonitor;

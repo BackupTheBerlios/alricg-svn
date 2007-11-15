@@ -14,7 +14,6 @@ import org.d3s.alricg.editor.Activator;
 import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
-import org.d3s.alricg.editor.editors.composits.CharElementEditorInput;
 import org.d3s.alricg.editor.editors.composits.HerkunftVarianteEditorInput;
 import org.d3s.alricg.editor.utils.ViewEditorIdManager;
 import org.d3s.alricg.editor.utils.CustomActions.BuildNewCharElementAction;
@@ -31,7 +30,6 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -57,7 +55,7 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPartImp
 			@Override
 			public void run() {
 				EditorTreeOrTableObject newObjParent = 
-					(EditorTreeOrTableObject) ViewUtils.getSelectedObject(parentComp);
+					(EditorTreeOrTableObject) getSelectedElement();
 				
 				XmlAccessor xmlAccessor = newObjParent.getAccessor();
 				HerkunftVariante newCharElem = (HerkunftVariante)
@@ -87,7 +85,7 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPartImp
 		buildNewVariante.setImageDescriptor(ControlIconsLibrary.add.getImageDescriptor());
 		
 		// Neues Element Action 
-		buildNew = new BuildNewCharElementAction(this.parentComp, getViewedClass(), getRegulator()) {
+		buildNew = new BuildNewCharElementAction(this, getViewedClass(), getRegulator()) {
 			@Override
 			protected void runForTreeView(CharElement newCharElem, TreeObject treeObj) {
 				if (treeObj.getValue() instanceof CharElement) {
@@ -102,7 +100,7 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPartImp
 			}};
 			
 		// Element löschen Action
-		deleteSelected = new DeleteCharElementAction(this.parentComp, getViewedClass());
+		deleteSelected = new DeleteCharElementAction(this, getViewedClass());
 	}
 	
 	// Das Context Menu beim Rechts-klick
@@ -138,7 +136,7 @@ public abstract class RefreshableHerkunftViewPart extends RefreshableViewPartImp
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				boolean isEnabled = true;
-				final TreeOrTableObject treeTableObj = ViewUtils.getSelectedObject(parentComp);
+				final TreeOrTableObject treeTableObj = getSelectedElement();
 				
 				if (treeTableObj != null && treeTableObj.getValue() instanceof CharElement) {
 					isEnabled = true;

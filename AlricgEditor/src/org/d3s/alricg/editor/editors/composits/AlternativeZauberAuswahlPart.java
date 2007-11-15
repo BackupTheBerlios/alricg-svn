@@ -13,10 +13,8 @@ import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegul
 import org.d3s.alricg.editor.common.widgets.DropTable;
 import org.d3s.alricg.editor.common.widgets.DropTable.DropListRegulator;
 import org.d3s.alricg.store.charElemente.Herkunft;
-import org.d3s.alricg.store.charElemente.Kultur;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Herkunft.AlternativMagieEigenschaften;
-import org.d3s.alricg.store.charElemente.Werte.Geschlecht;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;

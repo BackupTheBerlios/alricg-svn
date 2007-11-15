@@ -10,32 +10,18 @@ package org.d3s.alricg.editor.editors;
 import java.util.Arrays;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.widgets.TextList;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
-import org.d3s.alricg.editor.editors.composits.AuswahlPart;
 import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
-import org.d3s.alricg.editor.editors.composits.AuswahlPart.HerkunftAuswahlRegulator;
 import org.d3s.alricg.store.charElemente.CharElement;
-import org.d3s.alricg.store.charElemente.Herkunft;
-import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.Talent;
-import org.d3s.alricg.store.charElemente.links.Auswahl;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Editor um Talente bearbeiten zu können

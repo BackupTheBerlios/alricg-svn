@@ -10,7 +10,6 @@ package org.d3s.alricg.editor.editors;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Gottheit;
-import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

@@ -9,7 +9,6 @@ package org.d3s.alricg.editor.editors.composits;
 
 import java.util.List;
 
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.editors.EditorMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
@@ -18,7 +17,6 @@ import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;

@@ -21,8 +21,6 @@ import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

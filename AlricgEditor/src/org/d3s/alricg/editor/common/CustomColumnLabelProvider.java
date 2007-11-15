@@ -8,6 +8,7 @@
 package org.d3s.alricg.editor.common;
 
 import org.d3s.alricg.common.CharElementTextService;
+import org.d3s.alricg.common.CommonUtils;
 import org.d3s.alricg.common.icons.AbstractIconsLibrary;
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
 import org.d3s.alricg.common.logic.FormelSammlung;
@@ -375,7 +376,7 @@ public class CustomColumnLabelProvider {
 	public static class LinkWertProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
-			element = ((TreeObject) element).getValue();
+			element = ((TreeOrTableObject) element).getValue();
 			if (element instanceof Link) {
 				if ( ((Link) element).getWert() == Link.KEIN_WERT) {
 					return "-"; //$NON-NLS-1$
@@ -393,7 +394,7 @@ public class CustomColumnLabelProvider {
 	public static class LinkTextProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
-			element = ((TreeObject) element).getValue();
+			element = ((TreeOrTableObject) element).getValue();
 			if (element instanceof Link) {
 				if ( ((Link) element).getText() != null) {
 					return ((Link) element).getText();
@@ -412,7 +413,7 @@ public class CustomColumnLabelProvider {
 	public static class LinkZweitZielProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
-			element = ((TreeObject) element).getValue();
+			element = ((TreeOrTableObject) element).getValue();
 			if (element instanceof Link) {
 				if ( ((Link) element).getZweitZiel() != null) {
 					return ((Link) element).getZweitZiel().getName();
@@ -455,7 +456,7 @@ public class CustomColumnLabelProvider {
 			if (charElem instanceof Fertigkeit 
 					&& ((Fertigkeit) charElem).getGpKosten() != CharElement.KEIN_WERT) 
 			{
-				return doubleToString( ((Fertigkeit) charElem).getGpKosten() );
+				return CommonUtils.doubleToString( ((Fertigkeit) charElem).getGpKosten() );
 			}
 			return "-"; //$NON-NLS-1$
 		}
@@ -539,14 +540,14 @@ public class CustomColumnLabelProvider {
 			if ( vorNachteil.getGpKosten() != 0 
 					&& vorNachteil.getGpKosten() != CharElement.KEIN_WERT) 
 			{
-				strBuilder.append( doubleToString(vorNachteil.getGpKosten()) );
+				strBuilder.append( CommonUtils.doubleToString(vorNachteil.getGpKosten()) );
 			}
 			if ( vorNachteil.getKostenProStufe() != 0 
 					&& vorNachteil.getKostenProStufe() != CharElement.KEIN_WERT) 
 			{
 				if (strBuilder.length() > 0) strBuilder.append(" +");
 				
-				strBuilder.append( doubleToString(vorNachteil.getKostenProStufe()) )
+				strBuilder.append( CommonUtils.doubleToString(vorNachteil.getKostenProStufe()) )
 						.append(" je Stufe");
 			}
 			return strBuilder.toString();
@@ -924,18 +925,5 @@ public class CustomColumnLabelProvider {
 			return img;
 		}
 	}
-
-	// ---------------------------------------------------------------------------------
 	
-	/**
-	 * Erstellt aus einem double einen String. Dabei wird die Nachkommastelle nur 
-	 * angezeigt, wenn diese auch notwenig ist 
-	 */
-	private static String doubleToString(double d) {
-		if (d % 1 == 0) {
-			return Integer.toString( (int) d );
-		} else {
-			return Double.toString( d );
-		}
-	}
 }
