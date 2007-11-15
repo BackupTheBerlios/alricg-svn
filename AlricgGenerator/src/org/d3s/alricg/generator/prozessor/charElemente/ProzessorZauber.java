@@ -639,7 +639,14 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 			updateKosten( zauberLink );
 
 		}	
+	}
 	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.logic.Prozessor#getExtendedInterface()
+	 */
+	@Override
+	public ExtendedProzessorZauber getExtendedInterface() {
+		return this;
 	}
 
 }

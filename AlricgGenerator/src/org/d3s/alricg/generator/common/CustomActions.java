@@ -8,6 +8,11 @@
 package org.d3s.alricg.generator.common;
 
 import org.d3s.alricg.common.icons.ControlIconsLibrary;
+import org.d3s.alricg.common.logic.Prozessor;
+import org.d3s.alricg.editor.common.RefreshableViewPart;
+import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
+import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.links.Link;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -20,7 +25,6 @@ import org.eclipse.swt.widgets.Control;
 public class CustomActions {
 	/**
 	 * Wechselt die Ansicht zwischen dem TreeViewer und dem TableViewer
-	 * @author Vincent
 	 */
 	public static class SwapTreeTableAction extends Action {
 		private Composite parentComp;
@@ -44,5 +48,44 @@ public class CustomActions {
 			}
 			parentComp.layout();
 		}
+	}
+	
+	/**
+	 * Löscht ein Element vom Helden-View
+	 */
+	public static class DeleteFromView extends Action {
+		private final RefreshableViewPart refreshView;
+		private final Prozessor prozesor;
+		
+		public DeleteFromView(RefreshableViewPart refreshView, Prozessor prozesor) {
+			this.refreshView = refreshView;
+			this.prozesor = prozesor;
+		}
+		
+		@Override
+		public void run() {
+			final TreeOrTableObject treeTableObj = refreshView.getSelectedElement();
+			prozesor.removeElement((Link) treeTableObj.getValue());
+		}
+	}
+	
+	public static class AddToView extends Action {
+		private final RefreshableViewPart refreshView;
+		private final Prozessor prozesor;
+		
+		public AddToView(RefreshableViewPart refreshView, Prozessor prozesor) {
+			this.refreshView = refreshView;
+			this.prozesor = prozesor;
+		}
+		
+		@Override
+		public void run() {
+			final TreeOrTableObject treeTableObj = refreshView.getSelectedElement();
+			prozesor.addNewElement((CharElement) treeTableObj.getValue());
+		}
+	}
+	
+	public static class InfoCharElementAction extends Action {
+		
 	}
 }

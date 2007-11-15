@@ -13,6 +13,7 @@ import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.ObjectCreator;
 import org.d3s.alricg.editor.common.ViewUtils.TableObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
+import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.generator.common.CustomActions.SwapTreeTableAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
@@ -28,7 +29,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
@@ -44,9 +48,8 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Prozes
 	protected Composite parentComp;
 
 	protected Action swapTreeTable;
+	protected Action swapInfoModus;
 	protected Action showInfos;
-	protected Action addToHeld;
-	protected Action removeFromHeld;
 
 	protected static final int DEFAULT_FIRSTCOLUMN_WIDTH = 200;
 
@@ -122,7 +125,7 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Prozes
 	}
 	
 	// Füllt Action-Bars
-	private void contributeToActionBars() {
+	protected void contributeToActionBars() {
 		IActionBars bars = getViewSite().getActionBars();
 		fillLocalToolBar(bars.getToolBarManager());
 	}
@@ -131,8 +134,6 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Prozes
 	protected void fillContextMenu(IMenuManager manager) {
 		manager.add(this.showInfos);
 		manager.add(new Separator());
-		manager.add(this.addToHeld);
-		manager.add(this.removeFromHeld);
 		
 		/* Um die Warnung
 		 * Context menu missing standard group 'org.eclipse.ui.IWorkbenchActionConstants.MB_ADDITIONS'
@@ -225,7 +226,6 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Prozes
 	 * Erstellt die Actions
 	 */
 	protected void makeActions() {
-
 		// Ansichte wechseln Action
 		swapTreeTable = new SwapTreeTableAction(this.parentComp);
 	}
@@ -234,8 +234,34 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Prozes
 		return objCreator;
 	}
 	
+	/**
+	 * @return Liefert das gerade selektierte Object vom Tree oder Table
+	 */
+	public TreeOrTableObject getSelectedElement() {
+		final Control topControl = ((StackLayout) parentComp.getLayout()).topControl;
+		TreeOrTableObject value = null;
+		
+		if (topControl instanceof Tree && ((Tree) topControl).getSelection().length > 0) {
+			value = (TreeOrTableObject) ((Tree) topControl).getSelection()[0].getData();
+
+		} else if (topControl instanceof Table && ((Table) topControl).getSelection().length > 0 ) {
+			value = (TreeOrTableObject) ((Table) topControl).getSelection()[0].getData();
+		}
+		
+		return value;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.editor.common.RefreshableViewPart#getTopControl()
+	 */
+	@Override
+	public Control getTopControl() {
+		return ((StackLayout) parentComp.getLayout()).topControl;
+	}
+	
 	public abstract Regulator getRegulator();
 	
 	public abstract Class getViewedClass();
+
 
 }

@@ -319,8 +319,15 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 		return prozessor.getUnmodifiableList();
 	}
 	
-// ----------------------- private Methoden ----------------------	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.logic.Prozessor#getExtendedInterface()
+	 */
+	@Override
+	public Object getExtendedInterface() {
+		return prozessor;
+	}
 	
+// ----------------------- private Methoden ----------------------	
 
 	/**
 	 * Fügt die Sonderregel und Voraussetzung zum jeweiligen Admin hinzu 

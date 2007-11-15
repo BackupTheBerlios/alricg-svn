@@ -7,12 +7,12 @@
  */
 package org.d3s.alricg.generator.common;
 
+import org.d3s.alricg.common.CommonUtils;
 import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.generator.prozessor.GeneratorLink;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Talent;
-import org.d3s.alricg.store.charElemente.links.Link;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 /**
@@ -49,9 +49,8 @@ public class CustomLabelProvider {
 		@Override
 		public String getText(Object element) {
 			if ( ((TreeOrTableObject) element).getValue() instanceof GeneratorLink) {
-				return String.valueOf( 
-						((GeneratorLink) ((TreeOrTableObject) element).getValue()).getKosten()
-					);
+				return  CommonUtils.doubleToString(
+						((GeneratorLink) ((TreeOrTableObject) element).getValue()).getKosten());
 			}
 			return "";
 		}

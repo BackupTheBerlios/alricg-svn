@@ -341,7 +341,8 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateText(org.d3s.alricg.charKomponenten.links.Link, java.lang.String)
 	 */
 	public void updateText(GeneratorLink link, String text) {
-		if (text == null) return;
+		//if (text == null) return;
+		// TODO Kosten für Sonderf berechnen?
 		link.setText(text);
 	}
 
@@ -483,6 +484,22 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	 */
 	public void setMaxTalentAktivierung(int maxAktivierungen) {
 		maxTalentAktivierungen = maxAktivierungen;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorTalent#getMaxTalentAktivierung()
+	 */
+	@Override
+	public int getMaxTalentAktivierung() {
+		return maxTalentAktivierungen;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.logic.Prozessor#getExtendedInterface()
+	 */
+	@Override
+	public ExtendedProzessorTalent getExtendedInterface() {
+		return this;
 	}
 	
 }

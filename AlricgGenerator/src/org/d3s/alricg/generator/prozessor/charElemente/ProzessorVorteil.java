@@ -335,4 +335,11 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.logic.Prozessor#getExtendedInterface()
+	 */
+	@Override
+	public ExtendedProzessorVorteil getExtendedInterface() {
+		return this;
+	}
 }

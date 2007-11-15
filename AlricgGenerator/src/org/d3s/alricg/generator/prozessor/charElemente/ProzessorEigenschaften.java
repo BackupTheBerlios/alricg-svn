@@ -624,4 +624,11 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
                 	+ ((GeneratorLink) link).getWertModis();
     }
 
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.logic.Prozessor#getExtendedInterface()
+	 */
+	@Override
+	public ExtendedProzessorEigenschaft getExtendedInterface() {
+		return this;
+	}
 }

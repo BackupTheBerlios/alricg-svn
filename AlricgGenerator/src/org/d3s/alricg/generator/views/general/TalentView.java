@@ -2,6 +2,7 @@ package org.d3s.alricg.generator.views.general;
 
 import java.util.List;
 
+import org.d3s.alricg.common.logic.BaseProzessorObserver;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
@@ -14,6 +15,7 @@ import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
+import org.d3s.alricg.generator.Activator;
 import org.d3s.alricg.generator.views.GeneralRefreshableViewPart;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.Talent;
@@ -29,6 +31,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 
 /**
@@ -52,6 +55,10 @@ import org.eclipse.swt.widgets.Composite;
 public class TalentView extends GeneralRefreshableViewPart {
 	public static final String ID = "org.d3s.alricg.generator.views.general.TalentView"; //$NON-NLS-1$
 	
+	
+	public TalentView() {
+		prozessor = Activator.getCurrentCharakter().getProzessor(Talent.class);
+	}
 	/**
 	 * Erstellt eine TreeTable + ContextMenu und setzt sie in den View
 	 */
@@ -63,12 +70,6 @@ public class TalentView extends GeneralRefreshableViewPart {
 		treeViewer.getTree().setLinesVisible(true);
 		treeViewer.getTree().setHeaderVisible(true);
 		ColumnViewerToolTipSupport.enableFor(treeViewer, ToolTip.NO_RECREATE);
-		
-		// Drag and Drop
-		treeViewer.addDragSupport(
-				DND.DROP_COPY | DND.DROP_MOVE, 
-				new Transfer[] { LocalSelectionTransfer.getTransfer() }, 
-				new CharElementDragSourceListener(treeViewer));
 		
 		
 		// Columns
@@ -149,12 +150,6 @@ public class TalentView extends GeneralRefreshableViewPart {
 		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.getTable().setHeaderVisible(true);
 		ColumnViewerToolTipSupport.enableFor(tableViewer, ToolTip.NO_RECREATE);
-		
-		// Drag and Drop
-		tableViewer.addDragSupport(
-				DND.DROP_COPY | DND.DROP_MOVE, 
-				new Transfer[] { LocalSelectionTransfer.getTransfer() }, 
-				new CharElementDragSourceListener(tableViewer));
 		
 		// Columns setzen
 		TableViewerColumn tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);

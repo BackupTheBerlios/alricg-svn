@@ -58,5 +58,10 @@ public interface ExtendedProzessorTalent {
 	 * @param maxAktivierungen Die neue Anzahl der maximal aktivierbaren Talente
 	 */
 	public void setMaxTalentAktivierung(int maxAktivierungen);
+	
+	/**
+	 * @return Anzahl der maximal aktivierbaren Talente
+	 */
+	public int getMaxTalentAktivierung();
 
 }
