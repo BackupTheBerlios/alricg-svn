@@ -19,6 +19,18 @@ import org.eclipse.swt.widgets.Display;
 public class CommonUtils {
 
 	/**
+	 * Erstellt aus einem double einen String. Dabei wird die Nachkommastelle nur 
+	 * angezeigt, wenn diese auch notwenig ist 
+	 */
+	public static String doubleToString(double d) {
+		if (d % 1 == 0) {
+			return Integer.toString( (int) d );
+		} else {
+			return Double.toString( d );
+		}
+	}
+	
+	/**
 	 * Ezeugt aus mehreren Bilder ein neues Bild. Dies wird benötigt um in Tabellen 
 	 * mehrere Bilder anzeigen zu können, trotz der "ein Bild" Beschränkung.
 	 * 

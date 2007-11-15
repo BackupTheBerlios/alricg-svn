@@ -187,4 +187,9 @@ public interface Prozessor<ZIEL extends CharElement, LINK extends Link> {
 	 */
 	public abstract void updateAllKosten();
 	
+	/**
+	 * @return Die zusätzlichen, spezifischen Methoden für einen Prozessor.
+	 */
+	public abstract Object getExtendedInterface();
+	
 }
