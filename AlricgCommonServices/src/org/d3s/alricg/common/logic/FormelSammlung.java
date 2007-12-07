@@ -9,6 +9,7 @@ package org.d3s.alricg.common.logic;
 
 import org.d3s.alricg.common.Notepad;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.d3s.alricg.store.rules.RegelConfig;
 
@@ -364,5 +365,119 @@ public class FormelSammlung {
 	 */
 	public static int berechneAsp(int MU, int IN, int CH) {
 		return (int) Math.round( (MU + IN + CH) / 2d );
+	}
+	
+	/**
+	 * Berechnet die Basis Geschwindigkeit OHNE Modifikatoren
+	 * @param GE Gewandheit
+	 * @return Die errechneten Geschwindigkeit
+	 */
+	public static int berechneGS(int GE) {
+		if (GE > 15) {
+			return 9;
+		} else if (GE < 11) {
+			return 7;
+		}
+		return 8;
+	}
+	
+	/**
+	 * Berechnet die Wundschwelle OHNE Modifikatoren
+	 * @param KO Konstitution
+	 * @return Die errechneten Wundschwelle
+	 */
+	public static int berechneWundSW(int KO) {
+		return (int) Math.round( KO / 2d );
+	}
+	
+	/**
+	 * Berechnet die Erschöpfungsschwelle OHNE Modifikatoren
+	 * @param GE Konstitution
+	 * @return Die errechneten Erschöpfungsschwelle
+	 */
+	public static int berechneErschoepfungsSW(int KO) {
+		return KO;
+	}
+	
+	/**
+	 * Berechnet wie viele Punkte maximal hinzugekauft werden dürfen
+	 * @param KO Konstitution
+	 * @return Der Wert ger Maximal hinzugekauft werden darf ( = KO /2)
+	 */
+	public static int berechneMaxLepHinzuKauf(int KO) {
+		return Math.round(KO / 2);
+	}
+	
+	/**
+	 *  Berechnet wie viele Punkte maximal hinzugekauft werden dürfen
+	 * @param CH Charisma
+	 * @return Der Wert ger Maximal hinzugekauft werden darf ( = CH x 1,5 )
+	 */
+	public static int berechneMaxAspHinzuKauf(int CH) {
+		return (int) Math.round( CH * 1.5d );
+	}
+
+	/**
+	 * Berechnet wie viele Punkte maximal hinzugekauft werden dürfen
+	 * @param KO Konstitution
+	 * @return Der Wert ger Maximal hinzugekauft werden darf ( = KO * 2)
+	 */
+	public static int berechneMaxAupHinzuKauf(int KO) {
+		return  KO * 2;
+	}
+	
+	/**
+	 * Liefert alle Eigenschaften deren Berechnung beeinflußt wird, duch die Änderung
+	 * von Eigenschaft "eig"
+	 * @param eig Eigenschaft die geändert wird
+	 * @return Alle Eigenschaften die abhängig sind von "eig"
+	 */
+	public static EigenschaftEnum[] getAbhängigkeiten(EigenschaftEnum eig) {
+		switch(eig) {
+		case MU: 
+			return new EigenschaftEnum[] {
+					EigenschaftEnum.MR, 
+					EigenschaftEnum.INI, 
+					EigenschaftEnum.AT,
+					EigenschaftEnum.AUP,
+					EigenschaftEnum.ASP};
+		case KL:
+			return new EigenschaftEnum[] {
+					EigenschaftEnum.MR};
+		case IN:
+			return new EigenschaftEnum[] {
+					EigenschaftEnum.INI, 
+					EigenschaftEnum.PA,
+					EigenschaftEnum.FK,
+					EigenschaftEnum.ASP};
+		case CH:
+			return new EigenschaftEnum[] {
+					EigenschaftEnum.ASP};
+		case FF:
+			return new EigenschaftEnum[] {
+					EigenschaftEnum.FK};
+		case GE:
+			return new EigenschaftEnum[] { 
+					EigenschaftEnum.INI, 
+					EigenschaftEnum.AT,
+					EigenschaftEnum.PA,
+					EigenschaftEnum.AUP,
+					EigenschaftEnum.GS};
+		case KO:
+			return new EigenschaftEnum[] {
+					EigenschaftEnum.MR, 
+					EigenschaftEnum.LEP, 
+					EigenschaftEnum.WSW,
+					EigenschaftEnum.AUP,
+					EigenschaftEnum.ESW};
+		case KK:
+			return new EigenschaftEnum[] {
+					EigenschaftEnum.AT,
+					EigenschaftEnum.PA,
+					EigenschaftEnum.FK,
+					EigenschaftEnum.LEP};
+		default:
+			return null;
+		}
 	}
 }
