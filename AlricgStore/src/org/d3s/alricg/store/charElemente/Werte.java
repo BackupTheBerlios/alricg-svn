@@ -161,22 +161,27 @@ public class Werte {
 		KO("Konstitution", "KO", "Basis","EIG-KO"),
 		KK("Koerperkraft", "KK", "Basis","EIG-KK"),
 		SO("Sozialstatus", "SO", "Erweitert", "EIG-SO"),
-		MR("Magieresistenz", "MR", "Errechnet", "EIG-MR"),
-		LEP("Lebenspunkte", "LeP", "Errechnet", "EIG-Lep"),
-		ASP("Astralpunkte", "AsP", "Errechnet", "EIG-AsP"),
-		AUP("Ausdauerpunkt", "AuP", "Errechnet", "EIG-AuP"),
-		KA("Karmaernergie", "KaP", "Errechnet", "EIG-KA"),
-		GS("Geschwindigkeit", "GS", "Erweitert", "EIG-GS"),
-		INI("Initiative", "INI", "Errechnet", "EIG-INI"),
-		FK("FernkampfBasis", "FK", "Errechnet", "EIG-FK"),
-		AT("AttackeBasis", "AT", "Errechnet", "EIG-AT"),
-		PA("ParadeBasis", "PA", "Errechnet", "EIG-PA");
+		MR("Magieresistenz", "MR", "Errechnet", "EIG-MR", "(MU+KL+KO)/5"),
+		LEP("Lebenspunkte", "LeP", "Errechnet", "EIG-Lep", "(2xKO+KK)/2"),
+		ASP("Astralpunkte", "AsP", "Errechnet", "EIG-AsP", "(MU+IN+CH)/2"),
+		AUP("Ausdauerpunkt", "AuP", "Errechnet", "EIG-AuP", "(MU+KO+GE)/2"),
+		KA("Karmaernergie", "KaP", "Errechnet", "EIG-KA"), 
+		GS("Geschwindigkeit", "GS", "Erweitert", "EIG-GS", "8, ab GE>15=9, ab GE<11=7"),
+		INI("Initiative", "INI", "Errechnet", "EIG-INI", "(2xMU+IN+GE)/5"),
+		FK("FernkampfBasis", "FK", "Errechnet", "EIG-FK", "(IN+FF+KK)/5"),
+		AT("AttackeBasis", "AT", "Errechnet", "EIG-AT", "(MU+GE+KK)/5"),
+		PA("ParadeBasis", "PA", "Errechnet", "EIG-PA", "(IN+GE+KK)/5"),
+		WSW("Wundschwelle", "WSW", "Errechnet", "EIG-WSW", "KO/2"),
+		ESW("Erschöpfungsschwelle", "ESW", "Errechnet", "EIG-ESW", "KO");
 
-		private String name; // Voller Name der Eigenschaft
-		private String abk; // Abkürzung der Eigenschaft
-		private String id; // ID der Eigenschaft
-		private String sammelbegriff; // 
+		
+		private final String name; // Voller Name der Eigenschaft
+		private final String abk; // Abkürzung der Eigenschaft
+		private final String id; // ID der Eigenschaft
+		private final String sammelbegriff; // 
+		private String formel;
 		private Eigenschaft eigenschaftCharElement;
+		
 
 		/**
 		 * @param bezeichnung
@@ -193,8 +198,15 @@ public class Werte {
 			this.abk = abk;
 			this.id = id;
 			this.sammelbegriff = sammelbegriff;
+			this.formel = "";
 		}
 
+		private EigenschaftEnum(String name, String abk, String sammelbegriff, String id, String formel) {
+			this(name, abk, sammelbegriff, id);
+			
+			this.formel = formel;
+		}
+		
 		/**
 		 * @return Die ID für diese Eigenschaft / gleichZeitig der XmlValue
 		 */
@@ -225,43 +237,22 @@ public class Werte {
 
 		/*
 		 * (non-Javadoc) Methode überschrieben
-		 * 
 		 * @see java.lang.Object#toString()
 		 */
 		public String toString() {
 			return abk;
 		}
 		
+		
+		public String getFormel() {
+			return formel;
+		}
 		public void setEigenschaft(Eigenschaft eigenschaftCharElement) {
 			this.eigenschaftCharElement = eigenschaftCharElement;
 		}
 		
 		public Eigenschaft getEigenschaft() {
 			return eigenschaftCharElement;
-		}
-
-		/**
-		 * Diese Methode wird vor allem für die initialisierung benötigt!
-		 * 
-		 * @return Eine ArrayList mit den IDs aller Eigenschaften
-		 */
-		public static ArrayList<String> getIdArray() {
-			ArrayList<String> ids;
-
-			ids = new ArrayList<String>(EigenschaftEnum.values().length);
-
-			for (int i = 0; i < EigenschaftEnum.values().length; i++) {
-				ids.add(EigenschaftEnum.values()[i].getValue());
-			}
-
-			return ids;
-		}
-
-		/**
-		 * @return Gibt die Anzahl aller Eigenschaften dieser Klasse an
-		 */
-		public static int getAnzahlEigenschaften() {
-			return EigenschaftEnum.values().length;
 		}
 
 		public String getSammelbegriff() {
