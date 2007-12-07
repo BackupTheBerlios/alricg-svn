@@ -8,7 +8,6 @@
 package org.d3s.alricg.generator.common;
 
 import org.d3s.alricg.common.logic.Prozessor;
-import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.generator.Activator;
 import org.d3s.alricg.store.charElemente.CharElement;
@@ -17,7 +16,6 @@ import org.d3s.alricg.store.charElemente.links.Link;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;

@@ -8,6 +8,11 @@
  */
 package org.d3s.alricg.generator.prozessor.extended;
 
+import org.d3s.alricg.common.charakter.ExtendedProzessorEigenschaftCommon;
+import org.d3s.alricg.generator.prozessor.GeneratorLink;
+import org.d3s.alricg.store.charElemente.Eigenschaft;
+import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
+
 /**
  * <u>Beschreibung:</u><br> 
  * Erweiterte Funktionen für Eigenschaften. Diese Funktionen bietet der Standard-Prozessor
@@ -16,7 +21,7 @@ package org.d3s.alricg.generator.prozessor.extended;
  *  
  * @author V. Strelow
  */
-public interface ExtendedProzessorEigenschaft {
+public interface ExtendedProzessorEigenschaft extends ExtendedProzessorEigenschaftCommon {
 	
     /**
      * Die Kosten für die Talent-GP
@@ -25,4 +30,26 @@ public interface ExtendedProzessorEigenschaft {
      * @see getGesamtKosten()
      */
     public int getGesamtTalentGpKosten();
+    
+    /**
+     * @param eigen EigenschaftEnum der gewünschten Eigenschaft
+     * @return Liefert zu einer EigenschaftEnum den passenden Link
+     */
+    public GeneratorLink<Eigenschaft> getEigenschaftsLink(EigenschaftEnum eigen);
+    
+    /**
+     * Berechnet wie viele Punkte zu einem berechneten Wert maximal hinzugekauft werden 
+     * dürfen. Ist nur für Lep, Aup, Asp möglich.
+     * @param eigen Die EigenschaftEnum der gewünschten Eigenschaft
+     * @return Maximal möglicher Zukauf
+     */
+    public int getMaxZukauf(EigenschaftEnum eigen);
+    
+    /**
+     * Berechnet wie viele Punkte zu einem berechneten Wert minimal hinzugekauft werden 
+     * müssen. Ist nur für Lep, Aup, Asp möglich.
+     * @param eigen Die EigenschaftEnum der gewünschten Eigenschaft
+     * @return Minimal möglicher Zukauf
+     */
+    public int getMinZukauf(EigenschaftEnum eigen);
 }

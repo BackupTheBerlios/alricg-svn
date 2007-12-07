@@ -37,6 +37,8 @@ public class StandardPerspective implements IPerspectiveFactory {
         		editorArea);
         bottomFolder.addView(org.d3s.alricg.generator.views.general.TalentView.ID);
         bottomFolder.addView(org.d3s.alricg.generator.views.held.TalentView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.held.EigenschaftenView.ID);
+        //bottomFolder.addView(org.d3s.alricg.generator.views.held.HerkunftView.ID);
 	}
 
 }

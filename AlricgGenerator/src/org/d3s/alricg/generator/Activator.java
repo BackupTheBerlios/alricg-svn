@@ -7,8 +7,10 @@ import org.d3s.alricg.common.logic.Prozessor;
 import org.d3s.alricg.generator.prozessor.ProzessorDecorator;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorEigenschaften;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorTalent;
+import org.d3s.alricg.generator.prozessor.charElemente.ProzessorZauber;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Talent;
+import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.held.CharakterDaten;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -41,6 +43,9 @@ public class Activator extends AbstractUIPlugin {
 		hash.put(
 				Talent.class,
 				new ProzessorDecorator(charakter, new ProzessorTalent(charakter)));
+		hash.put(
+				Zauber.class,
+				new ProzessorDecorator(charakter, new ProzessorZauber(charakter)));
 
 		charakter.setProzessorHash(hash);
 	}

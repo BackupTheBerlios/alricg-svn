@@ -55,10 +55,6 @@ import org.eclipse.swt.widgets.Control;
 public class TalentView extends GeneralRefreshableViewPart {
 	public static final String ID = "org.d3s.alricg.generator.views.general.TalentView"; //$NON-NLS-1$
 	
-	
-	public TalentView() {
-		prozessor = Activator.getCurrentCharakter().getProzessor(Talent.class);
-	}
 	/**
 	 * Erstellt eine TreeTable + ContextMenu und setzt sie in den View
 	 */

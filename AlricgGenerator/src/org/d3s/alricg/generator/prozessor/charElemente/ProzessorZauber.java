@@ -66,7 +66,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 * Wichtig fuer schnellen Zugriff bei berechnung der Min-Werte bei Eigenschaften.
 	 */ 
 	private Map< EigenschaftEnum, Set<GeneratorLink> > hashMapNachEigensch;
-	private final Notepad notepad;
+	private Notepad notepad;
 	private final Charakter held;
 	
 	private int talentGpKosten;
@@ -81,9 +81,9 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 
 	private final HashMap< Zauber, Repraesentation > moeglicheZauberMap;
 	
-	public ProzessorZauber(	Charakter held, Notepad notepade ) {
+	public ProzessorZauber(	Charakter held ) {
 		this.held = held;
-		this.notepad = notepade;
+		//this.notepad = notepade;
 		this.elementBox = new ElementBox<GeneratorLink>();
 		
 		this.talentGpKosten = 0;

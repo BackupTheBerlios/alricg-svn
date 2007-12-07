@@ -10,6 +10,7 @@ package org.d3s.alricg.generator.views;
 import org.d3s.alricg.common.logic.Prozessor;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
+import org.d3s.alricg.generator.Activator;
 import org.d3s.alricg.generator.common.CustomActions.AddToView;
 import org.d3s.alricg.generator.common.CustomActions.InfoCharElementAction;
 import org.d3s.alricg.generator.common.Utils.DropRemoveFromHeld;
@@ -29,7 +30,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
@@ -43,6 +43,10 @@ public abstract class GeneralRefreshableViewPart extends RefreshableViewPartImpl
 	
 	//protected Action removeFromHeld;
 	protected Action addToHeld;
+	
+	public GeneralRefreshableViewPart() {
+		prozessor = Activator.getCurrentCharakter().getProzessor(getViewedClass());
+	}
 	
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize

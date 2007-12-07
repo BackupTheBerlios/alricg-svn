@@ -31,7 +31,7 @@ import org.d3s.alricg.store.held.HeldenLink;
  * 
  * @author V.Strelow
  */
-public class GeneratorLink extends HeldenLink {
+public class GeneratorLink<ZIEL extends CharElement> extends HeldenLink  {
        
 	/* Überlegungen:
 	 * - Es kann durch eine Herkunft auch mehrmalig ein Link hinzugefügt werden (z.B. regulär und

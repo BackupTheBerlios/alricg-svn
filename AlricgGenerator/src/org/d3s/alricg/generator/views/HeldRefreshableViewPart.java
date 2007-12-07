@@ -7,12 +7,15 @@
  */
 package org.d3s.alricg.generator.views;
 
+import org.d3s.alricg.common.logic.BaseProzessorObserver;
 import org.d3s.alricg.common.logic.Prozessor;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
+import org.d3s.alricg.generator.Activator;
 import org.d3s.alricg.generator.common.CustomActions.DeleteFromView;
 import org.d3s.alricg.generator.common.CustomActions.InfoCharElementAction;
 import org.d3s.alricg.generator.common.Utils.DropAddToHeld;
 import org.d3s.alricg.generator.common.Utils.LinkDrag;
+import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
@@ -25,6 +28,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -42,6 +47,11 @@ public abstract class HeldRefreshableViewPart extends RefreshableViewPartImpl {
 	protected Prozessor prozessor; 
 	
 	protected Action removeFromHeld;
+	
+	public HeldRefreshableViewPart() {
+		prozessor = Activator.getCurrentCharakter().getProzessor(getViewedClass());
+		((BaseProzessorObserver) prozessor).registerObserver(this);
+	}
 	
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize
@@ -191,5 +201,11 @@ public abstract class HeldRefreshableViewPart extends RefreshableViewPartImpl {
 		menu = menuMgr.createContextMenu(viewerTable.getControl());
 		viewerTable.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuMgr, viewerTable);
+	}
+	
+	@Override
+	public void dispose() {
+		((BaseProzessorObserver) prozessor).unregisterObserver(this);
+		super.dispose();
 	}
 }

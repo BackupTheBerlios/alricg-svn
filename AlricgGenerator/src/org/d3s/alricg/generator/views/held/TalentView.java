@@ -9,7 +9,7 @@ package org.d3s.alricg.generator.views.held;
 
 import java.util.List;
 
-import org.d3s.alricg.common.logic.BaseProzessorObserver;
+import org.d3s.alricg.common.CommonUtils;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
@@ -61,13 +61,6 @@ public class TalentView extends HeldRefreshableViewPart {
 				return new TreeObject(element, parentNode);
 			}
 		};
-	
-	
-	public TalentView() {
-		((BaseProzessorObserver) Activator.getCurrentCharakter()
-				.getProzessor(Talent.class)).registerObserver(this);
-		prozessor = Activator.getCurrentCharakter().getProzessor(Talent.class);
-	}
 	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.generator.views.HeldRefreshableViewPart#getStatusAnzeigeElemente()
@@ -164,7 +157,7 @@ public class TalentView extends HeldRefreshableViewPart {
 		
 		// Inhalt und Sortierung setzen
 		TreeObject root = ViewUtils.buildTreeViewAlt(
-				Activator.getCurrentCharakter().getElementListe(Talent.class), 
+				prozessor.getElementBox().getUnmodifiableList(), 
 				getRegulator(),
 				this.getObjectCreator());
 		treeViewer.setContentProvider(new TreeViewContentProvider(root));
@@ -281,7 +274,7 @@ public class TalentView extends HeldRefreshableViewPart {
 		tableViewer.setSorter(new CustomColumnViewerSorter.NameSorter());
 		tableViewer.setInput(
 				ViewUtils.buildTableViewAlt(
-					Activator.getCurrentCharakter().getElementListe(Talent.class), 
+					prozessor.getElementBox().getUnmodifiableList(), 
 					getRegulator(),
 					this.getObjectCreator())
 				);
@@ -356,7 +349,7 @@ public class TalentView extends HeldRefreshableViewPart {
 	protected void updateStatusAnzeigeElemente() {
 		String[] str = new String[2];
 		
-		str[0] = GESAMT_KOSTEN + prozessor.getGesamtKosten() + TAL_GP;
+		str[0] = GESAMT_KOSTEN + CommonUtils.doubleToString(prozessor.getGesamtKosten()) + TAL_GP;
 		str[1] = AKTIVIERT
 					+ ((ExtendedProzessorTalent) prozessor.getExtendedInterface()).getAktivierteTalente().size()
 					+ " / "
@@ -371,8 +364,6 @@ public class TalentView extends HeldRefreshableViewPart {
 	 */
 	@Override
 	public void dispose() {
-		((BaseProzessorObserver) Activator.getCurrentCharakter()
-				.getProzessor(Talent.class)).unregisterObserver(this);
 		super.dispose();
 	}
 

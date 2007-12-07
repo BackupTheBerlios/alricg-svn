@@ -76,6 +76,7 @@ public abstract class RefreshableViewPartImpl extends ViewPart implements Prozes
 	 * This is a callback that will allow us to create the viewer and initialize
 	 * it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new StackLayout());
 
