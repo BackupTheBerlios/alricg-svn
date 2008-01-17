@@ -59,12 +59,11 @@ public class KulturEditor extends ComposedMultiPageEditorPart {
 	private KulturPart kulturPart;
 	private AuswahlPart schriftenPart;
 	private AuswahlPart ausruestungPart;
-	
-	private static final Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
 
 	private AbstractElementPart[] elementPartArray;
 
 	static class KulturPart extends AbstractElementPart<Kultur> {
+		private final Image imgDelete = ControlIconsLibrary.delete.getImageDescriptor().createImage();
 		private final DropTable dropTableProfMoeglich;
 		private final DropTable dropTableProfUeblich;
 		protected Combo cobArt;
