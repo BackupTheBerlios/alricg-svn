@@ -46,6 +46,11 @@ import org.d3s.alricg.store.charElemente.links.Voraussetzung;
  * @author Vincent
  */
 public class CharElementTextService {
+	public static final String KEINE = "keine";
+	
+	public static final int VORAUSSETZUNG_MODUS_POSITIV = 1;
+	public static final int VORAUSSETZUNG_MODUS_NEGATIV = 2;
+	public static final int VORAUSSETZUNG_MODUS_ALLE = 3;
 	
 	public static String getCharElementName(Class clazz) {
 		if (clazz == Eigenschaft.class) {
@@ -109,12 +114,33 @@ public class CharElementTextService {
 	 * @return Der Text
 	 */
 	public static String getVoraussetzungsText(Voraussetzung voraus) {
-		if (voraus == null) return "keine";
+		return getVoraussetzungsText(voraus, VORAUSSETZUNG_MODUS_ALLE);
+	}
+	
+	/**
+	 * Berechnet einen aus einer Voraussetzung einen Text für den User 
+	 * @param voraus ie Voraussetzung, deren Text dargestellt werden soll
+	 * @param modus 1= Nur positive Voraus., 2 = nur negative Voraus., 3 = beide Voraus.
+	 * @return Der Text, je nach Modus nur für die Positiven, Negativen, oder alle
+	 */
+	public static String getVoraussetzungsText(Voraussetzung voraus, int modus) {
+		if (voraus == null) return KEINE;
+		String positiv = "";
+		String negativ = "";
 		
-		final String positiv = getOptionListText(voraus.getPosVoraussetzung());
-		String negativ = getOptionListText(voraus.getNegVoraussetzung());
-
-		if (negativ.length() > 0) {
+		if (modus == VORAUSSETZUNG_MODUS_POSITIV || modus == VORAUSSETZUNG_MODUS_ALLE) {
+			positiv = getOptionListText(voraus.getPosVoraussetzung());
+		}
+		if (modus == VORAUSSETZUNG_MODUS_NEGATIV || modus == VORAUSSETZUNG_MODUS_ALLE) {
+			negativ = getOptionListText(voraus.getNegVoraussetzung());
+		}
+		if (modus != VORAUSSETZUNG_MODUS_POSITIV
+					&& modus != VORAUSSETZUNG_MODUS_NEGATIV
+					&& modus != VORAUSSETZUNG_MODUS_ALLE) {
+			throw new IllegalArgumentException("Illegaler Modus Nr. " + modus + "!");
+		}
+		
+		if (negativ.length() > 0 && !negativ.equals(KEINE)) {
 			negativ = "NICHT: " + negativ;
 			if (positiv.length() > 0) {
 				negativ = ", " + negativ;
@@ -122,19 +148,37 @@ public class CharElementTextService {
 		}
 		
 		final String returnStr = positiv + negativ; 
-		if (returnStr.length() == 0) return "keine";
+		if (returnStr.length() == 0) return KEINE;
 		
 		return returnStr;
 	}
 	
 	/**
-	 * Berechnet einen aus einer Voraussetzung einen Text für den User 
+	 * Berechnet aus einer Voraussetzung einen Text für die User-Anzeige 
 	 * @param voraus Die Voraussetzung, deren Text dargestellt werden soll
 	 * @return Der Text
 	 */
 	public static String getAuswahlText(Auswahl auswahl) {
-		if (auswahl == null) return "keine";
+		if (auswahl == null) return KEINE;
 		return getOptionListText(auswahl.getOptionen());
+	}
+	
+	/**
+	 * Berechnet aus einem Array von Links einen Text für die User-Anzeige 
+	 * @param linkArray Array von Link
+	 * @return Text für User
+	 */
+	public static String getLinkArrayText(Link[] linkArray) {
+		if (linkArray == null) return KEINE;
+		String text = "";
+		
+		for (Link link : linkArray) {
+			if (text.length() > 0) text += ", ";
+			text += getLinkText(link);
+		}
+		if (text.length() == 0) return KEINE;
+		
+		return text;
 	}
 	
 	/**
@@ -143,7 +187,7 @@ public class CharElementTextService {
 	 * @return Der Text
 	 */
 	public static String getOptionListText(List<? extends Option> list) {
-		if (list == null) return "keine";
+		if (list == null) return KEINE;
 		final StringBuilder strB = new StringBuilder();
 		
 		for (int i = 0; i < list.size(); i++) {
@@ -159,7 +203,7 @@ public class CharElementTextService {
 			}
 		}
 
-		if (strB.length() == 0) return "keine";
+		if (strB.length() == 0) return KEINE;
 		return strB.toString();
 	}
 	
