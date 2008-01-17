@@ -7,11 +7,18 @@
  */
 package org.d3s.alricg.generator.common;
 
+import java.util.Arrays;
+
+import org.d3s.alricg.common.CharElementTextService;
 import org.d3s.alricg.common.logic.Prozessor;
+import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.ViewUtils.TreeOrTableObject;
 import org.d3s.alricg.generator.Activator;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.HerkunftVariante;
 import org.d3s.alricg.store.charElemente.Talent;
+import org.d3s.alricg.store.charElemente.links.Auswahl;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -172,6 +179,99 @@ public class Utils {
 		@Override
 		public void dragFinished(DragSourceEvent event) {
 			// Noop
+		}
+	}
+	
+	/**
+	 * Liefert den Beschreibenden Text zu einem LinkArray unter berücksichtigung der
+	 * Herkunft einer HerkunftVariante!
+	 * @param herkunft
+	 * @param entString Ein String aus den Konstanten der HerkunftVariante, wie 
+	 * 		HerkunftVariante.EIGEN_MODIS, HerkunftVariante.VERB_SONDERF o.ä.
+	 * @return Einen Beschreibenden String für diesen LinkArray
+	 */
+	public static String getLinkArrayText(Herkunft herkunft, String entString) {
+		String tmpText = CharElementTextService.getLinkArrayText(herkunft.getVerbilligteSonderf());
+		String text = addText("", tmpText);
+		
+		// Den "Parent" durchsuchen
+		if (herkunft instanceof HerkunftVariante 
+				&& ((HerkunftVariante) herkunft).isAdditionsVariante() 
+				&& ( ((HerkunftVariante) herkunft).getEntferneXmlTag() == null
+						|| !Arrays.asList(((HerkunftVariante) herkunft).getEntferneXmlTag()).contains(entString)) 
+					)
+		{
+			text = addText(
+					text, 
+					getLinkArrayText(((HerkunftVariante) herkunft).getVarianteVon(), entString)
+				);
+		}
+		
+		return text;
+	}
+	
+	/**
+	 * Liefert den Beschreibenden Text zu einer Auswahl unter berücksichtigung der
+	 * Herkunft einer HerkunftVariante!
+	 * @param herkunft
+	 * @param entString Ein String aus den Konstanten der HerkunftVariante, wie 
+	 * 		HerkunftVariante.EIGEN_MODIS, HerkunftVariante.VERB_SONDERF o.ä.
+	 * @return Einen Beschreibenden String für diese Auswahl
+	 */
+	public static String getAuswahlText(Herkunft herkunft, String entString) {
+		String tmpText = CharElementTextService.getAuswahlText(
+							getAuswahlFromTag(herkunft, entString));
+		String text = addText("", tmpText);
+		
+		// Den "Parent" durchsuchen
+		if (herkunft instanceof HerkunftVariante 
+				&& ((HerkunftVariante) herkunft).isAdditionsVariante() 
+				&& ( ((HerkunftVariante) herkunft).getEntferneXmlTag() == null
+						|| !Arrays.asList(((HerkunftVariante) herkunft).getEntferneXmlTag()).contains(entString)) 
+					)
+		{
+			text = addText(
+					text, 
+					getAuswahlText(((HerkunftVariante) herkunft).getVarianteVon(), entString)
+				);
+		}
+		
+		return text;
+	}
+	
+	/**
+	 * Fügt zwei Stings zusammen, fügt ein Komma ein wenn nötig. Leerstrings oder 
+	 * "CharElementTextService.KEINE" werden ignoriert
+	 * @param addTo String zu dem hinzugefügt werden soll
+	 * @param toAdd String der Hinzugefügt wird
+	 * @return Zusammengefügter String
+	 */
+	public static String addText(String addTo, String toAdd) {
+		if (toAdd.length() > 0 && !toAdd.equals(CharElementTextService.KEINE)) {
+			if (addTo.length() > 0) addTo += ", ";
+			addTo += toAdd;
+		}
+		return addTo;
+	}
+	
+	/**
+	 * Liefert zu einem Tag aus "HerkunftVariante" die Entsprechende Auswahl.
+	 * @param herkunft Herkunft zu dem die Auswahl geliefert werden soll
+	 * @param tag Tag
+	 * @return Auswahl zu dem Tag
+	 */
+	public static Auswahl getAuswahlFromTag(Herkunft herkunft, String tag) {
+		
+		if (HerkunftVariante.EIGEN_MODIS.equals(tag)) {
+			return herkunft.getEigenschaftModis();
+		} else if (HerkunftVariante.VORTEILE.equals(tag)) {
+			return herkunft.getVorteile();
+		} else if (HerkunftVariante.NACHTEILE.equals(tag)) {
+			return herkunft.getNachteile();
+		} else if (HerkunftVariante.SONDERF.equals(tag)) {
+			return herkunft.getSonderfertigkeiten();
+		} else {
+			throw new IllegalArgumentException();
 		}
 	}
 }

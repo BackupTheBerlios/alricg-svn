@@ -35,7 +35,12 @@ public class StandardPerspective implements IPerspectiveFactory {
         		IPageLayout.BOTTOM, 
         		StandradPerspective.BOTTOM_FOLDER_RATIO, 
         		editorArea);
+        
+        
         bottomFolder.addView(org.d3s.alricg.generator.views.general.TalentView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.RassenView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.KulturView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.ProfessionView.ID);
         bottomFolder.addView(org.d3s.alricg.generator.views.held.TalentView.ID);
         bottomFolder.addView(org.d3s.alricg.generator.views.held.EigenschaftenView.ID);
         //bottomFolder.addView(org.d3s.alricg.generator.views.held.HerkunftView.ID);

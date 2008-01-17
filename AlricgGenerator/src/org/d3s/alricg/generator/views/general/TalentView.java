@@ -173,8 +173,7 @@ public class TalentView extends GeneralRefreshableViewPart {
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
-				new ViewerSelectionListener(
-						new ArtSorter(), tableViewer));
+				new ViewerSelectionListener(new ArtSorter(), tableViewer));
 
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("Sorte");

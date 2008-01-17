@@ -1,6 +1,8 @@
 package org.d3s.alricg.generator;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.d3s.alricg.common.charakter.Charakter;
 import org.d3s.alricg.common.logic.Prozessor;
@@ -12,6 +14,7 @@ import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.held.CharakterDaten;
+import org.d3s.loggingService.LoggerManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -23,6 +26,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.d3s.alricg.generator";
+	public static Logger logger = LoggerManager.getLogger(PLUGIN_ID, null);
 	private static Charakter charakter;
 	
 	// The shared instance
@@ -32,6 +36,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
+		logger = LoggerManager.getLogger(PLUGIN_ID, this);
 		charakter = new Charakter(new CharakterDaten());
 		
 		// TEST
