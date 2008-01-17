@@ -53,14 +53,5 @@ public class Voraussetzung {
 	public void setNegVoraussetzung(List<OptionVoraussetzung> negVoraussetzung) {
 		this.negVoraussetzung = negVoraussetzung;
 	}
-
-	
-
-
-
-
-
-
-
 	
 }

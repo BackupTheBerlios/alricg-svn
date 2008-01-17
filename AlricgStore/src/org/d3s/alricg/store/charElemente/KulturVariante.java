@@ -10,6 +10,8 @@ package org.d3s.alricg.store.charElemente;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.d3s.alricg.store.charElemente.links.Auswahl;
+
 
 
 /**
@@ -127,7 +129,5 @@ public class KulturVariante extends Kultur implements HerkunftVariante<Kultur> {
 	public boolean isProfessionenSindNegativListe() {
 		return varianteVon.isProfessionenSindNegativListe();
 	}
-	
-	
 
 }

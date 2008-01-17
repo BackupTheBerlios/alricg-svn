@@ -55,6 +55,7 @@ public class IdLink<ZIEL extends CharElement> extends Link<ZIEL> {
 	public CharElement getQuelle() {
 		return quelle;
 	}
+    
 	/**
 	 * @param quelle Von wo der Link "ausgeht". Typischer weise eine Herkunft.
 	 */
