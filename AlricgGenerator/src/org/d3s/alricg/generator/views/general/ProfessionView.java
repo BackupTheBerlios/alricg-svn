@@ -28,7 +28,6 @@ import org.d3s.alricg.generator.views.GeneralRefreshableViewPart;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.HerkunftVariante;
 import org.d3s.alricg.store.charElemente.Profession;
-import org.d3s.alricg.store.charElemente.Rasse;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
@@ -68,14 +67,13 @@ public class ProfessionView extends GeneralRefreshableViewPart {
 		
 		// Columns setzen
 		TableViewerColumn tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tableViewer.getTable().setSortColumn(tc.getColumn());
 		tc.getColumn().setText("*");
-		tc.setLabelProvider(new ProfessionBildProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.GeneralImageProvider());
 		tc.getColumn().setWidth(25);
 		tc.getColumn().setMoveable(false);
 		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
-								new ProfessionBildSorter(),
+								new CustomColumnViewerSorter.GeneralImageSorter(),
 								tableViewer));
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
@@ -212,12 +210,12 @@ public class ProfessionView extends GeneralRefreshableViewPart {
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("*");
-		tc.setLabelProvider(new ProfessionBildProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.GeneralImageProvider());
 		tc.getColumn().setWidth(25);
 		tc.getColumn().setMoveable(false);
 		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
-								new ProfessionBildSorter(),
+								new CustomColumnViewerSorter.GeneralImageSorter(),
 								treeViewer));
 
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
@@ -365,14 +363,6 @@ public class ProfessionView extends GeneralRefreshableViewPart {
 	
 	// ------------------ Label Provider --------------------------------------------
 	
-	public static class ProfessionBildProvider extends ColumnLabelProvider {
-		@Override
-		public String getText(Object element) {
-			// TODO implement
-			return ""; //$NON-NLS-1$
-		}
-	}
-	
 	public static class ArtLabelProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
@@ -397,14 +387,6 @@ public class ProfessionView extends GeneralRefreshableViewPart {
 	
 	
 	// --------------------- Sorter ------------------------------------------------
-	
-	public static class ProfessionBildSorter extends CreatableViewerSorter {
-		@Override
-		public Comparable getComparable(Object obj) {
-			// TODO implement
-			return ""; 
-		}
-	}
 	
 	public static class ArtSorter extends CreatableViewerSorter {
 		@Override

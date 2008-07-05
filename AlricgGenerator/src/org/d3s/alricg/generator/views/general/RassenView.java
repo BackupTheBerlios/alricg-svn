@@ -62,14 +62,13 @@ public class RassenView extends GeneralRefreshableViewPart {
 		
 		// Columns setzen
 		TableViewerColumn tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tableViewer.getTable().setSortColumn(tc.getColumn());
 		tc.getColumn().setText("*");
-		tc.setLabelProvider(new RasseBildProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.GeneralImageProvider());
 		tc.getColumn().setWidth(25);
 		tc.getColumn().setMoveable(false);
 		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
-								new RasseBildSorter(),
+								new CustomColumnViewerSorter.GeneralImageSorter(),
 								tableViewer));
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
@@ -200,12 +199,12 @@ public class RassenView extends GeneralRefreshableViewPart {
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("*");
-		tc.setLabelProvider(new RasseBildProvider());
+		tc.setLabelProvider(new CustomColumnLabelProvider.GeneralImageProvider());
 		tc.getColumn().setWidth(25);
 		tc.getColumn().setMoveable(false);
 		tc.getColumn().addSelectionListener(
 						new ViewerSelectionListener(
-								new RasseBildSorter(),
+								new CustomColumnViewerSorter.GeneralImageSorter(),
 								treeViewer));
 
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
@@ -347,8 +346,6 @@ public class RassenView extends GeneralRefreshableViewPart {
 	
 // ----------------------------------------------------------------------
 	
-
-	
 	public static class AlterProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
@@ -399,14 +396,6 @@ public class RassenView extends GeneralRefreshableViewPart {
 		}
 	}
 	
-	public static class RasseBildProvider extends ColumnLabelProvider {
-		@Override
-		public String getText(Object element) {
-			// TODO implement
-			return ""; //$NON-NLS-1$
-		}
-	}
-	
 	public static class ArtLabelProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
@@ -443,14 +432,6 @@ public class RassenView extends GeneralRefreshableViewPart {
 			} else {
 				return tmpRasse.getGroesseWuerfel().getMaxWurf();
 			}
-		}
-	}
-	
-	public static class RasseBildSorter extends CreatableViewerSorter {
-		@Override
-		public Comparable getComparable(Object obj) {
-			// TODO implement
-			return ""; 
 		}
 	}
 	

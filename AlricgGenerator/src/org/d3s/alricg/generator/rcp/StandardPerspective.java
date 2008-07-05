@@ -27,7 +27,7 @@ public class StandardPerspective implements IPerspectiveFactory {
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		String editorArea = layout.getEditorArea();
-		layout.setEditorAreaVisible(true);
+		layout.setEditorAreaVisible(false);
 		layout.setFixed(false);
 		
         IFolderLayout bottomFolder = layout.createFolder(
@@ -35,14 +35,29 @@ public class StandardPerspective implements IPerspectiveFactory {
         		IPageLayout.BOTTOM, 
         		StandradPerspective.BOTTOM_FOLDER_RATIO, 
         		editorArea);
+        IFolderLayout topFolder = layout.createFolder( 
+        		"topFolder", 
+        		IPageLayout.TOP, 
+        		StandradPerspective.BOTTOM_FOLDER_RATIO, 
+        		editorArea );
         
         
         bottomFolder.addView(org.d3s.alricg.generator.views.general.TalentView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.NachteilView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.VorteilView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.SonderfertigkeitView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.ZauberView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.LiturgieView.ID);
+        bottomFolder.addView(org.d3s.alricg.generator.views.general.SchamRitualView.ID);
+        
+        //bottomFolder.addView(org.d3s.alricg.generator.views.general.VorteilView.ID);
         bottomFolder.addView(org.d3s.alricg.generator.views.general.RassenView.ID);
         bottomFolder.addView(org.d3s.alricg.generator.views.general.KulturView.ID);
         bottomFolder.addView(org.d3s.alricg.generator.views.general.ProfessionView.ID);
-        bottomFolder.addView(org.d3s.alricg.generator.views.held.TalentView.ID);
-        bottomFolder.addView(org.d3s.alricg.generator.views.held.EigenschaftenView.ID);
+        
+        topFolder.addView(org.d3s.alricg.generator.views.held.TalentView.ID);
+        topFolder.addView(org.d3s.alricg.generator.views.held.HerkunftView.ID);
+        topFolder.addView(org.d3s.alricg.generator.views.held.EigenschaftenView.ID);
         //bottomFolder.addView(org.d3s.alricg.generator.views.held.HerkunftView.ID);
 	}
 

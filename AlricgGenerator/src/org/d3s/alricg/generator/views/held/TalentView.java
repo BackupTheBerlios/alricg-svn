@@ -10,6 +10,7 @@ package org.d3s.alricg.generator.views.held;
 import java.util.List;
 
 import org.d3s.alricg.common.CommonUtils;
+import org.d3s.alricg.common.logic.BaseProzessorObserver;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
@@ -29,6 +30,7 @@ import org.d3s.alricg.generator.common.CustomEditingSupport.LinkWertProzessorEdi
 import org.d3s.alricg.generator.common.CustomEditingSupport.TalentSpezialisierungsEditor;
 import org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorTalent;
 import org.d3s.alricg.generator.views.HeldRefreshableViewPart;
+import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.rules.RegelConfig;
@@ -50,6 +52,12 @@ public class TalentView extends HeldRefreshableViewPart {
 	public static final String GESAMT_KOSTEN = "Gesamt Kosten: ";
 	public static final String AKTIVIERT = "Aktiviert: ";
 	public static final String TAL_GP = " TalGP";
+	
+	public TalentView() {
+		((BaseProzessorObserver) Activator.getCurrentCharakter()
+				.getProzessor(Talent.class)).registerObserver(this);
+	}
+	
 	private final ObjectCreator objCreator = new ObjectCreator() {
 			@Override
 			public TableObject createTableObject(Object element) {
@@ -119,6 +127,12 @@ public class TalentView extends HeldRefreshableViewPart {
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener( new ViewerSelectionListener(
 						new CustomViewerSorter.LinkWertModiSorter(), treeViewer));
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
+		tc.getColumn().setText("Probe");
+		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("SKT");
@@ -195,6 +209,21 @@ public class TalentView extends HeldRefreshableViewPart {
 								tableViewer));
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
+		tc.getColumn().setText("Sorte");
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+		tc.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if ( ((Link) ((TableObject) element).getValue()).getZiel() instanceof Talent) {
+					return ((Talent) ((Link) ((TableObject) element).getValue()).getZiel())
+							.getSorte().toString();
+				}
+				return ""; //$NON-NLS-1$
+			}
+		});
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("Stufe");
 		tc.setLabelProvider(new CustomColumnLabelProvider.LinkWertProvider());
 		tc.getColumn().setWidth(75);
@@ -216,6 +245,12 @@ public class TalentView extends HeldRefreshableViewPart {
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener( new ViewerSelectionListener(
 						new CustomViewerSorter.LinkWertModiSorter(), tableViewer));
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
+		tc.getColumn().setText("Probe");
+		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("SKT");
@@ -252,22 +287,6 @@ public class TalentView extends HeldRefreshableViewPart {
 		tc.getColumn().addSelectionListener( new ViewerSelectionListener(
 						new ArtSorter(), tableViewer));
 		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Sorte");
-		tc.getColumn().setWidth(75);
-		tc.getColumn().setMoveable(true);
-		tc.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				if ( ((Link) ((TableObject) element).getValue()).getZiel() instanceof Talent) {
-					return ((Talent) ((Link) ((TableObject) element).getValue()).getZiel())
-							.getSorte().toString();
-				}
-				return ""; //$NON-NLS-1$
-			}
-		});
-		
-
 		// Inhalt und Sortierung setzen
 		tableViewer.setContentProvider(new TableViewContentProvider());
 		tableViewer.getTable().setSortDirection(SWT.UP);
@@ -364,6 +383,8 @@ public class TalentView extends HeldRefreshableViewPart {
 	 */
 	@Override
 	public void dispose() {
+		((BaseProzessorObserver) Activator.getCurrentCharakter()
+				.getProzessor(Talent.class)).unregisterObserver(this);
 		super.dispose();
 	}
 

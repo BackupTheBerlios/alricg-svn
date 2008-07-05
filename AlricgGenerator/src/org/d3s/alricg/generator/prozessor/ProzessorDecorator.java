@@ -89,16 +89,13 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 				link.getZiel().createSonderregel().processBeforAddAsNewElement(link.getZiel());
 			}
 			
-			prozessor.addNewElement((ZIEL) link.getZiel());
-			addNewSonderregelUndVoraussetzung(link); // Sonderregeln und Voraussetzungen
-			
 			heldLink = prozessor.addModi(link); // Modis setzen
+			addNewSonderregelUndVoraussetzung(link); // Sonderregeln und Voraussetzungen
 			
 			// Observer zum Schluss, wenn alle Werte geändert sind!
 			this.notifyObserverAddElement(heldLink);
 		} else {
 			// Element ist bereits vorhanden, wird nur ergänzt
-			
 			heldLink = prozessor.addModi(link);
 			this.notifyObserverUpdateElement(heldLink);
 		}
@@ -134,21 +131,25 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#removeModi(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public void removeModi(LINK heldLink, IdLink element) {
-		final LINK genLink;
+		
 		
 		// Generator-Link holen
-		genLink = prozessor.getElementBox().getObjectById(element.getZiel().getId());
+		//genLink = prozessor.getElementBox().getObjectById(element.getZiel().getId());
+		prozessor.removeModi(heldLink, element);
 		
-		prozessor.removeModi(genLink, element);
 		
 		// Es gibt keine Modis mehr, der Held hat keine Stufe gewählt,
-		// das Talent wird daher vom Helden entfernd
-		if (genLink.getWert() == 0) {
-			removeElement(genLink);
-			return;
+		// das CharElement wird daher vom Helden entfernd
+		if (heldLink instanceof GeneratorLink) {
+			final GeneratorLink genLink = (GeneratorLink) heldLink;
+			
+			if ( genLink.getLinkModiList().size() == 0 && genLink.getUserLink() == null) {
+				removeElement(heldLink);
+				return;
+			}
 		}
 		
-		this.notifyObserverUpdateElement(genLink);
+		this.notifyObserverUpdateElement(heldLink);
 	}
 	
 	/* (non-Javadoc) Methode überschrieben
@@ -164,7 +165,6 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 	public boolean canAddElement(ZIEL ziel) {
 		boolean ok; 
 		IdLink tmpLink = new IdLink();
-		
 		tmpLink.setZiel(ziel);
 		
 		ok = prozessor.canAddElement(ziel);
@@ -293,8 +293,13 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateAllKosten()
 	 */
 	public void updateAllKosten() {
-		// TODO Auto-generated method stub
-		
+		prozessor.updateAllKosten();
+    	Iterator<LINK> ite = prozessor.getUnmodifiableList().iterator();
+    	// KEINE Sonderregel, da diese bei der Berechnung ausgeführt wird
+    	
+    	while (ite.hasNext()) {
+    		this.notifyObserverUpdateElement(ite.next());
+    	}
 	}
 	
 	/* (non-Javadoc) Methode überschrieben

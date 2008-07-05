@@ -8,7 +8,6 @@
 package org.d3s.alricg.generator.views.held;
 
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.d3s.alricg.common.CommonUtils;
@@ -21,13 +20,10 @@ import org.d3s.alricg.generator.prozessor.GeneratorLink;
 import org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorEigenschaft;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
-import org.d3s.alricg.store.charElemente.links.Link;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Font;

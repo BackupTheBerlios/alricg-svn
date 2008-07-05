@@ -1,5 +1,5 @@
 /*
- * Created 17.11.2007
+ * Created 19.01.2008
  *
  * This file is part of the project Alricg. The file is copyright
  * protected and under the GNU General Public License.
@@ -9,26 +9,25 @@ package org.d3s.alricg.generator.views.general;
 
 import java.util.List;
 
+import org.d3s.alricg.common.icons.AbstractIconsLibrary;
+import org.d3s.alricg.common.icons.GoetterIconsLibrary;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
 import org.d3s.alricg.editor.common.ViewUtils;
-import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.CharElementVoraussetzungProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.TreeObject;
 import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
-import org.d3s.alricg.generator.common.CustomLabelProvider.HerkunftSOLabelProvider;
-import org.d3s.alricg.generator.common.CustomLabelProvider.HerkunftVoraussetzungProvider;
-import org.d3s.alricg.generator.common.CustomLabelProvider.ModiHerkunftProvider;
-import org.d3s.alricg.generator.common.CustomLabelProvider.VerbilligtHerkunftProvider;
-import org.d3s.alricg.generator.common.CustomViewerSorter.HerkunftSOSorter;
 import org.d3s.alricg.generator.views.GeneralRefreshableViewPart;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.charElemente.HerkunftVariante;
-import org.d3s.alricg.store.charElemente.Kultur;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Gottheit;
+import org.d3s.alricg.store.charElemente.Liturgie;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -37,13 +36,37 @@ import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IViewPart;
 
 /**
  * @author Vincent
  *
  */
-public class KulturView extends GeneralRefreshableViewPart {
-	public static final String ID = "org.d3s.alricg.generator.views.general.KulturenlView"; //$NON-NLS-1$
+public class LiturgieView extends GeneralRefreshableViewPart {
+	public static final String ID = "org.d3s.alricg.generator.views.general.LiturgieView"; //$NON-NLS-1$
+
+	// Über diesen Regulator wird die Darstellung von Images gesteuert
+	private final ImageProviderRegulator<Gottheit> imageProviderRegulator;
+
+	
+	public LiturgieView() {
+		GoetterIconsLibrary.getInstance().addConsumer(this);
+		
+		imageProviderRegulator = new ImageProviderRegulator<Gottheit>() {
+			public String getName(Gottheit obj) {
+				return obj.getName();
+			}
+			public Gottheit[] getItems(CharElement obj) {
+				return ((Liturgie) obj).getGottheit();
+			}
+			public AbstractIconsLibrary<Gottheit> getIconsLibrary() {
+				return GoetterIconsLibrary.getInstance();
+			}
+			public IViewPart getConsumer() {
+				return LiturgieView.this;
+			}
+		};
+	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.generator.views.RefreshableViewPartImpl#createTable(org.eclipse.swt.widgets.Composite)
@@ -78,75 +101,62 @@ public class KulturView extends GeneralRefreshableViewPart {
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.NameSorter(),
 								tableViewer));
-
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Art");
-		tc.setLabelProvider(new ArtLabelProvider());
+		
+		// Gottheiten
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
+		tc.getColumn().setText("1");
+		tc.getColumn().setToolTipText("Herkunft 1");
+		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
+		tc.getColumn().setMoveable(true);
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
+		tc.getColumn().setText("2");
+		tc.getColumn().setToolTipText("Herkunft 2");
+		tc.setLabelProvider(new ImageProvider(1, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
+		tc.getColumn().setMoveable(true);
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
+		tc.getColumn().setText("3");
+		tc.getColumn().setToolTipText("Herkunft 3");
+		tc.setLabelProvider(new ImageProvider(2, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
+		tc.getColumn().setMoveable(true);
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 5);
+		tc.getColumn().setText("4");
+		tc.getColumn().setToolTipText("Herkunft 4+");
+		tc.setLabelProvider(new ImageProvider(3, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
+		tc.getColumn().setMoveable(true);
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 6);
+		tc.getColumn().setText("Grade");
+		tc.setLabelProvider(new CustomColumnLabelProvider.LiturgieGradProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-				new ViewerSelectionListener(new ArtSorter(), tableViewer));
 
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("GP");
-		tc.getColumn().setToolTipText("Generierungspunkte Kosten");
-		tc.setLabelProvider(new CustomColumnLabelProvider.HerkunftGpProvider());
-		tc.getColumn().setWidth(30);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 7);
+		tc.getColumn().setText("Probe");
+		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
+		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-						new ViewerSelectionListener(
-								new CustomColumnViewerSorter.HerkunftGpSorter(),
-								tableViewer));
 
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("SO");
-		tc.getColumn().setToolTipText("Möglicher Sozialstatus");
-		tc.setLabelProvider(new HerkunftSOLabelProvider());
-		tc.getColumn().setWidth(60);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 8);
+		tc.getColumn().setText("SKT");
+		tc.setLabelProvider(new CustomColumnLabelProvider.SKTLabelProvider());
+		tc.getColumn().setWidth(50);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new HerkunftSOSorter(), tableViewer));
+						new CustomColumnViewerSorter.SktSorter(), tableViewer));
 
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Eig Modis");
-		tc.getColumn().setToolTipText("Modifiaktionen der Eigenschaften");
-		tc.setLabelProvider(new ModiHerkunftProvider(new String[] {
-				HerkunftVariante.EIGEN_MODIS
-			}));
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Vor/-Nachteile");
-		tc.getColumn().setToolTipText("Automatische Vor- und Nachteile");
-		tc.setLabelProvider(new ModiHerkunftProvider(new String[] {
-				HerkunftVariante.VORTEILE,
-				HerkunftVariante.NACHTEILE,
-			}));
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Sonderf.");
-		tc.getColumn().setToolTipText("Automatische Sonderfertigkeiten");
-		tc.setLabelProvider(new ModiHerkunftProvider(new String[] {
-				HerkunftVariante.SONDERF
-			}));
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Verbilligte SF");
-		tc.getColumn().setToolTipText("Verbilligte Sonderfertigkeiten");
-		tc.setLabelProvider(new VerbilligtHerkunftProvider());
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("Voraussetzung");
-		tc.setLabelProvider(new HerkunftVoraussetzungProvider());
-		tc.getColumn().setWidth(150);
+		tc.setLabelProvider(new CharElementVoraussetzungProvider());
+		tc.getColumn().setWidth(200);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
@@ -172,15 +182,14 @@ public class KulturView extends GeneralRefreshableViewPart {
 	 */
 	@Override
 	protected TreeViewer createTree(Composite parent) {
-		// init Table
 		int idx = 0;
-		final TreeViewer treeViewer = new TreeViewer(parent,
-				SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+		final TreeViewer treeViewer = new TreeViewer(parent, SWT.FULL_SELECTION
+				| SWT.H_SCROLL | SWT.V_SCROLL);
 		treeViewer.getTree().setLinesVisible(true);
 		treeViewer.getTree().setHeaderVisible(true);
 		ColumnViewerToolTipSupport.enableFor(treeViewer, ToolTip.NO_RECREATE);
 		
-		// Columns setzen
+		// Columns
 		TreeViewerColumn tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
 		treeViewer.getTree().setSortColumn(tc.getColumn());
 		tc.getColumn().setText("Name");
@@ -200,73 +209,68 @@ public class KulturView extends GeneralRefreshableViewPart {
 						new ViewerSelectionListener(
 								new CustomColumnViewerSorter.GeneralImageSorter(),
 								treeViewer));
-
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("GP");
-		tc.getColumn().setToolTipText("Generierungspunkte Kosten");
-		tc.setLabelProvider(new CustomColumnLabelProvider.HerkunftGpProvider());
-		tc.getColumn().setWidth(30);
+		
+		// Herkunft
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);
+		tc.getColumn().setText("1");
+		tc.getColumn().setToolTipText("Herkunft 1");
+		tc.setLabelProvider(new ImageProvider(0, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
 		tc.getColumn().setMoveable(true);
-		tc.getColumn().addSelectionListener(
-						new ViewerSelectionListener(
-								new CustomColumnViewerSorter.HerkunftGpSorter(),
-								treeViewer));
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
+		tc.getColumn().setText("2");
+		tc.getColumn().setToolTipText("Herkunft 2");
+		tc.setLabelProvider(new ImageProvider(1, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
+		tc.getColumn().setMoveable(true);
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 4);
+		tc.getColumn().setText("3");
+		tc.getColumn().setToolTipText("Herkunft 3");
+		tc.setLabelProvider(new ImageProvider(2, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
+		tc.getColumn().setMoveable(true);
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 5);
+		tc.getColumn().setText("4");
+		tc.getColumn().setToolTipText("Herkunft 4+");
+		tc.setLabelProvider(new ImageProvider(3, imageProviderRegulator));
+		tc.getColumn().setWidth(24);
+		tc.getColumn().setMoveable(true);
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 6);
+		tc.getColumn().setText("Grade");
+		tc.setLabelProvider(new CustomColumnLabelProvider.LiturgieGradProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
 
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("SO");
-		tc.getColumn().setToolTipText("Möglicher Sozialstatus");
-		tc.setLabelProvider(new HerkunftSOLabelProvider());
-		tc.getColumn().setWidth(60);
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 7);
+		tc.getColumn().setText("Probe");
+		tc.setLabelProvider(new CustomColumnLabelProvider.Faehigkeit3EigenschaftProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 8);
+		tc.getColumn().setText("SKT");
+		tc.setLabelProvider(new CustomColumnLabelProvider.SKTLabelProvider());
+		tc.getColumn().setWidth(50);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new HerkunftSOSorter(), treeViewer));
+						new CustomColumnViewerSorter.SktSorter(), treeViewer));
 
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Eig Modis");
-		tc.getColumn().setToolTipText("Modifiaktionen der Eigenschaften");
-		tc.setLabelProvider(new ModiHerkunftProvider(new String[] {
-				HerkunftVariante.EIGEN_MODIS
-			}));
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Vor/-Nachteile");
-		tc.getColumn().setToolTipText("Automatische Vor- und Nachteile");
-		tc.setLabelProvider(new ModiHerkunftProvider(new String[] {
-				HerkunftVariante.VORTEILE,
-				HerkunftVariante.NACHTEILE,
-			}));
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Sonderf.");
-		tc.getColumn().setToolTipText("Automatische Sonderfertigkeiten");
-		tc.setLabelProvider(new ModiHerkunftProvider(new String[] {
-				HerkunftVariante.SONDERF
-			}));
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
-		
-		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
-		tc.getColumn().setText("Verbilligte SF");
-		tc.getColumn().setToolTipText("Verbilligte Sonderfertigkeiten");
-		tc.setLabelProvider(new VerbilligtHerkunftProvider());
-		tc.getColumn().setWidth(150);
-		tc.getColumn().setMoveable(true);
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("Voraussetzung");
-		tc.setLabelProvider(new HerkunftVoraussetzungProvider());
-		tc.getColumn().setWidth(150);
+		tc.setLabelProvider(new CharElementVoraussetzungProvider());
+		tc.getColumn().setWidth(200);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.CharElementVoraussetzungSorter(),
 						treeViewer));
-		
+
 		// Inhalt und Sortierung setzen
 		TreeObject root = ViewUtils.buildTreeView(
 				StoreDataAccessor.getInstance().getXmlAccessors(), 
@@ -276,24 +280,33 @@ public class KulturView extends GeneralRefreshableViewPart {
 		treeViewer.getTree().setSortDirection(SWT.UP);
 		treeViewer.setSorter(new CustomColumnViewerSorter.NameSorter());
 		treeViewer.setInput(root);
-		
+
 		return treeViewer;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.d3s.alricg.generator.views.RefreshableViewPartImpl#getRegulator()
+	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#getRegulator()
 	 */
 	@Override
 	public Regulator getRegulator() {
-		return Regulatoren.KulturRegulator;
+		return Regulatoren.LiturgieRegulator;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.d3s.alricg.generator.views.RefreshableViewPartImpl#getViewedClass()
+	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+	 */
+	@Override
+	public void dispose() {
+		GoetterIconsLibrary.getInstance().removeConsumer(this);
+		super.dispose();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.editor.views.charElemente.RefreshableViewPart#getViewedClass()
 	 */
 	@Override
 	public Class getViewedClass() {
-		return Kultur.class;
+		return Liturgie.class;
 	}
 
 	/* (non-Javadoc)
@@ -330,28 +343,5 @@ public class KulturView extends GeneralRefreshableViewPart {
 	public void updateElement(Object obj) {
 		// TODO Auto-generated method stub
 
-	}
-	
-	// --------------------------------------------------------------------
-	
-	public static class ArtLabelProvider extends ColumnLabelProvider {
-		@Override
-		public String getText(Object element) {
-			final Kultur tmpKultur = (Kultur) ViewUtils.getCharElement(element);
-			if (tmpKultur != null) {
-				return tmpKultur.getArt().toString();
-			}
-			return ""; //$NON-NLS-1$
-		}
-	}
-	
-// ----------------------------------------------------------------------
-	
-	
-	public static class ArtSorter extends CreatableViewerSorter {
-		@Override
-		public Comparable getComparable(Object obj) {
-			return ((Kultur) getCharElement(obj)).getArt().toString();
-		}
 	}
 }

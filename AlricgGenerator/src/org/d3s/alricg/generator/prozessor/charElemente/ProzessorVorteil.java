@@ -8,25 +8,20 @@
  */
 package org.d3s.alricg.generator.prozessor.charElemente;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.d3s.alricg.common.Notepad;
 import org.d3s.alricg.common.charakter.Charakter;
 import org.d3s.alricg.common.charakter.ElementBox;
-import org.d3s.alricg.common.charakter.SonderregelAdmin;
-import org.d3s.alricg.common.charakter.VerbilligteFertigkeitAdmin;
 import org.d3s.alricg.common.logic.BaseProzessorElementBox;
 import org.d3s.alricg.generator.prozessor.GeneratorLink;
 import org.d3s.alricg.generator.prozessor.GeneratorProzessor;
 import org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorVorteil;
-import org.d3s.alricg.store.access.StoreDataAccessor;
+import org.d3s.alricg.generator.prozessor.utils.ProzessorUtilities;
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
-import org.d3s.alricg.store.charElemente.Talent.Art;
-import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.held.HeldenLink;
@@ -45,32 +40,18 @@ import org.d3s.alricg.store.held.HeldenLink;
  *   
  * @author Tobias Freudenreich
  */
-public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, GeneratorLink> 
+public class ProzessorVorteil extends ProzessorFertigkeit<Vorteil> 
 					implements GeneratorProzessor<Vorteil, GeneratorLink>, ExtendedProzessorVorteil {
 	
-	private final SonderregelAdmin sonderregelAdmin;
-	private final VerbilligteFertigkeitAdmin verbFertigkeitenAdmin;
-	private final Notepad notepade;
-	private final Charakter held;
-	
-	// Texte für Notepade-Meldungen
-	private final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
-	
-	// Speichert die gewählten Vorteile
-	private ArrayList<Vorteil> gewaehlteVorteile;
+	//private final Notepad notepade;
+	protected boolean STUFE_ERHALTEN = true;
+
 	
 	// Die gesamtkosten für alle Vorteile
 	private double gpKosten;
 	
-	public ProzessorVorteil(Charakter held, Notepad notepade) {
-		this.held = held;
-		this.notepade = notepade;
-		this.sonderregelAdmin = held.getSonderregelAdmin();
-		this.verbFertigkeitenAdmin = held.getVerbFertigkeitenAdmin();
-		this.elementBox = new ElementBox<GeneratorLink>();
-		
-		gewaehlteVorteile = new ArrayList<Vorteil>();
-		gpKosten = 0;
+	public ProzessorVorteil(Charakter held) {
+		super(held);
 	}
 	
 	/* (non-Javadoc)
@@ -83,8 +64,9 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		 * - oder Vorteil.textVorschlaege.length > 0
 		 * (bzw. wenn der Link bereits einen text besitzt)
 		 */
-		Vorteil vorteilMerker = (Vorteil)link.getZiel();
-		return (vorteilMerker.isMitFreienText()) || (vorteilMerker.getTextVorschlaege().length > 0);
+		Vorteil vorteilMerker = ((Vorteil)link.getZiel());
+		return (vorteilMerker.isMitFreienText() 
+			||  (vorteilMerker.getTextVorschlaege() != null && vorteilMerker.getTextVorschlaege().length > 0));
 	}
 
 	/* (non-Javadoc)
@@ -98,7 +80,9 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#canUpdateZweitZiel(LINK, org.d3s.alricg.charKomponenten.CharElement)
 	 */
 	public boolean canUpdateZweitZiel(GeneratorLink link, CharElement zweitZiel) {
-		// TODO hängt noch davon ab wie ein link der Liste hinzugefügt wird
+		if ( ((Vorteil)link.getZiel()).getBenoetigtZweitZiel() ) {
+			return true;
+		}
 		return false;
 	}
 
@@ -116,9 +100,7 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#updateText(LINK, java.lang.String)
 	 */
 	public void updateText(GeneratorLink link, String text) {
-		if (text != null) {
-			link.setText(text);
-		}
+		link.setText(text);
 	}
 
 	/* (non-Javadoc)
@@ -126,37 +108,71 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 */
 	public void updateWert(GeneratorLink link, int wert) {
 		// Vorteile haben entweder immer Wert 0 (dann ist der Wert nicht änderbar) oder irgendwas > 0
-		if (wert > 0) { 
-			link.setWert(wert);
-			updateKosten(link);
-		}		
+		link.setUserWert(wert);
+		updateKosten(link);	
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.BaseLinkProzessor#updateZweitZiel(LINK, org.d3s.alricg.charKomponenten.CharElement)
 	 */
 	public void updateZweitZiel(GeneratorLink link, CharElement zweitZiel) {
-		if (zweitZiel != null) {
-			link.setZweitZiel(zweitZiel);
-			//TODO evtl. noch updateKosten(link); aufrufen (z.b. bei Änderung von Begabung für Schwerter auf Begabung für Töpfern
-		}
-		
+		link.setZweitZiel(zweitZiel);
+		updateKosten(link); // z.b. bei Änderung von Begabung für Schwerter auf Begabung für Töpfern
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#addModi(org.d3s.alricg.charKomponenten.links.IdLink)
 	 */
-	public HeldenLink addModi(IdLink element) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public HeldenLink addModi(IdLink link) {
+		// Kann eine Stufe besitzen, wie z.B. "Ausdauernd"
+		GeneratorLink genLink;
+		int oldWert;
+		
+		genLink = elementBox.getEqualAdditionsFamilie((Vorteil) link.getZiel());
+		if (genLink != null) {
+			
+			genLink.addLink(link);
+			genLink.setZiel( ProzessorUtilities.getAdditionsFamilieErsetzung(genLink) );
+			// evtl. frei werden GP werden bei update Kosten beachtet
+			
+		} else {
+			List<GeneratorLink> list = elementBox.getEqualObjects(link);
+			if (list.size() == 0) {
+				genLink = new GeneratorLink(link);
+				elementBox.add(genLink);
+				createAutoTalent((Vorteil) link.getZiel());
+			} else {
+				genLink = list.get(0);
+				
+				if (STUFE_ERHALTEN && genLink.getWert() != 0 && genLink.getWert() != Link.KEIN_WERT) {
+					oldWert = genLink.getWert(); // Alten Wert Speichern
+					genLink.addLink(link); // Link hinzufügen
+					genLink.setUserGesamtWert(oldWert); // Versuchen den alten Wert wiederherzustellen
+				} else {
+					genLink.addLink(link);
+				}
+			}
+		}
+		
+		ProzessorUtilities.inspectWert(genLink, this);
+		updateKosten(genLink); // Kosten Aktualisieren
+		
+		return genLink;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#canAddElement(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public boolean canAddElement(Link link) {
-		// TODO finish
-		Vorteil vorteilMerker = (Vorteil)link.getZiel();
+		if (!link.getZiel().isAnzeigen()) return false;
+		
+		if (elementBox.getEqualObjects(link).size() > 0) {
+			// So ein Element ist schon vorhanden, geht also nicht!
+			return false;
+		}
+		
+		return true;
 		
 		//für den Char überhaupt erlaubt?
 		//TODO enum anschauen
@@ -167,8 +183,6 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		
 		//Kollision mit Nachteilen?
 		//TODO nachfragen wie Nachteile abgerufen werden
-		
-		return false;
 	}
 
 	/* (non-Javadoc)
@@ -182,7 +196,6 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#getMaxWert(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public int getMaxWert(Link link) {
-		// hier evtl. noch Überprüfung, ob wirklich ein Vorteil übergeben wurde
 		return ((Vorteil)link.getZiel()).getMaxStufe();
 	}
 
@@ -190,24 +203,42 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#getMinWert(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public int getMinWert(Link link) {
-		// hier evtl. noch Überprüfung, ob wirklich ein Vorteil übergeben wurde
-		return ((Vorteil)link.getZiel()).getMinStufe();
+		return Math.max(((Vorteil)link.getZiel()).getMinStufe(), 
+							((GeneratorLink) link).getWertModis());
+		
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#removeModi(LINK, org.d3s.alricg.charKomponenten.links.IdLink)
 	 */
 	public void removeModi(GeneratorLink heldLink, IdLink element) {
-		// TODO Auto-generated method stub
+		// Link entfernen
+		heldLink.removeLink(element);
 		
+		// Additionsfamilie setzen
+		if (heldLink.getLinkModiList().size() != 0) {
+			GeneratorLink genLink = elementBox.getEqualAdditionsFamilie((Vorteil) heldLink.getZiel());
+			if (genLink != null) {
+				genLink.setZiel( ProzessorUtilities.getAdditionsFamilieErsetzung(genLink) );
+			}
+		} 
+		
+		// Stufe ggf. neu setzen
+		ProzessorUtilities.inspectWert(heldLink, this);
+		
+		// Kosten aktualisieren
+		updateKosten(heldLink);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateAllKosten()
 	 */
 	public void updateAllKosten() {
-		// TODO Auto-generated method stub
-		
+    	Iterator<GeneratorLink> ite = elementBox.getUnmodifiableIterator();
+    	
+    	while (ite.hasNext()) {
+    		this.updateKosten(ite.next());
+    	}
 	}
 
 	/* (non-Javadoc)
@@ -221,11 +252,15 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		gpKosten -= genLink.getKosten();
 		
 		//neue Kosten berechnen
-		if (genLink.getWert() == 0) { //Vorteil hat keine Stufe
+		if (genLink.getUserLink() != null) {
 			kosten = vorteilMerker.getGpKosten();
-		} else { //Vorteil hat eine Stufe
-			kosten = vorteilMerker.getGpKosten()*genLink.getWert();
+			if (genLink.getWert() > 0) {
+				kosten += vorteilMerker.getKostenProStufe()*genLink.getUserLink().getWert();
+			}
 		}
+		
+		// Freie GP durch doppelte automatische Vorteile
+		kosten += ProzessorUtilities.getAdditionsFamilieKosten(genLink);
 		
 		//Kosten eintragen
 		genLink.setKosten(kosten);
@@ -246,30 +281,8 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 		 * - Die Stufe wird auf den minimalWert gesetzt
 		 */
 		
-		String linkText = null;
-		int stufe = 0;
-		CharElement zweitZiel = null;
-		
-		if (ziel.isMitFreienText()) {
-			linkText = "Bitte Text eingeben";
-		} else if (!ziel.isMitFreienText() && (ziel.getTextVorschlaege() != null)) {
-			linkText = ziel.getTextVorschlaege()[0];
-		}
-		
-		if (ziel.getMinStufe() > 0) {
-			stufe = ziel.getMinStufe();
-		}
-		
-		//TODO zweitziel?? Bsp. Begabung für Schwerter
-		
-		if (ziel.getBenoetigtZweitZiel()) { 
-			// TODO mail schreiben wo das erste Element der Liste steht
-		}
-		
-		//Link wird erstellt und zur List hinzugefügt
-		GeneratorLink tmpLink = new GeneratorLink(ziel, linkText, zweitZiel, stufe);
+		GeneratorLink tmpLink = createNewGenLink(ziel);
 		elementBox.add(tmpLink);
-		
 		updateKosten(tmpLink);
 		
 		return tmpLink;
@@ -279,37 +292,59 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	 * @see org.d3s.alricg.prozessor.Prozessor#canAddElement(ZIEL)
 	 */
 	public boolean canAddElement(Vorteil ziel) {
+		if (!ziel.isAnzeigen()) return false;
+		
+		// Es gibt noch kein solches Element...
+		if (elementBox.getObjectById(ziel) == null)  return true;
+		
+		if (ziel.getBenoetigtZweitZiel() 
+				|| ziel.isMitFreienText() 
+				|| (ziel.getTextVorschlaege() != null && ziel.getTextVorschlaege().length > 0)) {
+			return true;
+		}
+		
+		return false;
+		
 		// Kosten sind hierbei egal. 
 		// Elemente die sich gegenseitig ausschließen ("Gutaussehend", "Widerwärtiges Aussehen") werden
 		// ebenfalls nicht überprüft
-		
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.Prozessor#canRemoveElement(ELEM)
 	 */
 	public boolean canRemoveElement(GeneratorLink element) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		if (element.getLinkModiList().size() > 0) {
+			return false; // Der Vorteil besitzt Modis, kann deswegen nicht entfernt werden!
+		}
+		
+		return true;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.Prozessor#removeElement(ELEM)
 	 */
 	public void removeElement(GeneratorLink element) {
-		final Vorteil vorteilMerker = (Vorteil)element.getZiel();
-		
+
 		//Vorteil aus der Liste herausnehmen
-		elementBox.remove(vorteilMerker);
+		elementBox.remove(element);
 		
 		//Kosten für dieses Element abziehen
 		gpKosten -= element.getKosten();
 		
+		// Evtl. automatisches Talent entfernen
+		removeAutoTalent((Vorteil) element.getZiel());
 	}
 
 	// -------------------- Methoden aus dem Extended Interface ---------------------------------
+	
+	
+	public void getMoeglicheTextVorschlaege(Vorteil vorteil) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorVorteil#addMoeglicheZweitZiele(org.d3s.alricg.charKomponenten.Vorteil, java.util.List)
@@ -342,4 +377,34 @@ public class ProzessorVorteil extends BaseProzessorElementBox<Vorteil, Generator
 	public ExtendedProzessorVorteil getExtendedInterface() {
 		return this;
 	}
+	
+	/**
+	 * Erstellt einen neuen GeneratorLink und fühgt diesen zur ElementBox hinzu
+	 */
+	private GeneratorLink createNewGenLink(Vorteil ziel) {
+		String linkText = null;
+		int stufe = 0;
+		CharElement zweitZiel = null;
+		
+		if (ziel.isMitFreienText()) {
+			linkText = "Bitte Text eingeben";
+		} else if (!ziel.isMitFreienText() && (ziel.getTextVorschlaege() != null)) {
+			linkText = ziel.getTextVorschlaege()[0];
+		}
+		
+		if (ziel.getMinStufe() > 0) {
+			stufe = ziel.getMinStufe();
+		}
+		
+		if (ziel.getBenoetigtZweitZiel()) { 
+			zweitZiel = this.getMoeglicheZweitZiele(ziel).get(0);
+		}
+		
+		//Link wird erstellt und zur List hinzugefügt
+		GeneratorLink tmpLink = new GeneratorLink(ziel, zweitZiel, linkText, stufe);
+		createAutoTalent(ziel);
+		
+		return tmpLink;
+	}
+	
 }

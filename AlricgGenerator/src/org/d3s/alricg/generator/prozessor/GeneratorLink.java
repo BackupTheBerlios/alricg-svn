@@ -75,7 +75,7 @@ public class GeneratorLink<ZIEL extends CharElement> extends HeldenLink  {
 	 * Link erzeugt, der als von User gesetzt behandet wird.
 	 * @param link Link auf dem dieser GeneratorLink basiert.
 	 */
-	public GeneratorLink(CharElement ziel, String text, CharElement zweitZiel, int wert) {
+	public GeneratorLink(CharElement ziel, CharElement zweitZiel, String text, int wert) {
 		final IdLink link;
 		
 		// Setzen der Grundwerte

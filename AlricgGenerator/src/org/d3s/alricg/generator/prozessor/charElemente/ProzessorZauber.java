@@ -20,6 +20,8 @@ import java.util.Set;
 import org.d3s.alricg.common.Notepad;
 import org.d3s.alricg.common.charakter.Charakter;
 import org.d3s.alricg.common.charakter.ElementBox;
+import org.d3s.alricg.common.charakter.CharStatusAdmin;
+import org.d3s.alricg.common.charakter.CharStatusAdmin.MagieStatus;
 import org.d3s.alricg.common.logic.BaseProzessorElementBox;
 import org.d3s.alricg.common.logic.FormelSammlung;
 import org.d3s.alricg.generator.prozessor.GeneratorLink;
@@ -29,6 +31,7 @@ import org.d3s.alricg.generator.prozessor.utils.ProzessorUtilities;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Repraesentation;
+import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
@@ -67,7 +70,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 */ 
 	private Map< EigenschaftEnum, Set<GeneratorLink> > hashMapNachEigensch;
 	private Notepad notepad;
-	private final Charakter held;
+	private final Charakter charakter;
 	
 	private int talentGpKosten;
 	
@@ -82,7 +85,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	private final HashMap< Zauber, Repraesentation > moeglicheZauberMap;
 	
 	public ProzessorZauber(	Charakter held ) {
-		this.held = held;
+		this.charakter = held;
 		//this.notepad = notepade;
 		this.elementBox = new ElementBox<GeneratorLink>();
 		
@@ -112,21 +115,27 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 */
 	public HeldenLink addModi(IdLink element) {
 		
-		GeneratorLink link = elementBox.getObjectById( element.getZiel().getId() );
-		
-		if ( STUFE_ERHALTEN && ( 0 != link.getWert() ) ) {
-			int wert = link.getWert();
-			link.addLink( element );
-			link.setUserGesamtWert( wert );
+		GeneratorLink link = elementBox.getObjectById( element.getZiel() );
+		if (link == null) {
+			if (element.getZweitZiel() == null) {
+				// TODO Ist das so korrekt? Hat ein Mod immer ein Zweitziel?
+				element.setZweitZiel( getRepraesentation((Zauber) element.getZiel()) );
+			}
+			link = new GeneratorLink( element );
+			registerZauber(link);
 		} else {
-			link.addLink( element );
+			if ( STUFE_ERHALTEN && ( 0 != link.getWert() ) ) {
+				int wert = link.getWert();
+				link.addLink( element );
+				link.setUserGesamtWert( wert );
+			} else {
+				link.addLink( element );
+			}
 		}
-		
 		ProzessorUtilities.inspectWert( link, this );
 		
 		// evtl. Status als aktivierter Zauber entziehen. 
 		pruefeZauberAktivierung( link );
-		
 		updateKosten( link );
 		
 		return link;
@@ -195,7 +204,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		// Hoechste Eigenschaft Bestimmen
 		for ( Eigenschaft eigenschaft : eigenschaften ) {
 			
-			int eigenschaftWert = held.getEigenschaftsWert( eigenschaft.getEigenschaftEnum() ); 
+			int eigenschaftWert = charakter.getEigenschaftsWert( eigenschaft.getEigenschaftEnum() ); 
 			
 			maxEigenschaft = Math.max( maxEigenschaft, eigenschaftWert );
 		}
@@ -225,7 +234,6 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		
 		// Stufe ggf. neu setzen
 		ProzessorUtilities.inspectWert( link, this );
-
 		pruefeZauberAktivierung( link );
 		
 		updateKosten( link );
@@ -267,14 +275,14 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		}
 		
 		// Geanderte Kostenklasse wird in changeKostenKlasse ins Notepad eingetragen.
-		kKlasse = held.getSonderregelAdmin().changeKostenKlasse( kKlasse, link );
+		kKlasse = charakter.getSonderregelAdmin().changeKostenKlasse( kKlasse, link );
 		
 		int kosten = FormelSammlung.berechneSktKosten( startStufe, zielStufe, kKlasse );
 		notepad.writeMessage( TEXT_GESAMTKOSTEN + kosten );
 		
 		// Ändere die Kosten durch Sonderregeln oder Verbilligungen durch Herkunft
-		kosten = (int) held.getSonderregelAdmin().changeKosten( new Double(kosten), link );
-		kosten = held.getVerbFertigkeitenAdmin().changeKostenAP( kosten, link );
+		kosten = (int) charakter.getSonderregelAdmin().changeKosten( new Double(kosten), link );
+		kosten = charakter.getVerbFertigkeitenAdmin().changeKostenAP( kosten, link );
 		
 		link.setKosten( kosten );
 		talentGpKosten += link.getKosten();
@@ -332,27 +340,11 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 * @see org.d3s.alricg.prozessor.Prozessor#addNewElement(ZIEL)
 	 */
 	public GeneratorLink addNewElement(Zauber ziel) {
-		
-		Repraesentation repraesentation;
-		if ( istMoeglicherZauber( ziel ) ) {
-			repraesentation = moeglicheZauberMap.get( ziel );
-		} else if ( istHauszauber( ziel ) ) {
-			repraesentation = hauszauberMap.get( ziel );
-		} else {
-			repraesentation = null;
-			notepad.writeMessage( String.format( TEXT_REPRAESENTATION_UNBESTIMMT, ziel ) );
-		}
-		
-		GeneratorLink link = new GeneratorLink( ziel, null, repraesentation, 0 );
-		
-		elementBox.add( link );
-		
-		for( Eigenschaft eigenschaft : ziel.getDreiEigenschaften() ) {
-			hashMapNachEigensch.get( eigenschaft.getEigenschaftEnum() ).add( link );
-		}
-		
+	
+		//GeneratorLink link = createNewGenLink(ziel);
+		GeneratorLink link = new GeneratorLink( ziel, getRepraesentation(ziel), null, 0 );
+		registerZauber(link);
 		pruefeZauberAktivierung( link );
-		
 		updateKosten( link );
 		
 		return link;
@@ -362,16 +354,16 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 * @see org.d3s.alricg.prozessor.Prozessor#canAddElement(ZIEL)
 	 */
 	public boolean canAddElement(Zauber ziel) {
-		return false;
-		/*
-		 TODO Auskommentiert bis "isVollzauberer" usw. wieder implementiert sind
-		if ( ( ! held.isVollzauberer() ) && ( ! held.isHalbzauberer() ) ) {
+		final CharStatusAdmin status = charakter.getMagieStatusAdmin();
+		
+		if ( !(status.isMagieStatus(MagieStatus.vollmagier) 
+				||  status.isMagieStatus(MagieStatus.halbzauberer)) ) {
 			// Nur Voll- und Halbzauberer koennen Zauber aktivieren.
 			return false;
 		}
 		
-		if ( held.isVollzauberer() && ( aktivierteZauber.size() >= MAX_ZAUBER_AKTIVIERUNG_VOLLZAUBERER )
-	      ||(held.isHalbzauberer() && ( aktivierteZauber.size() >= MAX_ZAUBER_AKTIVIERUNG_HALBZAUBERER ) ) ) {
+		if ( status.isMagieStatus(MagieStatus.vollmagier) && ( aktivierteZauber.size() >= MAX_ZAUBER_AKTIVIERUNG_VOLLZAUBERER )
+				|| (status.isMagieStatus(MagieStatus.halbzauberer) && ( aktivierteZauber.size() >= MAX_ZAUBER_AKTIVIERUNG_HALBZAUBERER ) ) ) {
 			
 			//Es kann kein weiterer Zauber mehr aktiviert werden.
 			notepad.writeMessage( TEXT_KEINE_AKTIVIERUNG );
@@ -384,7 +376,6 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 		}
 		
 		return istMoeglicherZauber( ziel );
-		*/
 	}
 
 	/* (non-Javadoc) Methode überschrieben
@@ -550,7 +541,14 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 				
 			}
 		}
-		
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.logic.Prozessor#getExtendedInterface()
+	 */
+	@Override
+	public ExtendedProzessorZauber getExtendedInterface() {
+		return this;
 	}
 
 	/**
@@ -597,17 +595,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 * 	 		sonst {@code false}.
 	 */
 	private boolean istEigeneRepraesentation( Repraesentation zauberRepraesentation ) {
-		return false;
-		/*
-		 TODO Auskommentiert bis "getRepraesentationen" wieder implementiert sind
-		for ( Repraesentation r : held.getRepraesentationen() ) {
-			if ( r.equals( zauberRepraesentation ) ) {
-				return true;
-			}
-		}
-		
-		return false;
-		*/
+		return this.charakter.getMagieStatusAdmin().getRepraesentationen().contains(zauberRepraesentation);
 	}
 
 	private boolean besitztModifikator( GeneratorLink link ) {
@@ -629,7 +617,6 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 * 			besitzen soll.
 	 */
 	private void ueberpruefeRepraesentation( GeneratorLink zauberLink, Repraesentation zuPruefendeRepraesentation ) {
-
 		Repraesentation repraesentation = (Repraesentation) zauberLink.getZweitZiel();
 			
 		if ( ! zuPruefendeRepraesentation.equals( repraesentation ) ) {
@@ -640,13 +627,38 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 
 		}	
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.d3s.alricg.common.logic.Prozessor#getExtendedInterface()
-	 */
-	@Override
-	public ExtendedProzessorZauber getExtendedInterface() {
-		return this;
+	private Repraesentation getRepraesentation(Zauber ziel) {
+		
+		Repraesentation repraesentation;
+		if ( istMoeglicherZauber( ziel ) ) {
+			repraesentation = moeglicheZauberMap.get( ziel );
+		} else if ( istHauszauber( ziel ) ) {
+			repraesentation = hauszauberMap.get( ziel );
+		} else {
+			repraesentation = null;
+			notepad.writeMessage( String.format( TEXT_REPRAESENTATION_UNBESTIMMT, ziel ) );
+		}
+		
+		return repraesentation;
 	}
-
+	
+	/**
+	 * Erstellt einen neuen GeneratorLink und fühgt diesen zur ElementBox hinzu
+	 */
+	private GeneratorLink registerZauber(GeneratorLink link) {
+		
+		Zauber ziel = (Zauber) link.getZiel();
+		elementBox.add( link );
+		
+		/*
+		GeneratorLink link = new GeneratorLink( ziel, repraesentation, null, 0 );
+		elementBox.add( link );
+		*/
+		
+		for( Eigenschaft eigenschaft : ziel.getDreiEigenschaften() ) {
+			hashMapNachEigensch.get( eigenschaft.getEigenschaftEnum() ).add( link );
+		}
+		
+		return link;
+	}
 }

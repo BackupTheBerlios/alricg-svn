@@ -10,11 +10,11 @@ package org.d3s.alricg.generator.prozessor.charElemente;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.d3s.alricg.common.Notepad;
 import org.d3s.alricg.common.charakter.Charakter;
 import org.d3s.alricg.common.charakter.ElementBox;
+import org.d3s.alricg.common.charakter.ExtendedProzessorEigenschaftCommon;
 import org.d3s.alricg.common.logic.BaseProzessorElementBox;
 import org.d3s.alricg.common.logic.FormelSammlung;
 import org.d3s.alricg.generator.prozessor.GeneratorLink;
@@ -22,7 +22,6 @@ import org.d3s.alricg.generator.prozessor.GeneratorProzessor;
 import org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorEigenschaft;
 import org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorTalent;
 import org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorZauber;
-import org.d3s.alricg.generator.prozessor.utils.Konstanten;
 import org.d3s.alricg.generator.prozessor.utils.ProzessorUtilities;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
@@ -34,6 +33,7 @@ import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.held.HeldenLink;
+import org.d3s.alricg.store.rules.RegelConfig;
 
 /**
  * <u>Beschreibung:</u><br> 
@@ -43,10 +43,10 @@ import org.d3s.alricg.store.held.HeldenLink;
  * @author V. Strelow
  */
 public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft, GeneratorLink> 
-									implements GeneratorProzessor<Eigenschaft, GeneratorLink>, ExtendedProzessorEigenschaft {
-    
-    /** <code>ProzessorEigenschaften</code>'s logger */
-    private static final Logger LOG = Logger.getLogger(ProzessorEigenschaften.class.getName());
+									implements GeneratorProzessor<Eigenschaft, GeneratorLink>, 
+												ExtendedProzessorEigenschaft, 
+												ExtendedProzessorEigenschaftCommon {
+	
     private static final boolean STUFE_ERHALTEN = true;
     
 	private final String TEXT_SKT_SPALTE = "Original SKT-Spalte: ";
@@ -194,7 +194,7 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
                 || eigen.equals(EigenschaftEnum.KK)) {
 
             // Der Maximale Wert plus die Modis aus Herkunft o.ä.
-            return genLink.getWertModis() + Konstanten.getGenKonstanten().MAX_EIGENSCHAFT_WERT;
+            return genLink.getWertModis() + RegelConfig.getInstance().getMaxEigenschafWert();
 
         } else if (eigen.equals(EigenschaftEnum.SO)) {
 
@@ -236,7 +236,7 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
         		|| eigen.equals(EigenschaftEnum.KO) || eigen.equals(EigenschaftEnum.KK)) {
         	
             // Der Mininale Wert plus die Modis aus Herkunft
-            minMoeglicherWert = ((GeneratorLink) link).getWertModis()  + Konstanten.getGenKonstanten().MIN_EIGENSCHAFT_WERT;
+            minMoeglicherWert = ((GeneratorLink) link).getWertModis()  + RegelConfig.getInstance().getMinEigenschafWert();
             ExtendedProzessorTalent ept = (ExtendedProzessorTalent) held.getProzessor(Talent.class).getExtendedInterface();
             ExtendedProzessorZauber epz = (ExtendedProzessorZauber) held.getProzessor(Zauber.class).getExtendedInterface();
             	
@@ -564,7 +564,7 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
         final List<IdLink> linkList;
 
         // Der Maximale Wert plus die Modis aus Herkunft o.ä.
-        return link.getWertModis() + Konstanten.getGenKonstanten().MAX_SOZIALSTATUS;
+        return link.getWertModis() + RegelConfig.getInstance().getMaxSozialstatus();
     }
 
     /**

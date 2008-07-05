@@ -8,16 +8,22 @@
  */
 package org.d3s.alricg.generator.prozessor.utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.d3s.alricg.common.charakter.Charakter;
 import org.d3s.alricg.generator.prozessor.GeneratorLink;
 import org.d3s.alricg.generator.prozessor.GeneratorProzessor;
+import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
+import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.links.IdLink;
+import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.held.HeldenLink;
 
 /**
@@ -31,7 +37,117 @@ public class ProzessorUtilities {
     
     /** <code>ProzessorUtilities</code>'s logger */
     private static final Logger LOG = Logger.getLogger(ProzessorUtilities.class.getName());
+	private static List<Fertigkeit> cachedAdditionsFamilieCached;
+    
+	/**
+	 * Wird ein Vorteil/Nachteil (& Sonderfertigkeit nach 4.0) automatisch mehrmals hinzugefühgt 
+	 * (durch Herkunft), so werden dadurch u.u. GP frei. Diese werden GP werden mit dieser Methode
+	 * ausgerechnet.
+	 * 
+	 * @param genLink Zu überprüfender GeneratorLink mit allem Modis als ModiList
+	 * @return Durch doppelte vergabe frei werdende GP (Vorteile) oder zu zahlende GP (Nachteile) 
+	 */
+	public static double getAdditionsFamilieKosten(GeneratorLink genLink) {
+		final List<IdLink> modiList = genLink.getLinkModiList();
+		
+		if (modiList == null || modiList.size() == 0 || ((Fertigkeit) genLink.getZiel()).getAdditionsFamilie() == null) {
+			return 0;
+		}
+		
+		int zuErreichenderWert = 0;
+		for (IdLink tmpLink : modiList) {
+			zuErreichenderWert += ((Fertigkeit) tmpLink.getZiel()).getAdditionsFamilie().getAdditionsWert();
+		}
+		
+		List<Fertigkeit> completeList = ProzessorUtilities.findAdditionsFamilie((Fertigkeit) genLink.getZiel());
+		
+		if (zuErreichenderWert > completeList.size()) {
+			return -(completeList.get(0).getGpKosten() * (zuErreichenderWert - completeList.size()));
+		}
+		return 0;
+	}
 	
+	/**
+	 * Wird ein Vorteil/Nachteil (& Sonderfertigkeit nach 4.0) automatisch mehrmals hinzugefühgt 
+	 * (durch Herkunft), so kann aus zwei gleichen Vorteilen ein neuer, höherwertiger Vorteil 
+	 * werden. Z.B. 2x "AstraleMeditation I" wird zu "AstraleMeditation II".
+	 * Wenn ein solcher wechsel stattfindet, wird hiermit die neue Fertigkeit berechnet. 
+	 * 
+	 * @param genLink Zu überprüfender GeneratorLink mit allem Modis als ModiList
+	 * @return Die neue Fertigkeit oder null, falls es keine neue Fertigkeit gibt
+	 */
+	public static Fertigkeit getAdditionsFamilieErsetzung(GeneratorLink genLink) {
+		final List<IdLink> modiList = genLink.getLinkModiList();
+		
+		if (modiList == null || modiList.size() == 0 || ((Fertigkeit) genLink.getZiel()).getAdditionsFamilie() == null) {
+			return null;
+		}
+		
+		int zuErreichenderWert = 0;
+		for (IdLink tmpLink : modiList) {
+			zuErreichenderWert += ((Fertigkeit) tmpLink.getZiel()).getAdditionsFamilie().getAdditionsWert();
+		}
+		
+		List<Fertigkeit> completeList = ProzessorUtilities.findAdditionsFamilie((Fertigkeit) genLink.getZiel());		
+		if (zuErreichenderWert <= completeList.size()) {
+			return completeList.get(zuErreichenderWert - 1);
+		} else {
+			// Es wird trotzdem die höchste Fertigkeit genommen. 
+			return completeList.get(completeList.size() - 1);
+		}
+		
+		//tmpLink.setZiel(zuErreichenderVorteil);
+	}
+	
+	/**
+	 * Liefert zu einer Fertigkeit alle per AdditionsFamilie zugehörigen Fertigkeiten.
+	 * 
+	 * @param genLink Zu überprüfender GeneratorLink;
+	 * @return Alle Fertigkeiten der zugehörigen AdditionsFamilie, sortiert nach der
+	 * 		Wertigkeit (Index 0 = Wert 1, Index 1 = Wert 2). Falls keine AdditionsFamilie
+	 * 		existiert "null".
+	 */
+    private static List<Fertigkeit> findAdditionsFamilie(Fertigkeit fertigkeit) {
+    	
+    	// Guard
+    	if (fertigkeit.getAdditionsFamilie() == null) return null;
+    	String addID = fertigkeit.getAdditionsFamilie().getAdditionsID();
+    	
+    	// Prüfe Cache
+    	if (cachedAdditionsFamilieCached != null 
+    			&& cachedAdditionsFamilieCached.size() > 0 
+    			&& cachedAdditionsFamilieCached.get(0).getAdditionsFamilie().getAdditionsID().equals(addID)) {
+    		return cachedAdditionsFamilieCached;
+    	}
+    	
+		final ArrayList<Fertigkeit> resultList = new ArrayList<Fertigkeit>();
+		List<Fertigkeit> list = (List<Fertigkeit>) StoreDataAccessor.getInstance().getMatchingList(fertigkeit.getClass());
+		
+		for(Fertigkeit element : list) {
+			if ( element.getAdditionsFamilie() == null) continue;
+			
+			if ( element.getAdditionsFamilie().getAdditionsID().equals(addID) ) {
+				resultList.add(element);
+			}
+		}
+		
+		Collections.sort(resultList, 
+			new Comparator<Fertigkeit>() {
+				/* (non-Javadoc)
+				 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+				 */
+				@Override
+				public int compare(Fertigkeit arg0, Fertigkeit arg1) {
+					return arg0.getAdditionsFamilie().getAdditionsWert() 
+						- arg1.getAdditionsFamilie().getAdditionsWert();
+				}
+			});
+		
+		cachedAdditionsFamilieCached = resultList;
+		return resultList;
+    }
+    
+    
 	/**
 	 * Versucht überprüft ob der Wert des Elements "link" innerhalb der möglichen Grenzen ist.
 	 * Wenn nicht wird versucht den Wert entsprechend zu setzten. Diese Methode wird
@@ -42,6 +158,11 @@ public class ProzessorUtilities {
 	 */
 	public static void inspectWert(GeneratorLink link, GeneratorProzessor prozessor) {		
 		// TODO Meldungen einbauen!
+		
+		// Wert muss nicht neu gesetzt werden, weil es keinen gibt oder das 
+		// Element gleicht gelöscht wird
+		if (link.getWert() == Link.KEIN_WERT) return;
+		if (link.getUserLink() == null && link.getLinkModiList().size() == 0) return;
 		
 		if ( link.getWert() > prozessor.getMaxWert(link) ) {
 			link.setUserGesamtWert(prozessor.getMaxWert(link));

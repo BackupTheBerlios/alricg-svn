@@ -67,7 +67,6 @@ public class TalentView extends GeneralRefreshableViewPart {
 		treeViewer.getTree().setHeaderVisible(true);
 		ColumnViewerToolTipSupport.enableFor(treeViewer, ToolTip.NO_RECREATE);
 		
-		
 		// Columns
 		TreeViewerColumn tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("Name");
@@ -77,6 +76,16 @@ public class TalentView extends GeneralRefreshableViewPart {
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.NameSorter(), treeViewer));
+		
+		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
+		tc.getColumn().setText("*");
+		tc.setLabelProvider(new CustomColumnLabelProvider.GeneralImageProvider());
+		tc.getColumn().setWidth(25);
+		tc.getColumn().setMoveable(false);
+		tc.getColumn().addSelectionListener(
+						new ViewerSelectionListener(
+								new CustomColumnViewerSorter.GeneralImageSorter(),
+								treeViewer));
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, idx++);
 		tc.getColumn().setText("Art");
@@ -148,7 +157,18 @@ public class TalentView extends GeneralRefreshableViewPart {
 		ColumnViewerToolTipSupport.enableFor(tableViewer, ToolTip.NO_RECREATE);
 		
 		// Columns setzen
+		// Columns setzen
 		TableViewerColumn tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
+		tc.getColumn().setText("*");
+		tc.setLabelProvider(new CustomColumnLabelProvider.GeneralImageProvider());
+		tc.getColumn().setWidth(25);
+		tc.getColumn().setMoveable(false);
+		tc.getColumn().addSelectionListener(
+						new ViewerSelectionListener(
+								new CustomColumnViewerSorter.GeneralImageSorter(),
+								tableViewer));
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, idx++);
 		tableViewer.getTable().setSortColumn(tc.getColumn());
 		tc.getColumn().setText("Name");
 		tc.setLabelProvider(new CustomColumnLabelProvider.NameLabelProvider());

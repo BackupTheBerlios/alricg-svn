@@ -86,6 +86,24 @@
             id="org.d3s.alricg.generator.views.general.RassenView"
             name="Rassen">
       </view>
+      <view
+            class="org.d3s.alricg.generator.views.general.SonderfertigkeitView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.generator.views.general.SonderfertigkeitView"
+            name="Sonderfertigkeiten">
+      </view>
+      <view
+            class="org.d3s.alricg.generator.views.general.LiturgieView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.generator.views.general.LiturgieView"
+            name="Litugrien">
+      </view>
+      <view
+            class="org.d3s.alricg.generator.views.general.SchamRitualView"
+            icon="icons/sample.gif"
+            id="org.d3s.alricg.generator.views.general.SchamRitualView"
+            name="Schamanen Rituale">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">

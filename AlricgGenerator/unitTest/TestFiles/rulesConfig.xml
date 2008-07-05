@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This file is part of the project ALRICG. -->
+<regelConfig>
+	<!--
+		startGp	- Wieviele GP insgesamt zur Verfügung stehen
+		maxSchlechteEingenschaftGp - Maximale GP die durch schlechte Eigenschaften gewonnen werden können 
+		maxNachteilGp - Maximale GP die durch Nachteile gewonnen werden
+		maxGpEigenschaften - Maximale GP die auf Eigenschaften (MU, KL, usw) verteilt werdem dürfen
+		maxEigenchafWert - Maximaler Wert von Eigenschaften ohne Modis (Z.B. durch Herkunft, Vorteile)
+		minEigenchafWert- Minimaler Wert von Eigenschaften ohne Modis (Z.B. durch Herkunft, Nachteile)
+		maxSozialstatus - Maximaler Wert des Sozialstatus ohne Modis (Z.B. durch Herkunft, Vorteile)
+		faktorTalentGp - Faktor für berechnung der TalentGP; (KL+IN) * faktorTalentGp = TalentGP
+		maxTalentAktivierung- Maximale Anzahl an Talenten die aktiviert werden können
+		maxZauberAktivierungVZ- Maximale Anzahl an Zaubern für VOLLzauberer die aktiviert werden können
+		maxZauberAktivierungHZ - Maximale Anzahl an Zaubern für HALBzauberer die aktiviert werden können
+		diffKlugheitMuttersprache - Abhängigkeit der Muttersprache von der Klugheit (KL - diffKlugheitMuttersprache = Talentwert)
+		diffKlugheitZweitsprache - Abhängigkeit der Zweitsprache von der Klugheit (KL - diffKlugheitZweitsprache = Talentwert)
+		maxDiffAT-PA - Maximale Differenz unterschied bei der Verteilung der Talentpunkte auf AT und PA	
+		
+		skt - Wenn das Attribut "useOriginal" auf "false" steht, wird kann hier eine SKT angegeben werden.
+			Die SKT MUSS im selben format wie "originalSkt" vorliegen, also von z0 - z31 und 
+			jeweils von A - H.
+		
+		Noch nicht vollständig! Nur Generierung bisher berücksichtigt!
+	-->
+	
+	<SKT>
+		<Z nr="0"  a="1"   b="2"   c="3"   d="4"   e="5"   f="8"   g="10"  h="20"/>
+		<Z nr="1"  a="1"   b="2"   c="2"   d="3"   e="4"   f="6"   g="8"   h="16"/>
+		<Z nr="2"  a="2"   b="4"   c="6"   d="7"   e="9"   f="14"  g="18"  h="35"/>
+		<Z nr="3"  a="3"   b="6"   c="9"   d="12"  e="15"  f="22"  g="30"  h="60"/>
+		<Z nr="4"  a="4"   b="8"   c="13"  d="17"  e="21"  f="32"  g="42"  h="85"/>
+		<Z nr="5"  a="6"   b="11"  c="17"  d="22"  e="28"  f="41"  g="55"  h="110"/>
+		<Z nr="6"  a="7"   b="14"  c="21"  d="27"  e="34"  f="50"  g="70"  h="140"/>
+		<Z nr="7"  a="8"   b="17"  c="25"  d="33"  e="41"  f="60"  g="85"  h="165"/>
+		<Z nr="8"  a="10"  b="19"  c="29"  d="39"  e="48"  f="75"  g="95"  h="195"/>
+		<Z nr="9"  a="11"  b="22"  c="34"  d="45"  e="55"  f="85"  g="110" h="220"/>
+		<Z nr="10" a="13"  b="25"  c="38"  d="50"  e="65"  f="95"  g="125" h="250"/>
+		<Z nr="11" a="14"  b="28"  c="43"  d="55"  e="70"  f="105" g="140" h="280"/>
+		<Z nr="12" a="16"  b="32"  c="47"  d="65"  e="80"  f="120" g="160" h="320"/>
+		<Z nr="13" a="17"  b="35"  c="51"  d="70"  e="85"  f="130" g="175" h="350"/>
+		<Z nr="14" a="19"  b="38"  c="55"  d="75"  e="95"  f="140" g="190" h="380"/>
+		<Z nr="15" a="21"  b="41"  c="60"  d="85"  e="105" f="155" g="210" h="410"/>
+		<Z nr="16" a="22"  b="45"  c="65"  d="90"  e="110" f="165" g="220" h="450"/>
+		<Z nr="17" a="24"  b="48"  c="70"  d="95"  e="120" f="180" g="240" h="480"/>
+		<Z nr="18" a="26"  b="51"  c="75"  d="105" e="130" f="195" g="260" h="510"/>
+		<Z nr="19" a="27"  b="55"  c="80"  d="110" e="135" f="210" g="270" h="550"/>
+		<Z nr="20" a="29"  b="58"  c="85"  d="115" e="145" f="220" g="290" h="580"/>
+		<Z nr="21" a="31"  b="62"  c="95"  d="125" e="155" f="230" g="310" h="620"/>
+		<Z nr="22" a="33"  b="65"  c="100" d="130" e="165" f="250" g="330" h="650"/>
+		<Z nr="23" a="34"  b="69"  c="105" d="140" e="170" f="260" g="340" h="690"/>
+		<Z nr="24" a="36"  b="73"  c="110" d="145" e="180" f="270" g="360" h="720"/>
+		<Z nr="25" a="38"  b="76"  c="115" d="150" e="190" f="290" g="380" h="760"/>
+		<Z nr="26" a="40"  b="80"  c="120" d="160" e="200" f="300" g="400" h="800"/>
+		<Z nr="27" a="42"  b="84"  c="125" d="165" e="210" f="310" g="420" h="830"/>
+		<Z nr="28" a="44"  b="87"  c="130" d="170" e="220" f="330" g="440" h="870"/>
+		<Z nr="29" a="45"  b="91"  c="135" d="180" e="230" f="340" g="460" h="910"/>
+		<Z nr="30" a="47"  b="95"  c="140" d="190" e="240" f="350" g="480" h="950"/>
+		<Z nr="31" a="50"  b="100" c="150" d="200" e="250" f="375" g="500" h="1000"/>			
+	</SKT>
+	<startGp wert="110"/>
+	<maxSchlechteEingenschaftGp wert="30"/>
+	<maxNachteilGp wert="50"/>
+	<maxGpEigenschaften wert="100"/>
+	<maxEigenschafWert wert="14"/>
+	<minEigenschafWert wert="8"/>
+	<maxSozialstatus wert="12"/>
+	<faktorTalentGp wert="20"/>
+	<maxTalentAktivierung wert="5"/>
+	<maxZauberAktivierungVZ wert="10"/>
+	<maxZauberAktivierungHZ wert="5"/>
+	<maxSchlechtEigenchafWert wert="12"/>
+	<minSchelchtEigenchafWert wert="5"/>
+	<diffKlugheitMuttersprache wert="-2"/>
+	<diffKlugheitZweitsprache wert="-4"/>
+	<maxDiffAT-PA wert="5"/>
+</regelConfig>

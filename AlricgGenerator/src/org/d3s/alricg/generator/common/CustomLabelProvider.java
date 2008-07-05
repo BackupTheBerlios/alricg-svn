@@ -17,7 +17,6 @@ import org.d3s.alricg.generator.prozessor.GeneratorLink;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.HerkunftVariante;
-import org.d3s.alricg.store.charElemente.Rasse;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
@@ -97,6 +96,10 @@ public class CustomLabelProvider {
 		}
 	}
 	
+	/**
+	 * Die Herkunft benötigt eine eigene Klasse für Voraussetzungen, weil auch der
+	 * Parent durchsucht werden muss.
+	 */
 	public static class HerkunftVoraussetzungProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {

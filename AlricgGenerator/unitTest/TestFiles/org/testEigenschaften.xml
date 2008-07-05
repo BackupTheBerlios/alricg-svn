@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<xmlAccessor filePath="D:\Programmierung\workspace\AlricgStore\testDir\user\testTalente.xml">
+    <eigenschaftList name="Mut" id="EIG-MU" anzeigen="true">
+        <eigenschaftEnum>MU</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Klugheit" id="EIG-KL" anzeigen="true">
+        <eigenschaftEnum>KL</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Konstitution" id="EIG-KO" anzeigen="true">
+        <eigenschaftEnum>KO</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Gewandheit" id="EIG-GE" anzeigen="true">
+        <eigenschaftEnum>GE</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Koerperkraft" id="EIG-KK" anzeigen="true">
+        <eigenschaftEnum>KK</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Charisma" id="EIG-CH" anzeigen="true">
+        <eigenschaftEnum>CH</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Intuition" id="EIG-IN" anzeigen="true">
+        <eigenschaftEnum>IN</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Fingerfertigkeit" id="EIG-FF" anzeigen="true">
+        <eigenschaftEnum>FF</eigenschaftEnum>
+    </eigenschaftList>
+        <eigenschaftList name="Sozialstatus" id="EIG-SO" anzeigen="true">
+        <eigenschaftEnum>SO</eigenschaftEnum>
+    </eigenschaftList>
+    
+    <eigenschaftList name="Magieresistenz" id="EIG-MR" anzeigen="true">
+        <eigenschaftEnum>MR</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Lebenspunkte" id="EIG-LeP" anzeigen="true">
+        <eigenschaftEnum>LEP</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Astralpunkte" id="EIG-AsP" anzeigen="true">
+        <eigenschaftEnum>ASP</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Ausdauerpunkt" id="EIG-AuP" anzeigen="true">
+        <eigenschaftEnum>AUP</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Karmaernergie" id="EIG-KaP" anzeigen="true">
+        <eigenschaftEnum>KA</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Geschwindigkeit" id="EIG-GS" anzeigen="true">
+        <eigenschaftEnum>GS</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Initiative" id="EIG-INI" anzeigen="true">
+        <eigenschaftEnum>INI</eigenschaftEnum>
+    </eigenschaftList>
+        <eigenschaftList name="FernkampfBasis" id="EIG-FK" anzeigen="true">
+        <eigenschaftEnum>FK</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="AttackeBasis" id="EIG-AT" anzeigen="true">
+        <eigenschaftEnum>AT</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="ParadeBasis" id="EIG-PA" anzeigen="true">
+        <eigenschaftEnum>PA</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Wundschwelle" id="EIG-WSW" anzeigen="true">
+        <eigenschaftEnum>WSW</eigenschaftEnum>
+    </eigenschaftList>
+    <eigenschaftList name="Erschöpfungsschwelle" id="EIG-ESW" anzeigen="true">
+        <eigenschaftEnum>ESW</eigenschaftEnum>
+    </eigenschaftList>
+</xmlAccessor>

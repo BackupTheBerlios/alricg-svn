@@ -1,17 +1,26 @@
 package org.d3s.alricg.generator;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.d3s.alricg.common.charakter.Charakter;
+import org.d3s.alricg.common.charakter.SonderregelAdmin;
+import org.d3s.alricg.common.charakter.VerbilligteFertigkeitAdmin;
+import org.d3s.alricg.common.charakter.VoraussetzungenAdmin;
 import org.d3s.alricg.common.logic.Prozessor;
+import org.d3s.alricg.generator.prozessor.GeneratorMagieStatusAdmin;
 import org.d3s.alricg.generator.prozessor.ProzessorDecorator;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorEigenschaften;
+import org.d3s.alricg.generator.prozessor.charElemente.ProzessorHerkunft;
+import org.d3s.alricg.generator.prozessor.charElemente.ProzessorSonderf;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorTalent;
+import org.d3s.alricg.generator.prozessor.charElemente.ProzessorVorteil;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorZauber;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
+import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
+import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.held.CharakterDaten;
 import org.d3s.loggingService.LoggerManager;
@@ -37,11 +46,18 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Activator() {
 		logger = LoggerManager.getLogger(PLUGIN_ID, this);
-		charakter = new Charakter(new CharakterDaten());
 		
-		// TEST
+		// Charakter erzeugen
+		final CharakterDaten charData = new CharakterDaten();
+		charakter = new Charakter(charData);
+		charakter.initCharakterAdmins(
+				new SonderregelAdmin(charakter), 
+				new VerbilligteFertigkeitAdmin(charakter), 
+				new VoraussetzungenAdmin(charakter), 
+				new GeneratorMagieStatusAdmin(charakter));
+		
+		// Alle Prozessoren erzeugen
 		HashMap<Class, Prozessor> hash = new HashMap<Class, Prozessor>();
-		
 		hash.put(
 				Eigenschaft.class,
 				new ProzessorDecorator(charakter, new ProzessorEigenschaften(charakter)));
@@ -51,6 +67,15 @@ public class Activator extends AbstractUIPlugin {
 		hash.put(
 				Zauber.class,
 				new ProzessorDecorator(charakter, new ProzessorZauber(charakter)));
+		hash.put(
+				Sonderfertigkeit.class,
+				new ProzessorDecorator(charakter, new ProzessorSonderf(charakter)));
+		hash.put(
+				Vorteil.class,
+				new ProzessorDecorator(charakter, new ProzessorVorteil(charakter)));
+		hash.put(
+				Herkunft.class,
+				new ProzessorDecorator(charakter, new ProzessorHerkunft(charakter)));
 
 		charakter.setProzessorHash(hash);
 	}

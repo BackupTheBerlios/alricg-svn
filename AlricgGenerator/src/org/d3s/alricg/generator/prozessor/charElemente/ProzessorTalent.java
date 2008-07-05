@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.d3s.alricg.common.Notepad;
 import org.d3s.alricg.common.charakter.Charakter;
@@ -27,6 +26,7 @@ import org.d3s.alricg.generator.prozessor.utils.ProzessorUtilities;
 import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
+import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Talent.Art;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
@@ -46,7 +46,6 @@ import org.d3s.alricg.store.rules.RegelConfig;
 public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLink> 
 							 implements GeneratorProzessor<Talent, GeneratorLink>, ExtendedProzessorTalent
 {
-	private static final Logger LOG = Logger.getLogger(ProzessorTalent.class.getName());
 	
 	// Texte für Notepade-Meldungen
 	private final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
@@ -104,34 +103,47 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#addNewElement(ZIEL)
 	 */
 	public GeneratorLink addNewElement(Talent ziel) {
-		final GeneratorLink tmpLink;
-		
-		//Link wird erstellt und zur List hinzugefügt
-		tmpLink = new GeneratorLink(ziel, null, null, 0);
-		elementBox.add(tmpLink);
-		
-		// Fügt den Link zu den entsprechenden HashMaps hinzu
-		for (int i = 0; i < ziel.getDreiEigenschaften().length; i++) {
-			// Falls das Talente mehrmals auf die selbe Eigenschaft geprobt wird, 
-			// wird es nur einmal hinzugefüght
-			if ( !hashMapNachEigensch
-							.get(ziel.getDreiEigenschaften()[i].getEigenschaftEnum())
-							.contains(tmpLink) ) 
-			{
-					hashMapNachEigensch
-								.get(ziel.getDreiEigenschaften()[i].getEigenschaftEnum())
-								.add(tmpLink);
-			}
-		}
+		//Link wird erstellt und zur Liste hinzugefügt
+		GeneratorLink tmpLink = new GeneratorLink(ziel, null, null, 0);
+		registerTalent(tmpLink);
 		
 		// Prüfen ob Talent akiviert werden muß
 		pruefeTalentAktivierung(tmpLink);
-		
 		updateKosten(tmpLink); // Kosten Aktualisieren
 		
 		return tmpLink;
 	}
 
+	/* (non-Javadoc) Methode überschrieben
+	 * @see org.d3s.alricg.prozessor.LinkProzessor#addModi(org.d3s.alricg.charKomponenten.links.Link)
+	 */
+	public HeldenLink addModi(IdLink link) {
+		GeneratorLink tmpLink;
+		int oldWert;
+		
+		tmpLink = elementBox.getObjectById(link.getZiel());
+		if (tmpLink == null) {
+			tmpLink = new GeneratorLink(link);
+			registerTalent(tmpLink);
+		} else {
+			if (STUFE_ERHALTEN && tmpLink.getWert() != 0) {
+				oldWert = tmpLink.getWert(); // Alten Wert Speichern
+				tmpLink.addLink(link); // Link hinzufügen
+				tmpLink.setUserGesamtWert(oldWert); // Versuchen den alten Wert wiederherzustellen
+			} else {
+				tmpLink.addLink(link);
+			}
+		}
+		
+		ProzessorUtilities.inspectWert(tmpLink, this);
+		
+		// evtl. den Status als "aktiviertes Talent" entziehen
+		pruefeTalentAktivierung(tmpLink);
+		updateKosten(tmpLink); // Kosten Aktualisieren
+		
+		return tmpLink;
+	}
+	
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#canAddElement(ZIEL)
 	 */
@@ -150,35 +162,7 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 		return true;
 	}
 	
-	/* (non-Javadoc) Methode überschrieben
-	 * @see org.d3s.alricg.prozessor.LinkProzessor#addModi(org.d3s.alricg.charKomponenten.links.Link)
-	 */
-	public HeldenLink addModi(IdLink link) {
-		GeneratorLink tmpLink;
-		int oldWert;
-		
-		tmpLink = elementBox.getObjectById(link.getZiel().getId());
-		
-		// Das Element muß vorhanden sein!
-		assert tmpLink != null;
-		
-		if (STUFE_ERHALTEN && tmpLink.getWert() != 0) {
-			oldWert = tmpLink.getWert(); // Alten Wert Speichern
-			tmpLink.addLink(link); // Link hinzufügen
-			tmpLink.setUserGesamtWert(oldWert); // Versuchen den alten Wert wiederherzustellen
-		} else {
-			tmpLink.addLink(link);
-		}
-		
-		ProzessorUtilities.inspectWert(tmpLink, this);
-		
-		// evtl. den Status als "aktiviertes Talent" entziehen
-		pruefeTalentAktivierung(tmpLink);
-		
-		updateKosten(tmpLink); // Kosten Aktualisieren
-		
-		return tmpLink;
-	}
+
 
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#containsLink(org.d3s.alricg.charKomponenten.links.Link)
@@ -274,13 +258,16 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	 */
 	public boolean canUpdateText(GeneratorLink link) {
 		
-		/*
+		if (link.getLinkModiList() == null) return true;
 		
-		// Kann nur geändert werden, wenn schon Text (= Eine SF) besteht!)
-		if (link.hasText()) {
-			return true;
+		// Prüfen ob automatisches Talent
+		for (IdLink modiLink : ((List<IdLink>) link.getLinkModiList())) {
+			if (modiLink.getQuelle() instanceof Fertigkeit) {
+				// Dies ist eine automatisches Talent, welches über eine Fertigkeit 
+				// hinzugefügt wurde. => Keine Spezialisierung möglich
+				return false;
+			}
 		}
-		*/
 		
 		return true;
 	}
@@ -502,4 +489,26 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 		return this;
 	}
 	
+	/**
+	 * Erstellt einen neuen GeneratorLink und fühgt diesen zur ElementBox hinzu
+	 */
+	private void registerTalent(GeneratorLink tmpLink) {
+		Talent ziel = (Talent) tmpLink.getZiel();
+
+		elementBox.add(tmpLink);
+		
+		// Fügt den Link zu den entsprechenden HashMaps hinzu
+		for (int i = 0; i < ziel.getDreiEigenschaften().length; i++) {
+			// Falls das Talente mehrmals auf die selbe Eigenschaft geprobt wird, 
+			// wird es nur einmal hinzugefüght
+			if ( !hashMapNachEigensch
+							.get(ziel.getDreiEigenschaften()[i].getEigenschaftEnum())
+							.contains(tmpLink) ) 
+			{
+					hashMapNachEigensch
+								.get(ziel.getDreiEigenschaften()[i].getEigenschaftEnum())
+								.add(tmpLink);
+			}
+		}
+	}
 }
