@@ -12,10 +12,10 @@ import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitArtProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitFamilieProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitGpProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.SonderfertigkeitGpProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitTextNoetigProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitZweitZielNoetigProvider;
-import org.d3s.alricg.editor.common.CustomColumnLabelProvider.SonderFertigkeitApProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.SonderfertigkeitApProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter.FertigkeitArtSorter;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
@@ -103,19 +103,19 @@ public class SonderfertigkeitView extends RefreshableViewPartImpl {
 		tc.getColumn().setText("GP"); 
 		tc.getColumn().setToolTipText("Kosten Generierungpunkte");
 		tc.getColumn().setWidth(75);
-		tc.setLabelProvider(new FertigkeitGpProvider());
+		tc.setLabelProvider(new SonderfertigkeitGpProvider());
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new CustomColumnViewerSorter.FertigkeitGpSorter(), tableViewer));
+						new CustomColumnViewerSorter.SonderfertigkeitGpSorter(), tableViewer));
 
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 5);
 		tc.getColumn().setText("AP");
 		tc.getColumn().setToolTipText("Kosten Abenteuerpunkte");
 		tc.getColumn().setWidth(75);
-		tc.setLabelProvider(new SonderFertigkeitApProvider());
+		tc.setLabelProvider(new SonderfertigkeitApProvider());
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new CustomColumnViewerSorter.SonderFertigkeitApSorter(), tableViewer));
+						new CustomColumnViewerSorter.SonderfertigkeitApSorter(), tableViewer));
 
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 6);
 		tc.getColumn().setText("T");
@@ -212,19 +212,19 @@ public class SonderfertigkeitView extends RefreshableViewPartImpl {
 		tc.getColumn().setText("GP"); 
 		tc.getColumn().setToolTipText("Kosten Generierungpunkte");
 		tc.getColumn().setWidth(75);
-		tc.setLabelProvider(new FertigkeitGpProvider());
+		tc.setLabelProvider(new SonderfertigkeitGpProvider());
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new CustomColumnViewerSorter.FertigkeitGpSorter(), treeViewer));
+						new CustomColumnViewerSorter.SonderfertigkeitGpSorter(), treeViewer));
 
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 4);
 		tc.getColumn().setText("AP");
 		tc.getColumn().setToolTipText("Kosten Abenteuerpunkte");
 		tc.getColumn().setWidth(75);
-		tc.setLabelProvider(new SonderFertigkeitApProvider());
+		tc.setLabelProvider(new SonderfertigkeitApProvider());
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new CustomColumnViewerSorter.SonderFertigkeitApSorter(), treeViewer));
+						new CustomColumnViewerSorter.SonderfertigkeitApSorter(), treeViewer));
 
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 5);
 		tc.getColumn().setText("T");

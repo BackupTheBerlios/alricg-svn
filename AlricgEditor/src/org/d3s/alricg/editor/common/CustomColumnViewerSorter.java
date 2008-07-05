@@ -15,7 +15,9 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.RegionVolk;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.SchriftSprache;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.VorNachteil;
@@ -162,10 +164,10 @@ public class CustomColumnViewerSorter {
 		}
 	}
 	
-	public static class FertigkeitGpSorter extends CreatableViewerSorter {
+	public static class SonderfertigkeitGpSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
-			return ((Fertigkeit) getCharElement(obj)).getGpKosten();
+			return ((Sonderfertigkeit) getCharElement(obj)).getGpKosten();
 		}	
 	}
 	
@@ -185,10 +187,10 @@ public class CustomColumnViewerSorter {
 		}
 	}
 	
-	public static class SonderFertigkeitApSorter extends CreatableViewerSorter {
+	public static class SonderfertigkeitApSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
-			return (((Fertigkeit) getCharElement(obj)).getGpKosten());
+			return (((Sonderfertigkeit) getCharElement(obj)).getGpKosten());
 		}	
 	}
 	
@@ -214,7 +216,7 @@ public class CustomColumnViewerSorter {
 	public static class FertigkeitArtSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
-			return ((Sonderfertigkeit) getCharElement(obj)).getArt().getValue();
+			return ((Fertigkeit) getCharElement(obj)).getArt().getValue();
 		}
 	}
 	
@@ -277,6 +279,34 @@ public class CustomColumnViewerSorter {
 		}
 	}
 	
+	public static class SchlechteEigenschaftSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((Nachteil) getCharElement(obj)).isSchlechteEigen();
+		}	
+	}
+	
+	/**
+	 * Nach dem Gard eines SchamenenRituals
+	 */
+	public static class SchamanenRitualGradSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return ((SchamanenRitual) getCharElement(obj)).getGrad();
+		}
+	}
+	
+	/**
+	 * Mehr oder weniger ein Platzhalter für Bildanzeigen, die noch implementiert werden
+	 * müssen
+	 */
+	public static class GeneralImageSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			return 0;
+		}	
+	}
+	
 	public static class DateiSorter extends CreatableViewerSorter {
 
 		@Override
@@ -285,12 +315,18 @@ public class CustomColumnViewerSorter {
 			
 			if (e1 instanceof EditorTreeObject) {
 				s1 = ((EditorTreeObject) e1).getFile().getName();
-				s2 = ((EditorTreeObject) e2).getFile().getName();
 			} else if(e1 instanceof EditorTableObject) {
 				s1 = ((EditorTableObject) e1).getFile().getName();
+			} else {
+				s1 = e1.toString();
+			}
+			
+			if (e2 instanceof EditorTreeObject) {
+				s2 = ((EditorTreeObject) e2).getFile().getName();
+			} else if(e2 instanceof EditorTableObject) {
 				s2 = ((EditorTableObject) e2).getFile().getName();
 			} else {
-				return e1.toString().compareTo(e2.toString());
+				s2 = e2.toString();
 			}
 			
 			return s1.compareTo(s2) * getMultiplikator(viewer);

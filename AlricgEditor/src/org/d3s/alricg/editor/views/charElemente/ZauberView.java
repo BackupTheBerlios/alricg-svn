@@ -12,9 +12,9 @@ import org.d3s.alricg.common.icons.MagieIconsLibrary;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ImageProviderRegulator;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.ZauberVerbreitungProvider;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
@@ -28,7 +28,6 @@ import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.MagieMerkmal;
 import org.d3s.alricg.store.charElemente.Zauber;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -320,35 +319,6 @@ public class ZauberView extends RefreshableViewPartImpl {
 	public void dispose() {
 		MagieIconsLibrary.getInstance().removeConsumer(this);
 		super.dispose();
-	}
-
-	
-	/**
-	 * Für die Darstellung der Verbreitung von Zaubern
-	 * @author Vincent
-	 */
-	public static class ZauberVerbreitungProvider extends ColumnLabelProvider {
-		@Override
-		public String getText(Object element) {
-			final CharElement charElem = ViewUtils.getCharElement(element);
-			if (charElem == null) return "";
-			
-			if (charElem instanceof Zauber) {
-				return ((Zauber) charElem).getVerbreitungText(true);
-			}
-			return "";
-		}
-		
-		@Override
-		public String getToolTipText(Object element) {
-			final CharElement charElem = ViewUtils.getCharElement(element);
-			if (charElem == null) return null;
-			
-			if ( charElem instanceof Zauber ) {
-				return ((Zauber) charElem).getVerbreitungText(false);
-			}
-			return null;
-		}
 	}
 
 	

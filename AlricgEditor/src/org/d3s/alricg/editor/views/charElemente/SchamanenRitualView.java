@@ -10,8 +10,9 @@ package org.d3s.alricg.editor.views.charElemente;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
-import org.d3s.alricg.editor.common.ViewUtils;
-import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.SchamanenRitualGradProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.SchamanenRitualHerkunftProvider;
+import org.d3s.alricg.editor.common.CustomColumnViewerSorter.SchamanenRitualGradSorter;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
@@ -21,10 +22,8 @@ import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.editor.views.ViewMessages;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -84,18 +83,18 @@ public class SchamanenRitualView extends RefreshableViewPartImpl {
 		// Herkunft der Rituale
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
 		tc.getColumn().setText("Herkunft");
-		tc.setLabelProvider(new RitualHerkunftProvider());
+		tc.setLabelProvider(new SchamanenRitualHerkunftProvider());
 		tc.getColumn().setWidth(100);
 		tc.getColumn().setMoveable(true);
 
 		// Grad
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
 		tc.getColumn().setText("Grad");
-		tc.setLabelProvider(new RitualGradProvider());
+		tc.setLabelProvider(new SchamanenRitualGradProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
-				new ViewerSelectionListener(new GradSorter(), tableViewer));
+				new ViewerSelectionListener(new SchamanenRitualGradSorter(), tableViewer));
 		
 		// Inhalt und Sortierung setzen
 		tableViewer.setContentProvider(new TableViewContentProvider());
@@ -152,18 +151,18 @@ public class SchamanenRitualView extends RefreshableViewPartImpl {
 		// Herkunft der Rituale
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);
 		tc.getColumn().setText("Herkunft");
-		tc.setLabelProvider(new RitualHerkunftProvider());
+		tc.setLabelProvider(new SchamanenRitualHerkunftProvider());
 		tc.getColumn().setWidth(100);
 		tc.getColumn().setMoveable(true);
 
 		// Grad
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 3);
 		tc.getColumn().setText("Grad");
-		tc.setLabelProvider(new RitualGradProvider());
+		tc.setLabelProvider(new SchamanenRitualGradProvider());
 		tc.getColumn().setWidth(75);
 		tc.getColumn().setMoveable(true);
 		tc.getColumn().addSelectionListener(
-				new ViewerSelectionListener(new GradSorter(), treeViewer));
+				new ViewerSelectionListener(new SchamanenRitualGradSorter(), treeViewer));
 		
 		// Inhalt und Sortierung setzen
 		TreeObject root = EditorViewUtils.buildEditorTreeView(
@@ -191,49 +190,5 @@ public class SchamanenRitualView extends RefreshableViewPartImpl {
 	@Override
 	public Class getViewedClass() {
 		return SchamanenRitual.class;
-	}
-
-	public static class RitualGradProvider extends ColumnLabelProvider {
-		@Override
-		public String getText(Object element) {
-			final CharElement charElem = ViewUtils.getCharElement(element);
-			if (charElem == null) return "";
-			
-			if (charElem instanceof SchamanenRitual) {
-				return Integer.toString( ((SchamanenRitual) charElem).getGrad() );
-			}
-			return "";
-		}
-	}
-	
-	public static class RitualHerkunftProvider extends ColumnLabelProvider {
-		@Override
-		public String getText(Object element) {
-			final CharElement charElem = ViewUtils.getCharElement(element);
-			if (charElem == null) return "";
-			
-			if (charElem instanceof SchamanenRitual) {
-				return ((SchamanenRitual) charElem).getHerkunftText(true);
-			}
-			return "";
-		}
-		
-		@Override
-		public String getToolTipText(Object element) {
-			final CharElement charElem = ViewUtils.getCharElement(element);
-			if (charElem == null) return "";
-			
-			if (charElem instanceof SchamanenRitual) {
-				return ((SchamanenRitual) charElem).getHerkunftText(false);
-			}
-			return "";
-		}
-	}
-	
-	public static class GradSorter extends CreatableViewerSorter {
-		@Override
-		public Comparable getComparable(Object obj) {
-			return ((SchamanenRitual) getCharElement(obj)).getGrad();
-		}
 	}
 }

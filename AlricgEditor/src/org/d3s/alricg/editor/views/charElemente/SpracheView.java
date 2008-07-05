@@ -92,8 +92,17 @@ public class SpracheView extends RefreshableViewPartImpl {
 								new CustomColumnViewerSorter.DateiSorter(),
 								tableViewer));
 
-
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 2);
+		tc.getColumn().setText("Art");
+		tc.setLabelProvider(new SchriftSpracheArtProvider());
+		tc.getColumn().setWidth(75);
+		tc.getColumn().setMoveable(true);
+		tc.getColumn().addSelectionListener(
+						new ViewerSelectionListener(
+								new SchriftSpracheArtSorter(),
+								tableViewer));
+		
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
 		tc.getColumn().setText("Komplexität");
 		tc.setLabelProvider(new CustomColumnLabelProvider.SchriftSpracheKomplexitaetProvider());
 		tc.getColumn().setWidth(75);
@@ -103,7 +112,7 @@ public class SpracheView extends RefreshableViewPartImpl {
 								new CustomColumnViewerSorter.SchriftSpracheKomplexitaetSorter(),
 								tableViewer));
 		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 3);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
 		tc.getColumn().setText(ViewMessages.TalentView_SKT);
 		tc.setLabelProvider(new CustomColumnLabelProvider.SKTLabelProvider());
 		tc.getColumn().setWidth(75);
@@ -112,7 +121,7 @@ public class SpracheView extends RefreshableViewPartImpl {
 				new ViewerSelectionListener(
 						new CustomColumnViewerSorter.SktSorter(), tableViewer));
 		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 4);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 5);
 		tc.getColumn().setText("Schriften");
 		tc.setLabelProvider(new SpracheSchriftenProvider());
 		tc.getColumn().setWidth(75);
@@ -121,7 +130,7 @@ public class SpracheView extends RefreshableViewPartImpl {
 				new ViewerSelectionListener(
 						new SpracheSchriftenSorter(), tableViewer));
 		
-		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 5);
+		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 6);
 		tc.getColumn().setText(ViewMessages.TalentView_Voraussetzung);
 		tc.setLabelProvider(new CustomColumnLabelProvider.CharElementVoraussetzungProvider());
 		tc.getColumn().setWidth(150);
@@ -349,7 +358,7 @@ public class SpracheView extends RefreshableViewPartImpl {
 	 * Erstellt aus der zu der Sprache zugehörigen Schriften einen Text
 	 * @author Vincent
 	 */
-	private static class SpracheSchriftenProvider extends ColumnLabelProvider {
+	public static class SpracheSchriftenProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
@@ -372,7 +381,21 @@ public class SpracheView extends RefreshableViewPartImpl {
 		}
 	}
 	
-	private static class SpracheSchriftenSorter extends CreatableViewerSorter {
+	public static class SchriftSpracheArtProvider  extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			if ( charElem instanceof Schrift) {
+				return "Schrift";
+			} else {
+				return "Sprache";
+			}
+		}
+	}
+	
+	public static class SpracheSchriftenSorter extends CreatableViewerSorter {
 		@Override
 		public Comparable getComparable(Object obj) {
 			final CharElement elem = ViewUtils.getCharElement(obj);
@@ -391,6 +414,20 @@ public class SpracheView extends RefreshableViewPartImpl {
 				}
 			}
 			return 	strB.toString();
+		}
+	}
+	
+	public static class SchriftSpracheArtSorter extends CreatableViewerSorter {
+		@Override
+		public Comparable getComparable(Object obj) {
+			final CharElement charElem = ViewUtils.getCharElement(obj);
+			if (charElem == null) return ""; //$NON-NLS-1$
+			
+			if ( charElem instanceof Schrift) {
+				return "Schrift";
+			} else {
+				return "Sprache";
+			}
 		}
 	}
 }

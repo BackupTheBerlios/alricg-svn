@@ -10,13 +10,12 @@ package org.d3s.alricg.editor.views.charElemente;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider;
 import org.d3s.alricg.editor.common.CustomColumnViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren;
-import org.d3s.alricg.editor.common.ViewUtils;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitArtProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitFamilieProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitTextNoetigProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.FertigkeitZweitZielNoetigProvider;
+import org.d3s.alricg.editor.common.CustomColumnLabelProvider.SchlechteEigenschaftProvider;
 import org.d3s.alricg.editor.common.CustomColumnLabelProvider.VorNachteilGpProvider;
-import org.d3s.alricg.editor.common.CustomColumnViewerSorter.CreatableViewerSorter;
 import org.d3s.alricg.editor.common.Regulatoren.Regulator;
 import org.d3s.alricg.editor.common.ViewUtils.CharElementDragSourceListener;
 import org.d3s.alricg.editor.common.ViewUtils.TableViewContentProvider;
@@ -25,10 +24,8 @@ import org.d3s.alricg.editor.common.ViewUtils.TreeViewContentProvider;
 import org.d3s.alricg.editor.common.ViewUtils.ViewerSelectionListener;
 import org.d3s.alricg.editor.utils.EditorViewUtils;
 import org.d3s.alricg.store.access.StoreDataAccessor;
-import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Nachteil;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -38,7 +35,6 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -119,7 +115,7 @@ public class NachteilView extends RefreshableViewPartImpl {
 		tc.setLabelProvider(new SchlechteEigenschaftProvider());
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new SchlechteEigenschaftSorter(), tableViewer));
+						new CustomColumnViewerSorter.SchlechteEigenschaftSorter(), tableViewer));
 		
 		tc = new TableViewerColumn(tableViewer, SWT.LEFT, 6);
 		tc.getColumn().setText("T");
@@ -235,7 +231,7 @@ public class NachteilView extends RefreshableViewPartImpl {
 		tc.setLabelProvider(new SchlechteEigenschaftProvider());
 		tc.getColumn().addSelectionListener(
 				new ViewerSelectionListener(
-						new SchlechteEigenschaftSorter(), treeViewer));
+						new CustomColumnViewerSorter.SchlechteEigenschaftSorter(), treeViewer));
 		
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 5);
 		tc.getColumn().setText("T");
@@ -299,38 +295,6 @@ public class NachteilView extends RefreshableViewPartImpl {
 	@Override
 	public Class getViewedClass() {
 		return Nachteil.class;
-	}
-
-	/**
-	 * Stellt das Feld "Schlechte Eigenschaft" dar
-	 * @author Vincent
-	 */
-	public static class SchlechteEigenschaftProvider extends ColumnLabelProvider {
-		@Override
-		public String getText(Object element) {
-			return ""; //$NON-NLS-1$
-		}
-		@Override
-		public Image getImage(Object element) {
-			final CharElement charElem = ViewUtils.getCharElement(element);
-			if (charElem == null) return null;
-			
-			if (charElem instanceof Nachteil) {
-				if ( ((Nachteil) charElem).isSchlechteEigen() )  {
-					return CustomColumnLabelProvider.acceptImage;
-				} else {
-					return CustomColumnLabelProvider.cancelImage;
-				}
-			}
-			return super.getImage(element);
-		}
-	}
-	
-	public static class SchlechteEigenschaftSorter extends CreatableViewerSorter {
-		@Override
-		public Comparable getComparable(Object obj) {
-			return ((Nachteil) getCharElement(obj)).isSchlechteEigen();
-		}	
 	}
 	
 }

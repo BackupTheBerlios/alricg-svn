@@ -221,7 +221,6 @@ public class LiturgieView extends RefreshableViewPartImpl {
 								new CustomColumnViewerSorter.DateiSorter(),
 								treeViewer));
 
-
 		// Herkunft
 		tc = new TreeViewerColumn(treeViewer, SWT.LEFT, 2);
 		tc.getColumn().setText("1");

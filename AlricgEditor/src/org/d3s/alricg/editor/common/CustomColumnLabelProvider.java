@@ -24,10 +24,14 @@ import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.RegionVolk;
+import org.d3s.alricg.store.charElemente.SchamanenRitual;
 import org.d3s.alricg.store.charElemente.Schrift;
+import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Sprache;
 import org.d3s.alricg.store.charElemente.VorNachteil;
+import org.d3s.alricg.store.charElemente.Zauber;
 import org.d3s.alricg.store.charElemente.Fertigkeit.AdditionsFamilie;
 import org.d3s.alricg.store.charElemente.charZusatz.Gegenstand;
 import org.d3s.alricg.store.charElemente.links.Link;
@@ -447,14 +451,14 @@ public class CustomColumnLabelProvider {
 	/**
 	 * @author Vincent
 	 */
-	public static class FertigkeitGpProvider extends ColumnLabelProvider {
+	public static class SonderfertigkeitGpProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return ""; //$NON-NLS-1$
 			
 			if (charElem instanceof Fertigkeit 
-					&& ((Fertigkeit) charElem).getGpKosten() != CharElement.KEIN_WERT) 
+					&& ((Sonderfertigkeit) charElem).getGpKosten() != CharElement.KEIN_WERT) 
 			{
 				return CommonUtils.doubleToString( ((Fertigkeit) charElem).getGpKosten() );
 			}
@@ -559,14 +563,14 @@ public class CustomColumnLabelProvider {
 	 * speziellen Kosten von Sonderfertigkeiten!
 	 * @author Vincent
 	 */
-	public static class SonderFertigkeitApProvider extends ColumnLabelProvider {
+	public static class SonderfertigkeitApProvider extends ColumnLabelProvider {
 		@Override
 		public String getText(Object element) {
 			final CharElement charElem = ViewUtils.getCharElement(element);
 			if (charElem == null) return ""; //$NON-NLS-1$
 			
 			return Integer.toString(
-					FormelSammlung.getApFromGp( ((Fertigkeit) charElem).getGpKosten() )
+					FormelSammlung.getApFromGp( ((Sonderfertigkeit) charElem).getGpKosten() )
 				);
 		}
 	}
@@ -813,6 +817,118 @@ public class CustomColumnLabelProvider {
 			if (chatEle == null) return null;
 			
 			return CharElementTextService.getAuswahlText(((Herkunft) chatEle).getEigenschaftModis());
+		}
+	}
+	
+	/**
+	 * Stellt das Feld "Schlechte Eigenschaft" bei Nachteilen dar
+	 */
+	public static class SchlechteEigenschaftProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			return ""; //$NON-NLS-1$
+		}
+		@Override
+		public Image getImage(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return null;
+			
+			if (charElem instanceof Nachteil) {
+				if ( ((Nachteil) charElem).isSchlechteEigen() )  {
+					return CustomColumnLabelProvider.acceptImage;
+				} else {
+					return CustomColumnLabelProvider.cancelImage;
+				}
+			}
+			return super.getImage(element);
+		}
+	}
+	
+	/**
+	 * Für die Darstellung der Verbreitung von Zaubern
+	 * @author Vincent
+	 */
+	public static class ZauberVerbreitungProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if (charElem instanceof Zauber) {
+				return ((Zauber) charElem).getVerbreitungText(true);
+			}
+			return "";
+		}
+		
+		@Override
+		public String getToolTipText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return null;
+			
+			if ( charElem instanceof Zauber ) {
+				return ((Zauber) charElem).getVerbreitungText(false);
+			}
+			return null;
+		}
+	}
+	
+	/**
+	 * Mehr oder weniger ein Platzhalter für Bildanzeigen, die noch implementiert werden
+	 * müssen
+	 */
+	public static class GeneralImageProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			// TODO implement
+			return ""; //$NON-NLS-1$
+		}
+		@Override
+		public Image getImage(Object element) {
+			// TODO implement
+			return null;
+		}
+	}
+	
+	/**
+	 * Grad bei einem Schamanenritual
+	 */
+	public static class SchamanenRitualGradProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if (charElem instanceof SchamanenRitual) {
+				return Integer.toString( ((SchamanenRitual) charElem).getGrad() );
+			}
+			return "";
+		}
+	}
+	
+	/**
+	 * Herkunft bei einem Schamanenritual
+	 */
+	public static class SchamanenRitualHerkunftProvider extends ColumnLabelProvider {
+		@Override
+		public String getText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if (charElem instanceof SchamanenRitual) {
+				return ((SchamanenRitual) charElem).getHerkunftText(true);
+			}
+			return "";
+		}
+		
+		@Override
+		public String getToolTipText(Object element) {
+			final CharElement charElem = ViewUtils.getCharElement(element);
+			if (charElem == null) return "";
+			
+			if (charElem instanceof SchamanenRitual) {
+				return ((SchamanenRitual) charElem).getHerkunftText(false);
+			}
+			return "";
 		}
 	}
 	
