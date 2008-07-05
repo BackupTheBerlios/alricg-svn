@@ -14,8 +14,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.d3s.alricg.store.charElemente.CharElement;
+import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.links.Link;
 
 /**
@@ -26,9 +28,9 @@ import org.d3s.alricg.store.charElemente.links.Link;
  * @author V. Strelow
  */
 public class ElementBox<E extends Link> extends AbstractCollection<E>{
-	private LinkLinkComparator<Link> compLinkLink;
-	private LinkStringComparator compLinkString;
-	private ArrayList<E> elementList;
+	private final LinkLinkComparator<Link> compLinkLink;
+	private final LinkStringComparator compLinkString;
+	private final ArrayList<E> elementList;
 	
 	public ElementBox() {
 		elementList = new ArrayList<E>();
@@ -122,7 +124,69 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 	public E getObjectById(CharElement charElement) {
 		return getObjectById(charElement.getId());
 	}
+	
+	/**
+	 * Sucht zu einem CharElement alle Links mit dem gleichen CharElement als Ziel heraus.
+	 * DInge wie Text oder Zweitziel spielen keine Rolle.
+	 * 
+	 * @param CharElement Das CharElement nach dem gesucht wird
+	 * @return Eine Liste von allen Links, auf die die Kriterien zutreffen
+	 */
+	public List<E> getObjectsById(CharElement charElement) {
+		int index, tmpIdx;
+		ArrayList<E> list;
+		
+		index = Collections.binarySearch(elementList, charElement.getId(), compLinkString);
+		
+		list = new ArrayList<E>();
+		if (index < 0) {
+			return list; // Ein Link mit dieser ID ist nicht enthalten
+		}
+		
+		// Es können mehrer gleiche Elemente existieren, binarySearch liefert nur ein "zufälliges"
+		// Element aus der möglichen Menge. Daher müssen nach "oben" und "unten" die Elemente
+		// abgesucht werden.
+		
+		// Nach "oben" die Elemente prüfen
+		tmpIdx = index;
+		while(tmpIdx < elementList.size() && 
+				compLinkString.compare(elementList.get(tmpIdx), charElement.getId()) == 0) {
+			list.add(elementList.get(tmpIdx));
+			tmpIdx++;
+		}
 
+		// Nach "unten" die Elemente prüfen
+		tmpIdx = index -1;
+		while(tmpIdx >= 0 && 
+				compLinkString.compare(elementList.get(tmpIdx), charElement.getId()) == 0) {
+			list.add(elementList.get(tmpIdx));
+			tmpIdx--;
+		}
+		
+		return list;
+	}
+
+	/**
+	 * Such ein Element mit der gleichen AdditionsID wie "fertigkeit". Bei mehreren Vorkommen
+	 * wird das erste gefundene geliefert.
+	 * @param fertigkeit Fertigkeit nach dessen AdditionsID gesucht wird
+	 * @return Link mit der Fertigkeit als Ziel, oder null fall kein solches Element existiert
+	 */
+	public E getEqualAdditionsFamilie(Fertigkeit fertigkeit) {
+		if (fertigkeit.getAdditionsFamilie() == null) return null;
+		
+		for(E element : elementList) {
+			if ( !element.getZiel().getClass().equals(fertigkeit.getClass()) ) continue;
+			if ( ((Fertigkeit)element.getZiel()).getAdditionsFamilie() == null) continue;
+			
+			if ( ((Fertigkeit)element.getZiel()).getAdditionsFamilie().getAdditionsID().equals(
+					fertigkeit.getAdditionsFamilie().getAdditionsID()) ) {
+				return element;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Sucht zu einem Link das gleichartige Gegenstücke aus der ElementBox herraus.
 	 * Die Prüfung ob ein Link "gleichartig" ist, erfolgt mit "Link.isEqualLink(..)".
@@ -133,15 +197,26 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 	 * @see org.d3s.alricg.charKomponenten.links.Link#isEqualLink(org.d3s.alricg.charKomponenten.links.Link)
 	 */
 	public List<E> getEqualObjects(Link link) {
+		List<E> list = getObjectsById(link.getZiel());
+		
+		Iterator<E> ite = list.iterator();
+		while(ite.hasNext()) {
+			if (!ite.next().isEqualLink(link)) ite.remove();
+		}
+		
+		return list;
+		
+		/*
 		int index, tmpIdx;
 		ArrayList<E> list;
 		
 		index = Collections.binarySearch(elementList, link, compLinkLink);
 		
-		if (index < 0) {
-			return null; // Ein Link mit dieser ID ist nicht enthalten
-		}
 		list = new ArrayList<E>();
+		if (index < 0) {
+			return list; // Ein Link mit dieser ID ist nicht enthalten
+		}
+		
 		
 		// Es können mehrer gleiche Elemente existieren, binarySearch liefert nur ein "zufälliges"
 		// Element aus der möglichen Menge. Daher müssen nach "oben" und "unten" die Elemente
@@ -167,7 +242,7 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 			tmpIdx--;
 		}
 		
-		return list;
+		return list;*/
 	}
 	
 	/**

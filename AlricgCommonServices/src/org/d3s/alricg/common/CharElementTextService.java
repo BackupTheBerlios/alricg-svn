@@ -140,12 +140,12 @@ public class CharElementTextService {
 			throw new IllegalArgumentException("Illegaler Modus Nr. " + modus + "!");
 		}
 		
-		if (negativ.length() > 0 && !negativ.equals(KEINE)) {
+		if ( negativ.length() > 0 && !negativ.equals(KEINE)) {
 			negativ = "NICHT: " + negativ;
 			if (positiv.length() > 0) {
 				negativ = ", " + negativ;
 			}
-		}
+		} 
 		
 		final String returnStr = positiv + negativ; 
 		if (returnStr.length() == 0) return KEINE;
@@ -187,7 +187,7 @@ public class CharElementTextService {
 	 * @return Der Text
 	 */
 	public static String getOptionListText(List<? extends Option> list) {
-		if (list == null) return KEINE;
+		if (list == null) return "";
 		final StringBuilder strB = new StringBuilder();
 		
 		for (int i = 0; i < list.size(); i++) {
@@ -203,7 +203,7 @@ public class CharElementTextService {
 			}
 		}
 
-		if (strB.length() == 0) return KEINE;
+		if (strB.length() == 0) return "";
 		return strB.toString();
 	}
 	

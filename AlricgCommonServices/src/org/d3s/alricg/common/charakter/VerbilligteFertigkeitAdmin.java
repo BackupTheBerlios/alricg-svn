@@ -28,7 +28,7 @@ import org.d3s.alricg.store.held.HeldenLink;
 public class VerbilligteFertigkeitAdmin {
 	
 	
-	public VerbilligteFertigkeitAdmin(CharakterDaten held) {
+	public VerbilligteFertigkeitAdmin(Charakter held) {
 		
 	}
 	

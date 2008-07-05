@@ -20,10 +20,11 @@ import org.d3s.alricg.store.held.CharakterDaten;
  * @author Vincent
  */
 public class Charakter {
-	private CharakterDaten charData;
+	private final CharakterDaten charData;
 	private SonderregelAdmin sonderregelAdmin;
 	private VerbilligteFertigkeitAdmin verbFertigkeitenAdmin;
 	private VoraussetzungenAdmin vorausAdmin;
+	private CharStatusAdmin magieAdmin;
 	
 	// Die Eigenschaften, wegen ihrer besonderen Bedeutung nochmal hier
 	private HashMap<Class, Prozessor> prozessorHash;
@@ -31,9 +32,17 @@ public class Charakter {
 	public Charakter(CharakterDaten charData) {
 		this.charData = charData;
 		
-		sonderregelAdmin = new SonderregelAdmin(charData);
-		verbFertigkeitenAdmin = new VerbilligteFertigkeitAdmin(charData);
-		vorausAdmin = new VoraussetzungenAdmin(charData);
+	}
+
+	public void initCharakterAdmins(
+			SonderregelAdmin sonderregelAdmin,
+			VerbilligteFertigkeitAdmin verbFertigkeitenAdmin,
+			VoraussetzungenAdmin vorausAdmin,
+			CharStatusAdmin magieAdmin) {
+		this.sonderregelAdmin = sonderregelAdmin;
+		this.verbFertigkeitenAdmin = verbFertigkeitenAdmin;
+		this.vorausAdmin = vorausAdmin;
+		this.magieAdmin = magieAdmin;
 	}
 	
 	/**
@@ -63,7 +72,7 @@ public class Charakter {
 	 * @return Der Aktuelle Wert dieser Eigenschaft
 	 */
 	public int getEigenschaftsWert(EigenschaftEnum eigen) {
-		return ((ExtendedProzessorEigenschaftCommon) prozessorHash.get(Eigenschaft.class)).getEigenschaftsWert(eigen);
+		return ((ExtendedProzessorEigenschaftCommon) prozessorHash.get(Eigenschaft.class).getExtendedInterface()).getEigenschaftsWert(eigen);
 	}
 	
 	/**
@@ -92,6 +101,20 @@ public class Charakter {
 	 */
 	public VoraussetzungenAdmin getVorausAdmin() {
 		return vorausAdmin;
+	}
+	
+	/**
+	 * @return the magieAdmin
+	 */
+	public CharStatusAdmin getMagieStatusAdmin() {
+		return magieAdmin;
+	}
+
+	/**
+	 * @return the charData
+	 */
+	public CharakterDaten getCharakterData() {
+		return charData;
 	}
 	
 	

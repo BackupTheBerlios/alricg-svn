@@ -25,14 +25,14 @@ import org.d3s.alricg.store.held.CharakterDaten;
  * @author V. Strelow
  */
 public class VoraussetzungenAdmin {
-	private ArrayList<Voraussetzung> voraussetAL = new ArrayList<Voraussetzung>();
-	private CharakterDaten held;
+	protected ArrayList<Voraussetzung> voraussetAL = new ArrayList<Voraussetzung>();
+	protected Charakter held;
 	
 	/**
 	 * Konstruktor
 	 * @param CharakterDaten Held der zu dem diesem VoraussetzungenAdmin gehört
 	 */
-	public VoraussetzungenAdmin(CharakterDaten held) {
+	public VoraussetzungenAdmin(Charakter held) {
 		this.held = held;
 	}
 	

@@ -31,12 +31,12 @@ public class SonderregelAdmin implements BasisSonderregel  {
     /** <code>SonderregelAdmin</code>'s logger */
     private static final Logger LOG = Logger.getLogger(SonderregelAdmin.class.getName());
     
-    private CharakterDaten held;
+    private Charakter held;
 	private final HashMap<Link, Sonderregel> sonderRegelMap;
 	private Iterator<Sonderregel> iterator;
 	//private ArrayList<SonderregelAdapter> sonderregeln;
 	
-	public SonderregelAdmin(CharakterDaten held) {
+	public SonderregelAdmin(Charakter held) {
 		this.held = held;
 		sonderRegelMap = new HashMap<Link, Sonderregel>();
 	}
@@ -65,7 +65,7 @@ public class SonderregelAdmin implements BasisSonderregel  {
 		if (link.getZiel().getSonderregelKlasse() != null) {
 			Sonderregel sr = link.getZiel().createSonderregel();
 			sonderRegelMap.put(link, sr ); // SR zum Admin hinzufügen
-			sr.initSonderregel(held, link); // SR initialisieren
+			sr.initSonderregel(held.getCharakterData(), link); // SR initialisieren
 		}
 	}
 	
