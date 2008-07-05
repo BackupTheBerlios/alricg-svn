@@ -7,7 +7,7 @@
 
 package org.d3s.alricg.store.charElemente;
 
-import java.util.List;
+import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlEnum;
@@ -74,6 +74,7 @@ public class Rasse extends Herkunft<RasseVariante> {
 	 */
 	public void setKulturMoeglich(Kultur[] kulturMoeglich) {
 		this.kulturMoeglich = kulturMoeglich;
+		if (kulturMoeglich != null) Arrays.sort(this.kulturMoeglich);
 	}
 	/**
 	 * @return the kulturUeblich
@@ -89,6 +90,7 @@ public class Rasse extends Herkunft<RasseVariante> {
 	 */
 	public void setKulturUeblich(Kultur[] kulturUeblich) {
 		this.kulturUeblich = kulturUeblich;
+		if (kulturUeblich != null) Arrays.sort(this.kulturUeblich);
 	}
 
 	/**

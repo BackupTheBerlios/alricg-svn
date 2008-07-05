@@ -78,8 +78,6 @@ public interface Option<ZIEL extends CharElement> {
 	 */
 	public void setAlternativOption(Option<ZIEL> alternativOption);
 	
-	
-	
 	/**
 	 * Nur im Modus "VERTEILUNG" wichtig!
 	 * Gibt die maximal Stufe der gewählten CharElemente an. "0" ist hier

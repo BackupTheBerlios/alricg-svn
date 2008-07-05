@@ -34,6 +34,22 @@ public class BreitgefaechertProf extends Profession {
 		this.profEins = profEins;
 		this.profZwei = profZwei;
 	}
+
+	/**
+	 * @return the profEins
+	 */
+	public Profession getProfEins() {
+		return profEins;
+	}
+
+	/**
+	 * @return the profZwei
+	 */
+	public Profession getProfZwei() {
+		return profZwei;
+	}
+	
+	
 	
 	/*
 	 * TODO implementieren!

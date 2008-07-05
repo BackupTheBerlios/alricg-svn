@@ -32,6 +32,14 @@ public class AbgebrochenProf extends Profession {
 		
 		this.orginalProf = prof;
 	}
+
+	/**
+	 * @return the orginalProf
+	 */
+	public Profession getOrginalProf() {
+		return orginalProf;
+	}
+	
 	
 	/*
 	 * 	TODO implement !

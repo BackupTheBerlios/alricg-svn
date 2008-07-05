@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -101,6 +102,19 @@ public class RegelConfig {
 	
 	@XmlElement(defaultValue="5")
 	private int maxDiffAT_PA;
+	
+	
+	
+	@XmlEnum
+	public enum RegelStrenge {
+		nurEmpfohlen(), // Nur Übliche/ Empfohlene
+		standard(), // So wie in den Regeln
+		keineBeschraenkung(); // Möglichst keine Beschränkung
+	}
+	@XmlElement(defaultValue="standard")
+	private RegelStrenge herkunftAuswahl;
+	
+	
 	
 	@XmlTransient
 	private static RegelConfig self;
@@ -359,6 +373,21 @@ public class RegelConfig {
 		this.maxDiffAT_PA = maxDiffAT_PA;
 	}
 	
+	
+	/**
+	 * @return the herkunftAuswahl
+	 */
+	public RegelStrenge getHerkunftAuswahl() {
+		return herkunftAuswahl;
+	}
+
+	/**
+	 * @param herkunftAuswahl the herkunftAuswahl to set
+	 */
+	public void setHerkunftAuswahl(RegelStrenge herkunftAuswahl) {
+		this.herkunftAuswahl = herkunftAuswahl;
+	}
+	
 	/**
 	 * Bestreibt eine Zeile der SKT
 	 * @author Vincent
@@ -539,6 +568,5 @@ public class RegelConfig {
 		public void setH(int h) {
 			H = h;
 		}
-
 	}
 }

@@ -37,6 +37,14 @@ public class ZweiWeltenRasse extends Rasse {
 		this.rasseZwei = rasseZwei;
 	}
 
+	public Rasse getRasseEins() {
+		return rasseEins;
+	}
+	
+	public Rasse getRasseZwei() {
+		return rasseZwei;
+	}
+	
 	/* TODO implement!
 	 * 
 	 * - Das meißte sollte über die Setter erledigt werden können, ohne Methoden 

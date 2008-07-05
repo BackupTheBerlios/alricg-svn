@@ -37,6 +37,22 @@ public class ZweiWeltenKultur extends Kultur {
 		this.kulturZwei = kulturZwei;
 		
 	}
+
+	/**
+	 * @return the kulturEins
+	 */
+	public Kultur getKulturEins() {
+		return kulturEins;
+	}
+
+	/**
+	 * @return the kulturZwei
+	 */
+	public Kultur getKulturZwei() {
+		return kulturZwei;
+	}
+	
+	
 	
 	/* TODO implement!
 	 * 

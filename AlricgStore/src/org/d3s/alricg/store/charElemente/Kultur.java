@@ -7,7 +7,7 @@
 
 package org.d3s.alricg.store.charElemente;
 
-import java.util.List;
+import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlEnum;
@@ -69,6 +69,7 @@ public class Kultur extends Herkunft<KulturVariante> {
 	 */
 	public void setProfessionMoeglich(Profession[] professionMoeglich) {
 		this.professionMoeglich = professionMoeglich;
+		if (professionMoeglich != null) Arrays.sort(this.professionMoeglich);
 	}
 	/**
 	 * @return the professionUeblich
@@ -84,6 +85,7 @@ public class Kultur extends Herkunft<KulturVariante> {
 	 */
 	public void setProfessionUeblich(Profession[] professionUeblich) {
 		this.professionUeblich = professionUeblich;
+		if (professionUeblich != null)Arrays.sort(this.professionUeblich);
 	}
 	/**
 	 * @return the muttersprache

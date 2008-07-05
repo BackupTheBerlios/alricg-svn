@@ -41,10 +41,10 @@ import org.xml.sax.SAXException;
  * @author Vincent
  */
 public class StoreAccessor {
-	private static String ORIGINAL_FILES_PATH; 
-	private static String USER_FILES_PATH;
-	private static String CHARS_PATH;
-	private static String RULES_PATH;
+	private static String ORIGINAL_FILES_PATH; // Ordner mit den Original-Dateien
+	private static String USER_FILES_PATH; // Ordner mit erweiterungen vom User
+	private static String CHARS_PATH; // Ordner mit den gespeicherten Charakteren
+	private static String RULES_PATH; // Datei in der die Regeln gesichert sind
 	
 	private static StoreAccessor instance;
 	
@@ -65,6 +65,21 @@ public class StoreAccessor {
 		proveDir(ORIGINAL_FILES_PATH);
 		proveDir(USER_FILES_PATH);
 		proveDir(CHARS_PATH);
+	}
+	
+	/**
+	 * Setzt alle Pfad-Angaben neu. Ist vor allem für UnitTest wichtig, sollte an keiner anderen
+	 * Stelle benutzt werden.
+	 * @param originalFolder Ordner mit den Original-Dateien
+	 * @param userFolder Ordner mit erweiterungen vom User
+	 * @param charFolder Ordner mit den gespeicherten Charakteren
+	 * @param ruleFile Datei in der die Regeln gesichert sind
+	 */
+	public void setPaths(String originalFolder, String userFolder, String charFolder, String ruleFile) {
+		ORIGINAL_FILES_PATH = originalFolder;
+		USER_FILES_PATH = userFolder;
+		CHARS_PATH = charFolder;
+		RULES_PATH = ruleFile;
 	}
 	
 	/**
