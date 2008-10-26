@@ -47,7 +47,7 @@ public class GeneratorLink<ZIEL extends CharElement> extends HeldenLink  {
 	 */
 	
 	// Alle Links die der User "dazubekommen" hat. Also durch Herkunft, Vorteile, Nachteile, usw.
-	private ArrayList<IdLink> linkModiArray = new ArrayList<IdLink>(3);
+	private ArrayList<IdLink<ZIEL>> linkModiArray = new ArrayList<IdLink<ZIEL>>(3);
 	
 	// Vom Benutzer selbst hinzugefügter wert!
 	private IdLink userLink;
@@ -121,16 +121,17 @@ public class GeneratorLink<ZIEL extends CharElement> extends HeldenLink  {
 	}
 	
 	/**
-	 * Entfernd einen Link indem die Quelle des zu entfernenden Links gesucht wird
-	 * @param quelle Die Quelle des Links der entfernd werden soll
+	 * Liefert den (ersten) ModiLink, dessen Quelle gleich "quelle" ist.
+	 * @param quelle Die Quelle des Links der gesucht wird.
+	 * @return Den ModiLink oder "null", falls es keinen solchen gibt.
 	 */
-	public void removeLinkByQuelle(CharElement quelle) {
+	public IdLink<ZIEL> getModiLinkByQuelle(CharElement quelle) {
 		for (int i = 0; i < linkModiArray.size(); i++) {
 			if ( linkModiArray.get(i).getQuelle().equals(quelle) ) {
-				linkModiArray.remove(linkModiArray.get(i));
+				return linkModiArray.get(i);
 			}
 		}
-		updateWert();
+		return null;
 	}
 	
     /**
@@ -160,7 +161,7 @@ public class GeneratorLink<ZIEL extends CharElement> extends HeldenLink  {
      * @return Eine Liste mit allen Links, durch die der Generatorlink modifiziert wird,
      * 	außer dem, was der User selbst gewählt hat!
      */
-    public List<IdLink> getLinkModiList() {
+    public List<IdLink<ZIEL>> getLinkModiList() {
     	return Collections.unmodifiableList(linkModiArray);
     }
     

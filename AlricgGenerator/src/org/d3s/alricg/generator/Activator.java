@@ -12,12 +12,16 @@ import org.d3s.alricg.generator.prozessor.GeneratorMagieStatusAdmin;
 import org.d3s.alricg.generator.prozessor.ProzessorDecorator;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorEigenschaften;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorHerkunft;
-import org.d3s.alricg.generator.prozessor.charElemente.ProzessorSonderf;
+import org.d3s.alricg.generator.prozessor.charElemente.ProzessorLiturgie;
+import org.d3s.alricg.generator.prozessor.charElemente.ProzessorNachteil;
+import org.d3s.alricg.generator.prozessor.charElemente.ProzessorSonderfertigkeit;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorTalent;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorVorteil;
 import org.d3s.alricg.generator.prozessor.charElemente.ProzessorZauber;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Herkunft;
+import org.d3s.alricg.store.charElemente.Liturgie;
+import org.d3s.alricg.store.charElemente.Nachteil;
 import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
 import org.d3s.alricg.store.charElemente.Vorteil;
@@ -58,6 +62,8 @@ public class Activator extends AbstractUIPlugin {
 		
 		// Alle Prozessoren erzeugen
 		HashMap<Class, Prozessor> hash = new HashMap<Class, Prozessor>();
+		charakter.setProzessorHash(hash);
+		
 		hash.put(
 				Eigenschaft.class,
 				new ProzessorDecorator(charakter, new ProzessorEigenschaften(charakter)));
@@ -69,15 +75,20 @@ public class Activator extends AbstractUIPlugin {
 				new ProzessorDecorator(charakter, new ProzessorZauber(charakter)));
 		hash.put(
 				Sonderfertigkeit.class,
-				new ProzessorDecorator(charakter, new ProzessorSonderf(charakter)));
+				new ProzessorDecorator(charakter, new ProzessorSonderfertigkeit(charakter)));
 		hash.put(
 				Vorteil.class,
 				new ProzessorDecorator(charakter, new ProzessorVorteil(charakter)));
 		hash.put(
 				Herkunft.class,
 				new ProzessorDecorator(charakter, new ProzessorHerkunft(charakter)));
+		hash.put(
+				Nachteil.class,
+				new ProzessorDecorator(charakter, new ProzessorNachteil(charakter)));
+		hash.put(
+				Liturgie.class,
+				new ProzessorDecorator(charakter, new ProzessorLiturgie(charakter)));
 
-		charakter.setProzessorHash(hash);
 	}
 
 	public static Charakter getCurrentCharakter() {

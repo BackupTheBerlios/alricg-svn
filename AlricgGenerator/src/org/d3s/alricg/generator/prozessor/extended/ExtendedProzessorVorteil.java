@@ -23,7 +23,7 @@ public interface ExtendedProzessorVorteil {
 	 * @param vorteil Der Vorteil
 	 * @return Liste von möglichen ZweitZielen oder "null" wenn kein ZweitZiel möglich ist.
 	 */
-	public List<CharElement> getMoeglicheZweitZiele(Vorteil vorteil);
+	public List<CharElement> getMoeglicheZweitZiele(Vorteil fertigkeit);
 	
 	/**
 	 * Diese Methode setzt zu einem Vorteil die Liste der möglichen ZweitZiele. Diese Methode wird durch
@@ -32,13 +32,13 @@ public interface ExtendedProzessorVorteil {
 	 * @param vorteil Der Vorteil
 	 * @param zweitZiele Die Liste der möglichen CharElemente zu dem Vorteil
 	 */
-	public void addMoeglicheZweitZiele(Vorteil vorteil, List<CharElement> zweitZiele);
+	//public void addMoeglicheZweitZiele(Vorteil vorteil, List<CharElement> zweitZiele);
 	
 	/**
 	 * Diese Methode entfernt die List der möglichen ZweitZiele eines Vorteils. Die Methode wird 
 	 * vom SonderregelProzessor nach entfernen des Vorteils aufgerufen.
 	 * @param vorteil Der Vorteil
 	 */
-	public void removeMoeglicheZweitZiele(Vorteil vorteil);
+	//public void removeMoeglicheZweitZiele(Vorteil vorteil);
 	
 }

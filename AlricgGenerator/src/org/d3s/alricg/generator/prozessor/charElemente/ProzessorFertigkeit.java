@@ -7,6 +7,9 @@
  */
 package org.d3s.alricg.generator.prozessor.charElemente;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.d3s.alricg.common.charakter.Charakter;
 import org.d3s.alricg.common.charakter.ElementBox;
 import org.d3s.alricg.common.logic.BaseProzessorElementBox;
@@ -15,7 +18,6 @@ import org.d3s.alricg.generator.prozessor.GeneratorProzessor;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
-import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
 
@@ -60,5 +62,42 @@ public abstract class ProzessorFertigkeit<ZIEL extends CharElement> extends Base
 				null);
 		
 		((GeneratorProzessor) held.getProzessor(Talent.class)).addModi(autoLink);
+	}
+	
+	
+	/**
+	 * Such ein Element mit der gleichen AdditionsID wie "fertigkeit". Bei mehreren Vorkommen
+	 * wird das erste gefundene geliefert.
+	 * @param fertigkeit Fertigkeit nach dessen AdditionsID gesucht wird
+	 * @return Link mit der Fertigkeit als Ziel, oder null fall kein solches Element existiert
+	 */
+	public GeneratorLink getEqualAdditionsFamilie(Fertigkeit fertigkeit) {
+		if (fertigkeit.getAdditionsFamilie() == null) return null;
+		
+		List<GeneratorLink> elementList = elementBox.getUnmodifiableList();
+		
+		for(GeneratorLink element : elementList) {
+			if ( !element.getZiel().getClass().equals(fertigkeit.getClass()) ) continue;
+			if ( ((Fertigkeit)element.getZiel()).getAdditionsFamilie() == null) continue;
+			
+			if ( ((Fertigkeit)element.getZiel()).getAdditionsFamilie().getAdditionsID().equals(
+					fertigkeit.getAdditionsFamilie().getAdditionsID()) ) {
+				return element;
+			}
+		}
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.prozessor.generierung.extended.ExtendedProzessorVorteil#getMoeglicheZweitZiele(org.d3s.alricg.charKomponenten.Vorteil)
+	 */
+	public List<CharElement> getMoeglicheZweitZiele(ZIEL ziel) {
+		// TODO Auto-generated method stub
+		
+		// Nur zum Testen
+		ArrayList list = new ArrayList();
+		list.add(null);
+		
+		return list;
 	}
 }

@@ -132,11 +132,9 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 	 */
 	public void removeModi(LINK heldLink, IdLink element) {
 		
-		
 		// Generator-Link holen
 		//genLink = prozessor.getElementBox().getObjectById(element.getZiel().getId());
 		prozessor.removeModi(heldLink, element);
-		
 		
 		// Es gibt keine Modis mehr, der Held hat keine Stufe gewählt,
 		// das CharElement wird daher vom Helden entfernd

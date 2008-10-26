@@ -175,11 +175,10 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#containsLink(org.d3s.alricg.charKomponenten.links.Link)
 	 */
+	@Override
 	public boolean containsLink(Link link) {
-		
-		String id = link.getZiel().getId();
-		
-		return ( null != elementBox.getObjectById( id ) );
+		// Hier reicht ein einfacher Vergleich über die ID
+		return ( null != elementBox.getObjectById( link.getZiel().getId() ) );
 	}
 
 	/* (non-Javadoc) Methode überschrieben
@@ -354,7 +353,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 * @see org.d3s.alricg.prozessor.Prozessor#canAddElement(ZIEL)
 	 */
 	public boolean canAddElement(Zauber ziel) {
-		final CharStatusAdmin status = charakter.getMagieStatusAdmin();
+		final CharStatusAdmin status = charakter.getStatusAdmin();
 		
 		if ( !(status.isMagieStatus(MagieStatus.vollmagier) 
 				||  status.isMagieStatus(MagieStatus.halbzauberer)) ) {
@@ -595,7 +594,7 @@ public class ProzessorZauber extends BaseProzessorElementBox<Zauber, GeneratorLi
 	 * 	 		sonst {@code false}.
 	 */
 	private boolean istEigeneRepraesentation( Repraesentation zauberRepraesentation ) {
-		return this.charakter.getMagieStatusAdmin().getRepraesentationen().contains(zauberRepraesentation);
+		return this.charakter.getStatusAdmin().getRepraesentationen().contains(zauberRepraesentation);
 	}
 
 	private boolean besitztModifikator( GeneratorLink link ) {

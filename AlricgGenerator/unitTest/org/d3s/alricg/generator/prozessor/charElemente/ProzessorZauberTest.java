@@ -96,6 +96,7 @@ public class ProzessorZauberTest {
 		
 		// Alle Prozessoren erzeugen
 		HashMap<Class, Prozessor> hash = new HashMap<Class, Prozessor>();
+		charakter.setProzessorHash(hash);
 		hash.put(
 				Eigenschaft.class,
 				new ProzessorDecorator(charakter, new ProzessorEigenschaften(charakter)));
@@ -107,15 +108,12 @@ public class ProzessorZauberTest {
 				new ProzessorDecorator(charakter, new ProzessorZauber(charakter)));
 		hash.put(
 				Sonderfertigkeit.class,
-				new ProzessorDecorator(charakter, new ProzessorSonderf(charakter)));
+				new ProzessorDecorator(charakter, new ProzessorSonderfertigkeit(charakter)));
 		hash.put(
 				Vorteil.class,
 				new ProzessorDecorator(charakter, new ProzessorVorteil(charakter)));
-
-		charakter.setProzessorHash(hash);
-	
-
    
+		
 		prozessor = (ProzessorDecorator) charakter.getProzessor( Zauber.class );
 		box = prozessor.getElementBox();
 		extendedProzessor = (ExtendedProzessorZauber) prozessor.getExtendedInterface();
@@ -126,6 +124,7 @@ public class ProzessorZauberTest {
 		
 		repraesentation = new Repraesentation();
 		repraesentation.setId("REP-test-1");
+		charakter.getStatusAdmin().getRepraesentationen().add(repraesentation);
 		
 		Link link = ((ProzessorDecorator) charakter.getProzessor( Sonderfertigkeit.class )).addNewElement(sf);
 		((ProzessorDecorator) charakter.getProzessor( Sonderfertigkeit.class )).updateZweitZiel(link, repraesentation);
@@ -773,11 +772,11 @@ public class ProzessorZauberTest {
 	}
 	
 	private void macheZuHalbzauberer( Charakter held ) {
-		held.getMagieStatusAdmin().setMagieStatus(CharStatusAdmin.MagieStatus.halbzauberer);
+		held.getStatusAdmin().setMagieStatus(CharStatusAdmin.MagieStatus.halbzauberer);
 	}
 	
 	private void macheZuVollzauberer( Charakter held ) {
-		held.getMagieStatusAdmin().setMagieStatus(CharStatusAdmin.MagieStatus.vollmagier);
+		held.getStatusAdmin().setMagieStatus(CharStatusAdmin.MagieStatus.vollmagier);
 	}
 	
 }

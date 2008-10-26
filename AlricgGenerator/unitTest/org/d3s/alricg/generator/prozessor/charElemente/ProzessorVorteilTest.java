@@ -7,16 +7,16 @@
  */
 package org.d3s.alricg.generator.prozessor.charElemente;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.d3s.alricg.common.charakter.Charakter;
 import org.d3s.alricg.common.charakter.SonderregelAdmin;
@@ -38,10 +38,10 @@ import org.d3s.alricg.store.charElemente.charZusatz.KostenKlasse;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.held.CharakterDaten;
+import org.d3s.alricg.store.held.HeldenLink;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 /**
  * @author Vincent
@@ -67,16 +67,7 @@ public class ProzessorVorteilTest {
 		try {
 			StoreAccessor.getInstance().loadFiles();
 			StoreAccessor.getInstance().loadRegelConfig();
-		} catch (JAXBException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ParserConfigurationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SAXException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -107,78 +98,14 @@ public class ProzessorVorteilTest {
 		//prozessorEigenschaft = (ProzessorDecorator) charakter.getProzessor(Eigenschaft.class);
 		prozessorVorteil = (ProzessorDecorator) charakter.getProzessor(Vorteil.class);
 		prozessorTalent = (ProzessorDecorator) charakter.getProzessor(Talent.class);
-		
-		Vorteil vorteil1 = new Vorteil();
-		vorteil1.setId("VOR-Test1");
-
 
 		// Rassen erzeugen
 		rasse = new Rasse();
 		rasse.setId("RAS-test");
-		
-		/*
-		// Erzeugen der Talente:
-		// Talent 1:
-		talent1 = new Talent();
-		talent1.setId("TAL-test-1");
-		talent1.setDreiEigenschaften(
-				new Eigenschaft[]  {
-						EigenschaftEnum.MU.getEigenschaft(),
-						EigenschaftEnum.KL.getEigenschaft(),
-						EigenschaftEnum.GE.getEigenschaft()
-				});
-		talent1.setKostenKlasse(KostenKlasse.A);
-		talent1.setArt(Talent.Art.spezial);
-		talent1.setSorte(Talent.Sorte.koerper);
-		talent1.setName("Test Talent 1");
-		
-		// Talent 2:
-		talent2 = new Talent();
-		talent2.setId("TAL-test-2");
-		talent2.setDreiEigenschaften(
-				new Eigenschaft[]  {
-						EigenschaftEnum.KK.getEigenschaft(),
-						EigenschaftEnum.KO.getEigenschaft(),
-						EigenschaftEnum.FF.getEigenschaft()
-				});
-		talent2.setKostenKlasse(KostenKlasse.D);
-		talent2.setArt(Talent.Art.basis);
-		talent2.setSorte(Talent.Sorte.handwerk);
-		talent2.setName("Test Talent 2");
-		
-		// Talent 3:
-		talent3 = new Talent();
-		talent3.setId("TAL-test-3");
-		talent3.setDreiEigenschaften(
-				new Eigenschaft[]  {
-						EigenschaftEnum.IN.getEigenschaft(),
-						EigenschaftEnum.CH.getEigenschaft(),
-						EigenschaftEnum.FF.getEigenschaft()
-				});
-		talent3.setKostenKlasse(KostenKlasse.H);
-		talent3.setArt(Talent.Art.beruf);
-		talent3.setSorte(Talent.Sorte.natur);
-		talent3.setName("Test Talent 3");
-		
-		// Elemente zum Helden hinzufügen
-		prozessorVorteil.addNewElement(talent1);
-		GeneratorLink tmpLink = (GeneratorLink) prozessorVorteil.addNewElement(talent2);
-		prozessorVorteil.addNewElement(talent3);
-		
-		prozessorVorteil.updateWert(tmpLink, 1);
-		
-		box = prozessorVorteil.getElementBox();
-		boxEigenschaft = prozessorEigenschaft.getElementBox();
-		
-		// Erzeugen der Links
-		link1 = new IdLink();
-		link2 = new IdLink();
-		link3 = new IdLink();
-		*/
 	}
 	
 	@Test
-	public void TestAddRemoveKostenNormal() {
+	public void testAddRemoveKostenNormal() {
 		// Test 1: Kosten mit Stufe
 		Vorteil vorteil1 = new Vorteil();
 		vorteil1.setId("VOR-StufenKosten");
@@ -242,11 +169,52 @@ public class ProzessorVorteilTest {
 		prozessorVorteil.removeElement(link);
 		assertFalse(prozessorVorteil.containsLink(link));
 		assertEquals(0, prozessorVorteil.getGesamtKosten());
-		
 	}
 	
 	@Test
-	public void TestUserPlusModis() {
+	public void testModisOhneStufe() {
+		// Test 1: Kosten mit Stufe
+		Vorteil vorteil1 = new Vorteil();
+		vorteil1.setId("VOR-t1");
+		vorteil1.setMinStufe(0);
+		vorteil1.setMaxStufe(0);
+		vorteil1.setGpKosten(4.0);
+		
+		HeldenLink link = prozessorVorteil.addNewElement(vorteil1);
+		assertEquals(4, link.getKosten());
+		assertEquals(4, prozessorVorteil.getGesamtKosten());
+		
+		// Test 2: Modi hinzufügen
+		IdLink linkModi1 = new IdLink(rasse, vorteil1, null, Link.KEIN_WERT, null);
+		
+		link = prozessorVorteil.addModi(linkModi1);
+		assertEquals(0, link.getKosten());
+		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		
+		// Test 3: Modi hinzufügen
+		linkModi1 = new IdLink(rasse, vorteil1, null, Link.KEIN_WERT, null);
+		
+		link = prozessorVorteil.addModi(linkModi1);
+		assertEquals(-4, link.getKosten());
+		assertEquals(-4, prozessorVorteil.getGesamtKosten());
+		
+		// Test 4: Modi wieder löschen
+		prozessorVorteil.removeModi((GeneratorLink) link, linkModi1);
+		
+		assertEquals(0, link.getKosten());
+		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		
+		// Test 5: Modi wieder löschen
+		linkModi1 = (IdLink) prozessorVorteil.getElementBox().getObjectById(vorteil1).getLinkModiList().get(0);
+		// Test 5: Modi wieder löschen
+		prozessorVorteil.removeModi((GeneratorLink) link, linkModi1);
+		
+		assertEquals(4, link.getKosten());
+		assertEquals(4, prozessorVorteil.getGesamtKosten());
+	}
+	
+	@Test
+	public void testUserPlusModis() {
 		// Test 1: Kosten mit Stufe
 		Vorteil vorteil1 = new Vorteil();
 		vorteil1.setId("VOR-StufenKosten");
@@ -297,7 +265,7 @@ public class ProzessorVorteilTest {
 	}
 	
 	@Test
-	public void TestModisOnly() {
+	public void testModisOnly() {
 		// Vorbereitung
 		Vorteil vorteil1 = new Vorteil();
 		vorteil1.setId("VOR-StufenKosten");
@@ -332,7 +300,7 @@ public class ProzessorVorteilTest {
 	}
 	
 	@Test
-	public void TestCan() {
+	public void testCan() {
 		Vorteil vorteil1 = new Vorteil();
 		vorteil1.setId("VOR-Test");
 		vorteil1.setMinStufe(1);
@@ -391,7 +359,7 @@ public class ProzessorVorteilTest {
 	}
 	
 	@Test
-	public void TestAutomatischesTalent() {
+	public void testAutomatischesTalent() {
 		Talent talent1 = new Talent();
 		talent1.setId("TAL-auto-1");
 		talent1.setDreiEigenschaften(
@@ -464,11 +432,10 @@ public class ProzessorVorteilTest {
 		assertNull(linkTalent);
 		
 		assertEquals(0, prozessorTalent.getGesamtKosten());
-		
 	}
 		
 	@Test
-	public void TestAdditionsFamilie() {
+	public void testAdditionsFamilie() {
 		AdditionsFamilie addFam;
 		StoreDataAccessor storeData = StoreDataAccessor.getInstance();
 		List<Vorteil> vorteilList = new ArrayList<Vorteil>();
@@ -483,7 +450,7 @@ public class ProzessorVorteilTest {
 		vorteil1.setId("VOR-AstraleMed-I");
 		vorteil1.setGpKosten(4.0d);
 		addFam = new AdditionsFamilie();
-		addFam.setAdditionsID("AstraleMed");
+		addFam.setAdditionsID("VOR-AstraleMed");
 		addFam.setAdditionsWert(1);
 		vorteil1.setAdditionsFamilie(addFam);
 		vorteilList.add(vorteil1);
@@ -492,7 +459,7 @@ public class ProzessorVorteilTest {
 		vorteil2.setId("VOR-AstraleMed-II");
 		vorteil2.setGpKosten(4.0d);
 		addFam = new AdditionsFamilie();
-		addFam.setAdditionsID("AstraleMed");
+		addFam.setAdditionsID("VOR-AstraleMed");
 		addFam.setAdditionsWert(2);
 		vorteil2.setAdditionsFamilie(addFam);
 		vorteilList.add(vorteil2);
@@ -501,7 +468,7 @@ public class ProzessorVorteilTest {
 		vorteil3.setId("VOR-AstraleMed-III");
 		vorteil3.setGpKosten(4.0d);
 		addFam = new AdditionsFamilie();
-		addFam.setAdditionsID("AstraleMed");
+		addFam.setAdditionsID("VOR-AstraleMed");
 		addFam.setAdditionsWert(3);
 		vorteil3.setAdditionsFamilie(addFam);
 		vorteilList.add(vorteil3);

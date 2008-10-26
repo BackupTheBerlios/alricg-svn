@@ -46,8 +46,8 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
 									implements GeneratorProzessor<Eigenschaft, GeneratorLink>, 
 												ExtendedProzessorEigenschaft, 
 												ExtendedProzessorEigenschaftCommon {
-	
-    private static final boolean STUFE_ERHALTEN = true;
+	// Nur für Test Zwecke öffentlich
+    public boolean STUFE_ERHALTEN = true;
     
 	private final String TEXT_SKT_SPALTE = "Original SKT-Spalte: ";
 	private final String TEXT_GESAMT_KOSTEN = "Gesamt Kosten: ";
@@ -194,7 +194,7 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
                 || eigen.equals(EigenschaftEnum.KK)) {
 
             // Der Maximale Wert plus die Modis aus Herkunft o.ä.
-            return genLink.getWertModis() + RegelConfig.getInstance().getMaxEigenschafWert();
+            return genLink.getWertModis() + RegelConfig.getInstance().getMaxEigenschaftWert();
 
         } else if (eigen.equals(EigenschaftEnum.SO)) {
 
@@ -236,7 +236,7 @@ public class ProzessorEigenschaften extends BaseProzessorElementBox<Eigenschaft,
         		|| eigen.equals(EigenschaftEnum.KO) || eigen.equals(EigenschaftEnum.KK)) {
         	
             // Der Mininale Wert plus die Modis aus Herkunft
-            minMoeglicherWert = ((GeneratorLink) link).getWertModis()  + RegelConfig.getInstance().getMinEigenschafWert();
+            minMoeglicherWert = ((GeneratorLink) link).getWertModis()  + RegelConfig.getInstance().getMinEigenschaftWert();
             ExtendedProzessorTalent ept = (ExtendedProzessorTalent) held.getProzessor(Talent.class).getExtendedInterface();
             ExtendedProzessorZauber epz = (ExtendedProzessorZauber) held.getProzessor(Zauber.class).getExtendedInterface();
             	

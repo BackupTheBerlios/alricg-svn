@@ -185,7 +185,9 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	 */
 	public boolean canRemoveElement(GeneratorLink element) {
 
-		if (element.getLinkModiList().size() > 0) {
+		if (!this.containsLink(element)) {
+			return false; // Nicht enthalten
+		} else if (element.getLinkModiList().size() > 0) {
 			Notepad.writeMessage(TEXT_BESITZT_MODIS);
 			return false; // Das Talent besitzt Modis, kann deswegen nicht entfernt werden!
 		} else if (((Talent) element.getZiel()).getArt().equals(Talent.Art.basis) ) {

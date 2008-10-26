@@ -95,8 +95,6 @@ public class ProzessorUtilities {
 			// Es wird trotzdem die höchste Fertigkeit genommen. 
 			return completeList.get(completeList.size() - 1);
 		}
-		
-		//tmpLink.setZiel(zuErreichenderVorteil);
 	}
 	
 	/**
