@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AlricgStore Plug-in
+Bundle-SymbolicName: org.d3s.alricg.store
+Bundle-Version: 1.0.0
+Bundle-Activator: org.d3s.alricg.store.Activator
+Bundle-Vendor: D3S
+Require-Bundle: org.eclipse.core.runtime,
+ org.d3s.LoggingService
+Eclipse-LazyStart: true
+Export-Package: org.d3s.alricg.store.access,
+ org.d3s.alricg.store.charElemente,
+ org.d3s.alricg.store.charElemente.charZusatz,
+ org.d3s.alricg.store.charElemente.links,
+ org.d3s.alricg.store.charElemente.sonderregeln,
+ org.d3s.alricg.store.charElemente.spezial,
+ org.d3s.alricg.store.held,
+ org.d3s.alricg.store.rules

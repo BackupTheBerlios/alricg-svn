@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AlricgCommonServices Plug-in
+Bundle-SymbolicName: org.d3s.alricg.commonServices
+Bundle-Version: 1.0.0
+Bundle-Activator: org.d3s.alricg.common.Activator
+Bundle-Vendor: D3S
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.d3s.alricg.store,
+ org.d3s.LoggingService
+Eclipse-LazyStart: true
+Export-Package: org.d3s.alricg.common,
+ org.d3s.alricg.common.charakter,
+ org.d3s.alricg.common.icons,
+ org.d3s.alricg.common.logic

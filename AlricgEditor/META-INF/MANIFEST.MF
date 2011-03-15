@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AlricgEditor Plug-in
+Bundle-SymbolicName: org.d3s.alricg.editor;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.d3s.alricg.editor.Activator
+Bundle-Vendor: D3S
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.d3s.alricg.store,
+ org.d3s.LoggingService,
+ org.d3s.alricg.commonServices
+Eclipse-LazyStart: true
+Export-Package: org.d3s.alricg.editor.common,
+ org.d3s.alricg.editor.common.widgets,
+ org.d3s.alricg.editor.rcp

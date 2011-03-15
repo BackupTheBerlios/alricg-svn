@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LoggingService Plug-in
+Bundle-SymbolicName: org.d3s.LoggingService
+Bundle-Version: 1.0.0
+Bundle-Vendor: D3S
+Export-Package: org.d3s.loggingService
+Require-Bundle: org.eclipse.core.runtime
