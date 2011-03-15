@@ -346,7 +346,6 @@ public class UnMarschall {
 		talentList.add(talentArray[1]);
 		talentList.add(talentArray[2]);
 		
-		// TEST >>>>>>>>>
 		List<MagieMerkmal> magieMerkmalList = new ArrayList<MagieMerkmal>();
 		MagieMerkmal g = new MagieMerkmal();
 		g.setMerkmalEnum(MagieMerkmalEnum.einfluss);
@@ -970,16 +969,16 @@ public class UnMarschall {
 		config.setDiffKlugheitZweitsprache(-2);
 		config.setFaktorTalentGp(-1);
 		config.setMaxDiffAT_PA(0);
-		config.setMaxEigenschafWert(1);
+		config.setMaxEigenschaftWert(1);
 		config.setMaxGpEigenschaften(2);
 		config.setMaxNachteilGp(3);
 		config.setMaxSchlechteEingenschaftGp(4);
-		config.setMaxSchlechtEigenchafWert(5);
+		config.setMaxSchlechtEigenchaftWert(5);
 		config.setMaxSozialstatus(6);
 		config.setMaxTalentAktivierung(7);
 		config.setMaxZauberAktivierungHZ(8);
 		config.setMinEigenschafWert(9);
-		config.setMinSchelchtEigenchafWert(10);
+		config.setMinSchlechteEigenchaftWert(10);
 		config.setStartGp(11);
 		
 		List<SktZeile> list = new ArrayList<SktZeile>();
@@ -1021,7 +1020,7 @@ public class UnMarschall {
 		Assert.assertEquals(-2, config.getDiffKlugheitZweitsprache());
 		Assert.assertEquals(-1, config.getFaktorTalentGp());
 		Assert.assertEquals(0, config.getMaxDiffAT_PA());
-		Assert.assertEquals(1, config.getMaxEigenschafWert());
+		Assert.assertEquals(1, config.getMaxEigenschaftWert());
 		Assert.assertEquals(2, config.getMaxGpEigenschaften());
 		Assert.assertEquals(3, config.getMaxNachteilGp());
 		Assert.assertEquals(4, config.getMaxSchlechteEingenschaftGp());
@@ -1029,8 +1028,8 @@ public class UnMarschall {
 		Assert.assertEquals(6, config.getMaxSozialstatus());
 		Assert.assertEquals(7, config.getMaxTalentAktivierung());
 		Assert.assertEquals(8, config.getMaxZauberAktivierungHZ());
-		Assert.assertEquals(9, config.getMinEigenschafWert());
-		Assert.assertEquals(10, config.getMinSchelchtEigenchafWert());
+		Assert.assertEquals(9, config.getMinEigenschaftWert());
+		Assert.assertEquals(10, config.getMinSchlechteEigenchaftWert());
 		Assert.assertEquals(11, config.getStartGp());
 		
 		Assert.assertEquals(0, config.getSktZeilen().get(0).getNr());

@@ -68,10 +68,10 @@ public class RegelConfig {
 	private int maxGpEigenschaften;
 	
 	@XmlElement(defaultValue="14")
-	private int maxEigenschafWert;
+	private int maxEigenschaftWert;
 	
 	@XmlElement(defaultValue="8")
-	private int minEigenschafWert;
+	private int minEigenschaftWert;
 	
 	@XmlElement(defaultValue="12")
 	private int maxSozialstatus;
@@ -89,10 +89,10 @@ public class RegelConfig {
 	private int maxZauberAktivierungHZ;
 	
 	@XmlElement(defaultValue="12")
-	private int maxSchlechtEigenchafWert;
+	private int maxSchlechtEigenchaftWert;
 	
 	@XmlElement(defaultValue="5")
-	private int minSchelchtEigenchafWert;
+	private int minSchlechteEigenchaftWert;
 	
 	@XmlElement(defaultValue="-2")
 	private int diffKlugheitMuttersprache;
@@ -208,29 +208,29 @@ public class RegelConfig {
 	/**
 	 * @return the maxEigenschafWert
 	 */
-	public int getMaxEigenschafWert() {
-		return maxEigenschafWert;
+	public int getMaxEigenschaftWert() {
+		return maxEigenschaftWert;
 	}
 
 	/**
 	 * @param maxEigenschafWert the maxEigenschafWert to set
 	 */
-	public void setMaxEigenschafWert(int maxEigenschafWert) {
-		this.maxEigenschafWert = maxEigenschafWert;
+	public void setMaxEigenschaftWert(int maxEigenschaftWert) {
+		this.maxEigenschaftWert = maxEigenschaftWert;
 	}
 
 	/**
 	 * @return the minEigenschafWert
 	 */
-	public int getMinEigenschafWert() {
-		return minEigenschafWert;
+	public int getMinEigenschaftWert() {
+		return minEigenschaftWert;
 	}
 
 	/**
 	 * @param minEigenschafWert the minEigenschafWert to set
 	 */
-	public void setMinEigenschafWert(int minEigenschafWert) {
-		this.minEigenschafWert = minEigenschafWert;
+	public void setMinEigenschafWert(int minEigenschaftWert) {
+		this.minEigenschaftWert = minEigenschaftWert;
 	}
 
 	/**
@@ -307,28 +307,28 @@ public class RegelConfig {
 	 * @return the maxSchlechtEigenchafWert
 	 */
 	public int getMaxSchlechtEigenchafWert() {
-		return maxSchlechtEigenchafWert;
+		return maxSchlechtEigenchaftWert;
 	}
 	
 	/**
 	 * @param maxSchlechtEigenchafWert the maxSchlechtEigenchafWert to set
 	 */
-	public void setMaxSchlechtEigenchafWert(int maxSchlechtEigenchafWert) {
-		this.maxSchlechtEigenchafWert = maxSchlechtEigenchafWert;
+	public void setMaxSchlechtEigenchaftWert(int maxSchlechtEigenchaftWert) {
+		this.maxSchlechtEigenchaftWert = maxSchlechtEigenchaftWert;
 	}
 
 	/**
 	 * @return the minSchelchtEigenchafWert
 	 */
-	public int getMinSchelchtEigenchafWert() {
-		return minSchelchtEigenchafWert;
+	public int getMinSchlechteEigenchaftWert() {
+		return minSchlechteEigenchaftWert;
 	}
 
 	/**
 	 * @param minSchelchtEigenchafWert the minSchelchtEigenchafWert to set
 	 */
-	public void setMinSchelchtEigenchafWert(int minSchelchtEigenchafWert) {
-		this.minSchelchtEigenchafWert = minSchelchtEigenchafWert;
+	public void setMinSchlechteEigenchaftWert(int minSchlechteEigenchaftWert) {
+		this.minSchlechteEigenchaftWert = minSchlechteEigenchaftWert;
 	}
 
 	/**

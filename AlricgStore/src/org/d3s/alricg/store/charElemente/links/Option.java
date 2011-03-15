@@ -44,8 +44,8 @@ public interface Option<ZIEL extends CharElement> {
 	 * @see Option
 	 * @return Liste mit Links zu dieser Option
 	 */
-	
 	public List<IdLink<ZIEL>> getLinkList();
+	
 	/**
 	 * @see getLinkList()
 	 * @param optionen Liste mit Links zu dieser Option
@@ -62,7 +62,7 @@ public interface Option<ZIEL extends CharElement> {
      * so kann statt der aktuellen Option auch die Alternative gewählt werden. 
      * Eine altervnatie Option kann auch wieder eine Alternative besitzen, so können
      * mehrere Optionen per "oder" verknüpft werden.
-     * Ist ist damit ist auch Vorgendes möglich:
+     * Damit ist auch Vorgendes möglich:
      * 	(Hiebwaffen +3 und Schwerter +2) oder (Degen +3 und Wurfwaffen +3)
      * 
      * Die erste Klammer ist eine OptionAnzahl mit einer Liste von zwei Elementen

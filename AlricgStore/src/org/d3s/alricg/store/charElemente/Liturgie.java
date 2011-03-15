@@ -8,6 +8,7 @@
 package org.d3s.alricg.store.charElemente;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlSchemaType;
@@ -16,9 +17,27 @@ import javax.xml.bind.annotation.XmlSchemaType;
  * 
  * @author Vincent
  */
-public class Liturgie extends Faehigkeit {
+public class Liturgie extends CharElement {
+	
+	@XmlEnum
+	public enum LiturgieArt {
+		allgemein("allgemein"), // Z.B. Angrosch
+		speziell("speziell"),
+		hochschamanen("allgemein, nur Hochschamanen");
+		private String value; // ID des Elements
+
+		private LiturgieArt(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+	}
+	
 	private Gottheit[] gottheit;
 	private int[] grad;
+	private LiturgieArt art;
 	
 	/**
 	 * Gibt an, zu welchen Gottheiten diese Liturgie ursprünglch gehört.
@@ -38,8 +57,8 @@ public class Liturgie extends Faehigkeit {
 	}
 
 	/**
-	 * Die maximale Stufe die erreicht werden kann
-	 * @return the maxStrufe
+	 * Die Stufen die erreicht werden kann
+	 * @return Die möglichen Grade
 	 */
 	@XmlList
 	@XmlAttribute
@@ -49,10 +68,24 @@ public class Liturgie extends Faehigkeit {
 	}
 
 	/**
-	 * @param maxStrufe the maxStrufe to set
+	 * @param Die möglichen Grade die erreicht werden können
 	 */
 	public void setGrad(int[] grad) {
 		this.grad = grad;
+	}
+
+	/**
+	 * @return the art
+	 */
+	public LiturgieArt getArt() {
+		return art;
+	}
+
+	/**
+	 * @param art the art to set
+	 */
+	public void setArt(LiturgieArt art) {
+		this.art = art;
 	}
 	
 }

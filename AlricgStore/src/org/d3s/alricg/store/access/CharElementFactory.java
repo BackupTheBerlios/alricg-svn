@@ -219,7 +219,7 @@ public class CharElementFactory {
 			
 		} else if (clazz == Liturgie.class) {
 			charElem = new Liturgie();
-			createFaehigkeit((Liturgie) charElem);
+			((Liturgie) charElem).setArt(Liturgie.LiturgieArt.allgemein);
 			
 		} else if (clazz == RegionVolk.class) {
 			charElem = new RegionVolk();

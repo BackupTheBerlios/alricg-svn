@@ -17,8 +17,8 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  * <u>Beschreibung:</u><br> 
  * In "anzahl" steht eine Zahl, die angibt wieviele der "Links" gewählt 
- * werden müssen. Jede option kann einen Wert haben (über den "Link").
- * (Das attribut "wert" und "max" wird	nicht benutzt)
+ * werden müssen. Jede Option kann einen Wert haben (über den "Link").
+ * (Das Attribut "wert" und "max" wird	nicht benutzt)
  * 
  * Beispiel I:
  *  	Als Text: "Schwerter +2 oder Dolche + 3"

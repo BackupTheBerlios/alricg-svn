@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<charakterDaten>
-    <AllgemeineDaten>
-        <augenfarbe>Augenfarbe</augenfarbe>
-        <aussehen>Aussehen</aussehen>
-        <groesse>0</groesse>
-    </AllgemeineDaten>
-</charakterDaten>
+<regelConfig>
+    <SKT>
+        <Z h="9" g="8" f="7" e="6" d="5" c="4" b="3" a="2" nr="0"/>
+        <Z h="9" g="8" f="7" e="6" d="5" c="4" b="3" a="2" nr="10"/>
+        <Z h="95" g="85" f="75" e="65" d="55" c="45" b="35" a="25" nr="20"/>
+        <Z h="96" g="86" f="76" e="66" d="56" c="46" b="36" a="26" nr="30"/>
+    </SKT>
+    <startGp>11</startGp>
+    <maxSchlechteEingenschaftGp>4</maxSchlechteEingenschaftGp>
+    <maxNachteilGp>3</maxNachteilGp>
+    <maxGpEigenschaften>2</maxGpEigenschaften>
+    <maxEigenschaftWert>1</maxEigenschaftWert>
+    <minEigenschaftWert>9</minEigenschaftWert>
+    <maxSozialstatus>6</maxSozialstatus>
+    <faktorTalentGp>-1</faktorTalentGp>
+    <maxTalentAktivierung>7</maxTalentAktivierung>
+    <maxZauberAktivierungVZ>0</maxZauberAktivierungVZ>
+    <maxZauberAktivierungHZ>8</maxZauberAktivierungHZ>
+    <maxSchlechtEigenchaftWert>5</maxSchlechtEigenchaftWert>
+    <minSchlechteEigenchaftWert>10</minSchlechteEigenchaftWert>
+    <diffKlugheitMuttersprache>-3</diffKlugheitMuttersprache>
+    <diffKlugheitZweitsprache>-2</diffKlugheitZweitsprache>
+    <maxDiffAT_PA>0</maxDiffAT_PA>
+</regelConfig>
