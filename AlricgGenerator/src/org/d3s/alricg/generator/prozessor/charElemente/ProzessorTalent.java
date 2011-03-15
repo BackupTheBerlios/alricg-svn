@@ -339,7 +339,9 @@ public class ProzessorTalent extends BaseProzessorElementBox<Talent, GeneratorLi
 	 * @see org.d3s.alricg.prozessor.LinkProzessor#updateZweitZiel(org.d3s.alricg.charKomponenten.links.Link, org.d3s.alricg.charKomponenten.CharElement)
 	 */
 	public void updateZweitZiel(GeneratorLink link, CharElement zweitZiel) {
-		// Noop - ZweitZiel gibt es bei Talenten nicht!
+		throw new UnsupportedOperationException(
+				"Talente besitzen kein Zweitziel!"
+			);
 	}
 	
 	/* (non-Javadoc) Methode überschrieben

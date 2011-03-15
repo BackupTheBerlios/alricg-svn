@@ -21,7 +21,6 @@ import org.d3s.alricg.store.access.StoreDataAccessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
 import org.d3s.alricg.store.charElemente.Faehigkeit;
 import org.d3s.alricg.store.charElemente.Fertigkeit;
-import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.held.HeldenLink;
@@ -237,8 +236,6 @@ public class ProzessorUtilities {
 	 * 			von Faehigkeiten
 	 */
 	public static int getMinEigenschaftWert(List<HeldenLink> list, Eigenschaft eigenschaft, Charakter held, int minMoeglicherWert) {
-		Eigenschaft[] tmpEigenArray;
-
 		// Gibt es überhaupt was zum prüfen?
 		if (list == null) return minMoeglicherWert;
 		

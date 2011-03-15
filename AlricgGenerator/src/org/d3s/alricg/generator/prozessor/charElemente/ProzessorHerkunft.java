@@ -88,8 +88,8 @@ public class ProzessorHerkunft extends BaseProzessorElementBox<Herkunft, Generat
 	public GeneratorLink addNewElement(Herkunft ziel) {
 		GeneratorLink tmp = new GeneratorLink(ziel, null, null, Link.KEIN_WERT);
 		GeneratorLink old;
-		// Abhängigkeiten überprüfen und evtl. automatisch kaufen??
 		
+		// Abhängigkeiten überprüfen und evtl. automatisch kaufen??
 		if (ziel instanceof Rasse) {
 			old = this.rasse;
 			this.rasse = tmp;
@@ -102,6 +102,8 @@ public class ProzessorHerkunft extends BaseProzessorElementBox<Herkunft, Generat
 		} else {
 			throw new IllegalArgumentException();
 		}
+		
+		
 		
 		// Entferne alte Herkunft und füge neue hinzu
 		elementBox.remove(old);

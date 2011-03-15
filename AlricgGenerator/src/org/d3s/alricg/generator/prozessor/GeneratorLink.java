@@ -195,12 +195,13 @@ public class GeneratorLink<ZIEL extends CharElement> extends HeldenLink  {
     }
     
 	/**
-	 * Kann beim GeneratorLink nicht verwendet werden!
+	 * Wird auf "setUserGesamtWert" umgemappt.
 	 * @param wert Setzt das Attribut wert ("-100" bedeutet, das es keinen Wert gibt).
 	 */
 	public void setWert(int wert) {
-		throw new UnsupportedOperationException("setWert() kann nicht direkt " +
-				"auf einen Generatorlink angewand werden!");
+		setUserGesamtWert(wert);
+		/* throw new UnsupportedOperationException("setWert() kann nicht direkt " +
+				"auf einen Generatorlink angewand werden!"); */
 	}
     
 	/**

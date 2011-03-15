@@ -119,9 +119,7 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 		
 		// Voraussetzungen entfernen, falls vorhanden
 		if (charElement.getVoraussetzung() != null) {
-			voraussetzungenAdmin.removeVoraussetzung(
-					charElement.getVoraussetzung()
-				);
+			voraussetzungenAdmin.removeVoraussetzungLink(link);
 		}
 		
 		this.notifyObserverRemoveElement(link);
@@ -205,6 +203,7 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 		boolean ok; 
 		
 		ok = prozessor.canUpdateWert(link);
+		ok = voraussetzungenAdmin.changeCanUpdateWert(ok, link);
 		ok = sonderregelAdmin.changeCanUpdateWert(ok, link);
 
 		return ok;
@@ -216,6 +215,7 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 		boolean ok; 
 		
 		ok = prozessor.canUpdateText(link);
+		ok = voraussetzungenAdmin.changeCanUpdateText(ok, link);
 		ok = sonderregelAdmin.changeCanUpdateText(ok, link);
 		
 		return ok;
@@ -227,6 +227,7 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 		boolean ok; 
 		
 		ok = prozessor.canUpdateZweitZiel(link, zweitZiel);
+		ok = voraussetzungenAdmin.changeCanUpdateZweitZiel(ok, link, zweitZiel);
 		ok = sonderregelAdmin.changeCanUpdateZweitZiel(ok, link, zweitZiel);
 		
 		return ok;
@@ -340,9 +341,7 @@ public class ProzessorDecorator<ZIEL extends CharElement, LINK extends HeldenLin
 		
 		// Voraussetzungen hinzufügen, falls vorhanden
 		if (link.getZiel().getVoraussetzung() != null) {
-			voraussetzungenAdmin.addVoraussetzung(
-					link.getZiel().getVoraussetzung()
-				);
+			voraussetzungenAdmin.addVoraussetzungLink(link);
 		}
 		
 		// Sonderregel hinzufügen, falls vorhanden

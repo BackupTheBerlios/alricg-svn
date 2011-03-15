@@ -7,21 +7,23 @@
  */
 package org.d3s.alricg.generator.prozessor.charElemente;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.d3s.alricg.common.charakter.CharStatusAdmin;
 import org.d3s.alricg.common.charakter.Charakter;
+import org.d3s.alricg.common.charakter.ElementBox;
 import org.d3s.alricg.common.logic.BaseProzessorElementBox;
 import org.d3s.alricg.generator.prozessor.GeneratorLink;
 import org.d3s.alricg.generator.prozessor.GeneratorProzessor;
+import org.d3s.alricg.generator.prozessor.extended.ExtendedProzessorLiturgie;
 import org.d3s.alricg.generator.prozessor.utils.ProzessorUtilities;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Liturgie;
-import org.d3s.alricg.store.charElemente.Sonderfertigkeit;
 import org.d3s.alricg.store.charElemente.Talent;
-import org.d3s.alricg.store.charElemente.Vorteil;
 import org.d3s.alricg.store.charElemente.links.IdLink;
 import org.d3s.alricg.store.charElemente.links.Link;
 import org.d3s.alricg.store.held.HeldenLink;
@@ -31,12 +33,13 @@ import org.d3s.alricg.store.held.HeldenLink;
  *
  */
 public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, GeneratorLink> 
-											implements GeneratorProzessor<Liturgie, GeneratorLink> {
+											implements GeneratorProzessor<Liturgie, GeneratorLink>, 
+												ExtendedProzessorLiturgie {
 
 	private final Charakter charakter;
 	
 	private final int KOSTEN_PRO_GRAD = 50;
-	private final String LITURGIEKENNTNIS_ID = "SFK-Liturgiekenntnis";
+	public final static String LITURGIEKENNTNIS_ID = "TAL-Liturgiekenntnis";
 	protected boolean STUFE_ERHALTEN = true; 
 	// Sollte hier immer "True" sein, da nur bestimmte Stufen erlaubt sind. 
 	// Z.B. 2,3,5 User 2 + Modi 2 = 4 wäre zwar in den Grenzen, aber nicht erlaubt!
@@ -46,6 +49,7 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
     
 	public ProzessorLiturgie(Charakter charakter) {
 		this.charakter = charakter;
+		this.elementBox = new ElementBox<GeneratorLink>();
 	}
 	
 	/* (non-Javadoc)
@@ -56,7 +60,7 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
 		
 		// Gottheit bestimmen
 		Gottheit zweitziel = this.findGottheit(ziel);
-		if (zweitziel == null) zweitziel = charakter.getStatusAdmin().getGottheitenGeweiht().get(0);
+		if (zweitziel == null) zweitziel = ziel.getGottheit()[0];
 		
 		GeneratorLink tmpLink = new GeneratorLink(ziel, zweitziel, null, this.getMinWert(ziel));
 		elementBox.add(tmpLink);
@@ -221,8 +225,7 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
 	 */
 	@Override
 	public Object getExtendedInterface() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 	/* (non-Javadoc)
@@ -241,11 +244,11 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
 		// Liturgiekentnis-Wert muss mindestens Liturgie-Wert x 3 entsprechen
 		
 		final Liturgie liturgie = (Liturgie) link.getZiel();
-		final int litMaxWert = getMaxWertLiturgiekenntnis();
+		final int litMaxWert = getLiturgiekenntnisWert();
 		
 		int max = 0;
 		for (int x : liturgie.getGrad()) {
-			if (x > litMaxWert) continue; // Nicht höher als LitKenntnis
+			if (x *3 > litMaxWert) continue; // Grad *3 nicht höher als LitKenntnis
 			max = Math.max(max, x);
 		}
 		
@@ -264,17 +267,7 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
 			return ((GeneratorLink) link).getWertModis();
 		}
 		
-		// Ansonsten der niedrigste Wert der Litrugie...
-		final Liturgie liturgie = (Liturgie) link.getZiel();
-		int min = 0;
-		for (int x : liturgie.getGrad()) {
-			min = Math.min(min, x);
-		}
-		
-		// ... oder "0" fall keine 
-		if (min > getMaxWertLiturgiekenntnis()) return 0;
-		
-		return min;
+		return getMinWert((Liturgie) link.getZiel());
 	}
 
 	/* (non-Javadoc)
@@ -314,7 +307,7 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
 		kosten += link.getUserLink().getWert() * this.KOSTEN_PRO_GRAD;
 		
 		// Falls nicht zu der Gottheit gehörig, dann Kosten wie einen Grad höher
-		if (charakter.getStatusAdmin().getGottheitenGeweiht().contains((Gottheit) link.getZweitZiel())) {
+		if (!charakter.getStatusAdmin().getGottheitenGeweiht().contains((Gottheit) link.getZweitZiel())) {
 			kosten += this.KOSTEN_PRO_GRAD;
 		}
 
@@ -346,6 +339,40 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
 	@Override
 	public void updateZweitZiel(GeneratorLink link, CharElement zweitZiel) {
 		link.setZweitZiel((Gottheit) zweitZiel);
+		this.updateKosten(link);
+	}
+	
+	@Override
+	public Integer[] getPossibleLiturgieWerte(GeneratorLink link) {
+		
+		ArrayList<Integer> moeglicheGrade = new ArrayList<Integer>();
+		int minWert = getMinWert(link);
+		int maxWert = getMaxWert(link);
+		
+		int[] i = new int[2];
+
+		Liturgie liturgie = (Liturgie) link.getZiel();
+		
+		for (int grad : liturgie.getGrad()) {
+			if (grad <= maxWert && grad >= minWert) {
+				moeglicheGrade.add(grad);
+			}
+		}
+		
+		Collections.sort(moeglicheGrade); // sorieren
+		if (moeglicheGrade.size() == 0) return null;
+		
+		return moeglicheGrade.toArray(new Integer[moeglicheGrade.size()]);
+	}
+	
+	@Override
+	public Integer[] getPossibleLiturgieWerte(Liturgie liturgie) {
+		
+		if (liturgie == null) return null;
+		
+		if (!charakter.getProzessor(Liturgie.class).canAddElement(liturgie)) return null;
+		
+		return getPossibleLiturgieWerte(new GeneratorLink(liturgie, null, null, 0));
 	}
 	
 	// ------------------------------------------------------------------------------------------
@@ -367,29 +394,27 @@ public class ProzessorLiturgie extends BaseProzessorElementBox<Liturgie, Generat
 	/**
 	 * @return Liturgiekenntnis x3 (= Maximum aller Liturgien) oder "0" falls 
 	 */
-	private int getMaxWertLiturgiekenntnis() {
-		final Link litKenntnisLink = charakter.getProzessor(Sonderfertigkeit.class).getElementBox().getObjectById(LITURGIEKENNTNIS_ID);
-		if (litKenntnisLink == null) return 0;
+	private int getLiturgiekenntnisWert() {
+		final Link talentLink = charakter.getProzessor(Talent.class).getElementBox().getObjectById(LITURGIEKENNTNIS_ID);
+		if (talentLink == null) return 0;
 		
-		final Talent talent = ((Sonderfertigkeit) litKenntnisLink.getZiel()).getAutomatischesTalent();
-		final Link talentLink = charakter.getProzessor(Talent.class).getElementBox().getObjectById(talent);
-		
-		return talentLink.getWert() * 3;
+		return talentLink.getWert();
 	}
 	
 	/**
 	 * @return Den niedrigsten möglichen Liturgie-Wert diese Liturgie unter einbeziehung des Liturgiewertes
 	 */
 	private int getMinWert(Liturgie liturgie) {
-		// Ansonsten der niedrigste Wert der Litrugie...
-		int min = 0;
+		// Der niedrigste Wert der Litrugie...
+		int min = 100;
 		for (int x : liturgie.getGrad()) {
 			min = Math.min(min, x);
 		}
 		
-		// ... oder "0" fall keine 
-		if (min > getMaxWertLiturgiekenntnis()) return 0;
+		// ... oder "0" falls nicht nötige Liturgiekenntnis
+		if (min * 3 > getLiturgiekenntnisWert()) return 0;
 		
 		return min;
 	}
+
 }
