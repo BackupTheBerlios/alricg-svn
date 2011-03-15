@@ -664,6 +664,8 @@ public class ViewUtils {
 		while (node.getChildren() != null && idx < node.getChildren().length) {
 			if (!removeElementFromTree(node.getChildren()[idx], toRemoveValue)) {
 				idx++;
+			} else {
+				hasDeletedFlag = true;
 			}
 		}
 		

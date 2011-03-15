@@ -16,13 +16,13 @@ import org.d3s.alricg.editor.common.widgets.DropTable;
 import org.d3s.alricg.editor.common.widgets.IntegerList;
 import org.d3s.alricg.editor.common.widgets.DropTable.DropListRegulator;
 import org.d3s.alricg.editor.editors.composits.AbstractElementPart;
-import org.d3s.alricg.editor.editors.composits.FaehigkeitPart;
 import org.d3s.alricg.store.charElemente.CharElement;
 import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Liturgie;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPart;
@@ -33,8 +33,7 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class LiturgieEditor extends ComposedMultiPageEditorPart {
 	public static final String ID = "org.d3s.alricg.editor.editors.LiturgieEditor";
-
-	private FaehigkeitPart faehigkeitPart;
+	
 	private LiturgiePart liturgiePart;
 
 	private AbstractElementPart[] elementPartArray;
@@ -42,9 +41,21 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 	class LiturgiePart extends AbstractElementPart<Liturgie> {
 		private DropTable dropTableGottheiten;
 		private final IntegerList spiGrad;
+		private Combo cobArt;
 		
 		LiturgiePart(Composite top) {
 			GridData tmpGData;
+			
+		// Art
+			final Label label0 = new Label(top, SWT.NONE);
+			label0.setText("Art:");
+			 
+			cobArt = new Combo(top, SWT.READ_ONLY);
+			cobArt.setVisibleItemCount(3);
+			cobArt.add(Liturgie.LiturgieArt.allgemein.getValue());
+			cobArt.add(Liturgie.LiturgieArt.speziell.getValue());
+			cobArt.add(Liturgie.LiturgieArt.hochschamanen.getValue());
+			cobArt.select(0);
 			
 		// Gottheiten
 			final Label label1 = new Label(top, SWT.NONE);
@@ -79,13 +90,13 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 						public IWorkbenchPart getConsumer() {
 							return LiturgieEditor.this;
 						}
-				};
+					};
 				}
 			};
 			
 			dropTableGottheiten = new DropTable(top, SWT.NONE, regulator, LiturgieEditor.this.getSite());
 			
-			// Grad
+		// Grad
 			final Label lblGrad = new Label(top, SWT.NONE);
 			lblGrad.setText("Grad:");
 			tmpGData = new GridData(); 
@@ -110,6 +121,7 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 		public boolean isDirty(Liturgie charElem) {
 			boolean isNotDirty = true;
 			
+			isNotDirty &= cobArt.getText().equals(charElem.getArt().getValue());
 			isNotDirty &= Arrays.equals(spiGrad.getValueList(), charElem.getGrad());
 			isNotDirty &= compareArrayList(charElem.getGottheit(), dropTableGottheiten.getValueList());
 			
@@ -121,6 +133,8 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 		 */
 		@Override
 		public void loadData(Liturgie charElem) {
+			cobArt.setText(charElem.getArt().getValue());
+			
 			if (charElem.getGrad() != null) {
 				spiGrad.setValues(charElem.getGrad());
 			}
@@ -137,6 +151,13 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 		@Override
 		public void saveData(IProgressMonitor monitor, Liturgie charElem) {
 			monitor.subTask("Save Liturgie-Data"); //$NON-NLS-1$
+			
+			for (int i = 0; i < Liturgie.LiturgieArt.values().length; i++) {
+				if (Liturgie.LiturgieArt.values()[i].getValue().equals(cobArt.getText())) {
+					charElem.setArt(Liturgie.LiturgieArt.values()[i]);
+					break;
+				}
+			}
 			
 			if (spiGrad.getValueList().length == 0) {
 				charElem.setGrad(null);
@@ -163,12 +184,7 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 	 */
 	@Override
 	protected void addCharElementSiteParts(Composite mainContainer) {
-		// TODO Auto-generated method stub
-		// FaehigkeitPart erzeugen
-		faehigkeitPart = new FaehigkeitPart(mainContainer);
-		faehigkeitPart.loadData((Liturgie) getEditedCharElement()); 
-		
-		// Talent spezifische Elemte erzeugen
+		// Liturgie spezifische Elemte erzeugen
 		liturgiePart = this.new LiturgiePart(mainContainer);
 		liturgiePart.loadData((Liturgie) getEditedCharElement());
 	}
@@ -185,7 +201,7 @@ public class LiturgieEditor extends ComposedMultiPageEditorPart {
 		setPageText(index, EditorMessages.Editor_Voraussetzungen);
 		
 		elementPartArray = new AbstractElementPart[] {
-				charElementPart, faehigkeitPart, liturgiePart, voraussetzungsPart};
+				charElementPart, liturgiePart, voraussetzungsPart};
 	}
 
 	/* (non-Javadoc)
