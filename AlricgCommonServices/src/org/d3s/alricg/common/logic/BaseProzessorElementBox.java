@@ -23,6 +23,7 @@ import org.d3s.alricg.store.charElemente.links.Link;
 public abstract class BaseProzessorElementBox<ZIEL extends CharElement, E extends Link> {
 	protected ElementBox<E> elementBox;
 	
+	
 	/* (non-Javadoc) Methode überschrieben
 	 * @see org.d3s.alricg.prozessor.Prozessor#getElementBox()
 	 */
@@ -35,5 +36,12 @@ public abstract class BaseProzessorElementBox<ZIEL extends CharElement, E extend
 	 */
 	public List<E> getUnmodifiableList() {
 		return elementBox.getUnmodifiableList();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.d3s.alricg.common.logic.Prozessor#containsLink(org.d3s.alricg.store.charElemente.links.Link)
+	 */
+	public boolean containsLink(Link link) {
+		return elementBox.contiansEqualObject(link);
 	}
 }

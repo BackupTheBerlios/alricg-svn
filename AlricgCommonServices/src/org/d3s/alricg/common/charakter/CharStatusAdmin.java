@@ -10,6 +10,7 @@ package org.d3s.alricg.common.charakter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.d3s.alricg.store.charElemente.Gottheit;
 import org.d3s.alricg.store.charElemente.Repraesentation;
 
 /**
@@ -27,6 +28,7 @@ public class CharStatusAdmin {
 	private MagieStatus magieStatus; // Wird beim hinzufügen über sonderregeln gesetzt
 	private GeweihtStatus geweihtStatus; // Wird beim hinzufügen über sonderregeln gesetzt
 	private List<Repraesentation> repList;
+	private List<Gottheit> gottheitList;
 	
 	public enum MagieStatus {
 		nichtMagisch,
@@ -45,6 +47,7 @@ public class CharStatusAdmin {
 	public CharStatusAdmin(Charakter charakter) {
 		this.charakter = charakter;
 		this.repList = new ArrayList<Repraesentation>();
+		this.gottheitList = new ArrayList<Gottheit>();
 		magieStatus = MagieStatus.nichtMagisch;
 		geweihtStatus  = GeweihtStatus.nichtGeweiht;
 	}
@@ -97,6 +100,21 @@ public class CharStatusAdmin {
 		return geweihtStatus;
 	}
 
+	/**
+	 * @return Alle Gottheiten, denen der Charakter geweiht ist
+	 */
+	public List<Gottheit> getGottheitenGeweiht() {
+		return gottheitList;
+	}
+	
+	public void addGottheit(Gottheit gott) {
+		gottheitList.add(gott);
+	}
+	
+	public void removeGottheit(Gottheit gott) {
+		gottheitList.remove(gott);
+	}
+	
 	/**
 	 * @param geweihtStatus the geweihtStatus to set
 	 */

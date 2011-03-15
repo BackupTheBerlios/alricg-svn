@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.d3s.alricg.common.logic.Prozessor;
 import org.d3s.alricg.store.charElemente.Eigenschaft;
+import org.d3s.alricg.store.charElemente.Herkunft;
 import org.d3s.alricg.store.charElemente.Werte.EigenschaftEnum;
 import org.d3s.alricg.store.held.CharakterDaten;
 
@@ -24,7 +25,7 @@ public class Charakter {
 	private SonderregelAdmin sonderregelAdmin;
 	private VerbilligteFertigkeitAdmin verbFertigkeitenAdmin;
 	private VoraussetzungenAdmin vorausAdmin;
-	private CharStatusAdmin magieAdmin;
+	private CharStatusAdmin statusAdmin;
 	
 	// Die Eigenschaften, wegen ihrer besonderen Bedeutung nochmal hier
 	private HashMap<Class, Prozessor> prozessorHash;
@@ -42,7 +43,7 @@ public class Charakter {
 		this.sonderregelAdmin = sonderregelAdmin;
 		this.verbFertigkeitenAdmin = verbFertigkeitenAdmin;
 		this.vorausAdmin = vorausAdmin;
-		this.magieAdmin = magieAdmin;
+		this.statusAdmin = magieAdmin;
 	}
 	
 	/**
@@ -57,6 +58,9 @@ public class Charakter {
 	}
 	
 	public Prozessor getProzessor(Class clazz) {
+		if (Herkunft.class.isAssignableFrom(clazz)) {
+			return prozessorHash.get(Herkunft.class);
+		}
 		return prozessorHash.get(clazz);
 	}
 	
@@ -106,8 +110,8 @@ public class Charakter {
 	/**
 	 * @return the magieAdmin
 	 */
-	public CharStatusAdmin getMagieStatusAdmin() {
-		return magieAdmin;
+	public CharStatusAdmin getStatusAdmin() {
+		return statusAdmin;
 	}
 
 	/**

@@ -133,10 +133,13 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 	 * @return Eine Liste von allen Links, auf die die Kriterien zutreffen
 	 */
 	public List<E> getObjectsById(CharElement charElement) {
+		return getObjectsById(charElement.getId());
+	}
+	public List<E> getObjectsById(String charElementID) {
 		int index, tmpIdx;
 		ArrayList<E> list;
 		
-		index = Collections.binarySearch(elementList, charElement.getId(), compLinkString);
+		index = Collections.binarySearch(elementList, charElementID, compLinkString);
 		
 		list = new ArrayList<E>();
 		if (index < 0) {
@@ -150,7 +153,7 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 		// Nach "oben" die Elemente prüfen
 		tmpIdx = index;
 		while(tmpIdx < elementList.size() && 
-				compLinkString.compare(elementList.get(tmpIdx), charElement.getId()) == 0) {
+				compLinkString.compare(elementList.get(tmpIdx), charElementID) == 0) {
 			list.add(elementList.get(tmpIdx));
 			tmpIdx++;
 		}
@@ -158,7 +161,7 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 		// Nach "unten" die Elemente prüfen
 		tmpIdx = index -1;
 		while(tmpIdx >= 0 && 
-				compLinkString.compare(elementList.get(tmpIdx), charElement.getId()) == 0) {
+				compLinkString.compare(elementList.get(tmpIdx), charElementID) == 0) {
 			list.add(elementList.get(tmpIdx));
 			tmpIdx--;
 		}
@@ -166,26 +169,6 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 		return list;
 	}
 
-	/**
-	 * Such ein Element mit der gleichen AdditionsID wie "fertigkeit". Bei mehreren Vorkommen
-	 * wird das erste gefundene geliefert.
-	 * @param fertigkeit Fertigkeit nach dessen AdditionsID gesucht wird
-	 * @return Link mit der Fertigkeit als Ziel, oder null fall kein solches Element existiert
-	 */
-	public E getEqualAdditionsFamilie(Fertigkeit fertigkeit) {
-		if (fertigkeit.getAdditionsFamilie() == null) return null;
-		
-		for(E element : elementList) {
-			if ( !element.getZiel().getClass().equals(fertigkeit.getClass()) ) continue;
-			if ( ((Fertigkeit)element.getZiel()).getAdditionsFamilie() == null) continue;
-			
-			if ( ((Fertigkeit)element.getZiel()).getAdditionsFamilie().getAdditionsID().equals(
-					fertigkeit.getAdditionsFamilie().getAdditionsID()) ) {
-				return element;
-			}
-		}
-		return null;
-	}
 	
 	/**
 	 * Sucht zu einem Link das gleichartige Gegenstücke aus der ElementBox herraus.
@@ -297,7 +280,7 @@ public class ElementBox<E extends Link> extends AbstractCollection<E>{
 	 * Klasse zum Vergleich von zwei Links miteinander.
 	 * @author V. Strelow
 	 */
-    class LinkLinkComparator<LINK_TYPE extends Link> implements Comparator<LINK_TYPE> {
+    public class LinkLinkComparator<LINK_TYPE extends Link> implements Comparator<LINK_TYPE> {
 		/* (non-Javadoc) Methode überschrieben
 		 * @see java.util.Comparator#compare(T, T)
 		 */
