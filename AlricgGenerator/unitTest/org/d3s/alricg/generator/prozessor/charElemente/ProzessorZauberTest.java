@@ -282,7 +282,7 @@ public class ProzessorZauberTest {
 		assertTrue( prozessor.containsLink( zauberLink1 ) );
 		assertEquals( 0, box.getEqualObjects( zauberLink1 ).get( 0 ).getWert() );
 		// Aktivierungskosten 1 AP
-		assertEquals( 1, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten() );
+		assertEquals( 1, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten(),0 );
 		assertTrue( box.getEqualObjects( zauberLink1 ).get( 0 ).getZweitZiel() == repraesentation );
 	}
 
@@ -305,7 +305,7 @@ public class ProzessorZauberTest {
 		
 		prozessor.updateWert( box.getObjectById(zauber1), 5 );
 		
-		assertEquals( 33, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten() );
+		assertEquals( 33, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten(),0 );
 	}
 
 	/**
@@ -332,7 +332,7 @@ public class ProzessorZauberTest {
 		prozessor.addModi( modi );
 		
 		assertEquals( 5, box.getEqualObjects( zauberLink1 ).get( 0 ).getWert() );
-		assertEquals( 0, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten() );
+		assertEquals( 0, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten(),0 );
 		
 		
 		
@@ -342,7 +342,7 @@ public class ProzessorZauberTest {
 		GeneratorLink genLink = (GeneratorLink) prozessor.addModi( modi2 );
 		
 		assertEquals( 3, genLink.getWert() );
-		assertEquals( 0, genLink.getKosten() );
+		assertEquals( 0, genLink.getKosten(),0 );
 
 		
 		
@@ -376,7 +376,7 @@ public class ProzessorZauberTest {
 		prozessor.addModi( modi );
 		
 		// Als Zauber fremder Repraesentation wird nach Spalte E gesteigert.
-		assertEquals( 124, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten() );
+		assertEquals( 124, box.getEqualObjects( zauberLink1 ).get( 0 ).getKosten(),0 );
 	}
 	
 	/**
@@ -590,22 +590,22 @@ public class ProzessorZauberTest {
 		moeglicheZauber.add( zauberLink3 );
 		extendedProzessor.setMoeglicheZauber( moeglicheZauber );
 
-		assertEquals( 0, prozessor.getGesamtKosten() );
+		assertEquals( 0, prozessor.getGesamtKosten() ,0);
 		
 		prozessor.addNewElement( zauber1 );
 		prozessor.addNewElement( zauber2 );
 		prozessor.addNewElement( zauber3 );
 
-		assertEquals( 6, prozessor.getGesamtKosten() );
+		assertEquals( 6, prozessor.getGesamtKosten() ,0);
 		
 		prozessor.updateWert( box.getObjectById( zauber1 ), 5 );
-		assertEquals( 22, prozessor.getGesamtKosten() );
+		assertEquals( 22, prozessor.getGesamtKosten(),0 );
 		
 		prozessor.updateWert( box.getObjectById( zauber2 ), 3 );
-		assertEquals( 34, prozessor.getGesamtKosten() );
+		assertEquals( 34, prozessor.getGesamtKosten() ,0);
 		
 		prozessor.updateWert( box.getObjectById( zauber3 ), 7 );
-		assertEquals( 127, prozessor.getGesamtKosten() );
+		assertEquals( 127, prozessor.getGesamtKosten() ,0);
 	}
 	
 	/** Testet die Methode removeElement( GeneratorLink ) */

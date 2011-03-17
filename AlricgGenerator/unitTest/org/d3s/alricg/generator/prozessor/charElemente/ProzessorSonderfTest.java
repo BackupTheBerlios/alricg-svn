@@ -115,9 +115,9 @@ public class ProzessorSonderfTest {
 		sf1.setGpKosten(5.0);
 		
 		GeneratorLink link = prozessorSonderf.addNewElement(sf1);
-		assertEquals(5, link.getKosten());
-		assertEquals(5, prozessorSonderf.getGesamtKosten());
-		assertEquals(5, extendedProzessor.getGpGesamtKosten());
+		assertEquals(5, link.getKosten(),0);
+		assertEquals(5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(5, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 		
 		// Test 2: Standard GP
@@ -126,9 +126,9 @@ public class ProzessorSonderfTest {
 		sf2.setGpKosten(3.0);
 		
 		link = prozessorSonderf.addNewElement(sf2);
-		assertEquals(3, link.getKosten());
-		assertEquals(8, prozessorSonderf.getGesamtKosten());
-		assertEquals(8, extendedProzessor.getGpGesamtKosten());
+		assertEquals(3, link.getKosten(),0);
+		assertEquals(8, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(8, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 		
 		// Test 3: Standard AP
@@ -138,9 +138,9 @@ public class ProzessorSonderfTest {
 		sf3.setGpKosten(2.0);
 		
 		link = prozessorSonderf.addNewElement(sf3);
-		assertEquals(100, link.getKosten());
-		assertEquals(10, prozessorSonderf.getGesamtKosten());
-		assertEquals(8, extendedProzessor.getGpGesamtKosten());
+		assertEquals(100, link.getKosten(),0);
+		assertEquals(10, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(8, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(100, extendedProzessor.getApGesamtKosten());
 		
 		// Test 4: Standard AP
@@ -149,25 +149,25 @@ public class ProzessorSonderfTest {
 		sf4.setGpKosten(3.5);
 		
 		link = prozessorSonderf.addNewElement(sf4);
-		assertEquals(175, link.getKosten());
-		assertEquals(13.5, prozessorSonderf.getGesamtKosten());
-		assertEquals(8, extendedProzessor.getGpGesamtKosten());
+		assertEquals(175, link.getKosten(),0);
+		assertEquals(13.5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(8, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(275, extendedProzessor.getApGesamtKosten());
 		
 		// Test 5: Bezahlung wechseln
 		extendedProzessor.changeMitAPBezahlt(link, false);
 		
-		assertEquals(3.5, link.getKosten());
-		assertEquals(13.5, prozessorSonderf.getGesamtKosten());
-		assertEquals(11.5, extendedProzessor.getGpGesamtKosten());
+		assertEquals(3.5, link.getKosten(),0);
+		assertEquals(13.5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(11.5, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(100, extendedProzessor.getApGesamtKosten());
 		
 		// Test 6: Bezahlung wechseln
 		extendedProzessor.changeMitAPBezahlt(link, true);
 		
-		assertEquals(175, link.getKosten());
-		assertEquals(13.5, prozessorSonderf.getGesamtKosten());
-		assertEquals(8, extendedProzessor.getGpGesamtKosten());
+		assertEquals(175, link.getKosten(),0);
+		assertEquals(13.5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(8, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(275, extendedProzessor.getApGesamtKosten());
 		
 		// Test 7: link entfernen
@@ -176,8 +176,8 @@ public class ProzessorSonderfTest {
 		assertTrue(prozessorSonderf.containsLink(link));
 		prozessorSonderf.removeElement(link);
 		assertFalse(prozessorSonderf.containsLink(link));
-		assertEquals(8.5, prozessorSonderf.getGesamtKosten());
-		assertEquals(3, extendedProzessor.getGpGesamtKosten());
+		assertEquals(8.5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(3, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(275, extendedProzessor.getApGesamtKosten());
 		
 		// Test 8: link entfernen
@@ -186,8 +186,8 @@ public class ProzessorSonderfTest {
 		assertTrue(prozessorSonderf.containsLink(link));
 		prozessorSonderf.removeElement(link);
 		assertFalse(prozessorSonderf.containsLink(link));
-		assertEquals(6.5, prozessorSonderf.getGesamtKosten());
-		assertEquals(3, extendedProzessor.getGpGesamtKosten());
+		assertEquals(6.5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(3, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(175, extendedProzessor.getApGesamtKosten());
 		
 		// Test 8: Alle restlichen entfernen
@@ -196,19 +196,19 @@ public class ProzessorSonderfTest {
 		link = prozessorSonderf.getElementBox().getObjectById(sf4);
 		prozessorSonderf.removeElement(link);
 		
-		assertEquals(0, prozessorSonderf.getGesamtKosten());
-		assertEquals(0, extendedProzessor.getGpGesamtKosten());
+		assertEquals(0, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(0, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 		
 		// Test 9: Standard GP
 		link = prozessorSonderf.addNewElement(sf1);
-		assertEquals(250, link.getKosten());
+		assertEquals(250, link.getKosten(),0);
 		extendedProzessor.setMitApBezahlt(false);
 		link = prozessorSonderf.addNewElement(sf3);
-		assertEquals(2, link.getKosten());
+		assertEquals(2, link.getKosten(),0);
 		
-		assertEquals(7, prozessorSonderf.getGesamtKosten());
-		assertEquals(2, extendedProzessor.getGpGesamtKosten());
+		assertEquals(7, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(2, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(250, extendedProzessor.getApGesamtKosten());
 		
 	}
@@ -221,26 +221,26 @@ public class ProzessorSonderfTest {
 		sf1.setGpKosten(5.0);
 		
 		GeneratorLink link = prozessorSonderf.addNewElement(sf1);
-		assertEquals(5, link.getKosten());
-		assertEquals(5, prozessorSonderf.getGesamtKosten());
-		assertEquals(5, extendedProzessor.getGpGesamtKosten());
+		assertEquals(5, link.getKosten(),0);
+		assertEquals(5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(5, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 		
 		// Test 2: Modi hinzufügen
 		IdLink linkModi1 = new IdLink(rasse, sf1, null, Link.KEIN_WERT, null);
 		
 		link = (GeneratorLink) prozessorSonderf.addModi(linkModi1);
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorSonderf.getGesamtKosten());
-		assertEquals(0, extendedProzessor.getGpGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(0, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 		
 		// Test 3: Modi entfernen
 		prozessorSonderf.removeModi(link, linkModi1);
 		
-		assertEquals(5, link.getKosten());
-		assertEquals(5, prozessorSonderf.getGesamtKosten());
-		assertEquals(5, extendedProzessor.getGpGesamtKosten());
+		assertEquals(5, link.getKosten(),0);
+		assertEquals(5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(5, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 		
 		// Test 4: Mehrfach Modi
@@ -250,17 +250,17 @@ public class ProzessorSonderfTest {
 		linkModi1 = new IdLink(rasse, sf1, null, Link.KEIN_WERT, null);
 		link = (GeneratorLink) prozessorSonderf.addModi(linkModi1);
 		
-		assertEquals(-5, link.getKosten());
-		assertEquals(-5, prozessorSonderf.getGesamtKosten());
-		assertEquals(-5, extendedProzessor.getGpGesamtKosten());
+		assertEquals(-5, link.getKosten(),0);
+		assertEquals(-5, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(-5, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 		
 		// Test 5: Link einfach entfernen
 		prozessorSonderf.removeElement(link);
 		
 		assertFalse(prozessorSonderf.getElementBox().contains(link));
-		assertEquals(0, prozessorSonderf.getGesamtKosten());
-		assertEquals(0, extendedProzessor.getGpGesamtKosten());
+		assertEquals(0, prozessorSonderf.getGesamtKosten(),0);
+		assertEquals(0, extendedProzessor.getGpGesamtKosten(),0);
 		assertEquals(0, extendedProzessor.getApGesamtKosten());
 	}
 	
@@ -418,8 +418,8 @@ public class ProzessorSonderfTest {
 
 		assertNotNull(linkTalent);
 		assertEquals(3, linkTalent.getWert());
-		assertEquals(0, linkTalent.getKosten());
-		assertEquals(0, prozessorTalent.getGesamtKosten());
+		assertEquals(0, linkTalent.getKosten(),0);
+		assertEquals(0, prozessorTalent.getGesamtKosten(),0);
 		assertEquals(3, prozessorTalent.getMinWert(linkTalent));
 		assertFalse(prozessorTalent.canRemoveElement(linkTalent));
 		assertFalse(prozessorTalent.canUpdateText(linkTalent));
@@ -437,7 +437,7 @@ public class ProzessorSonderfTest {
 		
 		assertNotNull(linkTalent);
 		assertEquals(3, linkTalent.getWert());
-		assertEquals(0, linkTalent.getKosten());
+		assertEquals(0, linkTalent.getKosten(),0);
 		assertEquals(3, prozessorTalent.getMinWert(linkTalent));
 		assertFalse(prozessorTalent.canRemoveElement(linkTalent));
 		assertFalse(prozessorTalent.canUpdateText(linkTalent));
@@ -447,25 +447,25 @@ public class ProzessorSonderfTest {
 		// 4. Modifizieren des automatischen Talents
 		prozessorTalent.updateWert(linkTalent, 5);
 		assertEquals(5, linkTalent.getWert());
-		assertEquals(19, linkTalent.getKosten());
-		assertEquals(19, prozessorTalent.getGesamtKosten());
+		assertEquals(19, linkTalent.getKosten(),0);
+		assertEquals(19, prozessorTalent.getGesamtKosten(),0);
 		
 		prozessorTalent.updateWert(linkTalent, 3);
 		assertEquals(3, linkTalent.getWert());
-		assertEquals(0, linkTalent.getKosten());
-		assertEquals(0, prozessorTalent.getGesamtKosten());
+		assertEquals(0, linkTalent.getKosten(),0);
+		assertEquals(0, prozessorTalent.getGesamtKosten(),0);
 		
 		prozessorTalent.updateWert(linkTalent, 4);
 		assertEquals(4, linkTalent.getWert());
-		assertEquals(8, linkTalent.getKosten());
-		assertEquals(8, prozessorTalent.getGesamtKosten());
+		assertEquals(8, linkTalent.getKosten(),0);
+		assertEquals(8, prozessorTalent.getGesamtKosten(),0);
 		
 		// 5. Wieder entfernen von Vorteil & automatisch Talent
 		prozessorSonderf.removeElement(link);
 		linkTalent = prozessorTalent.getElementBox().getObjectById(talent1);
 		assertNull(linkTalent);
 		
-		assertEquals(0, prozessorTalent.getGesamtKosten());
+		assertEquals(0, prozessorTalent.getGesamtKosten(),0);
 	}
 	
 	@Test
@@ -515,114 +515,114 @@ public class ProzessorSonderfTest {
 		
 		// Modis Hinzufügen
 		GeneratorLink genLink = (GeneratorLink)  prozessorSonderf.addNewElement(sf0);
-		assertEquals(1, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(1, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-NixDamitZuTun", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-I", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link1);
-		assertEquals(-4, genLink.getKosten());
-		assertEquals(-3, prozessorSonderf.getGesamtKosten());
+		assertEquals(-4, genLink.getKosten(),0);
+		assertEquals(-3, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Wieder alle Modis löschen
 		
 		prozessorSonderf.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorSonderf.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-II", genLink.getZiel().getId());
 		
 		prozessorSonderf.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-I", genLink.getZiel().getId());
 		
 		prozessorSonderf.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertFalse(prozessorSonderf.containsLink(genLink));
 		
 		// Hinzufügen 2
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link3);
-		assertEquals(-8, genLink.getKosten());
-		assertEquals(-7, prozessorSonderf.getGesamtKosten());
+		assertEquals(-8, genLink.getKosten(),0);
+		assertEquals(-7, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Entfernen 2
 		prozessorSonderf.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorSonderf.removeModi(genLink, link3);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertFalse(prozessorSonderf.containsLink(genLink));
 		
 		// Hinzufügen 3
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link2);
-		assertEquals(-4, genLink.getKosten());
-		assertEquals(-3, prozessorSonderf.getGesamtKosten());
+		assertEquals(-4, genLink.getKosten(),0);
+		assertEquals(-3, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link1);
-		assertEquals(-8, genLink.getKosten());
-		assertEquals(-7, prozessorSonderf.getGesamtKosten());
+		assertEquals(-8, genLink.getKosten(),0);
+		assertEquals(-7, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Entfernen & Hinzuügen 2
 		prozessorSonderf.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorSonderf.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-I", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorSonderf.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-II", genLink.getZiel().getId());
 		
 		prozessorSonderf.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertEquals("SFK-AstraleMed-I", genLink.getZiel().getId());
 		
 		prozessorSonderf.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorSonderf.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorSonderf.getGesamtKosten(),0);
 		assertFalse(prozessorSonderf.containsLink(genLink));
 	}
 }

@@ -166,29 +166,29 @@ public class ProzessorEigenschaftenTest {
 
         // Überprüfen ob die Kosten richtig sind:
         assertEquals( // Stufe = Kosten = 10
-                10, getLink(EigenschaftEnum.KO).getKosten());
+                10, getLink(EigenschaftEnum.KO).getKosten(),0);
         assertEquals( // Stufe = Kosten = 11
-                11, getLink(EigenschaftEnum.KK).getKosten());
+                11, getLink(EigenschaftEnum.KK).getKosten(),0);
         assertEquals( // Stufe = Kosten = 9
-                9, getLink(EigenschaftEnum.MU).getKosten());
+                9, getLink(EigenschaftEnum.MU).getKosten(),0);
         assertEquals( // Stufe = Kosten = 2
-                2, getLink(EigenschaftEnum.SO).getKosten());
+                2, getLink(EigenschaftEnum.SO).getKosten(),0);
         assertEquals( // Über SKT - Nur die gekauften Punkte
-                306, getLink(EigenschaftEnum.LEP).getKosten());
+                306, getLink(EigenschaftEnum.LEP).getKosten(),0);
         assertEquals( // Über SKT - Nur die gekauften Punkte
-                26, getLink(EigenschaftEnum.ASP).getKosten());
+                26, getLink(EigenschaftEnum.ASP).getKosten(),0);
 
         // MU = 9 / KL = 8 / IN = 12 / GE = 8 / CH = 14 / FF = 8 / KK = 11 / KO = 10
         // SO = 2
         assertEquals(82, 
-        		prozessor.getGesamtKosten());
+        		prozessor.getGesamtKosten(),0);
 
         // LEP = 306 / ASP = 26 / MR = 0
         assertEquals(332, // GesamtKosten
         		((ExtendedProzessorEigenschaft) prozessor.getExtendedInterface()).getGesamtTalentGpKosten());
 
         // Sonstiges: Sollte nix kosten!
-        assertEquals( 0, getLink(EigenschaftEnum.MR).getKosten());
+        assertEquals( 0, getLink(EigenschaftEnum.MR).getKosten(),0);
 
         // Max Wert IN
         assertEquals( 12, prozessor.getMaxWert(getLink(EigenschaftEnum.KA)));
@@ -216,7 +216,7 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis
                 2, getLink(EigenschaftEnum.MU).getWertModis());
         assertEquals( // Kosten
-                8, getLink(EigenschaftEnum.MU).getKosten());
+                8, getLink(EigenschaftEnum.MU).getKosten(),0);
 
         // Neu setzen der Stufe
         prozessor.updateWert(getLink(EigenschaftEnum.MU), 16);
@@ -232,12 +232,12 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis
                 2, getLink(EigenschaftEnum.MU).getWertModis());
         assertEquals( // Kosten
-                14, getLink(EigenschaftEnum.MU).getKosten());
+                14, getLink(EigenschaftEnum.MU).getKosten(),0);
 
         // MU = 14 / KL = 8 / IN = 8 / GE = 8 / CH = 8 / FF = 8 / KK = 8 / KO = 8
         // SO = 1
         assertEquals(71, // GesamtKosten
-                charakter.getProzessor(Eigenschaft.class).getGesamtKosten());
+                charakter.getProzessor(Eigenschaft.class).getGesamtKosten(),0);
 
     }
 
@@ -266,7 +266,7 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis (Kultur 2 / Profession 2)
                 4, getLink(EigenschaftEnum.KL).getWertModis());
         assertEquals( // Kosten = Gewählte Punkte
-                8, getLink(EigenschaftEnum.KL).getKosten());
+                8, getLink(EigenschaftEnum.KL).getKosten(),0);
 
         // Entfernen eines Modis
         prozessor.removeModi(getLink(EigenschaftEnum.KL), link2);
@@ -282,11 +282,11 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis (Kultur 2 / Profession 2)
                 2, getLink(EigenschaftEnum.KL).getWertModis());
         assertEquals( // Kosten = Gewählte Punkte
-                8, getLink(EigenschaftEnum.KL).getKosten());
+                8, getLink(EigenschaftEnum.KL).getKosten(),0);
 
         // MU = 8 / KL = 8 / IN = 8 / GE = 8 / CH = 8 / FF = 8 / KK = 8 / KO = 8 / SO = 1
         assertEquals(65, // GesamtKosten
-        		charakter.getProzessor(Eigenschaft.class).getGesamtKosten());
+        		charakter.getProzessor(Eigenschaft.class).getGesamtKosten(),0);
 
         // Wieder hinzufügen des Modis
         prozessor.addModi(link2);
@@ -302,11 +302,11 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis (Kultur 2 / Profession 2)
                 4, getLink(EigenschaftEnum.KL).getWertModis());
         assertEquals( // Kosten = Gewählte Punkte
-                8, getLink(EigenschaftEnum.KL).getKosten());
+                8, getLink(EigenschaftEnum.KL).getKosten(),0);
 
         // MU = 8 / KL = 8 / IN = 8 / GE = 8 / CH = 8 / FF = 8 / KK = 8 / KO = 8 / SO = 1
         assertEquals(65, // GesamtKosten
-        		charakter.getProzessor(Eigenschaft.class).getGesamtKosten());
+        		charakter.getProzessor(Eigenschaft.class).getGesamtKosten(),0);
     }
 
     /*
@@ -330,7 +330,7 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis
                 4, getLink(EigenschaftEnum.LEP).getWertModis());
         assertEquals( // Kosten ( 3 Punkt auf Spalte H )
-                111, getLink(EigenschaftEnum.LEP).getKosten());
+                111, getLink(EigenschaftEnum.LEP).getKosten(),0);
     }
 
     /*
@@ -363,7 +363,7 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis
                 3, getLink(EigenschaftEnum.ASP).getWertModis());
         assertEquals( // Kosten ( 3 Punkt auf Spalte G )
-                26, getLink(EigenschaftEnum.ASP).getKosten());
+                26, getLink(EigenschaftEnum.ASP).getKosten(),0);
 
         // LEP = 0 / ASP = 0 / MR = 0
         assertEquals(26, // GesamtKosten
@@ -384,7 +384,7 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis
                 1, getLink(EigenschaftEnum.ASP).getWertModis());
         assertEquals( // Kosten ( 3 Punkt auf Spalte G )
-                26, getLink(EigenschaftEnum.ASP).getKosten());
+                26, getLink(EigenschaftEnum.ASP).getKosten(),0);
 
         // Modi wieder hinzufügen
         prozessor.addModi(link2);
@@ -400,7 +400,7 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis
                 3, getLink(EigenschaftEnum.ASP).getWertModis());
         assertEquals( // Kosten ( 0 Punkt auf Spalte G )
-                0, getLink(EigenschaftEnum.ASP).getKosten());
+                0, getLink(EigenschaftEnum.ASP).getKosten(),0);
 
         // LEP = 0 / ASP = 0 / MR = 0
         assertEquals(0, // GesamtKosten
@@ -427,7 +427,7 @@ public class ProzessorEigenschaftenTest {
         assertEquals( // Modis
                 -2, getLink(EigenschaftEnum.MU).getWertModis());
         assertEquals( // Kosten (da versucht wird die Stufe zu halten)
-                10, getLink(EigenschaftEnum.MU).getKosten());
+                10, getLink(EigenschaftEnum.MU).getKosten(),0);
 
     }
 

@@ -652,8 +652,8 @@ public class UnMarschall {
 		//Assert.assertEquals(2, nachteil.getFuerWelcheChars().length);
 		//Assert.assertEquals(CharArten.halbZauberer, nachteil.getFuerWelcheChars()[0]);
 		//Assert.assertEquals(CharArten.viertelZauberer, nachteil.getFuerWelcheChars()[1]);
-		Assert.assertEquals(66,nachteil.getGpKosten());
-		Assert.assertEquals(2,nachteil.getKostenProStufe());
+		Assert.assertEquals(66.0d,nachteil.getGpKosten(),0);
+		Assert.assertEquals(2.0d,nachteil.getKostenProStufe(),0);
 		Assert.assertEquals(6,nachteil.getMaxStufe());
 		Assert.assertEquals(4,nachteil.getMinStufe());
 		Assert.assertTrue(nachteil.isMitFreienText());

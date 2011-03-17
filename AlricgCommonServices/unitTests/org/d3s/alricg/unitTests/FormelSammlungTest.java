@@ -50,14 +50,14 @@ public class FormelSammlungTest {
 
 	@Test
 	public void testGetGpFromAp() {
-		Assert.assertEquals(-1.5d, FormelSammlung.getGpFromAp(-75));
-		Assert.assertEquals(-1, FormelSammlung.getGpFromAp(-50));
-		Assert.assertEquals(0.5d, FormelSammlung.getGpFromAp(-25));
-		Assert.assertEquals(0, FormelSammlung.getGpFromAp(0));
-		Assert.assertEquals(0.5d, FormelSammlung.getGpFromAp(25));
-		Assert.assertEquals(1, FormelSammlung.getGpFromAp(50));
-		Assert.assertEquals(1.5d, FormelSammlung.getGpFromAp(75));
-		Assert.assertEquals(2, FormelSammlung.getGpFromAp(100));
+		Assert.assertEquals(-1.5d, FormelSammlung.getGpFromAp(-75),0);
+		Assert.assertEquals(-1, FormelSammlung.getGpFromAp(-50),0);
+		Assert.assertEquals(-0.5d, FormelSammlung.getGpFromAp(-25),0);
+		Assert.assertEquals(0, FormelSammlung.getGpFromAp(0),0);
+		Assert.assertEquals(0.5d, FormelSammlung.getGpFromAp(25),0);
+		Assert.assertEquals(1, FormelSammlung.getGpFromAp(50),0);
+		Assert.assertEquals(1.5d, FormelSammlung.getGpFromAp(75),0);
+		Assert.assertEquals(2, FormelSammlung.getGpFromAp(100),0);
 	}
 	
 	@Test

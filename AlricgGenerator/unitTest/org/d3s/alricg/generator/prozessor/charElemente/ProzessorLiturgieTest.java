@@ -246,27 +246,27 @@ public class ProzessorLiturgieTest {
 		// Add Liturgien
 		GeneratorLink link = prozessorLiturgie.addNewElement(liturgieB);
 		assertEquals(2, link.getWert());
-		assertEquals(100, link.getKosten());
-		assertEquals(100, prozessorLiturgie.getGesamtKosten());
+		assertEquals(100, link.getKosten(),0);
+		assertEquals(100, prozessorLiturgie.getGesamtKosten(),0);
 		
 		link = prozessorLiturgie.addNewElement(liturgieA);
 		assertEquals(1, link.getWert());
-		assertEquals(100, link.getKosten()); // Weil andere Gottheit = wie ein Grad höher
-		assertEquals(200, prozessorLiturgie.getGesamtKosten());
+		assertEquals(100, link.getKosten(),0); // Weil andere Gottheit = wie ein Grad höher
+		assertEquals(200, prozessorLiturgie.getGesamtKosten(),0);
 		
 		assertEquals(2, prozessorLiturgie.getElementBox().size());
 		
 		// Entfernen von Litgurgien
 		prozessorLiturgie.removeElement(link);
 		
-		assertEquals(100, prozessorLiturgie.getGesamtKosten());
+		assertEquals(100, prozessorLiturgie.getGesamtKosten(),0);
 		assertEquals(1, prozessorLiturgie.getElementBox().size());
 		
 		// Neue Litgurie erneut hinzufügen
 		link = prozessorLiturgie.addNewElement(liturgieC);
 		assertEquals(1, link.getWert());
-		assertEquals(50, link.getKosten()); // Weil andere Gottheit = wie ein Grad höher
-		assertEquals(150, prozessorLiturgie.getGesamtKosten());
+		assertEquals(50, link.getKosten(),0); // Weil andere Gottheit = wie ein Grad höher
+		assertEquals(150, prozessorLiturgie.getGesamtKosten(),0);
 		
 		assertEquals(2, prozessorLiturgie.getElementBox().size());
 		
@@ -276,7 +276,7 @@ public class ProzessorLiturgieTest {
 		link = prozessorLiturgie.getElementBox().getObjectById(liturgieC);
 		prozessorLiturgie.removeElement(link);
 		
-		assertEquals(0, prozessorLiturgie.getGesamtKosten());
+		assertEquals(0, prozessorLiturgie.getGesamtKosten(),0);
 		assertEquals(0, prozessorLiturgie.getElementBox().size());
 	}
 	

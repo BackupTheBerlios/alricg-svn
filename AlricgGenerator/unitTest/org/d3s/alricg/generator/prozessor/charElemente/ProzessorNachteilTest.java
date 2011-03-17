@@ -189,16 +189,16 @@ public class ProzessorNachteilTest {
 		ExtendedProzessorNachteil extended = (ExtendedProzessorNachteil) prozessorNachteil.getExtendedInterface();
 		
 		assertEquals(RegelConfig.getInstance().getMinSchlechteEigenchaftWert(), genLink.getWert());
-		assertEquals(RegelConfig.getInstance().getMinSchlechteEigenchaftWert() * -0.5d, genLink.getKosten());
-		assertEquals(extended.getGpSchlechteEigenschaft(), genLink.getKosten());
+		assertEquals(RegelConfig.getInstance().getMinSchlechteEigenchaftWert() * -0.5d, genLink.getKosten(),0);
+		assertEquals(extended.getGpSchlechteEigenschaft(), genLink.getKosten(),0);
 		
 		prozessorNachteil.updateWert(genLink, 10);
-		assertEquals(-5d, genLink.getKosten());
-		assertEquals(extended.getGpSchlechteEigenschaft(), genLink.getKosten());
+		assertEquals(-5d, genLink.getKosten(),0);
+		assertEquals(extended.getGpSchlechteEigenschaft(), genLink.getKosten(),0);
 		prozessorNachteil.updateWert(genLink, 9);
-		assertEquals(-4.5d, genLink.getKosten());
-		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-4.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(-4.5d, genLink.getKosten(),0);
+		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-4.5d, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 2: Nachteile, nicht schlechte Eigenschaft
 		Nachteil nachteil2 = new Nachteil();
@@ -207,8 +207,8 @@ public class ProzessorNachteilTest {
 		
 		genLink = prozessorNachteil.addNewElement(nachteil2);
 		
-		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 3: Nochmal schlechte Eigenschaft
 		Nachteil nachteil3 = new Nachteil();
@@ -219,19 +219,19 @@ public class ProzessorNachteilTest {
 		genLink = prozessorNachteil.addNewElement(nachteil3);
 		
 		prozessorNachteil.updateWert(genLink, 6);
-		assertEquals(-10.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-14.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(-10.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-14.5d, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 4: Modis für schlechte Eigenschaft
 		IdLink idLink1 = new IdLink(rasse, nachteil3, null, 5, null);
 		
 		prozessorNachteil.addModi(idLink1);
-		assertEquals(-5.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-9.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(-5.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-9.5d, prozessorNachteil.getGesamtKosten(),0);
 		
 		prozessorNachteil.updateWert(genLink, 8);
-		assertEquals(-7.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-11.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(-7.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-11.5d, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 5: Weiterer Modi
 		IdLink idLink2 = new IdLink(rasse, nachteil3, null, 4, null);
@@ -239,20 +239,20 @@ public class ProzessorNachteilTest {
 		
 		prozessorNachteil.updateWert(genLink, 8);
 		assertEquals(9, genLink.getWert());
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 6: Modis wieder entfernen
 		prozessorNachteil.removeModi(genLink, idLink2);
 		assertEquals(5, genLink.getWert());
-		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten(),0);
 		
 		prozessorNachteil.removeModi(genLink, idLink1);
 		assertFalse(prozessorNachteil.containsLink(genLink));
-		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft());
-		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten());
+		assertEquals(-4.5d, extended.getGpSchlechteEigenschaft(),0);
+		assertEquals(-8.5d, prozessorNachteil.getGesamtKosten(),0);
 	}
 	
 	@Test
@@ -318,11 +318,11 @@ public class ProzessorNachteilTest {
 		nachteil1.setKostenProStufe(-4.0d);
 		
 		GeneratorLink link = prozessorNachteil.addNewElement(nachteil1);
-		assertEquals(-4, link.getKosten());
-		assertEquals(-4, prozessorNachteil.getGesamtKosten());
+		assertEquals(-4, link.getKosten(),0);
+		assertEquals(-4, prozessorNachteil.getGesamtKosten(),0);
 		prozessorNachteil.updateWert(link, 3);
-		assertEquals(-12, link.getKosten());
-		assertEquals(-12, prozessorNachteil.getGesamtKosten());
+		assertEquals(-12, link.getKosten(),0);
+		assertEquals(-12, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 2: Festkosten
 		Nachteil nachteil2 = new Nachteil();
@@ -330,8 +330,8 @@ public class ProzessorNachteilTest {
 		nachteil2.setGpKosten(-5.5d);
 		
 		link = prozessorNachteil.addNewElement(nachteil2);
-		assertEquals(-5.5, link.getKosten());
-		assertEquals(-17.5, prozessorNachteil.getGesamtKosten());
+		assertEquals(-5.5, link.getKosten(),0);
+		assertEquals(-17.5, prozessorNachteil.getGesamtKosten(),0);
 
 		// Test 3: Festkosten + Stufe
 		Nachteil nachteil3 = new Nachteil();
@@ -342,37 +342,37 @@ public class ProzessorNachteilTest {
 		nachteil3.setKostenProStufe(-0.5d);
 		
 		link = prozessorNachteil.addNewElement(nachteil3);
-		assertEquals(-2.5, link.getKosten());
-		assertEquals(-20, prozessorNachteil.getGesamtKosten());
+		assertEquals(-2.5, link.getKosten(),0);
+		assertEquals(-20, prozessorNachteil.getGesamtKosten(),0);
 		prozessorNachteil.updateWert(link, 2);
-		assertEquals(-3, link.getKosten());
-		assertEquals(-20.5, prozessorNachteil.getGesamtKosten());
+		assertEquals(-3, link.getKosten(),0);
+		assertEquals(-20.5, prozessorNachteil.getGesamtKosten(),0);
 		prozessorNachteil.updateWert(link, 3);
-		assertEquals(-3.5, link.getKosten());
-		assertEquals(-21, prozessorNachteil.getGesamtKosten());
+		assertEquals(-3.5, link.getKosten(),0);
+		assertEquals(-21, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 4: Entfernen von Nachteil2
 		link = prozessorNachteil.getElementBox().getObjectById(nachteil2);
 		assertTrue(prozessorNachteil.containsLink(link));
 		prozessorNachteil.removeElement(link);
 		assertFalse(prozessorNachteil.containsLink(link));
-		assertEquals(-15.5, prozessorNachteil.getGesamtKosten());
+		assertEquals(-15.5, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 5: Entfernen von Nachteil3
 		link = prozessorNachteil.getElementBox().getObjectById(nachteil3);
 		assertTrue(prozessorNachteil.containsLink(link));
 		prozessorNachteil.removeElement(link);
 		assertFalse(prozessorNachteil.containsLink(link));
-		assertEquals(-12, prozessorNachteil.getGesamtKosten());
+		assertEquals(-12, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 6: Update und Entfernen von Nachteil1
 		link = prozessorNachteil.getElementBox().getObjectById(nachteil1);
 		prozessorNachteil.updateWert(link, 2);
-		assertEquals(-8, prozessorNachteil.getGesamtKosten());
+		assertEquals(-8, prozessorNachteil.getGesamtKosten(),0);
 		assertTrue(prozessorNachteil.containsLink(link));
 		prozessorNachteil.removeElement(link);
 		assertFalse(prozessorNachteil.containsLink(link));
-		assertEquals(0, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, prozessorNachteil.getGesamtKosten(),0);
 	}
 	
 	@Test
@@ -422,114 +422,114 @@ public class ProzessorNachteilTest {
 		
 		// Modis Hinzufügen
 		GeneratorLink genLink = (GeneratorLink)  prozessorNachteil.addNewElement(nachteil0);
-		assertEquals(-1, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(-1, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-NixDamitZuTun", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-I", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link1);
-		assertEquals(4, genLink.getKosten());
-		assertEquals(3, prozessorNachteil.getGesamtKosten());
+		assertEquals(4, genLink.getKosten(),0);
+		assertEquals(3, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Wieder alle Modis löschen
 		
 		prozessorNachteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorNachteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-II", genLink.getZiel().getId());
 		
 		prozessorNachteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-I", genLink.getZiel().getId());
 		
 		prozessorNachteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertFalse(prozessorNachteil.containsLink(genLink));
 		
 		// Hinzufügen 2
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link3);
-		assertEquals(8, genLink.getKosten());
-		assertEquals(7, prozessorNachteil.getGesamtKosten());
+		assertEquals(8, genLink.getKosten(),0);
+		assertEquals(7, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Entfernen 2
 		prozessorNachteil.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorNachteil.removeModi(genLink, link3);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertFalse(prozessorNachteil.containsLink(genLink));
 		
 		// Hinzufügen 3
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link2);
-		assertEquals(4, genLink.getKosten());
-		assertEquals(3, prozessorNachteil.getGesamtKosten());
+		assertEquals(4, genLink.getKosten(),0);
+		assertEquals(3, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link1);
-		assertEquals(8, genLink.getKosten());
-		assertEquals(7, prozessorNachteil.getGesamtKosten());
+		assertEquals(8, genLink.getKosten(),0);
+		assertEquals(7, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Entfernen & Hinzuügen 2
 		prozessorNachteil.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorNachteil.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-I", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorNachteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-II", genLink.getZiel().getId());
 		
 		prozessorNachteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals("NAC-AstraleMed-I", genLink.getZiel().getId());
 		
 		prozessorNachteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(-1, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(-1, prozessorNachteil.getGesamtKosten(),0);
 		assertFalse(prozessorNachteil.containsLink(genLink));
 	}
 	
@@ -543,36 +543,36 @@ public class ProzessorNachteilTest {
 		nachteil1.setGpKosten(-4.0);
 		
 		HeldenLink link = prozessorNachteil.addNewElement(nachteil1);
-		assertEquals(-4, link.getKosten());
-		assertEquals(-4, prozessorNachteil.getGesamtKosten());
+		assertEquals(-4, link.getKosten(),0);
+		assertEquals(-4, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 2: Modi hinzufügen
 		IdLink linkModi1 = new IdLink(rasse, nachteil1, null, Link.KEIN_WERT, null);
 		
 		link = prozessorNachteil.addModi(linkModi1);
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 3: Modi hinzufügen
 		linkModi1 = new IdLink(rasse, nachteil1, null, Link.KEIN_WERT, null);
 		
 		link = prozessorNachteil.addModi(linkModi1);
-		assertEquals(4, link.getKosten());
-		assertEquals(4, prozessorNachteil.getGesamtKosten());
+		assertEquals(4, link.getKosten(),0);
+		assertEquals(4, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 4: Modi wieder löschen
 		prozessorNachteil.removeModi((GeneratorLink) link, linkModi1);
 		
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 5: Modi wieder löschen
 		linkModi1 = (IdLink) prozessorNachteil.getElementBox().getObjectById(nachteil1).getLinkModiList().get(0);
 		// Test 5: Modi wieder löschen
 		prozessorNachteil.removeModi((GeneratorLink) link, linkModi1);
 		
-		assertEquals(-4, link.getKosten());
-		assertEquals(-4, prozessorNachteil.getGesamtKosten());
+		assertEquals(-4, link.getKosten(),0);
+		assertEquals(-4, prozessorNachteil.getGesamtKosten(),0);
 	}
 	
 	@Test
@@ -588,8 +588,8 @@ public class ProzessorNachteilTest {
 		IdLink linkModi1 = new IdLink(rasse, nachteil1, null, 2, null);
 		GeneratorLink link = (GeneratorLink) prozessorNachteil.addModi(linkModi1);
 		assertEquals(2, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorNachteil.getGesamtKosten(),0);
 		assertEquals(2, prozessorNachteil.getMinWert(link));
 		assertEquals(3, prozessorNachteil.getMaxWert(link));
 		
@@ -597,14 +597,14 @@ public class ProzessorNachteilTest {
 		IdLink linkModi2 = new IdLink(rasse, nachteil1, null, 1, null);
 		prozessorNachteil.addModi(linkModi2);
 		assertEquals(3, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorNachteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorNachteil.getGesamtKosten(),0);
 		
 		// Test 4: Modis entfernen
 		prozessorNachteil.removeModi(link, linkModi2);
-		assertEquals(2, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorNachteil.getGesamtKosten());
+		assertEquals(2, link.getWert(),0);
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorNachteil.getGesamtKosten(),0);
 		assertTrue(prozessorNachteil.getElementBox().contiansEqualObject(link));
 		prozessorNachteil.removeModi(link, linkModi1);
 		assertFalse(prozessorNachteil.getElementBox().contiansEqualObject(link));

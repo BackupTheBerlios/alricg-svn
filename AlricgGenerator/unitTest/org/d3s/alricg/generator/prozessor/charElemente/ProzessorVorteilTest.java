@@ -114,11 +114,11 @@ public class ProzessorVorteilTest {
 		vorteil1.setKostenProStufe(4.0d);
 		
 		GeneratorLink link = prozessorVorteil.addNewElement(vorteil1);
-		assertEquals(4, link.getKosten());
-		assertEquals(4, prozessorVorteil.getGesamtKosten());
+		assertEquals(4, link.getKosten(),0);
+		assertEquals(4, prozessorVorteil.getGesamtKosten(),0);
 		prozessorVorteil.updateWert(link, 3);
-		assertEquals(12, link.getKosten());
-		assertEquals(12, prozessorVorteil.getGesamtKosten());
+		assertEquals(12, link.getKosten(),0);
+		assertEquals(12, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 2: Festkosten
 		Vorteil vorteil2 = new Vorteil();
@@ -126,8 +126,8 @@ public class ProzessorVorteilTest {
 		vorteil2.setGpKosten(5.5d);
 		
 		link = prozessorVorteil.addNewElement(vorteil2);
-		assertEquals(5.5, link.getKosten());
-		assertEquals(17.5, prozessorVorteil.getGesamtKosten());
+		assertEquals(5.5, link.getKosten(),0);
+		assertEquals(17.5, prozessorVorteil.getGesamtKosten(),0);
 
 		// Test 3: Festkosten + Stufe
 		Vorteil vorteil3 = new Vorteil();
@@ -138,37 +138,37 @@ public class ProzessorVorteilTest {
 		vorteil3.setKostenProStufe(0.5d);
 		
 		link = prozessorVorteil.addNewElement(vorteil3);
-		assertEquals(2.5, link.getKosten());
-		assertEquals(20, prozessorVorteil.getGesamtKosten());
+		assertEquals(2.5, link.getKosten(),0);
+		assertEquals(20, prozessorVorteil.getGesamtKosten(),0);
 		prozessorVorteil.updateWert(link, 2);
-		assertEquals(3, link.getKosten());
-		assertEquals(20.5, prozessorVorteil.getGesamtKosten());
+		assertEquals(3, link.getKosten(),0);
+		assertEquals(20.5, prozessorVorteil.getGesamtKosten(),0);
 		prozessorVorteil.updateWert(link, 3);
-		assertEquals(3.5, link.getKosten());
-		assertEquals(21, prozessorVorteil.getGesamtKosten());
+		assertEquals(3.5, link.getKosten(),0);
+		assertEquals(21, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 4: Entfernen von Vorteil2
 		link = prozessorVorteil.getElementBox().getObjectById(vorteil2);
 		assertTrue(prozessorVorteil.containsLink(link));
 		prozessorVorteil.removeElement(link);
 		assertFalse(prozessorVorteil.containsLink(link));
-		assertEquals(15.5, prozessorVorteil.getGesamtKosten());
+		assertEquals(15.5, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 5: Entfernen von Vorteil3
 		link = prozessorVorteil.getElementBox().getObjectById(vorteil3);
 		assertTrue(prozessorVorteil.containsLink(link));
 		prozessorVorteil.removeElement(link);
 		assertFalse(prozessorVorteil.containsLink(link));
-		assertEquals(12, prozessorVorteil.getGesamtKosten());
+		assertEquals(12, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 6: Update und Entfernen von Vorteil1
 		link = prozessorVorteil.getElementBox().getObjectById(vorteil1);
 		prozessorVorteil.updateWert(link, 2);
-		assertEquals(8, prozessorVorteil.getGesamtKosten());
+		assertEquals(8, prozessorVorteil.getGesamtKosten(),0);
 		assertTrue(prozessorVorteil.containsLink(link));
 		prozessorVorteil.removeElement(link);
 		assertFalse(prozessorVorteil.containsLink(link));
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 	}
 	
 	@Test
@@ -181,36 +181,36 @@ public class ProzessorVorteilTest {
 		vorteil1.setGpKosten(4.0);
 		
 		HeldenLink link = prozessorVorteil.addNewElement(vorteil1);
-		assertEquals(4, link.getKosten());
-		assertEquals(4, prozessorVorteil.getGesamtKosten());
+		assertEquals(4, link.getKosten(),0);
+		assertEquals(4, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 2: Modi hinzufügen
 		IdLink linkModi1 = new IdLink(rasse, vorteil1, null, Link.KEIN_WERT, null);
 		
 		link = prozessorVorteil.addModi(linkModi1);
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 3: Modi hinzufügen
 		linkModi1 = new IdLink(rasse, vorteil1, null, Link.KEIN_WERT, null);
 		
 		link = prozessorVorteil.addModi(linkModi1);
-		assertEquals(-4, link.getKosten());
-		assertEquals(-4, prozessorVorteil.getGesamtKosten());
+		assertEquals(-4, link.getKosten(),0);
+		assertEquals(-4, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 4: Modi wieder löschen
 		prozessorVorteil.removeModi((GeneratorLink) link, linkModi1);
 		
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 5: Modi wieder löschen
 		linkModi1 = (IdLink) prozessorVorteil.getElementBox().getObjectById(vorteil1).getLinkModiList().get(0);
 		// Test 5: Modi wieder löschen
 		prozessorVorteil.removeModi((GeneratorLink) link, linkModi1);
 		
-		assertEquals(4, link.getKosten());
-		assertEquals(4, prozessorVorteil.getGesamtKosten());
+		assertEquals(4, link.getKosten(),0);
+		assertEquals(4, prozessorVorteil.getGesamtKosten(),0);
 	}
 	
 	@Test
@@ -223,11 +223,11 @@ public class ProzessorVorteilTest {
 		vorteil1.setKostenProStufe(4.0d);
 		
 		GeneratorLink link = prozessorVorteil.addNewElement(vorteil1);
-		assertEquals(4, link.getKosten());
-		assertEquals(4, prozessorVorteil.getGesamtKosten());
+		assertEquals(4, link.getKosten(),0);
+		assertEquals(4, prozessorVorteil.getGesamtKosten(),0);
 		prozessorVorteil.updateWert(link, 3);
-		assertEquals(12, link.getKosten());
-		assertEquals(12, prozessorVorteil.getGesamtKosten());
+		assertEquals(12, link.getKosten(),0);
+		assertEquals(12, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals(1, prozessorVorteil.getMinWert(link));
 		assertEquals(3, prozessorVorteil.getMaxWert(link));
 		
@@ -235,8 +235,8 @@ public class ProzessorVorteilTest {
 		IdLink linkModi1 = new IdLink(rasse, vorteil1, null, 2, null);
 		prozessorVorteil.addModi(linkModi1);
 		assertEquals(3, link.getWert());
-		assertEquals(4, link.getKosten());
-		assertEquals(4, prozessorVorteil.getGesamtKosten());
+		assertEquals(4, link.getKosten(),0);
+		assertEquals(4, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals(2, prozessorVorteil.getMinWert(link));
 		assertEquals(3, prozessorVorteil.getMaxWert(link));
 		
@@ -244,19 +244,19 @@ public class ProzessorVorteilTest {
 		IdLink linkModi2 = new IdLink(rasse, vorteil1, null, 1, null);
 		prozessorVorteil.addModi(linkModi2);
 		assertEquals(3, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals(3, prozessorVorteil.getMinWert(link));
 		assertEquals(3, prozessorVorteil.getMaxWert(link));
 		
 		// Test 4: Modis entfernen
 		prozessorVorteil.removeModi(link, linkModi2);
 		assertEquals(2, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 		prozessorVorteil.removeModi(link, linkModi1);
 		assertEquals(1, link.getWert());
-		assertEquals(4, link.getKosten());
+		assertEquals(4, link.getKosten(),0);
 		assertTrue(prozessorVorteil.getElementBox().contiansEqualObject(link));
 		
 		// Test entferne UserLink
@@ -277,8 +277,8 @@ public class ProzessorVorteilTest {
 		IdLink linkModi1 = new IdLink(rasse, vorteil1, null, 2, null);
 		GeneratorLink link = (GeneratorLink) prozessorVorteil.addModi(linkModi1);
 		assertEquals(2, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals(2, prozessorVorteil.getMinWert(link));
 		assertEquals(3, prozessorVorteil.getMaxWert(link));
 		
@@ -286,14 +286,14 @@ public class ProzessorVorteilTest {
 		IdLink linkModi2 = new IdLink(rasse, vorteil1, null, 1, null);
 		prozessorVorteil.addModi(linkModi2);
 		assertEquals(3, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 		
 		// Test 4: Modis entfernen
 		prozessorVorteil.removeModi(link, linkModi2);
 		assertEquals(2, link.getWert());
-		assertEquals(0, link.getKosten());
-		assertEquals(0, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, link.getKosten(),0);
+		assertEquals(0, prozessorVorteil.getGesamtKosten(),0);
 		assertTrue(prozessorVorteil.getElementBox().contiansEqualObject(link));
 		prozessorVorteil.removeModi(link, linkModi1);
 		assertFalse(prozessorVorteil.getElementBox().contiansEqualObject(link));
@@ -384,8 +384,8 @@ public class ProzessorVorteilTest {
 
 		assertNotNull(linkTalent);
 		assertEquals(3, linkTalent.getWert());
-		assertEquals(0, linkTalent.getKosten());
-		assertEquals(0, prozessorTalent.getGesamtKosten());
+		assertEquals(0, linkTalent.getKosten(),0);
+		assertEquals(0, prozessorTalent.getGesamtKosten(),0);
 		assertEquals(3, prozessorTalent.getMinWert(linkTalent));
 		assertFalse(prozessorTalent.canRemoveElement(linkTalent));
 		assertFalse(prozessorTalent.canUpdateText(linkTalent));
@@ -403,7 +403,7 @@ public class ProzessorVorteilTest {
 		
 		assertNotNull(linkTalent);
 		assertEquals(3, linkTalent.getWert());
-		assertEquals(0, linkTalent.getKosten());
+		assertEquals(0, linkTalent.getKosten(),0);
 		assertEquals(3, prozessorTalent.getMinWert(linkTalent));
 		assertFalse(prozessorTalent.canRemoveElement(linkTalent));
 		assertFalse(prozessorTalent.canUpdateText(linkTalent));
@@ -413,25 +413,25 @@ public class ProzessorVorteilTest {
 		// 4. Modifizieren des automatischen Talents
 		prozessorTalent.updateWert(linkTalent, 5);
 		assertEquals(5, linkTalent.getWert());
-		assertEquals(19, linkTalent.getKosten());
-		assertEquals(19, prozessorTalent.getGesamtKosten());
+		assertEquals(19, linkTalent.getKosten(),0);
+		assertEquals(19, prozessorTalent.getGesamtKosten(),0);
 		
 		prozessorTalent.updateWert(linkTalent, 3);
 		assertEquals(3, linkTalent.getWert());
-		assertEquals(0, linkTalent.getKosten());
-		assertEquals(0, prozessorTalent.getGesamtKosten());
+		assertEquals(0, linkTalent.getKosten(),0);
+		assertEquals(0, prozessorTalent.getGesamtKosten(),0);
 		
 		prozessorTalent.updateWert(linkTalent, 4);
 		assertEquals(4, linkTalent.getWert());
-		assertEquals(8, linkTalent.getKosten());
-		assertEquals(8, prozessorTalent.getGesamtKosten());
+		assertEquals(8, linkTalent.getKosten(),0);
+		assertEquals(8, prozessorTalent.getGesamtKosten(),0);
 		
 		// 5. Wieder entfernen von Vorteil & automatisch Talent
 		prozessorVorteil.removeElement(link);
 		linkTalent = prozessorTalent.getElementBox().getObjectById(talent1);
 		assertNull(linkTalent);
 		
-		assertEquals(0, prozessorTalent.getGesamtKosten());
+		assertEquals(0, prozessorTalent.getGesamtKosten(),0);
 	}
 		
 	@Test
@@ -481,114 +481,114 @@ public class ProzessorVorteilTest {
 		
 		// Modis Hinzufügen
 		GeneratorLink genLink = (GeneratorLink)  prozessorVorteil.addNewElement(vorteil0);
-		assertEquals(1, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(1, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-NixDamitZuTun", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-I", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link1);
-		assertEquals(-4, genLink.getKosten());
-		assertEquals(-3, prozessorVorteil.getGesamtKosten());
+		assertEquals(-4, genLink.getKosten(),0);
+		assertEquals(-3, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Wieder alle Modis löschen
 		
 		prozessorVorteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorVorteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-II", genLink.getZiel().getId());
 		
 		prozessorVorteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-I", genLink.getZiel().getId());
 		
 		prozessorVorteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertFalse(prozessorVorteil.containsLink(genLink));
 		
 		// Hinzufügen 2
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link3);
-		assertEquals(-8, genLink.getKosten());
-		assertEquals(-7, prozessorVorteil.getGesamtKosten());
+		assertEquals(-8, genLink.getKosten(),0);
+		assertEquals(-7, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Entfernen 2
 		prozessorVorteil.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorVorteil.removeModi(genLink, link3);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertFalse(prozessorVorteil.containsLink(genLink));
 		
 		// Hinzufügen 3
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-II", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link2);
-		assertEquals(-4, genLink.getKosten());
-		assertEquals(-3, prozessorVorteil.getGesamtKosten());
+		assertEquals(-4, genLink.getKosten(),0);
+		assertEquals(-3, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link1);
-		assertEquals(-8, genLink.getKosten());
-		assertEquals(-7, prozessorVorteil.getGesamtKosten());
+		assertEquals(-8, genLink.getKosten(),0);
+		assertEquals(-7, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		// Entfernen & Hinzuügen 2
 		prozessorVorteil.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-III", genLink.getZiel().getId());
 		
 		prozessorVorteil.removeModi(genLink, link2);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-I", genLink.getZiel().getId());
 		
 		genLink = (GeneratorLink) prozessorVorteil.addModi(link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-II", genLink.getZiel().getId());
 		
 		prozessorVorteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertEquals("VOR-AstraleMed-I", genLink.getZiel().getId());
 		
 		prozessorVorteil.removeModi(genLink, link1);
-		assertEquals(0, genLink.getKosten());
-		assertEquals(1, prozessorVorteil.getGesamtKosten());
+		assertEquals(0, genLink.getKosten(),0);
+		assertEquals(1, prozessorVorteil.getGesamtKosten(),0);
 		assertFalse(prozessorVorteil.containsLink(genLink));
 	}
 	

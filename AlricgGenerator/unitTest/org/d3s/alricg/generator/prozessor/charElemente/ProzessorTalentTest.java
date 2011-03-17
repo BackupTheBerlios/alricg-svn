@@ -220,13 +220,13 @@ public class ProzessorTalentTest {
 		prozessor.updateWert(box.getObjectById(talent3), 7);
 		
 		// Die Stufe wird voll bezahlt!
-		assertEquals(7, box.getObjectById(talent1).getKosten()); // + aktivierungskosten
-		assertEquals(61, box.getObjectById(talent2).getKosten()); // Basis-Talent -> keine AK
-		assertEquals(631, box.getObjectById(talent3).getKosten()); // + aktivierungskosten
+		assertEquals(7, box.getObjectById(talent1).getKosten(),0); // + aktivierungskosten
+		assertEquals(61, box.getObjectById(talent2).getKosten(),0); // Basis-Talent -> keine AK
+		assertEquals(631, box.getObjectById(talent3).getKosten(),0); // + aktivierungskosten
 		assertEquals(2, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		// Gesamtkosten
-		assertEquals(699, prozessor.getGesamtKosten());
+		assertEquals(699, prozessor.getGesamtKosten(),0);
 		
 		// Modifikator (durch eine Rasse) erzeugen
 		link1 = new IdLink(ras, talent1, null, 1, null);
@@ -239,15 +239,15 @@ public class ProzessorTalentTest {
 		prozessor.addModi(link3);
 		
 		assertEquals(3, box.getObjectById(talent1).getWert()); // Stufe
-		assertEquals(5, box.getObjectById(talent1).getKosten()); // Kosten mit Modi
+		assertEquals(5, box.getObjectById(talent1).getKosten(),0); // Kosten mit Modi
 		assertEquals(5, box.getObjectById(talent2).getWert()); // Stufe
-		assertEquals(0, box.getObjectById(talent2).getKosten()); // Kosten mit Modi
+		assertEquals(0, box.getObjectById(talent2).getKosten(),0); // Kosten mit Modi
 		assertEquals(7, box.getObjectById(talent3).getWert()); // Stufe
-		assertEquals(305, box.getObjectById(talent3).getKosten()); // Kosten mit Modi
+		assertEquals(305, box.getObjectById(talent3).getKosten(),0); // Kosten mit Modi
 		assertEquals(0, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		// Gesamtkosten
-		assertEquals(310, prozessor.getGesamtKosten());
+		assertEquals(310, prozessor.getGesamtKosten(),0);
 		
 		// Stufe neu setzen
 		prozessor.updateWert(box.getObjectById(talent1), 4);
@@ -255,15 +255,15 @@ public class ProzessorTalentTest {
 		prozessor.updateWert(box.getObjectById(talent3), 3);
 		
 		assertEquals(4, box.getObjectById(talent1).getWert()); // Stufe
-		assertEquals(9, box.getObjectById(talent1).getKosten()); // Kosten mit Modi
+		assertEquals(9, box.getObjectById(talent1).getKosten(),0); // Kosten mit Modi
 		assertEquals(7, box.getObjectById(talent2).getWert()); // Stufe
-		assertEquals(60, box.getObjectById(talent2).getKosten()); // Kosten mit Modi
+		assertEquals(60, box.getObjectById(talent2).getKosten(),0); // Kosten mit Modi
 		assertEquals(5, box.getObjectById(talent3).getWert()); // Stufe (min möglich)
-		assertEquals(0, box.getObjectById(talent3).getKosten()); // Kosten mit Modi
+		assertEquals(0, box.getObjectById(talent3).getKosten(),0); // Kosten mit Modi
 		assertEquals(0, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		// Gesamtkosten
-		assertEquals(69, prozessor.getGesamtKosten());
+		assertEquals(69, prozessor.getGesamtKosten(),0);
 		
 		// Modis wieder entfernen
 		prozessor.removeModi(box.getObjectById(talent1), link1);
@@ -271,14 +271,14 @@ public class ProzessorTalentTest {
 		prozessor.removeModi(box.getObjectById(talent3), link3);
 		
 		assertEquals(3, box.getObjectById(talent1).getWert()); // Stufe 
-		assertEquals(7, box.getObjectById(talent1).getKosten()); // Kosten + Aktivierungskosten!
+		assertEquals(7, box.getObjectById(talent1).getKosten(),0); // Kosten + Aktivierungskosten!
 		assertEquals(2, box.getObjectById(talent2).getWert()); // Stufe
-		assertEquals(10, box.getObjectById(talent2).getKosten()); // Kosten (Basis, keine AK)
+		assertEquals(10, box.getObjectById(talent2).getKosten(),0); // Kosten (Basis, keine AK)
 		assertNull(box.getObjectById(talent3)); // entfernt
 		assertEquals(1, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		// Gesamtkosten
-		assertEquals(17, prozessor.getGesamtKosten());
+		assertEquals(17, prozessor.getGesamtKosten(),0);
 		
 		// Enfternen von Talent1, Stufe auf "0" setzen bei Talent2
 		prozessor.removeElement(box.getObjectById(talent1));
@@ -286,12 +286,12 @@ public class ProzessorTalentTest {
 		
 		assertNull(box.getObjectById(talent1)); // entfernt
 		assertEquals(0, box.getObjectById(talent2).getWert()); // Stufe
-		assertEquals(0, box.getObjectById(talent2).getKosten()); // Kosten (Basis, keine AK)
+		assertEquals(0, box.getObjectById(talent2).getKosten(),0); // Kosten (Basis, keine AK)
 		assertNull(box.getObjectById(talent3)); // entfernt
 		assertEquals(0, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		// Gesamtkosten
-		assertEquals(0, prozessor.getGesamtKosten());
+		assertEquals(0, prozessor.getGesamtKosten(),0);
 		
 		// Hinzufügen von Modis
 		prozessor.addModi(link1);
@@ -300,15 +300,15 @@ public class ProzessorTalentTest {
 		prozessor.addModi(link3);
 		
 		assertEquals(1, box.getObjectById(talent1).getWert()); // Stufe
-		assertEquals(0, box.getObjectById(talent1).getKosten()); // Kosten
+		assertEquals(0, box.getObjectById(talent1).getKosten(),0); // Kosten
 		assertEquals(5, box.getObjectById(talent2).getWert()); // Stufe
-		assertEquals(0, box.getObjectById(talent2).getKosten()); // Kosten (Basis, keine AK)
+		assertEquals(0, box.getObjectById(talent2).getKosten(),0); // Kosten (Basis, keine AK)
 		assertEquals(-3, box.getObjectById(talent3).getWert()); // Stufe
-		assertEquals(0, box.getObjectById(talent3).getKosten()); // Kosten
+		assertEquals(0, box.getObjectById(talent3).getKosten(),0); // Kosten
 		assertEquals(0, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		// Gesamtkosten
-		assertEquals(0, prozessor.getGesamtKosten());
+		assertEquals(0, prozessor.getGesamtKosten(),0);
 		
 		// Stufen neu setzen
 		prozessor.updateWert(box.getObjectById(talent1), 3);
@@ -316,33 +316,33 @@ public class ProzessorTalentTest {
 		prozessor.updateWert(box.getObjectById(talent3), 1);
 		
 		assertEquals(3, box.getObjectById(talent1).getWert()); // Stufe
-		assertEquals(5, box.getObjectById(talent1).getKosten()); // Kosten
+		assertEquals(5, box.getObjectById(talent1).getKosten(),0); // Kosten
 		assertEquals(7, box.getObjectById(talent2).getWert()); // Stufe
-		assertEquals(60, box.getObjectById(talent2).getKosten()); // Kosten (Basis, keine AK)
+		assertEquals(60, box.getObjectById(talent2).getKosten(),0); // Kosten (Basis, keine AK)
 		assertEquals(1, box.getObjectById(talent3).getWert()); // Stufe
-		assertEquals(76, box.getObjectById(talent3).getKosten()); // Kosten (von -3)
+		assertEquals(76, box.getObjectById(talent3).getKosten(),0); // Kosten (von -3)
 		assertEquals(1, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		// Gesamtkosten
-		assertEquals(141, prozessor.getGesamtKosten() );
+		assertEquals(141, prozessor.getGesamtKosten(),0 );
 		
 		// Negative Zahlen 
 		prozessor.updateWert(box.getObjectById(talent3), 0);
 		
 		assertEquals(0, box.getObjectById(talent3).getWert()); // Stufe
-		assertEquals(60, box.getObjectById(talent3).getKosten()); // Kosten (von -3)
+		assertEquals(60, box.getObjectById(talent3).getKosten(),0); // Kosten (von -3)
 		assertEquals(1, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		prozessor.updateWert(box.getObjectById(talent3), -1);
 		
 		assertEquals(-1, box.getObjectById(talent3).getWert()); // Stufe
-		assertEquals(40, box.getObjectById(talent3).getKosten()); // Kosten (von -3)
+		assertEquals(40, box.getObjectById(talent3).getKosten(),0); // Kosten (von -3)
 		assertEquals(0, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 		
 		prozessor.updateWert(box.getObjectById(talent3), -3);
 		
 		assertEquals(-3, box.getObjectById(talent3).getWert()); // Stufe
-		assertEquals(0, box.getObjectById(talent3).getKosten()); // Kosten (von -3)
+		assertEquals(0, box.getObjectById(talent3).getKosten(),0); // Kosten (von -3)
 		assertEquals(0, extProz.getAktivierteTalente().size()); // Aktivierte Talente
 	}
 	
